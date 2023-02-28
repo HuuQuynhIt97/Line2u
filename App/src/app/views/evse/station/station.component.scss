@@ -1,0 +1,14 @@
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+  
+    > .col,
+    > [class*="col-"] {
+      padding-right: 8px;
+      padding-left: 0;
+    }
+    > [class*="col-"]:last-child {
+        padding-right: 0;
+        padding-left: 0;
+      }
+  }

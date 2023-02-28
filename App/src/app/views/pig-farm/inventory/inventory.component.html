@@ -1,0 +1,280 @@
+<div class="row my-row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body p-0">
+        <div style="height: 43px; line-height: 43px; font-weight: 500">
+          <span style="padding-left: 0.5rem">
+            {{ "INVENTORY" | translate }}
+          </span>
+        </div>
+        <ejs-grid
+          #grid
+          id="grid"
+          [dataSource]="data"
+          [allowPaging]="false"
+          [allowResizing]="true"
+          [allowSorting]="true"
+          gridLines="Both"
+          [locale]="locale"
+          (actionBegin)="actionBegin($event)"
+          (actionComplete)="actionComplete($event)"
+          [editSettings]="editSettings"
+          [pageSettings]="pageSettings"
+          [toolbar]="toolbarOptions"
+          [allowExcelExport]="true"
+          [selectedRowIndex]="0"
+          enableInfiniteScrolling="true"
+          (rowSelected)="rowSelected($event)"
+          (recordClick)="recordClick($event)"
+          [selectionSettings]="selectionOptions"
+          (toolbarClick)="toolbarClick($event)"
+          [height]="topHeight"
+        >
+          <e-columns>
+            <e-column
+              field="option"
+              [allowSorting]="false"
+              [allowSearching]="false"
+              [allowGrouping]="false"
+              [allowFiltering]="false"
+              [allowEditing]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              width="120"
+              headerTextAlign="Center"
+              headerText="{{ 'OPTION' | translate }}"
+            >
+              <ng-template #template let-data>
+                <span (click)="delete(data.id)" class="delete-grid">
+                  <i class="fa fa-trash"></i>
+                </span>
+                <span (click)="openModal(optionModal, data)" class="edit-grid">
+                  <i class="fa fa-edit"></i>
+                </span>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="inventoryNo"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'INVENTORY_NO' | translate }}"
+            >
+            </e-column>
+
+            <e-column
+              field="inventoryName"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'INVENTORY_NAME' | translate }}"
+            >
+            </e-column>
+
+            <e-column
+              field="inventoryLocationName"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'INVENTORY_LOCATION' | translate }}"
+            >
+            </e-column>
+
+            <e-column
+              field="comment"
+              [allowSearching]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'INVENTORY_COMMENT' | translate }}"
+            >
+            </e-column>
+
+            <e-column
+              field="id"
+[allowSearching]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              [isPrimaryKey]="true"
+              [visible]="false"
+              headerText="ID"
+            >
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 mt-2" [style.height]="rightHeight">
+    <div class="card">
+      <div class="card-body p-0">
+        <nav class="nav nav-pills nav-justified p-2">
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Detail'"
+            [ngClass]="{ active: active == 'Detail' }"
+            >{{ "INVENTORY_DETAIL" | translate }}</a
+          >
+
+          <a
+          class="nav-link my-nav"
+          (click)="active = 'Change Thing'"
+          [ngClass]="{ active: active == 'Change Thing' }"
+          >{{ "INVENTORY_CHANGE" | translate }}</a
+        >
+
+          <!-- <a
+            class="nav-link my-nav"
+            (click)="active = 'Change Thing'"
+            [ngClass]="{ active: active == 'Change Thing' }"
+            >{{ "INVENTORY_CHANGE_THING" | translate }}</a
+          > -->
+
+           <!-- <a
+            class="nav-link my-nav"
+            (click)="active = 'Change Material'"
+            [ngClass]="{ active: active == 'Change Material' }"
+            >{{ "INVENTORY_CHANGE_MATERIAL" | translate }}</a
+          > -->
+
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Scrap'"
+            [ngClass]="{ active: active == 'Scrap' }"
+            >{{ "INVENTORY_SWARP" | translate }}</a
+          >
+        </nav>
+        <ng-container *ngIf="active == 'Detail'">
+          <app-inventory-detail [bottomDetailHeight]='bottomDetailHeight'></app-inventory-detail>
+        </ng-container>
+
+        <ng-container *ngIf="active == 'Change Thing'">
+          <app-inventory-change [bottomHeight]='bottomHeight'></app-inventory-change>
+        </ng-container>
+
+        <!-- <ng-container *ngIf="active == 'Change Material'">
+          <app-inventory-change-material [bottomHeight]='bottomHeight'></app-inventory-change-material>
+        </ng-container> -->
+
+        <ng-container *ngIf="active == 'Scrap'">
+          <app-inventory-scrap [bottomHeight]='bottomHeight'></app-inventory-scrap>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="inventoryNo">{{ "INVENTORY_NO" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.inventoryNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="userType">{{ "INVENTORY_NAME" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.inventoryName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="inventoryLocation">{{
+            "INVENTORY_LOCATION" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="inventory-location-remote"
+          [codeType]="'Inventory_Location'"
+          [(selectedValue)]="model.inventoryLocation"
+          >
+          </app-code-type-dropdownlist>
+
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="accountGuid">{{ "ACCOUNT_GUID" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.accountGuid"
+            [fields]="fields"
+            [dataSource]="rejectData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{ "INVENTORY_COMMENT" | translate }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.inventoryNo || !model.inventoryName"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

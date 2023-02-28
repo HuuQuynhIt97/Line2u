@@ -1,0 +1,406 @@
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (recordDoubleClick)="onDoubleClick($event)"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate}}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="recordDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'RECORD_DATETIME' | translate }}"
+    >
+      <ng-template #template let-data>
+        {{
+          ((data.recordDate | date: "yyyy/MM/dd") || "") +
+            " " +
+            (data.recordTime || "")
+        }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="typeName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'PIG_HOUSE_DISINFECTION_TYPE' | translate }}"
+    >
+    </e-column>
+    <e-column
+    field="disinfectionName"
+    textAlign="Left"
+        headerTextAlign="Center"
+    headerText="{{ 'DISINFECTION' | translate }}"
+  >
+  </e-column>
+<e-column
+  field="useTypeName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'DISINFECTION_USE_TYPE' | translate }}"
+>
+</e-column>
+<e-column
+  field="useUnitName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'DISINFECTION_USE_UNIT' | translate }}"
+>
+</e-column>
+<e-column
+  field="capacityName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'DISINFECTION_CAPACITY' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="frequencyName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'DISINFECTION_FREQUENCY' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="applyDaysName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'DISINFECTION_APPLY_DAYS' | translate }}"
+>
+</e-column>
+    <e-column
+      field="estDate"
+      type='Date'
+      format="yyyy/MM/dd"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'EST_DATE' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="estTime"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'EST_TIME' | translate }}"
+    >
+    </e-column>
+    <e-column
+    field="recordDate"
+    type='Date'
+    format="yyyy/MM/dd"
+    textAlign="Left"
+        headerTextAlign="Center"
+    headerText="{{ 'RECORD_DATE' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="recordTime"
+    textAlign="Left"
+        headerTextAlign="Center"
+    headerText="{{ 'RECORD_TIME' | translate }}"
+  >
+  </e-column>
+    <e-column
+      field="comment"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'PIG_HOUSE_DISINFECTION_COMMENT' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="type">{{
+            "PIG_HOUSE_DISINFECTION_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="type-remote"
+          [codeType]="'PigHouse_DisinfectionType'"
+          [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="disinfection">{{
+            "DISINFECTION" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+
+          <app-disinfection-dropdownlist
+          [(selectedValue)]="model.disinfectionGuid"
+          >
+          </app-disinfection-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="useType">{{
+            "DISINFECTION_USE_TYPE" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="disinfection-type"
+          [codeType]="'Disinfection_UseType'"
+          [(selectedValue)]="model.useType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="useUnit">{{
+            "DISINFECTION_USE_UNIT" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="disinfection-unit"
+          [codeType]="'Disinfection_UseUnit'"
+          [(selectedValue)]="model.useUnit"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="capacity">{{
+            "DISINFECTION_CAPACITY" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="disinfection-cap"
+          [codeType]="'Disinfection_Capacity'"
+          [(selectedValue)]="model.capacity"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="frequency">{{
+            "DISINFECTION_FREQUENCY" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="method-fre-remote"
+          [codeType]="'Disinfection_Frequency'"
+          [(selectedValue)]="model.frequency"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="PEN" for="pigGuid">{{ "PEN" | translate }}</label>
+          <app-pen-dropdownlist
+            id="befor-pen-remote"
+            [enabledLoad]="true"
+            [(selectedValue)]="model.penGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="applyDays">{{
+            "DISINFECTION_APPLY_DAYS" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="method-applyDays-remote"
+          [codeType]="'Disinfection_ApplyDays'"
+          [(selectedValue)]="model.applyDays"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="pigType">{{
+            "PIG_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="pigType-remote"
+          [codeType]="'Pig_Type'"
+          [(selectedValue)]="model.pigType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estDate">{{ "EST_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.estDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estTime">{{ "EST_TIME" | translate }}</label>
+          <app-maskedtimetextbox
+            [(selectedValue)]="model.estTime"
+          ></app-maskedtimetextbox>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="recordDate">{{ "RECORD_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.recordDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="recordTime">{{ "RECORD_TIME" | translate }}</label>
+          <app-maskedtimetextbox
+            [(selectedValue)]="model.recordTime"
+          ></app-maskedtimetextbox>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="pig-remote">{{
+            "PIG" | translate
+          }}</label>
+          <app-pig-dropdownlist
+            id="pig-remote"
+            [(selectedValue)]="model.pigGuid"
+          >
+          </app-pig-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{
+            "PIG_HOUSE_DISINFECTION_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.disinfectionGuid"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

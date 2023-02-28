@@ -1,0 +1,63 @@
+<ng-template #actionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+    <span aria-hidden="true">&times;</span>
+
+  </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+          <div class="col-6">
+            <label>{{ "Bank_NO" | translate }} </label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 50 )</span
+            >
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <div class="form-group">
+              <input
+                maxlength="50"
+                type="text"
+                [(ngModel)]="model.bankNo"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Bank_Name" | translate }} </label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 50 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="50"
+                type="text"
+                [(ngModel)]="model.bankName"
+                class="form-control"
+              />
+            </div>
+          </div>
+       
+     
+      </div>
+    </div>
+
+    
+  <div class="modal-footer">
+    <button
+    [disabled]="!model.bankName || !model.bankNo"
+    (click)="save()"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+  </div>
+</ng-template>

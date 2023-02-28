@@ -1,0 +1,201 @@
+<ng-template #breedingModal let-modal>
+<div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modal">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group row">
+              <div class="col-sm-12 d-flex justify-content-start">
+              <label for="" class="text-left mr-2">{{ 'Breading_No' | translate }}</label>
+
+                <app-makeorder-dropdownlist-toolbar
+                ></app-makeorder-dropdownlist-toolbar>
+
+                <button
+                type="button"
+                class="btn btn-success btn-sm my-btn mx-2"
+              >
+                {{ "掃描RFID" | translate }}
+              </button>
+
+              <button
+              type="button"
+              class="btn btn-primary btn-sm my-btn"
+            >
+              {{ "加入豬隻" | translate }}
+            </button>
+
+              </div>
+            </div>
+           
+          </div>
+
+          <div class="col-12 mb-2">
+            <ejs-multiselect
+            id="permission"
+            [showDropDownIcon]="true"
+            [mode]="'Box'"
+          >
+          </ejs-multiselect>
+  
+          </div>
+
+        <div class="col-12 mt-4">
+
+          <span>A棟第1批 20220701</span>
+          <span class="mx-5">待配種：15頭</span>
+
+          <hr class="my-4">
+
+        </div>
+       <div class="col-12">
+        <ejs-grid
+        #grid
+          [dataSource]="dataSource"
+          [allowPaging]="false"
+          [editSettings]="editSettings"
+          [pageSettings]="pageSettings"
+          [height]="300 + 'px'"
+          gridLines="Both"
+          (actionComplete)="actionComplete($event)"
+          (actionBegin)="actionBegin($event)"
+          [locale]="locale"
+        >
+          <e-columns>
+            <e-column headerText="" width="50" [commands]="commands"></e-column>
+            <e-column
+              field="id"
+              textAlign="Left"
+              [visible]="false"
+              headerTextAlign="Center"
+              headerText="{{ '序' | translate }}"
+            >
+            </e-column>
+        
+            <e-column
+              field="pigNo"
+              textAlign="Left"
+              headerTextAlign="Center"
+              editType="dropdownedit"
+              headerText="{{ '母豬ID' | translate }}"
+            >
+            </e-column>
+        
+        
+        
+          <e-column
+          field="roomName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          editType="numericEdit"
+          headerText="{{ '欄位' | translate }}"
+        >
+        </e-column>
+
+
+        <e-column
+        field="roomName2"
+        textAlign="Left"
+        headerTextAlign="Center"
+        editType="numericEdit"
+        headerText="{{ '上次狀態' | translate }}"
+      >
+      </e-column>
+
+
+      <e-column
+      field="roomName3"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      headerText="{{ '胎次' | translate }}"
+    >
+    </e-column>
+
+
+    <e-column
+    field="roomName4"
+    textAlign="Left"
+    headerTextAlign="Center"
+    editType="numericEdit"
+    headerText="{{ '查情日期' | translate }}"
+  >
+  </e-column>
+
+
+  <e-column
+  field="roomName5"
+  textAlign="Left"
+  headerTextAlign="Center"
+  editType="numericEdit"
+  headerText="{{ '查情結果' | translate }}"
+>
+</e-column>
+
+<e-column
+field="roomName6"
+textAlign="Left"
+headerTextAlign="Center"
+editType="numericEdit"
+headerText="{{ '配種日' | translate }}"
+>
+</e-column>
+
+<e-column
+field="roomName7"
+textAlign="Left"
+headerTextAlign="Center"
+editType="numericEdit"
+headerText="{{ '配種人員' | translate }}"
+>
+</e-column>
+
+
+<e-column
+field="roomName8"
+textAlign="Left"
+headerTextAlign="Center"
+editType="numericEdit"
+headerText="{{ '精液編號' | translate }}"
+>
+</e-column>
+       
+          </e-columns>
+        </ejs-grid>
+       </div>
+    
+    </div>
+  
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto">
+      <p>建立日期: 2022/08/02 人員: {{user.nickName}}</p>
+      <p>更新日期: 2022/08/02 人員: {{user.nickName}}</p>
+    </div>
+    <button
+    type="button"
+    class="btn btn-success"
+  >
+    {{ "確認" | translate }}
+  </button>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "取消" | translate }}
+    </button>
+
+  </div>
+</ng-template>

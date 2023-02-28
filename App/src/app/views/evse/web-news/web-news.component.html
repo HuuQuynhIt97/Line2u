@@ -1,0 +1,338 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div class="row">
+<div class="col-12">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        height="70vh"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+(rowSelected)="rowSelected($event)"
+
+        (excelExportComplete)="excelExpComplete($event)"
+      >
+        <e-columns>
+          <e-column
+            field="option"
+            textAlign="Left"
+            headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #odsTemplate let-data>
+              <button
+                class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                type="button"
+                id="grid_odsexport"
+                tabindex="-1"
+                (click)="odsExport()"
+                style="width: auto"
+              >
+                <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+                ><span class="e-tbar-btn-text"
+                  >{{ "Ods Export" | translate }}
+                </span>
+              </button>
+            </ng-template>
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+
+          <e-column
+          field="type"
+          textAlign="Left"
+          headerTextAlign="Center"
+          [width]="120"
+          headerText="{{ 'WebNews_Type' | translate }}"
+        >
+        </e-column>
+
+
+          <e-column
+            field="subject"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'WebNews_NO' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+          field="link"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'WebNews_Link' | translate }}"
+        >
+        </e-column>
+
+        <e-column
+        field="sortId"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'WebNews_SortId' | translate }}"
+      >
+      </e-column>
+         
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+</div>
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="engineerSex">{{ "WebNews_Type" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+            id="webnew-type-remote"
+            [codeType]="'WebNews_Type'"
+            [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="uid">{{ "WebNews_Subject" | translate }}</label>
+          <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+          <input
+            [(ngModel)]="model.subject"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="uid">{{ "WebNews_Link" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+          <input
+            [(ngModel)]="model.link"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="News_Date">{{
+            "News_Date" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.newsDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="Start_Date">{{
+            "Start_Date" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.startDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="End_Date">{{
+            "End_Date" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.endDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="sortId">{{ "WebNews_SortId" | translate }}</label>
+          <input
+            [(ngModel)]="model.sortId"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="status">{{ "WebNews_Status" | translate }}</label>
+          <input
+            [(ngModel)]="model.status"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-12 mb-2">
+        <label for="body">{{ "WebNews_Body" | translate }}</label>
+
+        <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
+        
+          </ejs-richtexteditor>
+      </div>
+
+
+
+      <div class="col-12 text-center">
+
+
+        <div class="kv-avatar">
+          <div class="file-loading">
+            <input
+              id="avatar-1"
+              name="avatar-1"
+              (change)="onFileChangeLogo($event)"
+              type="file"
+              required
+            />
+          </div>
+        </div>
+        <div class="kv-avatar-hint">
+          <small>{{ "Select file < 5000 KB" | translate }}</small>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label>{{ "WebNews_COMMENT" | translate }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+   
+</div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.link"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

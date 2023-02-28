@@ -1,0 +1,42 @@
+
+<div class="card main-card">
+  <div class="card-header table-responsive p-0">
+    <nav class="nav nav-pills nav-justified p-2" >
+      <a class="nav-link my-nav" (click)="onActive('Detail')" [ngClass]="{ 'active': active == 'Detail'}">{{'BOM_DETAIL' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Move')" [ngClass]="{ 'active': active == 'Move'}">{{'BOM_MOVE' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Feeding')" [ngClass]="{ 'active': active == 'Feeding'}">{{'BOM_FEEDING' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Weighing')" [ngClass]="{ 'active': active == 'Weighing'}">{{'BOM_WEIGHING' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Immunization')" [ngClass]="{ 'active': active == 'Immunization'}">{{'BOM_IMMUNIZATION' | translate}}</a>
+      <!-- <a class="nav-link my-nav" (click)="onActive('Treatment')" [ngClass]="{ 'active': active == 'Treatment'}">{{'BOM_TREATMENT' | translate}}</a> -->
+      <!-- <a class="nav-link my-nav" (click)="onActive('Disinfection')" [ngClass]="{ 'active': active == 'Disinfection'}">{{'BOM_DISINFECTION' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('VectorControl')" [ngClass]="{ 'active': active == 'VectorControl'}">{{'BOM_VECTOR_CONTROL' | translate}}</a> -->
+    </nav>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Detail'">
+    <app-bom-detail></app-bom-detail>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Move'">
+    <app-move></app-move>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Feeding'">
+    <app-feeding></app-feeding>
+  </div>
+
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Weighing'">
+    <app-weighing></app-weighing>
+  </div>
+
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Immunization'">
+    <app-immunization></app-immunization>
+  </div>
+  <!-- <div class="card-body table-responsive p-0" *ngIf="active == 'Treatment'">
+    <app-treatment></app-treatment>
+  </div> -->
+  <!-- <div class="card-body table-responsive p-0" *ngIf="active == 'Disinfection'">
+    <app-disinfection></app-disinfection>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'VectorControl'">
+    <app-vector-control></app-vector-control>
+  </div> -->
+</div>
+

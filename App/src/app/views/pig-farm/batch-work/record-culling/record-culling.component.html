@@ -1,0 +1,344 @@
+<ng-template #penTemplate let-data>
+  <app-pen-dropdownlist
+    [id]="'pen-dropdownlist1'"
+    [enabledLoad]="true"
+    (selectedValueChange)="onSelectedPenValue($event)"
+
+    [placeholder]="'Choose a pen' | translate"
+  ></app-pen-dropdownlist>
+</ng-template>
+
+<ng-template #pigTemplate let-data>
+  <app-pig-dropdownlist
+    [id]="'pig-dropdownlist1'"
+    (selectedValueChange)="onSelectedPigValue($event)"
+    [placeholder]="'Choose a pig' | translate"
+  ></app-pig-dropdownlist>
+</ng-template>
+<ng-template #estDateTemplate let-data>
+  <ejs-datepicker
+    id="estDate-option"
+    format="yyyy/MM/dd"
+    locale="en-US"
+    [value]="estDate"
+    (valueChange)="onSelectedEstDateValue($event)"
+    [placeholder]="'Choose date' | translate"
+  ></ejs-datepicker>
+</ng-template>
+
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+        <span (click)="toggleRecordDate(data.id)" class="clock-grid">
+          <i class="fa fa-clock"></i>
+        </span>
+      </ng-template>
+    </e-column>
+
+    <e-column
+  field="recordDate"
+  format="yyyy/MM/dd"
+  type="Date"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_DATETIME' | translate }}"
+>
+<ng-template #template let-data >
+  {{((data.recordDate | date: 'yyyy/MM/dd') || '') + ' ' + (data.recordTime || '')}}
+</ng-template>
+</e-column>
+
+<e-column
+  field="estDate"
+  format="yyyy/MM/dd"
+  type="Date"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'EST_DATETIME' | translate }}"
+>
+<ng-template #template let-data >
+  {{((data.estDate | date: 'yyyy/MM/dd') || '') + ' ' + (data.estTime || '')}}
+</ng-template>
+</e-column>
+
+<e-column
+  field="typeName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'Culling_Type' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="cullingMethodName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_CULLING_METHOD' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="cullingReasonName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_CULLING_REASON' | translate }}"
+>
+</e-column>
+
+
+<e-column
+  field="cullingWeight"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_CULLING_WEIGHT' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="id"
+[allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [isPrimaryKey]="true"
+  [visible]="false"
+  headerText="ID"
+>
+</e-column>
+</e-columns>
+</ejs-grid>
+
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+  <h4 [ngbTooltip]="title" class="modal-title">
+    <i class="fas fa-plus"></i> {{ title | translate }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="Culling_Type" for="type">{{ "Culling_Type" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+          id="record-culling-type-remote"
+          [codeType]="'Culling_Type'"
+          [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_CULLING_METHOD" for="cullingMethod">{{ "RECORD_CULLING_METHOD" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="cullingMethod-remote"
+          [codeType]="'Culling_Method'"
+          [(selectedValue)]="model.cullingMethod"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_CULLING_REASON" for="reathReason">{{ "RECORD_CULLING_REASON" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="culling-reason-remote"
+          [codeType]="'Culling_Reason'"
+          [(selectedValue)]="model.cullingReason"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="PEN" for="pigGuid">{{ "PEN" | translate }}</label>
+          <app-pen-dropdownlist
+            id="befor-pen-remote"
+            [(selectedValue)]="model.penGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="PIG" for="pigGuid">{{
+            "PIG" | translate
+          }}</label>
+          <app-pig-dropdownlist
+          id="pig-remote"
+          (ngModelChange)="valueChange($event)"
+          [selectedValue]="model.pigGuid"
+          >
+          </app-pig-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="PEN" for="cullingTankGuid">{{ "CULLING_PEN" | translate }}</label>
+          <app-culling-tank-dropdownlist
+            id="cullingTankGuid"
+            [(selectedValue)]="model.cullingPenGuid"
+          >
+          </app-culling-tank-dropdownlist>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+    <div class="row bg-est">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estDate">{{ "EST_DATE" | translate }}</label>
+          <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.estDate"></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estTime">{{ "EST_TIME" | translate }}</label>
+          <app-maskedtimetextbox [(selectedValue)]="model.estTime"></app-maskedtimetextbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="row bg-record">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="realStartDate">{{ "RECORD_MOVE_RECORD_DATE" | translate }}</label>
+          <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.recordDate"></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_MOVE_TIME" for="recordTime">{{ "RECORD_MOVE_TIME" | translate }}</label>
+          <app-maskedtimetextbox [(selectedValue)]="model.recordTime"></app-maskedtimetextbox>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="text-white" for="estTime">&nbsp;</label>
+          <input
+          (click)="execute()"
+          type="button"
+          style="width:100px; cursor: pointer;"
+          value="{{ 'Execute' | translate }}"
+          class="form-control form-control-sm btn-secondary"
+        />
+        </div>
+        <!-- <button class="btn btn-sm bg-secondary mb-0" >{{ 'Execute' | translate }}</button> -->
+      </div>
+    </div>
+
+    <div class="row">
+
+    <div class="col-md-12">
+      <div class="form-group">
+        <label ngbTooltip="RECORD_CULLING_COMMENT" for="comment">{{ "RECORD_CULLING_COMMENT" | translate }}</label>
+        <textarea
+          [(ngModel)]="model.comment"
+          name="comment"
+          type="text"
+          class="form-control"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+  <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  <button
+    [disabled]="!model.type"
+    (click)="save()"
+    ngbTooltip="SAVE"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+  </div>
+  </ng-template>

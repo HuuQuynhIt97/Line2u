@@ -1,0 +1,6 @@
+export * from './pig-house-cleaning.component'
+export * from './pig-house-cleaning-detail/pig-house-cleaning-detail.component'
+export * from './pig-house-cleaning-plan/pig-house-cleaning-plan.component'
+export * from './pig-house-cleaning-record/pig-house-cleaning-record.component'
+export * from './pig-house-cleaning-schedule/pig-house-cleaning-schedule.component'
+export * from './pig-house-disinfection/pig-house-disinfection.component'

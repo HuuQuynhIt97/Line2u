@@ -1,0 +1,72 @@
+
+<div class="row">
+    <div class="col-md-8" style="color: transparent;">
+      <div class="row">
+        <div class="col-md-6" style="color: transparent;">
+          <div class="form-group" style="color: transparent;">
+            
+          </div>
+        </div>
+  
+  
+        <div class="col-md-6" style="color: transparent;">
+          <div class="form-group">
+            <label ngbTooltip="ACCOUNT_ACCOUNT_GROUP" for="accountGroup">{{
+              "ACCOUNT_ACCOUNT_GROUP" | translate
+            }}</label>
+           
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        
+      </div>
+      <div class="row">
+       
+      </div>
+  
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-6">
+      <label ngbTooltip="ACCOUNT_COMMENT">{{ "MESSAGE_CONTENT" | translate }} </label>
+      <div class="form-group">
+        <textarea
+          [(ngModel)]="model.content"
+          class="form-control"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label ngbTooltip="CHOOSE SITE" for="permission">{{ "CHOOSE_USER" | translate }}</label>
+        <ejs-multiselect
+          id="userDropdown"
+          #userDropdown
+          [showDropDownIcon]="true"
+          [(ngModel)]="userLine"
+          (ngModelChange)="onChangePermission()"
+          [dataSource]="userLineData"
+          placeholder="{{ 'CHOOSE_USER' | translate }}"
+          [fields]="userLineFields"
+          [mode]="'Box'"
+        >
+        </ejs-multiselect>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button
+      type="submit"
+      ngbTooltip="SAVE"
+      (click)="sendMessage()"
+      class="btn btn-primary"
+    >
+      {{ "SEND" | translate }}
+    </button>
+  </div>

@@ -1,0 +1,140 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group row">
+          <label for="" class="col-sm-4 col-form-label">{{ 'Breading_Group' | translate }}</label>
+          <div class="col-sm-8">
+            <app-code-type-dropdownlist
+            id="Breading_Group"
+            codeType="Breading_Group"
+            ></app-code-type-dropdownlist>
+          </div>
+        </div>
+       
+      </div>
+        <div class="col-4">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label">{{ 'Breading_NO' | translate }}</label>
+            <div class="col-sm-8">
+              <app-makeorder-dropdownlist-toolbar
+              ></app-makeorder-dropdownlist-toolbar>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="false"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        height="20vh"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (dataBound)="dataBound()"
+      >
+        <e-columns>
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text"
+                >{{ "Ods Export" | translate }}
+              </span>
+            </button>
+          </ng-template>
+          
+
+          <e-column
+            field="id"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' | translate  }}"
+          >
+          </e-column>
+
+          <e-column
+            field="breedingGroop"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'Breeding_Groop' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="breedingNo"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'Breeding_No' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="breedingName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'Breeding_Name' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+          field="breedingStatus"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'Breeding_Status' | translate }}"
+        >
+        </e-column>
+
+          <e-column
+            field="penName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'Pen_Name' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="initialQty"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'Initial_Qty' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="currentQty"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'Current_Qty' | translate }}"
+          >
+          </e-column>
+          
+        </e-columns>
+      </ejs-grid>
+      </div>
+    </div>
+  
+  </div>
+</div>
+
+
+<app-breeding-bottom></app-breeding-bottom>

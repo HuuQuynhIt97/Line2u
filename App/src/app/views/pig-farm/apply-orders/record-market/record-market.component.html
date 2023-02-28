@@ -1,0 +1,266 @@
+<ng-template #makeOrderGuidSearchTemplate let-data>
+  <app-makeorder-dropdownlist-toolbar
+  [placeholder]="translate.instant('Choose a make order')"
+  [(selectedValue)]="makeOrderGuidSearch"
+  (change)="onChangemakeOrderGuidSearch($event)"
+  ></app-makeorder-dropdownlist-toolbar>
+</ng-template>
+<ng-template #statusTemplate let-data>
+  <div class="row no-gutters">
+   <div class="col-md d-flex align-items-center ml-2" *ngFor="let item of orderStatus">
+     <ejs-checkbox [label]="item.name | translate" (change)="onCheckedChangeOrderStatus($event, item)"></ejs-checkbox>
+
+   </div>
+  </div>
+ </ng-template>
+<ng-template #estTemplate let-data>
+  <ejs-datepicker
+    locale="en-US"
+    format="yyyy/MM/dd"
+
+    [(value)]="estDate"
+    (change)="onChangeEst($event)"
+    id="estDate-option"
+  ></ejs-datepicker>
+</ng-template>
+<ng-template #odsTemplate let-data>
+  <button
+    class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+    type="button"
+    id="grid_odsexport"
+    tabindex="-1"
+    (click)="odsExport()"
+    style="width: auto"
+  >
+    <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+    ><span class="e-tbar-btn-text"
+      >{{ "Ods Export" | translate }}
+    </span>
+  </button>
+</ng-template>
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [query]="query"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+  (rowDataBound)='rowDataBoundApplyOrder($event)'
+  (excelExportComplete)="excelExpComplete($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+        <e-column
+      field="typeName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Record_Market_Type' | translate }}"
+    >
+    </e-column>
+
+  <e-column
+  field="saleName"
+textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Sale_Name' | translate }}"
+>
+</e-column>
+  <e-column
+  field="makeOrderName"
+textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'MakeOrderName' | translate }}"
+>
+</e-column>
+
+    <e-column
+      field="id"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modal">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="type">{{ "Record_Market_Type" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+            id="record-general-type-remote"
+            [codeType]="'Record_Market_Type'"
+            [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+                    <label for="makeOrderGuid">{{ "Make_Order" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-makeorder-dropdownlist
+            [(selectedValue)]="model.makeOrderGuid"
+            (change)='onChangeMakeOrder($event)'
+          >
+          </app-makeorder-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+                    <label for="recordSaleGuid">{{ "Record_Sale" | translate }}</label>
+          <app-recordsale-dropdownlist
+           id="recordSaleGuid"
+            [(selectedValue)]="model.saleGuid"
+            (change)='onChangeRecordSale($event)'
+          >
+          </app-recordsale-dropdownlist>
+        </div>
+      </div>
+
+    </div>
+
+        <app-record2-market
+        [(dataSource)]="record2MarketDatasouce" [recordGuid]="model.guid"
+         >
+        </app-record2-market>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_MARKET_COMMENT" for="comment">{{
+            "RECORD_MARKET_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">GUID</span> :
+          {{ model?.guid }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+  
+    <button
+      type="button"
+      class="btn btn-success"
+      [disabled]="!model.type || !model.makeOrderGuid"
+      (click)="save()"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+
+  </div>
+</ng-template>

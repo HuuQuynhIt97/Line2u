@@ -1,0 +1,65 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item "><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item "><a routerLink="/mobile/account">{{'My Account' | translate}}</a></li>
+    <li class="breadcrumb-item active">{{'Bank Account' | translate}}</li>
+  </ol>
+</nav>
+<div class="row p-2">
+  <div class="col-12">
+    <div class="form-group">
+      <label for="User2Bank_Bank">{{ "User2Bank_Bank" | translate }}</label>
+      <app-bank-dropdownlist
+        id="bank"
+        [(selectedValue)]="model.bankGuid"
+      >
+      </app-bank-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <label>{{ "User2Bank_Bank_Account" | translate }} </label>
+    <span class="max-length">
+      ( {{ "Text length" | translate }} <= 40 )</span
+    >
+    <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+    <div class="form-group">
+      <input
+        maxlength="40"
+        type="text"
+        [(ngModel)]="model.bankAccount"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  
+</div>
+
+<div class="row p-2">
+  <div class="col-12 text-center">
+    <div class="kv-avatar">
+      <div class="file-loading">
+        <input
+          id="avatar-1"
+          name="avatar-1"
+          (change)="onFileChangeLogo($event)"
+          type="file"
+          required
+        />
+      </div>
+    </div>
+    <div class="kv-avatar-hint">
+      <small>{{ "Select file < 5000 KB" | translate }}</small>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center">
+  <p><span>{{ '上傳銀行存摺' | translate}}</span></p>
+</div>
+
+<div class="d-flex justify-content-center align-items-center mb-5">
+  <button [disabled]="!model.bankAccount" (click)="create()" type="button" class="btn btn-primary">{{ 'Submit' | translate }}</button>
+  <button (click)="cancel()" type="button" class="btn btn-secondary ml-2">{{ 'Cancel' | translate }}</button>
+</div>

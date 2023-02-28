@@ -1,0 +1,32 @@
+export interface Feed {
+  id: number;
+  feedType: string;
+  feedNo: string;
+  feedName: string;
+  feedElement: string;
+  feedEffect: string;
+  feedSideEffect: string;
+  feedBreed: string;
+  feedRange: string;
+  feedCare: string;
+  comment: string;
+  cancelFlag: string;
+  createDate: string | null;
+  createBy: number | null;
+  updateDate: string | null;
+  updateBy: number | null;
+  deleteDate: string | null;
+  deleteBy: number | null;
+  status: number | null;
+  guid: string;
+  farmGuid: string;
+  feedTypeName: string;
+  vendorGuid: string;
+  location: string;
+  spec: string;
+  amount: number | null;
+  price: number | null;
+  cost: number | null;
+  expireDate: any| null;
+  qty: number | null;
+}

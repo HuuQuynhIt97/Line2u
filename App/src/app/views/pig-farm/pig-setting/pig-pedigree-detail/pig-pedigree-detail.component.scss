@@ -1,0 +1,18 @@
+
+input, textarea {
+  box-shadow: 0.5px 0.5px 1px;
+}
+label {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.e-input-group {
+  box-shadow: 0.5px 0.5px 1px !important;
+  padding:3px !important;
+
+}
+.detail {
+  overflow-x: hidden !important;
+  height: calc(100vh - 180px) !important;
+  overflow-y: auto !important;
+}

@@ -1,0 +1,329 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="false"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        height="80vh"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (excelExportComplete)='excelExpComplete($event)'
+
+      >
+        <e-columns>
+          <e-column
+            field="option"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+            </button>
+          </ng-template>
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="transferYear"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'TransferYear' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="transferMonth"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'TransferMonth' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="unitPrice"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'UnitPrice' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="reservePrice"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'ReservePrice' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="twaveragePrice"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'TwaveragePrice' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="tpaveragePrice"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'TpaveragePrice' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="keepBreedingStartWeight"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'KeepBreedingStartWeight' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="keepBreedingEndWeight"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'KeepBreedingEndWeight' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="breedingStartWeight"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'BreedingStartWeight' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="breedingEndWeight"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'BreedingEndWeight' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'RecordAccidentFee_COMMENT' | translate }}"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+      
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="makeOrderGuid">{{ "Make_Order" | translate }}</label>
+          <app-makeorder-dropdownlist
+            [(selectedValue)]="model.makeOrderGuid"
+          >
+          </app-makeorder-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="Sale_Guid">{{ "Sale_Guid" | translate }}</label>
+          <app-record-sale-dropdownlist
+            [(selectedValue)]="model.saleGuid"
+          >
+          </app-record-sale-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="accidentDisease">{{ "Accident_Disease" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+
+          <app-disease-dropdownlist
+            [(selectedValue)]="model.accidentDisease"
+          >
+          </app-disease-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="type">{{ "Record_Accident_Fee_Type" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 10 )</span
+          >
+          <input
+            [(ngModel)]="model.type"
+            maxlength="10"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="accidentQty">{{ "Accident_Qty" | translate }}</label>
+          <input
+            [(ngModel)]="model.accidentQty"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+            
+
+      <div class="col-md-6">
+
+        <div class="row no-gutters">
+          <div class="col-md-7">
+            <div class="form-group">
+              <label for="accidentFee">{{ "Accident_Fee" | translate }}</label>
+              <input
+              [disabled]="true"
+                [(ngModel)]="model.accidentFee"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-5 d-flex align-items-end" *ngIf="model.id > 0">
+           <button
+           (click)="accidentCalculate()"
+           class="btn btn-primary mb-3 ml-2"
+         >
+           {{ "Accident Calculate" | translate }}
+         </button>
+          </div>
+        </div>
+       </div>
+
+            
+     
+      <div class="col-md-12">
+        <label>{{ "RecordAccidentFee_COMMENT" | translate }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.accidentDisease"
+
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

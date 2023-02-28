@@ -1,0 +1,55 @@
+<div class="modal-header my-modal">
+  <h4 class="modal-title">
+    <i class="fas fa-plus"></i> {{ title | translate }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="makeOrderGuid">{{
+          "BIO_SECURITY_2PIG" | translate
+        }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <ejs-dropdownlist
+            id="remoteData"
+            [(ngModel)]="model.pigGuid"
+            (filtering)="onFiltering($event)"
+            [allowFiltering]="true"
+            #remote
+            [dataSource]="pigData"
+            [fields]="remoteFields"
+            [query]="query"
+            (open)="onOpen($event)"
+          ></ejs-dropdownlist>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+    {{ "Note: (*) is a required field" | translate }}
+  </span>
+  <button
+    type="button"
+    class="btn btn-light"
+    (click)="activeModal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  <button
+    [disabled]="!model.pigGuid"
+    (click)="save()"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+</div>

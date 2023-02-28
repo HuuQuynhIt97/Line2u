@@ -1,0 +1,491 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="false"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        height="80vh"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (excelExportComplete)='excelExpComplete($event)'
+
+      >
+        <e-columns>
+          <e-column
+            field="option"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+            </button>
+          </ng-template>
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="vendorNo"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'VENDOR_NO' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="vendorName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'VENDOR_NAME' | translate }}"
+          >
+          </e-column>
+          <!-- <e-column
+            field="vendorSexName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_SEX' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="vendorBirthday"
+            textAlign="Left"
+          headerTextAlign="Center"
+            type="Date"
+            format="yyyy/MM/dd"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_BIRTHDAY' | translate }}"
+          >
+          </e-column> -->
+
+          <e-column
+            field="vendorNickname"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_NICKNAME' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="vendorTel"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_TEL' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="vendorMobile"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_MOBILE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="vendorAddress"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_ADDRESS' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="vendorIdcard"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_IDCARD' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="vendorEmail"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_EMAIL' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="contactName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'CONTACT_NAME' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="contactTel"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'CONTACT_TEL' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="contactMobile"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'CONTACT_MOBILE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="contactEmail"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'CONTACT_EMAIL' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'VENDOR_COMMENT' | translate }}"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorNo">{{ "VENDOR_NO" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+
+          <input
+            [(ngModel)]="model.vendorNo"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorName">{{ "VENDOR_NAME" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+
+          <input
+            [(ngModel)]="model.vendorName"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <!-- <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorSex">{{ "VENDOR_SEX" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 1 )</span
+          >
+          <app-code-type-dropdownlist
+          id="sex-remote"
+          [codeType]="'VENDOR_SEX'"
+          (ngModelChange)="sexChange($event)"
+          [selectedValue]="model.vendorSex +''"
+          >
+          </app-code-type-dropdownlist>
+
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorBirthday">{{
+            "VENDOR_BIRTHDAY" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.vendorBirthday"
+          ></ejs-datepicker>
+        </div>
+      </div> -->
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorNickname">{{
+            "VENDOR_NICKNAME" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+
+          <input
+            [(ngModel)]="model.vendorNickname"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorTel">{{ "VENDOR_TEL" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.vendorTel"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorMobile">{{ "VENDOR_MOBILE" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.vendorMobile"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorAddress">{{ "VENDOR_ADDRESS" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.vendorAddress"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorIdcard">{{ "VENDOR_IDCARD" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.vendorIdcard"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="vendorEmail">{{ "VENDOR_EMAIL" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.vendorEmail"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="contactName">{{ "CONTACT_NAME" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.contactName"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="contactTel">{{ "CONTACT_TEL" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.contactTel"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="contactMobile">{{ "CONTACT_MOBILE" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.contactMobile"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="contactEmail">{{ "CONTACT_EMAIL" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.contactEmail"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-12">
+        <label>{{ "VENDOR_COMMENT" | translate }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.vendorName"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

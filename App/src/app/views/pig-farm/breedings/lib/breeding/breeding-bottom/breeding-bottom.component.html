@@ -1,0 +1,67 @@
+
+
+<div class="card mt-1">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 mb-2 d-flex align-items-end align-self-center">
+        <div>
+          {{
+            "Breeding_NO" | translate
+          }} :
+        </div>
+        <button type="button" class="btn ml-2 btn-main" (click)="breedingTakeCareModal.open()">
+          <i class="fa fa-plus"> </i>
+          {{
+          addbtn | translate
+        }}</button>
+      </div>
+
+       <div class="col-12">
+       <!-- <ul class="nav nav-pills nav-fill">
+          <li class="nav-item" (click)="active = 0">
+            <a class="nav-link active" [class.active]="active == 0">{{
+              "Mating_Room" | translate
+            }}</a>
+          </li>
+          <li class="nav-item" (click)="active = 1">
+            <a class="nav-link" [class.active]="active == 1">{{
+              "Pregnancy_Room" | translate
+            }}</a>
+          </li>
+          <li class="nav-item" (click)="active = 2">
+            <a class="nav-link" [class.active]="active == 2">{{
+              "Farrowing_Room" | translate
+            }}</a>
+          </li>
+          <li class="nav-item" (click)="active = 3">
+            <a class="nav-link" [class.active]="active == 3">{{
+              "General_Record" | translate
+            }}</a>
+          </li>
+        </ul> -->
+    
+        <ng-container *ngIf="active == 0">
+          <app-mating-room></app-mating-room>
+        </ng-container>
+    
+        <ng-container *ngIf="active == 1">
+          <app-pregnancy-room></app-pregnancy-room>
+        </ng-container>
+    
+        <ng-container *ngIf="active == 2">
+          <app-farrowing-room></app-farrowing-room>
+        </ng-container>
+    
+        <ng-container *ngIf="active == 3">
+          <app-breeding-general-record></app-breeding-general-record>
+        </ng-container>
+      </div>
+    </div>
+    
+  
+  </div>
+</div>
+
+<app-breeding-modal></app-breeding-modal>
+<app-breeding-take-care-modal></app-breeding-take-care-modal>
+<app-breeding-detail-modal></app-breeding-detail-modal>

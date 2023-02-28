@@ -1,0 +1,327 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [sortSettings]="sortOptions"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (excelExportComplete)='excelExpComplete($event)'
+
+      >
+        <e-columns>
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+            </button>
+          </ng-template>
+          <e-column
+            field="#"
+            [allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            isPrimaryKey="true"
+            headerText="#"
+          >
+            <ng-template #template let-data>
+              {{ NO(data.index) }}
+            </ng-template>
+            <ng-template #editTemplate let-data> # </ng-template>
+          </e-column>
+
+          <e-column
+            field="option"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="diseaseNo"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'DISEASE_NO' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="diseaseName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'DISEASE_NAME' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="diseaseTypeName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'DISEASE_TYPE' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="diseaseElement"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'DISEASE_ELEMENT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="diseaseEffect"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'DISEASE_EFFECT' | translate }}"
+          >
+          </e-column>
+
+
+          <e-column
+            field="diseaseCare"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'DISEASE_CARE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'DISEASE_COMMENT' | translate }}"
+          >
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="DISEASE_NO" for="no">{{
+            "DISEASE_NO" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.diseaseNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="DISEASE_NAME" for="name">{{
+            "DISEASE_NAME" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.diseaseName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="DISEASE_TYPE" for="diseaseType">{{
+            "DISEASE_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="type-remote"
+          [codeType]="'Disease_Type'"
+          [(selectedValue)]="model.diseaseType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="DISEASE_ELEMENT" for="diseaseElement">{{
+            "DISEASE_ELEMENT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.diseaseElement"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="DISEASE_EFFECT" for="idCard">{{
+            "DISEASE_EFFECT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.diseaseEffect"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="DISEASE_CARE" for="diseaseCare">{{
+            "DISEASE_CARE" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.diseaseCare"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <label ngbTooltip="DISEASE_COMMENT">{{
+          "DISEASE_COMMENT" | translate
+        }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.diseaseName || !model.diseaseNo"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

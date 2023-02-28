@@ -1,0 +1,241 @@
+
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  [selectedRowIndex]="0"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+    <e-column
+    field="bomNo"
+    textAlign="Left"
+        headerTextAlign="Center"
+    headerText="{{ 'BomGiltNo' | translate }}"
+  >
+  </e-column>
+    <e-column
+      field="bomName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BomGiltName' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="no">{{ "BomGilt_NO" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.bomNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="bomName">{{ "BomGilt_NAME" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.bomName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="bomVersion">{{ "BomGilt_VERSION" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.bomVersion"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="bomBreed">{{ "BomGiltBreed" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="BomGilt-breed-remote"
+          [codeType]="'BomGilt_Breed'"
+          [(selectedValue)]="model.bomBreed"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="Quarantine_Days">{{
+            "Quarantine_Days" | translate
+          }}</label>
+          <input
+            [(ngModel)]="model.quarantineDays"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+    
+      <div class="col-6">
+        <div class="form-group">
+          <label for="BodyCondition_Level">{{ "BodyCondition_Level" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="BodyCondition_Level-remote"
+            [codeType]="'SowBodyCondition_Level'"
+            [(selectedValue)]="model.bodyConditionLevel"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+    
+      <div class="col-6">
+        <div class="form-group">
+          <label for="Sow_BackFat">{{ "Sow_BackFat" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="Sow_BackFat-remote"
+            [codeType]="'Sow_BackFat'"
+            [(selectedValue)]="model.sowBackFat"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryMonth">{{
+            "ApplyEveryMonth" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryMonth' [(value)]="model.applyEveryMonth" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12]'></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryDay">{{
+            "ApplyEveryDay" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryDay' [(value)]="model.applyEveryDay" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]'></ejs-dropdownlist>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{ "BomGilt_COMMENT" | translate }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.bomName"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

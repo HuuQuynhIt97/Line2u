@@ -1,0 +1,200 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="false"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+[selectedRowIndex]="0"
+enableInfiniteScrolling="true"
+(rowSelected)="rowSelected($event)"
+(recordClick)="recordClick($event)"
+[selectionSettings]="selectionOptions"
+(toolbarClick)="toolbarClick($event)"
+[height]="'90vh'"
+>
+<e-columns>
+  <e-column
+    field="option"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    textAlign="Left"
+headerTextAlign="Center"
+    width="120"
+    headerTextAlign="Center"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+      <span (click)="openModal(optionModal, data)" class="edit-grid">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="treatmentDose"
+    textAlign="Left"
+headerTextAlign="Center"
+    headerText="{{ 'TREATMENT_DETAIL_DOSE' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="treatmentTimes"
+    textAlign="Left"
+headerTextAlign="Center"
+    headerText="{{ 'TREATMENT_DETAIL_TIMES' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="medicineName"
+    textAlign="Left"
+headerTextAlign="Center"
+    headerText="{{ 'Medicine' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="treatmentPercentage"
+    textAlign="Left"
+headerTextAlign="Center"
+    headerText="{{ 'TreatmentPercentage' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="id"
+[allowSearching]="false"
+    textAlign="Left"
+headerTextAlign="Center"
+    [isPrimaryKey]="true"
+    [visible]="false"
+    headerText="ID"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="userType">{{ "TreatmentDose" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <input
+            [(ngModel)]="model.treatmentDose"
+            maxlength="100"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="userType">{{ "TeatmentTimes" | translate }}</label>
+          <input
+            [(ngModel)]="model.treatmentTimes"
+            maxlength="100"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="userType">{{ "Medicine" | translate }}</label>
+         <app-medicine-dropdownlist
+         [(selectedValue)]="model.medicineGuid"
+         ></app-medicine-dropdownlist>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="treatmentPercentage">{{ "TreatmentPercentage" | translate }}</label>
+          <input
+            [(ngModel)]="model.treatmentPercentage"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+     
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{ "TREATMENT_DETAIL_COMMENT" | translate }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.treatmentDose"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

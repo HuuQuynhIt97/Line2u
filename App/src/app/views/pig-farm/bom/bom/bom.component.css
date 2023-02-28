@@ -1,0 +1,31 @@
+
+.left {
+  padding-right: 0 !important;
+}
+.right {
+  padding-left: 8px !important;
+
+}
+/* mobile width < 740px */
+@media only screen and (max-width: 46.1875rem) {
+  .left {
+    padding-right: 15px !important;
+    padding-bottom: 15px !important;
+  }
+  .right {
+    padding-left: 15px !important;
+
+  }
+}
+/* tablet width >= 740px and width < 1024px */
+@media only screen and (min-width: 46.1875rem) and (max-width: 63.9375rem) {
+  .left {
+    padding-right: 15px !important;
+    padding-bottom: 15px !important;
+
+  }
+  .right {
+    padding-left: 15px !important;
+
+  }
+}

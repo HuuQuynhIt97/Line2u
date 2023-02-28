@@ -1,0 +1,22 @@
+<div class="row p-3"  *ngFor="let item of news; let i = index">
+  <div class="col-lg-5">
+      <!-- Product image -->
+      <a  [href]="item.link" target="_blank"  class="text-center d-block mb-4">
+          <img [src]="baseUrl + item.photoPath" class="img-fluid img-thumbnail"  [alt]="item.subject">
+      </a>
+  </div> <!-- end col -->
+  <div class="col-lg-7">
+      <form class="ps-lg-4">
+          <!-- Product title -->
+          <h3 class="mt-0">{{item.subject}} <a href="javascript: void(0);" class="text-muted"><i class="mdi mdi-square-edit-outline ms-2"></i></a> </h3>
+          <!-- Product description -->
+          <div class="mt-4">
+            <div [innerHTML]="safeHtml(item.body)"></div>
+              <div class="d-flex align-items-center justify-content-center my-2">
+                  <a class="btn btn-primary text-white" [routerLink]="item.link" >{{'成為投資人' | translate}}</a>
+                </div>
+          </div>
+         
+      </form>
+  </div> <!-- end col -->
+</div>

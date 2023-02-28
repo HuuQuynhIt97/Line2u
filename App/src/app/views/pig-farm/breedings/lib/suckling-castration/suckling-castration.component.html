@@ -1,0 +1,355 @@
+<ng-template #breedingGuidSearchTemplate let-data>
+  <app-breeding-dropdownlist-toolbar
+  [placeholder]="translate.instant('Choose a breeding')"
+  [(selectedValue)]="breedingGuidSearch"
+  (change)="onChangebreedingGuidSearch($event)"
+  ></app-breeding-dropdownlist-toolbar>
+</ng-template>
+<ng-template #statusTemplate let-data>
+  <div class="row no-gutters">
+   <div class="col-md d-flex align-items-center ml-2" *ngFor="let item of orderStatus">
+     <ejs-checkbox *ngIf="item.guid === '3'" [label]="item.name | translate" (change)="onCheckedChangeOrderStatus($event, item)"></ejs-checkbox>
+   </div>
+  </div>
+ </ng-template>
+<ng-template #estTemplate let-data>
+  <ejs-datepicker
+    locale="en-US"
+    format="yyyy/MM/dd"
+
+    [(value)]="estDate"
+    (change)="onChangeEst($event)"
+    id="estDate-option"
+  ></ejs-datepicker>
+</ng-template>
+<ng-template #odsTemplate let-data>
+  <button
+    class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+    type="button"
+    id="grid_odsexport"
+    tabindex="-1"
+    (click)="odsExport()"
+    style="width: auto"
+  >
+    <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+    ><span class="e-tbar-btn-text"
+      >{{ "Ods Export" | translate }}
+    </span>
+  </button>
+</ng-template>
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [query]="query"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+  (rowDataBound)='rowDataBoundApplyOrder($event)'
+  (excelExportComplete)="excelExpComplete($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+      
+<e-column
+field="executeGuidName"
+[allowSearching]="false"
+textAlign="Left"
+headerTextAlign="Center"
+headerText="{{ 'Execute_Name' | translate }}"
+>
+</e-column>
+
+    <e-column
+      field="breedingGuidName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="executeDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EXECUTE_DATE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="executeReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EXECUTE_REASON' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="id"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modal">
+    <div class="row">
+     
+      <div class="col-md-4">
+        <div class="form-group">
+                    <label for="Breeding_GUID">{{ "Breeding_GUID" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-breeding-dropdownlist
+            [(selectedValue)]="model.breedingGuid"
+            (change)='onChangebreedingGuid($event)'
+          >
+          </app-breeding-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="sowGuid">{{ "Sow_GUID" | translate }}</label><span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <app-pig-dropdownlist
+        [(selectedValue)]="model.sowGuid"
+            (change)='onChangeSowGuid($event)'
+            ></app-pig-dropdownlist>
+      </div>
+
+    </div>
+
+
+    <!-- Execute -->
+    <div
+      class="row"
+    >
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="executeDate">{{ "EXECUTE_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.executeDate"
+            [disabled]="true"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="executeReason">{{ "EXECUTE_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.executeReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="executeGuid">{{ "EXECUTE_GUID" | translate }}</label>
+              <app-account-dropdownlist
+                id="executeGuid"
+                [(selectedValue)]="model.executeGuid"
+                [disabled]="true"
+              >
+              </app-account-dropdownlist>
+
+
+            </div>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+      (click)="execute()"
+      class="btn btn-success mb-3 ml-2"
+    >
+      {{ "Execute" | translate }}
+    </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- End execute -->
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <label for="penGuid">{{ "PEN" | translate }}</label><span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <app-pen-dropdownlist
+        [(selectedValue)]="penGuid"
+        [enabledLoad]="true"
+        (change)="onChangePen($event)"
+        ></app-pen-dropdownlist>
+      </div>
+   
+      <div class="col-md-4">
+        <label for="pigGuid">{{ "Pig" | translate }}</label>
+        <ejs-multiselect
+          #multiselect
+          id="pig-multiselect-checkboxs"
+          (actionComplete)="actionCompletePig($event)"
+          (filtering)="onFilteringPig($event)"
+          [allowFiltering]="true"
+          [dataSource]="dataPig"
+          [fields]="fields"
+          mode="CheckBox"
+          popupHeight="350px"
+          [showDropDownIcon]="true"
+          [value]="selectedPig"
+          (change)="onChangePig($event)"
+          showSelectAll="true"
+        ></ejs-multiselect>
+      </div> -->
+      <div class="col-md-12 mt-2">
+        <pigfarm-breeding2-suckling
+        [(dataSource)]="selectedPigData"
+        [visibleSucklingCastration]="true"
+        >
+        </pigfarm-breeding2-suckling>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="comment">{{
+            "SucklingWeighing_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">GUID</span> :
+          {{ model?.guid }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <div *ngFor="let item of configButtonData">
+      <button
+      type="button"
+      class="btn"
+      *ngIf="model.guid"
+      [class.btn-success]="item.no.includes('Next')"
+      [class.btn-danger]="item.no.includes('Exception')"
+      (click)="goToLink(item)"
+    >
+      {{ item.value | translate }}
+    </button>
+    </div>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+
+  </div>
+</ng-template>

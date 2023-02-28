@@ -1,0 +1,74 @@
+<div class="form-group row mb-2 p-2">
+  <label for="birthday" class="col-2 col-form-label">{{
+    "ROOM" | translate
+  }}</label>
+  <div class="col-8">
+    <app-room-dropdownlist
+      (change)="onChange($event)"
+      [(selectedValue)]="roomGuid"
+      [placeholder]="'Please choose a room' | translate"
+    >
+    </app-room-dropdownlist>
+  </div>
+</div>
+
+
+<div class="form-group row mb-2 p-2">
+  <label for="birthday" class="col-2 col-form-label">&nbsp;</label>
+  <div class="col-8">
+    <ejs-grid
+#grid
+id="grid"
+[dataSource]="penData"
+[enableInfiniteScrolling]="true"
+[allowPaging]="false"
+[pageSettings]="pageSettings"
+[searchSettings]="searchOptions"
+(created)="created($event)"
+[toolbar]="['Search']"
+[height]="300 + 'px'"
+gridLines="Both"
+>
+<e-columns>
+<e-column
+  field="guid"
+  [allowSorting]="false"
+  [allowSearching]="false"
+  [allowGrouping]="false"
+  [allowFiltering]="false"
+  [allowEditing]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  width="80"
+  headerTextAlign="Center"
+  headerText="{{ 'PEN' | translate }}"
+>
+  <ng-template #template let-data>
+    <ejs-checkbox #checkbox (change)="onChangeChecked($event, data)" [label]="data.penNo + ' - ' + data.penName" [checked]="data.checked"></ejs-checkbox>
+  </ng-template>
+</e-column>
+
+</e-columns>
+</ejs-grid>
+    <!-- <ejs-multiselect
+    #multiselect
+      id="permission"
+      [showDropDownIcon]="true"
+      [(value)]="pens"
+      [query]="query"
+      (ngModelChange)="onChangePen()"
+      [dataSource]="penData"
+      placeholder="{{ 'CHOOSE PEN' | translate }}"
+      [fields]="fields"
+      (filtering)="onFiltering($event)"
+      [mode]="'Box'"
+      (open)="onOpen($event)"
+    >
+    </ejs-multiselect> -->
+
+  </div>
+
+  <!-- <div class="col-2">
+    <button class="btn btn-sm btn-primary" (click)="save()">{{ 'Save' | translate }}</button>
+  </div> -->
+</div>

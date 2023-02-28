@@ -1,0 +1,120 @@
+
+
+
+<ng-template #treatmentTemplate let-data>
+  <app-treatment-dropdownlist
+  [(selectedValue)]="treatmentGuid"
+  (change)="onChange($event)"
+  
+  >
+  
+  </app-treatment-dropdownlist>
+  
+   </ng-template>
+  <ejs-grid
+  [dataSource]="treatmentData"
+  [allowPaging]="true"
+  [allowSorting]='true'
+  [sortSettings]='sortOptions' 
+  [pageSettings]="pageSettings"
+  [editSettings]="editSettingsTreatment"
+  (actionBegin)="actionBeginTreatment($event)"
+  (actionComplete)="actionComplete($event)"
+  [toolbar]="toolbarOptions"
+  [height]="60 + 'vh'"
+  gridLines="Both"
+  >
+  <e-columns>
+    <e-column headerText='' width='80' [commands]='commands'></e-column>
+    <e-column
+      field="id"
+      textAlign="Left"
+      [visible]="false"
+      headerTextAlign="Center"
+      headerText="{{ 'Id' | translate }}"
+    >
+    </e-column>
+  
+    <e-column
+    field="type"
+    textAlign="Left"
+    [visible]="false"
+    headerTextAlign="Center"
+    headerText="{{ 'Type' | translate }}"
+  >
+  </e-column>
+  
+    <e-column
+      field="treatmentNo"
+      textAlign="Left"
+      [allowEditing]="false"
+      headerTextAlign="Center"
+      headerText="{{ 'Treatment_No' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="treatmentDate"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Treatment_Date' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker
+      locale="en-US"
+      format="yyyy/MM/dd"
+      [(ngModel)]="treatmentItem.treatmentDate"
+      (ngModelChange)="onChangeDate($event)"
+    ></ejs-datepicker>
+    </ng-template>
+    
+    <ng-template #template let-data>
+    {{data.treatmentDate}}
+    </ng-template>
+    </e-column>
+  
+    <e-column
+    field="medicineGuid"
+    textAlign="Left"
+    headerTextAlign="Center"
+    editType="dropdownedit"
+    [width]="30+'vw'"
+    headerText="{{ 'Treatment_Medicine' | translate }}"
+  >
+  <ng-template #editTemplate let-data>
+    <app-medicine-dropdownlist
+    id="medicine"
+    [(selectedValue)]="treatmentItem.medicineGuid"
+    (selectedValueName)="selectedValueName($event)"
+  >
+  </app-medicine-dropdownlist>
+  </ng-template>
+  
+  <ng-template #template let-data>
+  {{data.medicineName}}
+  </ng-template>
+  
+  </e-column>
+  
+  <e-column
+  field="treatmentDose"
+  textAlign="Left"
+  headerTextAlign="Center"
+  editType="numericEdit"
+  [edit]="numbericEdit"
+  headerText="{{ 'Treatment_Dose' | translate }}"
+  >
+  </e-column>
+  
+  <e-column
+  field="treatmentTimes"
+  [edit]="numbericEdit"
+  textAlign="Left"
+  headerTextAlign="Center"
+  editType="numericEdit"
+  headerText="{{ 'Treatment_Times' | translate }}"
+  >
+  </e-column>
+  
+  </e-columns>
+  
+  </ejs-grid>

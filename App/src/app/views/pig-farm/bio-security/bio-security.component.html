@@ -1,0 +1,76 @@
+
+<div class="row my-row">
+  <div class="col-md-12">
+  <div class="card">
+    <div class="card-body p-0">
+     <div style="height: 43px; line-height: 43px; font-weight: 500">
+       <span style="padding-left: 0.5rem">
+         {{ "BIO_SECUTIRY_MASTER" | translate }}
+       </span>
+     </div>
+     <ng-container *ngIf="pigType == 'Boar'">
+      <app-bios-master-boar [topHeight]="topHeight"></app-bios-master-boar>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'New Boar'">
+      <app-bios-master-new-boar [topHeight]="topHeight"></app-bios-master-new-boar>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Sow'">
+      <app-bios-master-sow [topHeight]="topHeight"></app-bios-master-sow>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Gilt'">
+      <app-bios-master-gilt [topHeight]="topHeight"></app-bios-master-gilt>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Suckling'">
+      <app-bios-master-suckling [topHeight]="topHeight"></app-bios-master-suckling>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Pig'">
+      <app-bios-master-pig [topHeight]="topHeight"></app-bios-master-pig>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Finisher'">
+      <app-bios-master-finisher [topHeight]="topHeight"></app-bios-master-finisher>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Grower'">
+      <app-bios-master-grower [topHeight]="topHeight"></app-bios-master-grower>
+     </ng-container>
+
+     <ng-container *ngIf="pigType == 'Nursery'">
+      <app-bios-master-nursery [topHeight]="topHeight"></app-bios-master-nursery>
+     </ng-container>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-md-12 mt-2" [style.height]='rightHeight'>
+  <div class="card">
+   <div class="card-body p-0">
+     <nav class="nav nav-pills nav-justified p-2" >
+       <a class="nav-link my-nav" (click)="active='Detail'" [ngClass]="{ 'active': active == 'Detail'}">{{'BIO_SECURITY_DETAIL' | translate}}</a>
+       <a class="nav-link my-nav" (click)="active='Record'" [ngClass]="{ 'active': active == 'Record'}">{{'RECORD_IMMUNIZATION' | translate}}</a>
+       <a class="nav-link my-nav" (click)="active='Pen'" [ngClass]="{ 'active': active == 'Pen'}">{{'BIO_SECURITY_PEN' | translate}}</a>
+       <a class="nav-link my-nav" (click)="active='Pig'" [ngClass]="{ 'active': active == 'Pig'}">{{'BIO_SECURITY_PIG' | translate}}</a>
+     </nav>
+      <ng-container *ngIf="active == 'Detail'">
+      <app-bio-security-detail [bottomDetailHeight]='bottomDetailHeight'></app-bio-security-detail>
+     </ng-container>
+     <ng-container *ngIf="active == 'Record'">
+      <app-record-immunization-bios [bottomHeight]='bottomHeight'></app-record-immunization-bios>
+     </ng-container>
+     <ng-container *ngIf="active == 'Pen'">
+      <app-bios-2pen [bottomHeight]='bottomHeight'></app-bios-2pen>
+     </ng-container>
+
+     <ng-container *ngIf="active == 'Pig'">
+      <app-bios-2pig [bottomHeight]='bottomHeight'></app-bios-2pig>
+     </ng-container>
+
+   </div>
+  </div>
+  </div>
+ </div>

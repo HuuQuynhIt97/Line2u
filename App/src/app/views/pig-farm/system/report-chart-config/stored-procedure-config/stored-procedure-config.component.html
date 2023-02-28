@@ -1,0 +1,98 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="false"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+[enableInfiniteScrolling]='true'
+(recordDoubleClick)="onDoubleClick($event)"
+(toolbarClick)="toolbarClick($event)"
+(headerCellInfo)='headerCellInfo($event)'
+(rowDrop)='rowDrop($event)'
+[height]="bottomHeight"
+[allowRowDragAndDrop]='true'
+(excelExportComplete)="excelExpComplete($event)"
+>
+<ng-template #odsTemplate let-data>
+  <button
+    class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+    type="button"
+    id="grid_odsexport"
+    tabindex="-1"
+    (click)="odsExport()"
+    style="width: auto"
+  >
+    <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+    ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+  </button>
+</ng-template>
+<e-columns>
+  <e-column
+    field="option"
+    textAlign="Left"
+          headerTextAlign="Center"
+    width="80"
+    headerTextAlign="Center"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="storedName"
+    textAlign="Left"
+    [validationRules]='nameRules'
+    headerText="{{ 'STORED_PREOCEDURE_NAME' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="color"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'DATASET_COLOR' | translate }}"
+  >
+  <ng-template #template let-data>
+    <input ejs-colorpicker [disabled]="true" [value]='data.color' type="color" />
+  </ng-template>
+  <ng-template #editTemplate let-data>
+    <input ejs-colorpicker [(ngModel)]='color' (ngModelChange)="onChangeColor(data,$event)" type="color" />
+  </ng-template>
+  </e-column>
+
+  <e-column
+  field="legend"
+  [validationRules]='nameRules'
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'DATASET_LEGEND' | translate }}"
+>
+</e-column>
+
+  <e-column
+    field="comment"
+    [validationRules]='commentRules'
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'DATASET_COMMENT' | translate }}"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>
+

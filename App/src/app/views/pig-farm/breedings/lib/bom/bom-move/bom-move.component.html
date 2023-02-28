@@ -1,0 +1,317 @@
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [sortSettings]="sortSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (recordDoubleClick)="onDoubleClick($event)"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="#"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      isPrimaryKey="true"
+      headerText="#"
+    >
+      <ng-template #template let-data>
+        {{ NO(data.index) }}
+      </ng-template>
+      <ng-template #editTemplate let-data> # </ng-template>
+    </e-column>
+    <e-column
+      field="option"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="moveNo"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_MOVE_NO' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="moveName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_MOVE_NAME' | translate }}"
+    >
+    </e-column>
+
+<e-column
+field="moveTypeName"
+textAlign="Left"
+        headerTextAlign="Center"
+headerText="{{ 'MOVED_TYPE' | translate }}"
+>
+</e-column>
+
+<!-- <e-column
+field="pigStatusName"
+textAlign="Left"
+        headerTextAlign="Center"
+headerText="{{ 'PIG_STATUS' | translate }}"
+>
+</e-column> -->
+
+<!-- <e-column
+field="moveInOutName"
+textAlign="Left"
+        headerTextAlign="Center"
+headerText="{{ 'MOVE_IN_OUT' | translate }}"
+>
+</e-column> -->
+
+<e-column
+field="applyDays"
+textAlign="Left"
+        headerTextAlign="Center"
+headerText="{{ 'MOVE_APPLYDAYS' | translate }}"
+>
+</e-column>
+
+<!-- <e-column
+field="beforePenName"
+textAlign="Left"
+        headerTextAlign="Center"
+headerText="{{ 'BEFORE_PEN_GUID' | translate }}"
+>
+</e-column>
+<e-column
+field="afterPenName"
+textAlign="Left"
+        headerTextAlign="Center"
+headerText="{{ 'AFTER_PEN_GUID' | translate }}"
+>
+</e-column> -->
+
+    <e-column
+      field="comment"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_MOVE_COMMENT' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="moveNo">{{ "BOM_MOVE_NO" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.moveNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="moveName">{{
+            "BOM_MOVE_FEEDING_NAME" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.moveName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <!-- <div class="col-md-6">
+        <div class="form-group">
+          <label for="beforePenGuid">{{ "BEFORE_PEN_GUID" | translate }}</label>
+          <app-pen-dropdownlist
+          id="befor-pen-remote"
+          [(selectedValue)]="model.beforePenGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="afterPenGuid">{{ "AFTER_PEN_GUID" | translate }}</label>
+          <app-pen-dropdownlist
+          id="after-pen-remote"
+          [(selectedValue)]="model.afterPenGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-md-6">
+        <div class="form-group">
+          <label for="recordStatus">{{ "PIG_STATUS" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="pig-status-remote"
+          [codeType]="'Pig_Status'"
+          [(selectedValue)]="model.pigStatus"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="moveType">{{ "MOVE_TYPE" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="move-type-remote"
+          [codeType]="'Move_Type'"
+          [(selectedValue)]="model.moveType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="applyDays">{{ "MOVE_APPLYDAYS" | translate }}</label>
+          <input
+          id="applyDays"
+          [(ngModel)]="model.applyDays"
+          min="0"
+          type="number"
+          class="form-control form-control-sm"
+        />
+        </div>
+      </div>
+
+      <!-- <div class="col-md-6">
+        <div class="form-group">
+          <label for="applyDays">{{ "MOVE_INOUT" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="move-applydays-remote"
+          [codeType]="'Move_InOut'"
+          [(selectedValue)]="model.moveInOut"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryMonth">{{
+            "ApplyEveryMonth" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryMonth' [(value)]="model.applyEveryMonth" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12]'></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryDay">{{
+            "ApplyEveryDay" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryDay' [(value)]="model.applyEveryDay" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]'></ejs-dropdownlist>
+        </div>
+      </div>
+      
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{ "BOM_MOVE_COMMENT" | translate }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.moveName"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

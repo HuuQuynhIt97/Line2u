@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-lg-4 col-12 col-xl-4 left">
+    <div class="card main-card" [style.min-height.px]='screenHeight'>
+      <div class="card-header p-0">
+        <div style="height: 43px; line-height: 43px; font-weight: 500">
+          <span style="padding-left: 0.5rem">
+            {{ "BomSow" | translate }}
+          </span>
+        </div>
+      </div>
+      <div class="card-body p-0">
+
+        <app-bom-left (selectBomSow)="selectBomSow($event)"></app-bom-left>
+      </div>
+      <!-- /.card-body -->
+    </div>
+  </div>
+
+  <div class="col-xl-8 col-lg-8 col-12 right">
+    <app-bom-right></app-bom-right>
+  </div>
+</div>

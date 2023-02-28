@@ -1,0 +1,98 @@
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+      <h4 [ngbTooltip]="title" class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" id="modal">
+      <div class="row align-items-center">
+        <div class="col-5">
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">{{ "掃描" | translate }}</label>
+            <div class="col-sm-9">
+              <input type="text"  class="form-control form-control-sm" value="A棟第1批 20220701">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">{{ "掃描" | translate }}</label>
+            <div class="col-sm-9">
+              <input type="text"  class="form-control form-control-sm" value="00966-01661722">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">{{ "查情結果" | translate }}</label>
+            <div class="col-sm-9">
+              <input type="text"  class="form-control form-control-sm" value="5">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">{{ "胎次" | translate }}</label>
+            <div class="col-sm-9">
+              <app-makeorder-dropdownlist-toolbar
+              ></app-makeorder-dropdownlist-toolbar>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+          <button
+          type="button"
+          class="btn btn-success btn-sm my-btn mx-2"
+        >
+          {{ "掃描" | translate }}
+        </button>
+        </div>
+        <div class="col-5">
+        
+        
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">{{ "欄位" | translate }}</label>
+            <div class="col-sm-9">
+              <input type="text"  class="form-control form-control-sm" value="F0147">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">{{ "上次狀態" | translate }}</label>
+            <div class="col-sm-9">
+              <input type="text"  class="form-control form-control-sm" value="完成產程">
+            </div>
+          </div>
+         </div>
+
+      
+      </div>
+    
+    </div>
+    <div class="modal-footer">
+      <div class="mr-auto">
+        <p>建立日期: 2022/08/02 人員: {{user.nickName}}</p>
+        <p>更新日期: 2022/08/02 人員: {{user.nickName}}</p>
+      </div>
+      <button
+      type="button"
+      class="btn btn-success"
+    >
+      {{ "確認" | translate }}
+    </button>
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click')"
+      >
+        {{ "取消" | translate }}
+      </button>
+  
+    </div>
+  </ng-template>

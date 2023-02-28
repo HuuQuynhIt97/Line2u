@@ -1,0 +1,214 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="false"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+[enableInfiniteScrolling]='true'
+(recordDoubleClick)="onDoubleClick($event)"
+(rowSelected)="rowSelected($event)"
+(toolbarClick)="toolbarClick($event)"
+(headerCellInfo)='headerCellInfo($event)'
+[height]="topHeight"
+(excelExportComplete)="excelExpComplete($event)"
+>
+<ng-template #odsTemplate let-data>
+  <button
+    class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+    type="button"
+    id="grid_odsexport"
+    tabindex="-1"
+    (click)="odsExport()"
+    style="width: auto"
+  >
+    <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+    ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+  </button>
+</ng-template>
+<e-columns>
+  <e-column
+    field="option"
+    textAlign="Left"
+          headerTextAlign="Center"
+    width="80"
+    headerTextAlign="Center"
+    [allowResizing]="true"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="menuName"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='nameRules'
+    headerText="{{ 'SYSTEM_MENU_NAME' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="menuNameEn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='commonRules'
+    headerText="{{ 'SYSTEM_MENU_NAMEEN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="menuNameVn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='commonRules'
+    headerText="{{ 'SYSTEM_MENU_NAMEVN' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="menuNameCn"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [validationRules]='commonRules'
+  headerText="{{ 'SYSTEM_MENU_NAMECN' | translate }}"
+>
+</e-column>
+  <e-column
+    field="menuIcon"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='commonRules'
+    headerText="{{ 'SYSTEM_MENU_ICON' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="chartName"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'SYSTEM_MENU_CHART_NAME' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="chartNameEn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'SYSTEM_MENU_CHART_NAMEEN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="chartNameVn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'SYSTEM_MENU_CHART_NAMEVN' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="chartNameCn"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [validationRules]='chartNameRules'
+  headerText="{{ 'SYSTEM_MENU_CHART_NAMECN' | translate }}"
+>
+</e-column>
+<e-column
+  field="chartUnit"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [validationRules]='unitRules'
+  headerText="{{ 'SYSTEM_MENU_CHART_UNIT' | translate }}"
+>
+</e-column>
+
+<e-column
+    field="chartXAxisName"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'XAXIS_NAME' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="chartXAxisNameEn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'XAXIS_NAMEEN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="chartXAxisNameVn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'XAXIS_NAMEVN' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="chartXAxisNameCn"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [validationRules]='chartNameRules'
+  headerText="{{ 'XAXIS_NAMECN' | translate }}"
+>
+</e-column>
+
+<e-column
+    field="chartYAxisName"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'YAXIS_NAME' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="chartYAxisNameEn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'YAXIS_NAMEEN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="chartYAxisNameVn"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [validationRules]='chartNameRules'
+    headerText="{{ 'YAXIS_NAMEVN' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="chartYAxisNameCn"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [validationRules]='chartNameRules'
+  headerText="{{ 'YAXIS_NAMECN' | translate }}"
+>
+</e-column>
+  <e-column
+    field="comment"
+    [allowSearching]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'SYSTEM_MENU_COMMENT' | translate }}"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>

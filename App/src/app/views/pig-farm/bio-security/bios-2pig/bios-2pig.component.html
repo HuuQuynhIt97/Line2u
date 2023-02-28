@@ -1,0 +1,86 @@
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="false"
+  [allowResizing]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  enableInfiniteScrolling="true"
+  (recordDoubleClick)="onDoubleClick($event)"
+  (toolbarClick)="toolbarClick($event)"
+  [height]="bottomHeight"
+>
+  <e-columns>
+    <e-column
+      field="#"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      isPrimaryKey="true"
+      headerText="#"
+    >
+      <ng-template #template let-data>
+        {{ NO(data.index) }}
+      </ng-template>
+      <ng-template #editTemplate let-data> # </ng-template>
+    </e-column>
+    <e-column
+      field="option"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="pigName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BIO_SECURITY_2PIG_PIG' | translate }}"
+    >
+    </e-column>
+    <!-- <e-column
+      field="bioSMasterGuid"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BIO_SECURITY_2PIG_MASTER_GUID' | translate }}"
+    >
+    </e-column> -->
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+
+</ng-template>

@@ -1,0 +1,182 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="true"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+[selectionSettings]="selectionOptions"
+(toolbarClick)="toolbarClick($event)"
+>
+<e-columns>
+  <e-column
+    field="option"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    width="120"
+    headerTextAlign="Center"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+      <span (click)="openModal(optionModal, data)" class="edit-grid">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="earNo"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_CODE_EAR_NO' | translate }}"
+  >
+  </e-column>
+
+   <e-column
+    field="earTag"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_CODE_EAR_TAG' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="rfid"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_CODE_RFID' | translate }}"
+  >
+  </e-column>
+
+
+  <e-column
+    field="id"
+[allowSearching]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [isPrimaryKey]="true"
+    [visible]="false"
+    headerText="ID"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+    <div class="modal-header my-modal">
+      <h4 class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="earNo">{{ "PIG_CODE_EAR_NO" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.earNo"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="earTag">{{ "PIG_CODE_EAR_TAG" | translate }}</label>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.earTag"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="rfid">{{ "PIG_CODE_RFID" | translate }}</label>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.rfid"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="comment">{{
+              "PIG_CODE_COMMENT" | translate
+            }}</label>
+            <textarea
+            [(ngModel)]="model.comment"
+            type="text"
+            class="form-control"
+            rows="4"
+            cols="4"
+          ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+        </p>
+        <p>
+          <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ 'Note: (*) is a required field' | translate }}
+      </span>
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+      <button
+        [disabled]="!model.earNo"
+        (click)="save()"
+        class="btn btn-primary"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+</ng-template>

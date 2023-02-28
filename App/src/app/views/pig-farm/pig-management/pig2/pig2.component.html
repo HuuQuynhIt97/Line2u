@@ -1,0 +1,117 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="true"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+(toolbarClick)="toolbarClick($event)"
+(dataBound)="dataBound()"
+>
+<e-columns>
+  <e-column
+    field="option"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    width="120"
+    headerTextAlign="Center"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+      <span (click)="openModal(data)" class="edit-grid">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="pigTypeName"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_TYPE' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+  field="idno"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'PIG_IDNO' | translate }}"
+>
+</e-column>
+
+  <!-- <e-column
+  field="phase"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'PIG_PHASE' | translate }}"
+>
+</e-column> -->
+
+<e-column
+field="earNo"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_EAR_NO' | translate }}"
+>
+</e-column>
+<e-column
+field="sexName"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_SEX' | translate }}"
+>
+</e-column>
+
+
+<e-column
+field="earTag"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_EAR_TAG' | translate }}"
+>
+</e-column>
+
+<e-column
+field="rfidtag"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_RFID_TAG' | translate }}"
+>
+</e-column>
+
+<e-column
+field="birthday"
+textAlign="Left"
+          headerTextAlign="Center"
+type='Date'
+format='yyyy/MM/dd'
+headerText="{{ 'PIG_BIRTHDAY' | translate }}"
+>
+</e-column>
+
+  <e-column
+    field="id"
+[allowSearching]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [isPrimaryKey]="true"
+    [visible]="false"
+    headerText="ID"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>

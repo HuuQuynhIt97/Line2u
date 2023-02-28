@@ -1,0 +1,91 @@
+<button
+  class="btn btn-sm btn-success my-2"
+  type="button"
+  (click)="grid.addRecord()"
+>
+  <i class="fa fa-plus"></i><span class="e-tbar-btn-text">{{ 'Add_Breeding2GiltIn' | translate }}</span>
+</button>
+<ejs-grid
+  [dataSource]="dataSource"
+  [allowPaging]="false"
+  [pageSettings]="pageSettings"
+  [editSettings]="editSettings"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [height]="300 + 'px'"
+  gridLines="Both"
+  [locale]="locale"
+>
+  <e-columns>
+    <e-column headerText="" width="50" [commands]="commands"></e-column>
+    <e-column
+      field="id"
+      textAlign="Left"
+      [visible]="false"
+      [isPrimaryKey]='true'
+      headerTextAlign="Center"
+      headerText="{{ 'Id' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="giltNo"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Gilt_NO' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="giltGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="dropdownedit"
+      headerText="{{ 'Gilt_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pig-dropdownlist
+          [(selectedValue)]="breeding2GiltInItem.giltGuid"
+          (change)="selectedGiltGuidValueName($event, data)"
+        >
+        </app-pig-dropdownlist>
+      </ng-template>
+
+      <ng-template #template let-data>
+        {{ data.giltGuidName }}
+      </ng-template>
+    </e-column>
+    <e-column
+    field="penGuid"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Pen_GUID' | translate }}"
+  >
+    <ng-template #editTemplate let-data>
+      <app-pen-dropdownlist
+        id="penGuid"
+        [enabledLoad]="true"
+        [roomGuid]="roomGuid"
+        (change)="onChangePenGuid($event, data)"
+        [selectedValue]="breeding2GiltInItem['penGuid']"
+      >
+      </app-pen-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.penGuidName }}
+    </ng-template>
+  </e-column>
+
+  <e-column
+  field="dayAge"
+  textAlign="Left"
+  headerTextAlign="Center"
+  editType="numericEdit"
+  [edit]="{ params: { decimals: 0, min: 0 } }"
+  headerText="{{ 'DayAge' | translate }}"
+>
+</e-column>
+
+
+  </e-columns>
+</ejs-grid>

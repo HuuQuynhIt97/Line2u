@@ -1,0 +1,207 @@
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <!-- <div class="card-header">
+      <h3 class="card-title"><i class="fas fa-users"></i> User List
+      </h3>
+    </div> -->
+    <!-- /.card-header -->
+    <div class="card-body table-responsive p-0">
+
+
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [allowSorting]="true"
+        gridLines="Both"
+        [locale]="locale"
+        [editSettings]="editSettings"
+        [pageSettings]="pageSettings"
+        [toolbar]="toolbarOptions"
+        [allowExcelExport]="true"
+        (toolbarClick)="toolbarClick($event)"
+      >
+        <ng-template #penTemplate let-data>
+          <app-pen-dropdownlist
+            [id]="'pen-dropdownlist1'"
+            (selectedValueChange)="onSelectedPenValue($event)"
+            [(selectedValue)]="pen"
+            [enabledLoad]="true"
+            [placeholder]="'Choose a pen' | translate"
+          ></app-pen-dropdownlist>
+        </ng-template>
+
+        <ng-template #pigPhaseTemplate let-data>
+          <app-code-type-dropdownlist
+            [id]="'pig-phase-dropdownlist1'"
+            [codeType]="'Pig_Phase'"
+            [placeholder]="'Choose a pig phase' | translate"
+            [(selectedValue)]="pigPhase"
+            (selectedValueChange)="onSelectedPigPhaseValue($event)"
+          >
+          </app-code-type-dropdownlist>
+        </ng-template>
+
+        <ng-template #pigTypeTemplate let-data>
+          <app-code-type-dropdownlist
+            [id]="'pig-type-dropdownlist1'"
+            [codeType]="'Pig_Type'"
+            [(selectedValue)]="pigType"
+            [placeholder]="'Choose a pig type' | translate"
+            (selectedValueChange)="onSelectedPigTypeValue($event)"
+          >
+          </app-code-type-dropdownlist>
+        </ng-template>
+
+        <e-columns>
+          <e-column
+            field="option"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            width="120"
+            headerTextAlign="Center"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+              <span (click)="openOrganizationModal(data)" class="tree-button-grid">
+                <i class="fa fa-sitemap"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          
+          <e-column
+            field="earNo"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_EAR_NO' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="earTag"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_EAR_TAG' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+          field="roomName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'RoomName' | translate }}"
+        >
+        </e-column>
+
+        
+        <e-column
+        field="penName"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'PenName' | translate }}"
+      >
+      </e-column>
+      
+          <e-column
+            field="currentStatusName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'Current_Status' | translate }}"
+          >
+          </e-column>
+              
+          <e-column
+            field="currentStatusDate"
+            textAlign="Left"
+          
+            headerTextAlign="Center"
+            headerText="{{ 'Current_Status_Date' | translate }}"
+          >
+          <ng-template #template let-data>
+            {{ convertDateTime(data.currentStatusDate) }}
+          </ng-template>
+          </e-column>
+
+          
+
+          <e-column
+            field="pigTypeName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_TYPE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="idno"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_IDNO' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="phaseName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_PHASE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="sexName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_SEX' | translate }}"
+          >
+          </e-column>
+
+
+          <e-column
+            field="rfidtag"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PIG_RFID_TAG' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="birthday"
+            textAlign="Left"
+            headerTextAlign="Center"
+            type="Date"
+            format="yyyy/MM/dd"
+            headerText="{{ 'PIG_BIRTHDAY' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [isPrimaryKey]="true"
+            [visible]="false"
+            headerText="ID"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>

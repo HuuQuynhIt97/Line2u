@@ -1,0 +1,81 @@
+<ejs-grid
+#grid
+  [dataSource]="dataSource"
+  [allowPaging]="false"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [height]="300 + 'px'"
+  gridLines="Both"
+  width="100%"
+  (actionComplete)="actionComplete($event)"
+  (actionBegin)="actionBegin($event)"
+  [locale]="locale"
+  (commandClick)='commandClick($event)'
+  (dataBound)="dataBound()"
+>
+  <e-columns>
+    <e-column headerText="" width="50" [commands]="commands"></e-column>
+    <e-column
+      field="id"
+      textAlign="Left"
+      [visible]="false"
+      headerTextAlign="Center"
+      headerText="{{ 'Id' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="accountGuidName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'AccountGuidName' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+        <app-account-dropdownlist
+        [(selectedValue)]="data.accountGuid"></app-account-dropdownlist>
+      </ng-template>
+      
+      <ng-template #template let-data>
+        {{ data.accountGuidName }}
+      </ng-template>
+    </e-column>
+
+  <e-column
+  field="checked"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Checked' | translate }}"
+>
+  <ng-template #template let-data>
+    <app-my-checkbox
+    (checkedChange)="checkedChange($event, data)"
+      [(checked)]="data.checked"
+    ></app-my-checkbox>
+  </ng-template>
+  <ng-template #editTemplate let-data>
+    <app-my-checkbox
+    (checkedChange)="checkedChange($event, data)"
+      [(checked)]="data.checked"
+    ></app-my-checkbox>
+  </ng-template>
+</e-column>
+
+  <e-column
+  field="checkedDate"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Checked_Date' | translate }}"
+>
+<ng-template #editTemplate let-data>
+  <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+  (change)="changeDate($event, data)"
+  [(ngModel)]="data.checkedDate"></ejs-datepicker>
+</ng-template>
+
+<ng-template #template let-data>
+  {{ convertDateTime(data.checkedDate) }}
+</ng-template>
+</e-column>
+
+  </e-columns>
+</ejs-grid>

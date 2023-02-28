@@ -1,0 +1,316 @@
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (recordDoubleClick)="onDoubleClick($event)"
+  (toolbarClick)="toolbarClick($event)"
+>
+   <e-columns>
+   <e-column
+      field="#"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      isPrimaryKey="true"
+      headerText="#"
+    >
+      <ng-template #template let-data>
+        {{ NO(data.index) }}
+      </ng-template>
+      <ng-template #editTemplate let-data> # </ng-template>
+    </e-column>
+
+    <e-column
+      field="option"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="vectorControlTypeName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_VECTORCONTROL_TYPE' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="vectorControlName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_VECTORCONTROL_NAME' | translate }}"
+    >
+    </e-column>
+
+  <e-column
+    field="vectorControlGuidName"
+    textAlign="Left"
+        headerTextAlign="Center"
+    headerText="{{ 'VECTOR_CONTROL' | translate }}"
+  >
+  </e-column>
+<e-column
+  field="useTypeName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'VECTORCONTROL_USE_TYPE' | translate }}"
+>
+</e-column>
+<e-column
+  field="useUnitName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'VECTORCONTROL_USE_UNIT' | translate }}"
+>
+</e-column>
+<e-column
+  field="capacityName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'VECTORCONTROL_CAPACITY' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="frequencyName"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'VECTORCONTROL_FREQUENCY' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="applyDays"
+  textAlign="Left"
+      headerTextAlign="Center"
+  headerText="{{ 'VECTORCONTROL_APPLY_DAYS' | translate }}"
+>
+</e-column>
+    <e-column
+      field="comment"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_VECTOR_CONTROL_COMMENT' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="vectorControlType">{{
+            "BOM_VECTOR_CONTROL_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="vector-control-type-remote"
+          [codeType]="'BOM_Vector_Control_Type'"
+          [(selectedValue)]="model.vectorControlType"
+          >
+          </app-code-type-dropdownlist>
+
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="vectorControlName">{{
+            "BOM_VECTOR_CONTROL_NAME" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.vectorControlName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="vectorControl">{{
+            "VECTOR_CONTROL" | translate
+          }}</label>
+          <app-vector-control-dropdownlist
+          [(selectedValue)]="model.vectorControlGuid"
+          >
+          </app-vector-control-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="useType">{{
+            "VECTORCONTROL_USE_TYPE" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="vectorcontrol-type"
+          [codeType]="'VectorControl_UseType'"
+          [(selectedValue)]="model.useType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="useUnit">{{
+            "VECTORCONTROL_USE_UNIT" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="vectorcontrol-unit"
+          [codeType]="'VectorControl_UseUnit'"
+          [(selectedValue)]="model.useUnit"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="capacity">{{
+            "VECTORCONTROL_CAPACITY" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="vectorcontrol-cap"
+          [codeType]="'VectorControl_Capacity'"
+          [(selectedValue)]="model.capacity"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="frequency">{{
+            "VECTORCONTROL_FREQUENCY" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="method-fre-remote"
+          [codeType]="'VectorControl_Frequency'"
+          [(selectedValue)]="model.frequency"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="applyDays">{{
+            "VECTORCONTROL_APPLY_DAYS" | translate
+          }}</label>
+          <input
+          id="applyDays"
+          [(ngModel)]="model.applyDays"
+          min="0"
+          type="number"
+          class="form-control form-control-sm"
+        />
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{
+            "BOM_VECTOR_CONTROL_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.vectorControlName"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

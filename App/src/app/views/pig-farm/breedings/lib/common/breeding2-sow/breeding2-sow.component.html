@@ -1,0 +1,478 @@
+
+<ejs-grid
+  #grid
+  id="grid-detail"
+  [dataSource]="dataSource"
+  [allowResizing]="true"
+  [allowPaging]="false"
+  [editSettings]="editSettingsPig"
+  [searchSettings]="searchOptions"
+  (actionBegin)="actionBeginPig($event)"
+  (created)="created()"
+  [toolbar]="['Search']"
+  [height]="300 + 'px'"
+  [locale]="locale"
+  gridLines="Both"
+  (rowDataBound)="rowDataBound($event)"
+  (dataBound)="dataBound($event)"
+>
+  <e-columns>
+    <e-column
+      field="sowGuid"
+      [visible]="visibleSowGuid"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="true"
+      [allowEditing]="allowEditingSowGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Sow_GUID' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <app-pig-dropdownlist
+        id="sowGuid"
+        (change)="onChangeSowGuid($event, data)"
+        [(selectedValue)]="data.sowGuid"
+      >
+      </app-pig-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.sowGuidName | translate }}
+    </ng-template>
+    </e-column>
+
+    <e-column
+      field="level"
+      [visible]="visibleLevel"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'SowBodyCondition_Level' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          id="SowBodyCondition_Level"
+          codeType="SowBodyCondition_Level"
+          (change)="onChangeLevel($event, data)"
+          [(selectedValue)]="data.level"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.levelName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="heatingResult"
+      [visible]="visibleHeatingResult"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Result' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          id="Heating_Result"
+          codeType="Heating_Result"
+          (change)="onChangeHeatingResult($event, data)"
+          [(selectedValue)]="data.heatingResult"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.heatingResultName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="heatingPush"
+      [visible]="visibleHeatingPush"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Push' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.heatingPush"></ejs-datepicker>
+    </ng-template>
+    
+    <ng-template #template let-data>
+      {{ convertDateTime(data.heatingPush) }}
+    </ng-template>
+    </e-column>
+
+    <e-column
+      [visible]="visibleHeatingWay"
+      field="heatingWay"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Way' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <app-code-type-dropdownlist
+        id="heatingWay"
+        codeType="Heating_Way"
+        (change)="onChangeHeatingWay($event, data)"
+        [(selectedValue)]="data.heatingWay"
+      >
+      </app-code-type-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.heatingWayName}}
+    </ng-template>
+    </e-column>
+
+    <e-column
+      [visible]="visibleMatingDate"
+      field="matingDate"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Date' | translate }}"
+    >
+    <ng-template #template let-data>
+      {{ convertDateTime(data.heatingDate) }}
+    </ng-template>
+    </e-column>
+
+    <e-column
+      field="matingAccount"
+      [visible]="visibleMatingAccount"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Account' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-account-dropdownlist
+          id="Mating_Account"
+          (change)="onChangeMatingAccount($event, data)"
+          [(selectedValue)]="data.matingAccount"
+        >
+        </app-account-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.matingAccountName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="semenGuid"
+      [visible]="visibleSemenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Semen_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-semen-dropdownlist
+          id="semenGuid"
+          (change)="onChangeSemenGuid($event, data)"
+          [(selectedValue)]="data.semenGuid"
+        >
+        </app-semen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.semenGuidName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="testResult"
+      [visible]="visibleTestResult"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Test_Result' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          id="testResult"
+          codeType="SowPregnancyTest_Result"
+          (change)="onChangeTestResult($event, data)"
+          [(selectedValue)]="data.testResult"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.testResultName }}
+      </ng-template>
+    </e-column>
+
+    
+    <e-column
+    field="abortiionDate"
+    [visible]="visibleAbortiionDate"
+    format="yyyy/MM/dd"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Abortiion_Date' | translate }}"
+  >
+  <ng-template #editTemplate let-data>
+    <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+    [(ngModel)]="model.abortiionDate"></ejs-datepicker>
+  </ng-template>
+  
+  <ng-template #template let-data>
+    {{ convertDateTime(data.abortiionDate) }}
+  </ng-template>
+  </e-column>
+  
+    
+    <e-column
+      field="nextRoom"
+      [visible]="visibleNextRoom"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'NextRoom' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-room-dropdownlist
+          id="nextRoom"
+          (change)="onChangeNextRoom($event, data)"
+          [(selectedValue)]="data.nextRoom"
+        >
+        </app-room-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.nextRoomName }}
+      </ng-template>
+    </e-column>
+  
+    <e-column
+      field="nextPen"
+      [visible]="visibleNextPen"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'NextPen' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pen-dropdownlist
+        [enabledLoad]="true"
+          id="nextPen"
+          (change)="onChangeNextPen($event, data)"
+          [roomGuid]="roomGuid"
+          [(selectedValue)]="data.nextPen"
+        >
+        </app-pen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.nextPenName  }}
+      </ng-template>
+    </e-column>
+
+
+    <e-column
+      field="beforePenGuid"
+      [visible]="visibleBeforePenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'BeforePen_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pen-dropdownlist
+        [enabledLoad]="true"
+          id="testResult"
+          (change)="onChangeBeforePen($event, data)"
+          [(selectedValue)]="data.beforePenGuid"
+        >
+        </app-pen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.beforePenGuidName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="afterPenGuid"
+      [visible]="visibleAfterPenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'AfterPen_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pen-dropdownlist
+        [enabledLoad]="true"
+          id="afterPenGuid"
+          [roomGuid]="roomGuid"
+          (change)="onChangeAfterPen($event, data)"
+          [(selectedValue)]="data.afterPenGuid"
+        >
+        </app-pen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.afterPenGuidName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingGuid"
+      [visible]="visibleSucklingGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pig-dropdownlist
+          id="sucklingGuid"
+          (change)="onChangeSuckling($event, data)"
+          [(selectedValue)]="data.sucklingGuid"
+        >
+        </app-pig-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.sucklingGuidName  }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sowFosterGuid"
+      [visible]="visibleSucklingGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'SowFoster_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-breeding2-sowin-dropdownlist
+          id="sowFosterGuid"
+          [breedingGuid]="breedingGuid"
+          (change)="onChangeSowFosterGuid($event, data)"
+          [(selectedValue)]="data.sowFosterGuid"
+        >
+        </app-breeding2-sowin-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.sowFosterGuidName  }}
+      </ng-template>
+    </e-column>
+    <e-column
+      field="sucklingStatus"
+      [visible]="visibleSucklingGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Status' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          id="Birth_Status"
+          codeType="Birth_Status"
+          (change)="onChangeSucklingStatus($event, data)"
+          [(selectedValue)]="data.sucklingStatus"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.sucklingStatusName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="fosterPenGuid"
+      [visible]="visibleFosterPenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Foster_Pen_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pen-dropdownlist
+          id="fosterPenGuid"
+          [enabledLoad]="true"
+          (change)="onChangeSuckling($event, data)"
+          [(selectedValue)]="data.fosterPenGuid"
+        >
+        </app-pen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.fosterPenGuidName  }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="qtyCulling"
+      [visible]="visibleQtyCulling"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      headerText="{{ 'Qty_Culling' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="cullingReason"
+      [visible]="visibleCullingReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      headerText="{{ 'Culling_Reason' | translate }}"
+    >
+    </e-column>
+    
+    
+    
+    <e-column
+      field="abortionReason"
+      [visible]="visibleAbortionReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Abortion_Reason' | translate }}"
+    >
+
+    <ng-template #editTemplate let-data>
+      <app-code-type-dropdownlist
+        id="abortionReason"
+        codeType="Abortion_Reason"
+        (change)="onChangeAbortionReason($event, data)"
+        [(selectedValue)]="data.abortionReason"
+      >
+      </app-code-type-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.abortionReasonName }}
+    </ng-template>
+
+    </e-column>
+
+    <e-column
+      field="abortionParity"
+      [visible]="visibleAbortionParity"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      headerText="{{ 'Abortion_Parity' | translate }}"
+    >
+    </e-column>
+
+
+    <e-column
+      field="abortionLastStatus"
+      [visible]="visibleAbortionLastStatus"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Abortion_Last_Status' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <app-code-type-dropdownlist
+        id="abortionLastStatus"
+        codeType="Abortion_Status"
+        (change)="onChangeAbortionLastStatus($event, data)"
+        [(selectedValue)]="data.abortionLastStatus"
+      >
+      </app-code-type-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.abortionLastStatusName  }}
+    </ng-template>
+
+    </e-column>
+
+    <e-column
+    [visible]="false"
+      field="sowNext"
+      textAlign="Left"
+      headerText="{{ 'Sow_Next' | translate }}"
+      headerTextAlign="Center"
+    >
+    </e-column>
+
+  </e-columns>
+</ejs-grid>

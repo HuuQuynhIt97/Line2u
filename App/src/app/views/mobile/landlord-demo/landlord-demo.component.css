@@ -1,0 +1,79 @@
+/*#region video-background-home */
+#video-background-home {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+}
+  
+#video-background-home iframe {
+    position: absolute;
+    width: 100vw;
+    height: 90vh;
+  }
+    #video-background-home img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: 100%;
+    }
+
+    #video-background-home .info {
+        position: absolute;
+        bottom:42px;
+        left: 0;
+        z-index: 3;
+        transform: translate(0, -50%);
+        display: block;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        align-self: center;
+    }
+
+    #video-background-home a {
+        display: block;
+        background-color: #233b2e;
+        color: #fff;
+        width: 200px;
+        margin: 20px auto 0 auto;
+        border: 1px solid #808080;
+        border-radius: 5px;
+        box-shadow: #000 1px 1px;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    #video-background-home .highlight {
+        color: #fff647;
+        font-weight: bold;
+    }
+
+    #video-background-home h1 {
+        color: #fff647;
+        font-size: 50px;
+        text-transform: uppercase;
+        text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+    }
+/*#endregion */
+.landlord-title {
+    height: 60px;
+    text-align: center;
+    background-color: #233b2e;
+    color: #fff;
+    font-size: 20px;
+    line-height: 60px;
+}
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+  
+  .video-container iframe {
+    position: absolute;
+    width: 100vw;
+    height: 90vh;
+  }

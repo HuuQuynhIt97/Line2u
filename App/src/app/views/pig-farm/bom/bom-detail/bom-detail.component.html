@@ -1,0 +1,115 @@
+<div class="row p-2">
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="no">{{ "BOM_NO" | translate }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="bom.bomNo"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="bomName">{{ "BOM_NAME" | translate }}</label>
+      <span *ngIf="!(bom.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="bom.bomName"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="bomVersion">{{ "BOM_VERSION" | translate }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="bom.bomVersion"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="ApplyEveryMonth">{{
+        "ApplyEveryMonth" | translate
+      }}</label>
+      <ejs-dropdownlist id='ApplyEveryMonth' [(value)]="bom.applyEveryMonth" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12]'></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="ApplyEveryDay">{{
+        "ApplyEveryDay" | translate
+      }}</label>
+      <ejs-dropdownlist id='ApplyEveryDay' [(value)]="bom.applyEveryDay" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]'></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <!-- <div class="col-6">
+    <div class="form-group">
+      <label for="bomBreed">{{ "BOM_BREED" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="BOM-breed-remote"
+      [codeType]="'Breed'"
+      [(selectedValue)]="bom.bomBreed"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div> -->
+
+  <!-- <div class="col-6">
+    <div class="form-group">
+      <label for="bomType">{{ "BOM_TYPE" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="BOM-type-remote"
+      [codeType]="'BOM_Type'"
+      [(selectedValue)]="bom.bomType"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div> -->
+  <div class="col-12">
+    <div class="form-group">
+      <label for="comment">{{ "BOM_COMMENT" | translate }}</label>
+      <textarea
+        [(ngModel)]="bom.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="4"
+        rows="4"
+      ></textarea>
+    </div>
+  </div>
+</div>
+<div class="row p-2">
+  <div class="col-12 d-flex">
+    <div class="mr-auto" *ngIf="bom?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <div class="ml-auto">
+      <button type="button" class="btn my-btn-sm btn-sm mr-2" (click)='save()'> <i class="fa fa-save"></i> {{ 'Save' | translate }}</button>
+      <button type="button" class="btn my-btn-sm btn-sm" (click)='loadData()'> <i class="fa fa-backward"></i> {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

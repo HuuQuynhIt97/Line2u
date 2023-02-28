@@ -1,0 +1,442 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="true"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+[selectionSettings]="selectionOptions"
+(toolbarClick)="toolbarClick($event)"
+>
+<e-columns>
+  <e-column
+    field="option"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    width="120"
+    headerTextAlign="Center"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+      <span (click)="openModal(optionModal, data)" class="edit-grid">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="geneticAa"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_GENETIC_AA' | translate }}"
+  >
+  </e-column>
+
+   <e-column
+    field="geneticGg"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_GENETIC_GG' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="geneticGg2"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_GENETIC_GG2' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="geneticHmga1"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_GENETIC_HMGA1' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="geneticHmga2"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_GENETIC_HMGA2' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="geneticCckar1"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'PIG_GENETIC_CCKAR1' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+  field="geneticCckar2"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'PIG_GENETIC_CCKAR' | translate }}"
+>
+</e-column>
+
+<e-column
+field="geneticCckar3"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_CCKAR3' | translate }}"
+>
+</e-column>
+
+<e-column
+field="geneticCckar4"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_CCKAR4' | translate }}"
+>
+</e-column>
+
+<e-column
+field="geneticCast"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_CAST' | translate }}"
+>
+</e-column>
+
+<e-column
+field="geneticHal"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_HAL' | translate }}"
+>
+</e-column>
+
+
+<e-column
+field="geneticRn"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_RN' | translate }}"
+>
+</e-column>
+
+
+<e-column
+field="geneticEsr"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_ESR' | translate }}"
+>
+</e-column>
+
+
+<e-column
+field="geneticEpor"
+textAlign="Left"
+          headerTextAlign="Center"
+headerText="{{ 'PIG_GENETIC_EPOR' | translate }}"
+>
+</e-column>
+
+
+
+  <e-column
+    field="id"
+[allowSearching]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    [isPrimaryKey]="true"
+    [visible]="false"
+    headerText="ID"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+    <div class="modal-header my-modal">
+      <h4 class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticAa">{{ "PIG_GENETIC_AA" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <app-code-type-dropdownlist
+            id="geneticAa-remote"
+            [codeType]="'Genetic'"
+            [(selectedValue)]="model.geneticAa"
+            >
+            </app-code-type-dropdownlist>
+
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticGg">{{
+                "PIG_GENETIC_GG" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticGg-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticGg"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticGg2">{{
+                "PIG_GENETIC_GG2" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticGg2-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticGg2"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticHmga1">{{
+                "PIG_GENETIC_HMGA1" | translate
+              }}</label>
+              <app-code-type-dropdownlist
+              id="geneticHmga1-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticHmga1"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticHmga2">{{
+                "PIG_GENETIC_HMGA2" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticHmga2-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticHmga2"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticCckar1">{{
+                "PIG_GENETIC_CCKAR1" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticCckar1-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticCckar1"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticCckar2">{{
+                "PIG_GENETIC_CCKAR2" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticCckar2-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticCckar2"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticCckar3">{{
+                "PIG_GENETIC_CCKAR3" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticCckar3-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticCckar3"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticCckar4">{{
+                "PIG_GENETIC_CCKAR4" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticCckar4-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticCckar4"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticCast">{{
+                "PIG_GENETIC_CAST" | translate
+              }}</label>
+              <app-code-type-dropdownlist
+              id="geneticCast-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticCast"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticHal">{{
+                "PIG_GENETIC_HAL" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticHal-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticHal"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticRn">{{
+                "PIG_GENETIC_RN" | translate
+              }}</label>
+
+              <app-code-type-dropdownlist
+              id="geneticRn-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticRn"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="geneticEsr">{{
+                "PIG_GENETIC_ESR" | translate
+              }}</label>
+              <app-code-type-dropdownlist
+              id="geneticEsr-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticEsr"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="genetic">{{
+                "PIG_GENETIC_EPOR" | translate
+              }}</label>
+              <app-code-type-dropdownlist
+              id="geneticEpor-remote"
+              [codeType]="'Genetic'"
+              [(selectedValue)]="model.geneticEpor"
+              >
+              </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="comment">{{ "PIG_GENETIC_COMMENT" | translate }}</label>
+            <textarea
+            [(ngModel)]="model.comment"
+            type="text"
+            class="form-control"
+            rows="4"
+            cols="4"
+          ></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+        </p>
+        <p>
+          <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ 'Note: (*) is a required field' | translate }}
+      </span>
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+      <button
+        [disabled]="!model.geneticAa"
+        (click)="save()"
+        class="btn btn-primary"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+</ng-template>

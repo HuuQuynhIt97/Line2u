@@ -1,0 +1,157 @@
+<div class="row p-2 detail">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="fatherGuid">{{
+        "PIG_PEDIGREE_FATHER" | translate
+      }}</label>
+      <app-pig-dropdownlist
+      id="father-remote"
+      (ngModelChange)="fatherChange($event)"
+      [selectedValue]="pigPedigree.fatherGuid"
+      >
+      </app-pig-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="motherGuid">{{
+        "PIG_PEDIGREE_MOTHER" | translate
+      }}</label>
+      <app-pig-dropdownlist
+      id="mother-remote"
+      (ngModelChange)="motherChange($event)"
+      [selectedValue]="pigPedigree.motherGuid"
+      >
+      </app-pig-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="pedigreeName">{{
+        "PIG_PEDIGREE_NAME" | translate
+      }}</label>
+      <span *ngIf="!(pigPedigree.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+      <input
+        [(ngModel)]="pigPedigree.pedigreeName"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="fromPigFarm">{{
+        "PIG_PEDIGREE_FROM_FARM" | translate
+      }}</label>
+      <app-farm-dropdownlist
+      id="farm-remote"
+      (ngModelChange)="fromFarmChange($event)"
+      [selectedValue]="pigPedigree.fromPigFarm"
+      >
+      </app-farm-dropdownlist>
+
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="breed">{{ "PIG_PEDIGREE_BREED" | translate }}</label>
+      <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+      <input
+        [(ngModel)]="pigPedigree.breed"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="earNo">{{ "PIG_PEDIGREE_EAR_NO" | translate }}</label>
+      <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+      <input
+        [(ngModel)]="pigPedigree.earNo"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="earTag">{{ "PIG_PEDIGREE_EAR_TAG" | translate }}</label>
+      <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+      <input
+        [(ngModel)]="pigPedigree.earTag"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="rfid">{{ "PIG_PEDIGREE_RFID" | translate }}</label>
+      <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+      <input
+        [(ngModel)]="pigPedigree.rfid"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="birthDay">{{
+        "PIG_PEDIGREE_BIRTHDAY" | translate
+      }}</label>
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="pigPedigree.birthDay"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="comment">{{
+        "PIG_PEDIGREE_COMMENT" | translate
+      }}</label>
+      <textarea
+      [(ngModel)]="pigPedigree.comment"
+      type="text"
+      class="form-control"
+      row p-2s="4"
+      cols="4"
+    ></textarea>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex">
+    <div class="mr-auto" *ngIf="pigPedigree?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <div class="ml-auto">
+      <button type="button" class="btn my-btn-sm btn-sm mr-2" (click)='save()'> <i class="fa fa-save"></i> {{ 'Save' | translate }}</button>
+      <button type="button" class="btn my-btn-sm btn-sm" (click)='loadData()'> <i class="fa fa-backward"></i> {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

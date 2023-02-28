@@ -1,0 +1,412 @@
+<ng-template #penTemplate let-data>
+  <app-pen-dropdownlist
+    [id]="'pen-dropdownlist1'"
+    [enabledLoad]="true"
+    (selectedValueChange)="onSelectedPenValue($event)"
+
+    [placeholder]="'Choose a pen' | translate"
+  ></app-pen-dropdownlist>
+</ng-template>
+
+<ng-template #pigTemplate let-data>
+  <app-pig-dropdownlist
+    [id]="'pig-dropdownlist1'"
+    (selectedValueChange)="onSelectedPigValue($event)"
+
+    [placeholder]="'Choose a pig' | translate"
+  ></app-pig-dropdownlist>
+</ng-template>
+<ng-template #estDateTemplate let-data>
+  <ejs-datepicker
+    id="estDate-option"
+    format="yyyy/MM/dd"
+    locale="en-US"
+    [value]="estDate"
+    (valueChange)="onSelectedEstDateValue($event)"
+    [placeholder]="'Choose date' | translate"
+  ></ejs-datepicker>
+</ng-template>
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+        <span (click)="toggleRecordDate(data.id)" class="clock-grid">
+          <i class="fa fa-clock"></i>
+        </span>
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="recordDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'RECORD_DATETIME' | translate }}"
+    >
+      <ng-template #template let-data>
+        {{
+          ((data.recordDate | date: "yyyy/MM/dd") || "") +
+            " " +
+            (data.recordTime || "")
+        }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="estDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EST_DATETIME' | translate }}"
+    >
+      <ng-template #template let-data>
+        {{
+          ((data.estDate | date: "yyyy/MM/dd") || "") +
+            " " +
+            (data.estTime || "")
+        }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="typeName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'RECORD_EAR_TAG_TYPE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+    field="earNo"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'RECORD_EAR_NO' | translate }}"
+  >
+  </e-column>
+
+    <e-column
+      field="earTagNo"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'RECORD_EAR_TAG_NO' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="rfid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'RECORD_EAR_TAG_RFID' | translate }}"
+    >
+    </e-column>
+
+    <
+    <e-column
+      field="id"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_EAR_TAG_TYPE" for="type">{{
+            "RECORD_EAR_TAG_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+            id="record-ear-tag-type-remote"
+            [codeType]="'Record_Ear_Tag_Type'"
+            [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="PIG" for="pigGuid">{{ "PIG" | translate }}</label>
+          <app-pig-dropdownlist
+
+
+            id="pig-remote"
+            (ngModelChange)="valueChange($event)"
+            [selectedValue]="model.pigGuid"
+          >
+          </app-pig-dropdownlist>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="earNo">{{
+            "RECORD_EAR_NO" | translate
+          }}</label>
+          <span ngbTooltip="( Text length <= 40 )" class="max-length">
+            {{ "( Text length <= 40 )" | translate }}</span
+          >
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+
+          <input
+            [(ngModel)]="model.earNo"
+            maxlength="40"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_EAR_TAG_NO" for="earTagNo">{{
+            "RECORD_EAR_TAG_NO" | translate
+          }}</label>
+          <span ngbTooltip="( Text length <= 40 )" class="max-length">
+            {{ "( Text length <= 40 )" | translate }}</span
+          >
+
+          <input
+            [(ngModel)]="model.earTagNo"
+            maxlength="40"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_EAR_TAG_RFID" for="rfid">{{
+            "RECORD_EAR_TAG_RFID" | translate
+          }}</label>
+          <span ngbTooltip="( Text length <= 40 )" class="max-length">
+            {{ "( Text length <= 40 )" | translate }}</span
+          >
+
+          <input
+            [(ngModel)]="model.rfid"
+            maxlength="40"
+            type="text"
+
+            class="form-control"
+          />
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row bg-est">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="realStartDate">{{
+            "RECORD_MOVE_EST_DATE" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+
+
+            [(ngModel)]="model.estDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estTime">{{ "RECORD_MOVE_EST_TIME" | translate }}</label>
+          <app-maskedtimetextbox
+
+
+            [(selectedValue)]="model.estTime"
+          ></app-maskedtimetextbox>
+        </div>
+      </div>
+
+    </div>
+    <div class="row bg-record">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_EAR_TAG_DATE" for="realStartDate">{{
+            "RECORD_EAR_TAG_DATE" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.recordDate"
+
+
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_EAR_TAG_TIME" for="recordTime">{{
+            "RECORD_EAR_TAG_TIME" | translate
+          }}</label>
+          <app-maskedtimetextbox
+            [(selectedValue)]="model.recordTime"
+          ></app-maskedtimetextbox>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="text-white" for="estTime"> &nbsp;</label>
+          <input
+            (click)="execute()"
+            type="button"
+            style="width: 100px; cursor: pointer"
+            value="{{ 'Execute' | translate }}"
+            class="form-control form-control-sm btn-secondary"
+          />
+        </div>
+        <!-- <button class="btn btn-sm bg-secondary mb-0" >{{ 'Execute' | translate }}</button> -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_EAR_TAG_COMMENT" for="comment">{{
+            "RECORD_EAR_TAG_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">GUID</span> :
+          {{ model?.guid }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.earNo"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

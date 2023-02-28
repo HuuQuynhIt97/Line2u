@@ -1,0 +1,9 @@
+.active-old {
+  color: #fff;
+  background-color: #fd7e14e8 !important;
+}
+.my-nav-old {
+  padding: 0.25rem 0.3rem!important;
+  cursor: pointer;
+  font-weight: 500;
+}

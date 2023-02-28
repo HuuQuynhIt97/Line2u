@@ -1,0 +1,6 @@
+export * from './pig/pig.component'
+export * from './pig-code/pig-code.component'
+export * from './pig-genetic/pig-genetic.component'
+export * from './pig-pedigree/pig-pedigree.component'
+export * from './pig-pedigree-detail/pig-pedigree-detail.component'
+export * from './pig-testing/pig-testing.component'

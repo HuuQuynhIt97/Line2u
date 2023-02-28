@@ -1,0 +1,467 @@
+<ejs-grid
+  #grid
+  id="grid-detail"
+  [dataSource]="dataSource"
+  [enableInfiniteScrolling]="true"
+  [allowResizing]="true"
+  [allowPaging]="false"
+  [pageSettings]="pageSettings"
+  [editSettings]="editSettingsPig"
+  [searchSettings]="searchOptions"
+  (actionBegin)="actionBeginPig($event)"
+  (created)="created()"
+  [toolbar]="['Search']"
+  [height]="300 + 'px'"
+  gridLines="Both"
+>
+  <e-columns>
+    <e-column
+      field="sowGuid"
+      textAlign="Left"
+      [visible]="visibleSowGuid"
+      headerTextAlign="Center"
+      headerTextAlign="Center"
+      headerText="{{ 'Sow_GUID' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <app-pig-dropdownlist
+        id="sowGuid"
+        (change)="onChangeSowGuid($event, data)"
+        [(selectedValue)]="data.sowGuid"
+      >
+      </app-pig-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.sowGuidName }}
+    </ng-template>
+    </e-column>
+
+    <!-- <e-column
+      field="farrowGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Farrow_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pig-dropdownlist
+          id="farrowGuid"
+          (change)="onChangeFarrowGuid($event, data)"
+          [(selectedValue)]="data.farrowGuid"
+        >
+        </app-pig-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.farrowGuidName | translate }}
+      </ng-template>
+    </e-column> -->
+
+    <e-column
+      field="sucklingGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_GUID' | translate }}"
+    >
+      <!-- <ng-template #editTemplate let-data>
+        <app-pig-dropdownlist
+          id="sucklingGuid"
+          (change)="onChangeSucklingGuid($event, data)"
+          [(selectedValue)]="data.sucklingGuid"
+        >
+        </app-pig-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.sucklingGuid | translate }}
+      </ng-template> -->
+    </e-column>
+
+    
+  <e-column
+  field="afterRoomGuid"
+  [visible]="visibleAfterRoomGuid"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'AfterRoomGuid' | translate }}"
+>
+  <ng-template #editTemplate let-data>
+    <app-room-dropdownlist
+      id="afterRoomGuid"
+      (change)="onChangeAfterRoomGuid($event, data)"
+      [(selectedValue)]="data.afterRoomGuid"
+    >
+    </app-room-dropdownlist>
+  </ng-template>
+  <ng-template #template let-data>
+    {{ data.afterRoomGuidName  }}
+  </ng-template>
+</e-column>
+
+    <e-column
+      field="sucklingEarNo"
+      [visible]="visibleSucklingCutEar"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_EarNo' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sucklingCutEar"
+      [visible]="visibleSucklingCutEar"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_CutEar' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingCutEar"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingCutEar) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingWeighing"
+      [visible]="visibleSucklingWeighing"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Weighing' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingWeighing"></ejs-datepicker>
+    </ng-template>v
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingWeighing) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingWeight"
+      [visible]="visibleSucklingWeight"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="{ params: { decimals: 3, min: 0 } }"
+      headerText="{{ 'Suckling_Weight' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sucklingCutTeethTail"
+      [visible]="visibleSucklingCutTeethTail"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_CutTeethTail' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingCutTeethTail"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingCutTeethTail) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingIronInjection"
+      [visible]="visibleSucklingIronInjection"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_IronInjection' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingIronInjection"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingIronInjection) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingCastration"
+      [visible]="visibleSucklingCastration"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Castration' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingCastration"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingCastration) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+    field="sucklingFoster"
+    [visible]="visibleSucklingFoster"
+    editType="datepickeredit"
+    format="yyyy/MM/dd"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Suckling_Foster' | translate }}"
+  >
+  <ng-template #editTemplate let-data>
+    <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+    [(ngModel)]="model.sucklingFoster"></ejs-datepicker>
+  </ng-template>
+    <ng-template #template let-data>
+      {{ convertDateTime(data.sucklingFoster) }}
+    </ng-template>
+  </e-column>
+
+    <e-column
+      field="sucklingTeachingSlot"
+      [visible]="visibleSucklingTeachingSlot"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_TeachingSlot' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingTeachingSlot"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingTeachingSlot) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingWeaning"
+      [visible]="visibleSucklingWeaning"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Weaning' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingWeaning"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingWeaning) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="sucklingMove"
+      [visible]="visibleSucklingMove"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Move' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.sucklingMove"></ejs-datepicker>
+    </ng-template>
+      <ng-template #template let-data>
+        {{ convertDateTime(data.sucklingMove) }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+    [visible]="false"
+      field="sucklingAmount"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      headerText="{{ 'Suckling_Amount' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+    [visible]="false"
+      field="sucklingDisease"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Disease' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      [visible]="false"
+      field="sucklingNext"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Next' | translate }}"
+    >
+    </e-column>
+
+    
+  <e-column
+  field="sucklingNextArea"
+  [visible]="visibleSucklingNextArea"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Suckling_NextArea' | translate }}"
+>
+  <ng-template #editTemplate let-data>
+    <app-area-dropdownlist
+      id="sucklingNextArea"
+      (change)="onChangeSucklingNextArea($event, data)"
+      [selectedValue]="data.sucklingNextArea"
+    >
+    </app-area-dropdownlist>
+  </ng-template>
+  <ng-template #template let-data>
+    {{ data.sucklingNextAreaName  }}
+  </ng-template>
+</e-column>
+
+
+<e-column
+  field="sucklingNextBarn"
+  [visible]="visibleSucklingNextBarn"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Suckling_NextBarn' | translate }}"
+>
+  <ng-template #editTemplate let-data>
+    <app-barn-dropdownlist
+      id="sucklingNextBarn"
+      [areaGuid]="nextAreaGuid"
+      (change)="onChangeSucklingNextBarn($event, data)"
+      [selectedValue]="data.sucklingNextBarn"
+    >
+    </app-barn-dropdownlist>
+  </ng-template>
+  <ng-template #template let-data>
+    {{ data.sucklingNextBarnName  }}
+  </ng-template>
+</e-column>
+
+<e-column
+  field="sucklingNextRoom"
+  [visible]="visibleSucklingNextRoom"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Suckling_NextRoom' | translate }}"
+>
+  <ng-template #editTemplate let-data>
+    <app-room-dropdownlist
+      id="sucklingNextRoom"
+      [barnGuid]="nextBarnGuid"
+      (change)="onChangeSucklingNextRoom($event, data)"
+      [selectedValue]="data.sucklingNextRoom"
+    >
+    </app-room-dropdownlist>
+  </ng-template>
+  <ng-template #template let-data>
+    {{ data.sucklingNextRoomName  }}
+  </ng-template>
+</e-column>
+
+
+
+<e-column
+  field="sucklingNextPen"
+  [visible]="visibleSucklingNextPen"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Suckling_NextPen' | translate }}"
+>
+  <ng-template #editTemplate let-data>
+    <app-pen-dropdownlist
+      id="sucklingNextPen"
+      [enabledLoad]="true"
+      [roomGuid]="nextRoomGuid"
+      (change)="onChangeSucklingNextPen($event, data)"
+      [selectedValue]="data.sucklingNextPen"
+    >
+    </app-pen-dropdownlist>
+  </ng-template>
+  <ng-template #template let-data>
+    {{ data.sucklingNextPenName  }}
+  </ng-template>
+</e-column>
+
+
+  <e-column
+      field="roomGuid"
+      [visible]="visibleRoomGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'RoomGuid' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-room-dropdownlist
+          id="roomGuid"
+          (change)="onChangeRoomGuid($event, data)"
+          [selectedValue]="data.roomGuid"
+        >
+        </app-room-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.roomGuidName  }}
+      </ng-template>
+    </e-column>
+
+
+    <e-column
+      field="penGuid"
+      textAlign="Left"
+      [visible]="visiblePenGuid"
+      headerTextAlign="Center"
+      width=320
+      headerText="{{ 'PenGuid' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pen-dropdownlist
+        [enabledLoad]="true"
+        [roomGuid]="roomGuid"
+          id="penGuid"
+          (change)="onChangePenGuid($event, data)"
+          [selectedValue]="data.penGuid"
+        >
+        </app-pen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.penGuidName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+    field="sucklingNextMakeOrder"
+    textAlign="Left"
+    [visible]="visibleSucklingNextMakeOrder"
+    headerTextAlign="Center"
+    headerText="{{ 'Suckling_NextMakeOrder' | translate }}"
+    width=320
+    
+  >
+    <ng-template #editTemplate let-data>
+      <app-makeorder-dropdownlist
+      #makeOrder
+      (change)="onChangeSucklingNextMakeOrder($event, data)"
+        [(selectedValue)]="data.sucklingNextMakeOrder"
+        pigType="Suckling"
+      >
+      </app-makeorder-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.sucklingNextMakeOrderName }}
+    </ng-template>
+  </e-column>
+
+
+
+  </e-columns>
+</ejs-grid>

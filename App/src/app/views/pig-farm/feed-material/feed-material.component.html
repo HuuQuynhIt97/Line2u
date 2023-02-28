@@ -1,0 +1,543 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (dataBound)="dataBound()"
+        (toolbarClick)="toolbarClick($event)"
+        (excelExportComplete)='excelExpComplete($event)'
+
+      >
+        <e-columns>
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+            </button>
+          </ng-template>
+          <e-column
+            field="#"
+            [allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            isPrimaryKey="true"
+            headerText="#"
+          >
+            <ng-template #template let-data>
+              {{ NO(data.index) }}
+            </ng-template>
+            <ng-template #editTemplate let-data> # </ng-template>
+          </e-column>
+
+          <e-column
+            field="option"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="feedMaterialNo"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'FEED_MATERIAL_NO' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="feedMaterialName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'FEED_MATERIAL_NAME' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="feedMaterialTypeName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_TYPE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+          field="qty"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'FEED_MATERIAL_QTY' | translate }}"
+        >
+        </e-column>
+
+          <e-column
+            field="feedMaterialElement"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_ELEMENT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="feedMaterialEffect"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_EFFECT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="feedMaterialSideEffect"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_SIDE_EFFECT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="feedMaterialBreed"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_BREED' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="feedMaterialRange"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_RANGE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="feedMaterialCare"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_CARE' | translate }}"
+          >
+          </e-column>
+          <e-column
+          field="spec"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'FEED_MATERIAL_SPEC' | translate }}"
+        >
+        </e-column>
+        <e-column
+          field="amount"
+          textAlign="Left"
+          format="N"
+          headerTextAlign="Center"
+          headerText="{{ 'FEED_MATERIAL_AMOUNT' | translate }}"
+        >
+        </e-column>
+        <e-column
+          field="price"
+          format="N"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'FEED_MATERIAL_PRICE' | translate }}"
+        >
+        </e-column>
+        <e-column
+          field="cost"
+          format="N"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'FEED_MATERIAL_COST' | translate }}"
+        >
+        </e-column>
+
+        <e-column
+          field="locationName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'FEED_MATERIAL_LOCATION' | translate }}"
+        >
+        </e-column>
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'FEED_MATERIAL_COMMENT' | translate }}"
+          >
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="vendor">{{ "VENDOR" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.vendorGuid"
+            [fields]="fields"
+            [dataSource]="vendorData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_NO" for="no">{{
+            "FEED_MATERIAL_NO" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_NAME" for="name">{{
+            "FEED_MATERIAL_NAME" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_TYPE" for="feedMaterialType">{{
+            "FEED_MATERIAL_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="type-remote"
+          [codeType]="'Feed_Material_Type'"
+          [(selectedValue)]="model.feedMaterialType"
+          >
+          </app-code-type-dropdownlist>
+
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_ELEMENT" for="feedMaterialElement">{{
+            "FEED_MATERIAL_ELEMENT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialElement"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_EFFECT" for="idCard">{{
+            "FEED_MATERIAL_EFFECT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialEffect"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_SIDE_EFFECT" for="feedMaterialSideEffect">{{
+            "FEED_MATERIAL_SIDE_EFFECT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialSideEffect"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_BREED" for="Tel">{{
+            "FEED_MATERIAL_BREED" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialBreed"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_RANGE" for="feedMaterialRange">{{
+            "FEED_MATERIAL_RANGE" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialRange"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="FEED_MATERIAL_CARE" for="feedMaterialCare">{{
+            "FEED_MATERIAL_CARE" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.feedMaterialCare"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="spec">{{ "FEED_MATERIAL_SPEC" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.spec"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="amount">{{ "FEED_MATERIAL_AMOUNT" | translate }}</label>
+
+          <input
+            [(ngModel)]="model.amount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="price">{{ "FEED_MATERIAL_PRICE" | translate }}</label>
+          <input
+            [(ngModel)]="model.price"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="cost">{{ "FEED_MATERIAL_COST" | translate }}</label>
+          <input
+            [(ngModel)]="model.cost"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="location">{{ "FEED_MATERIAL_LOCATION" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="type-remote"
+            [codeType]="'Location'"
+            [(selectedValue)]="model.location"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="expireDate">{{ "EXPIRE_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.expireDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="amount">{{ "FEED_MATERIAL_QTY" | translate }}</label>
+          <input
+            [(ngModel)]="model.qty"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+         </div>
+      </div>
+
+      <div class="col-md-12">
+        <label ngbTooltip="FEED_MATERIAL_COMMENT">{{
+          "FEED_MATERIAL_COMMENT" | translate
+        }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.feedMaterialName || !model.feedMaterialNo"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

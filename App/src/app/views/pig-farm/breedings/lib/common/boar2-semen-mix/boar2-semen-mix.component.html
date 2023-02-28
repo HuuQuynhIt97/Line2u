@@ -1,0 +1,127 @@
+
+<ejs-grid
+#grid
+id="grid-detail"
+[dataSource]="dataSource"
+[allowResizing]="true"
+[allowPaging]="false"
+[pageSettings]="pageSettings"
+[editSettings]="editSettingsPig"
+[searchSettings]="searchOptions"
+(actionBegin)="actionBeginPig($event)"
+(created)="created()"
+[toolbar]="['Search']"
+[height]="300 + 'px'"
+[locale]="locale"
+gridLines="Both"
+(rowDataBound)="rowDataBound($event)"
+(dataBound)="dataBound($event)"
+>
+<e-columns>
+
+  <e-column
+    field="sourceGuid"
+    [visible]="visibleSourceGuid"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Source_GUID' | translate }}"
+  >
+    <ng-template #editTemplate let-data>
+      <app-boar-testing-dropdownlist
+        id="boar-testing"
+        (change)="onChangeBoarTestingGuid($event, data)"
+        [(selectedValue)]="data.sourceGuid"
+      >
+      </app-boar-testing-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.sourceGuidName}}
+    </ng-template>
+  </e-column>
+
+  <e-column
+  [visible]="true"
+    field="semenVolume"
+    textAlign="Left"
+  [edit]="numbericEdit"
+  editType= 'numericedit'
+    headerText="{{ 'Semen_Volume' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+
+  <e-column
+  [visible]="true"
+    field="semenConcentration"
+    editType= 'numericedit'
+  [edit]="numbericEdit"
+  textAlign="Left"
+    headerText="{{ 'Semen_Concentration' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+
+  <e-column
+  [visible]="true"
+    field="spermMotility"
+    editType= 'numericedit'
+  [edit]="numbericEdit"
+  textAlign="Left"
+    headerText="{{ 'Sperm_Motility' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+  <e-column
+  [visible]="true"
+  editType= 'numericedit'
+  [edit]="numbericEdit"
+    field="malformationRate"
+    textAlign="Left"
+    headerText="{{ 'malformation_Rate' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+
+  <e-column
+  [visible]="true"
+    field="spermColor"
+    textAlign="Left"
+    headerText="{{ 'Sperm_Color' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+
+  <e-column
+  [visible]="true"
+  editType= 'numericedit'
+  [edit]="numbericEdit"
+    field="malformationHead"
+    textAlign="Left"
+    headerText="{{ 'malformation_Head' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+  <e-column
+  [visible]="true"
+  editType= 'numericedit'
+  [edit]="numbericEdit"
+    field="malformationMiddle"
+    textAlign="Left"
+    headerText="{{ 'malformation_Middle' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+
+  <e-column
+  [visible]="true"
+  editType= 'numericedit'
+  [edit]="numbericEdit"
+    field="malformationTail"
+    textAlign="Left"
+    headerText="{{ 'malformation_Tail' | translate }}"
+    headerTextAlign="Center"
+  >
+  </e-column>
+
+</e-columns>
+</ejs-grid>

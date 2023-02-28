@@ -1,0 +1,440 @@
+<div class="mb-2">
+    <button
+      class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+      type="button"
+      id="grid2_add2"
+      aria-label="Add"
+      style="width: auto"
+      (click)="openModal(option2Modal)"
+    >
+      <i class="fa fa-plus"></i>
+      <span class="e-tbar-btn-text"> {{ 'Add Breeding2Sow' | translate }}</span>
+    </button>
+</div>
+<ejs-grid
+  #grid2
+  id="grid2"
+  [dataSource]="data"
+  [allowPaging]="false"
+  [allowResizing]="true"
+  [showColumnMenu]="false"
+  [allowSorting]="true"
+  [allowExcelExport]="true"
+  [pageSettings]="pageSettings"
+  [enableInfiniteScrolling]="true"
+  height="80vh"
+  gridLines="Both"
+  [editSettings]="editSettings"
+  (toolbarClick)="toolbarClick($event)"
+  (excelExportComplete)="excelExpComplete($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(option2Modal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="id"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      [visible]="false"
+      isPrimaryKey="true"
+      headerText="{{ 'ID' }}"
+    >
+    </e-column>
+
+    <e-column
+      field="pigGuidName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Pig_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sowNext"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Sow_Next' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sowGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Sow_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="heatingResult"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Result' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="matingDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EXECUTE_DATE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="matingAccount"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Account' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="semenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Semen_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="testResult"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Test_Result' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="beforePenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'beforePen_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="afterPenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'AfterePen_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sucklingGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sucklingStatus"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Suckling_Status' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="sowFosterGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'SowFoster_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="fosterPenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Foster_Pen_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="qtyCulling"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Qty_Culling' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="cullingReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Culling_Reason' | translate }}"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #option2Modal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modal">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Sow_Type">{{ "Sow_Type" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="record-sow-type-remote"
+            [codeType]="'Sow_Type'"
+            [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Sow_GUID">{{ "Sow_GUID" | translate }}</label>
+          <app-pig-dropdownlist
+            id="Sow_GUID"
+            [(selectedValue)]="model.sowGuid"
+          >
+          </app-pig-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Sow_Next">{{ "Sow_Next" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 40 )</span
+          >
+          <input
+            [(ngModel)]="model.sowNext"
+             
+            maxlength="40"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Level">{{ "Level" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="Level"
+            [codeType]="'SowBodyCondition_Level'"
+            [(selectedValue)]="model.level"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="type">{{ "Heating_Result" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="Heating_Result"
+            [codeType]="'Heating_Result'"
+            [(selectedValue)]="model.heatingResult"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Mating_date">{{ "Mating_date" | translate }}</label>
+          <ejs-datepicker
+            [(ngModel)]="model.matingDate"
+            locale="en-US"
+            format="yyyy/MM/dd"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <div class="form-group">
+            <label for="Mating_Account">{{
+              "Mating_Account" | translate
+            }}</label>
+            <app-account-dropdownlist
+              id="Mating_Account"
+              [(selectedValue)]="model.matingAccount"
+            >
+            </app-account-dropdownlist>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="type">{{ "Semen_GUID" | translate }}</label>
+          <app-semen-dropdownlist
+            id="Semen_GUID"
+            [(selectedValue)]="model.semenGuid"
+          >
+          </app-semen-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Test_Result">{{ "Test_Result" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="Test_Result"
+            [codeType]="'Test_Result'"
+            [(selectedValue)]="model.testResult"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="BeforePen_GUID">{{ "BeforePen_GUID" | translate }}</label>
+          <app-pen-dropdownlist
+            id="BeforePen_GUID"
+            [enabledLoad]="true"
+            [(selectedValue)]="model.beforePenGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="AfterPen_GUID">{{ "AfterPen_GUID" | translate }}</label>
+          <app-pen-dropdownlist
+          [enabledLoad]="true"
+          
+            id="AfterPen_GUID"
+            [(selectedValue)]="model.afterPenGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="sucklingGuid">{{ "Suckling_GUID" | translate }}</label>
+          <app-pen-dropdownlist
+            id="Suckling_GUID"
+            [enabledLoad]="true"
+            [(selectedValue)]="model.sucklingGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Suckling_Status">{{
+            "Suckling_Status" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+            id="Suckling_Status"
+            [codeType]="'Suckling_Status'"
+            [(selectedValue)]="model.sucklingStatus"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Foster_Pen_GUID">{{ "Foster_Pen_GUID" | translate }}</label>
+          <app-pen-dropdownlist
+            id="Foster_Pen_GUID"
+            [enabledLoad]="true"
+            [(selectedValue)]="model.fosterPenGuid"
+          >
+          </app-pen-dropdownlist>
+        </div>
+      </div>
+     
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Qty_Culling">{{ "Qty_Culling" | translate }}</label>
+          <input
+            [(ngModel)]="model.qtyCulling"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Culling_Reason">{{ "Culling_Reason" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.cullingReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="save(grid2)"
+    >
+      {{ "Save" | translate }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,375 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="true"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+(rowSelected)="rowSelected($event)"
+(recordClick)="recordClick($event)"
+(recordDoubleClick)="onDoubleClick($event)"
+[selectionSettings]="selectionOptions"
+(toolbarClick)="toolbarClick($event)"
+>
+<e-columns>
+<e-column
+  field="option"
+  [allowSorting]="false"
+  [allowSearching]="false"
+  [allowGrouping]="false"
+  [allowFiltering]="false"
+  [allowEditing]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  width="120"
+  headerTextAlign="Center"
+  headerText="{{ 'OPTION' | translate }}"
+>
+  <ng-template #template let-data>
+    <span (click)="delete(data.id)" class="delete-grid">
+      <i class="fa fa-trash"></i>
+    </span>
+    <span (click)="openModal(optionModal, data)" class="edit-grid">
+      <i class="fa fa-edit"></i>
+    </span>
+    <span (click)="toggleRecordDate(data.id)" class="clock-grid">
+      <i class="fa fa-clock"></i>
+    </span>
+  </ng-template>
+</e-column>
+<e-column
+  field="recordDate"
+  format="yyyy/MM/dd"
+  type="Date"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_DATETIME' | translate }}"
+>
+<ng-template #template let-data >
+  {{((data.recordDate | date: 'yyyy/MM/dd') || '') + ' ' + (data.recordTime || '')}}
+</ng-template>
+</e-column>
+
+<e-column
+  field="estDate"
+  format="yyyy/MM/dd"
+  type="Date"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'EST_DATETIME' | translate }}"
+>
+<ng-template #template let-data >
+  {{((data.estDate | date: 'yyyy/MM/dd') || '') + ' ' + (data.estTime || '')}}
+</ng-template>
+</e-column>
+
+<!-- <e-column
+  field="typeName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_FEEDING_TYPE' | translate }}"
+>
+</e-column> -->
+
+<e-column
+  field="feedGuidName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'FEED' | translate }}"
+>
+</e-column>
+<!-- <e-column
+  field="useTypeName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'FEEDING_USETYPE' | translate }}"
+>
+</e-column> -->
+
+<e-column
+  field="useUnitName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'FEEDING_USEUNIT' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="frequencyName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'FEEDING_FREQUENCY' | translate }}"
+>
+</e-column>
+<e-column
+  field="estAmount"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'EST_AMOUNT' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="recordAmount"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'RECORD_AMOUNT' | translate }}"
+>
+</e-column>
+<!--
+<e-column
+  field="recordResultName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'FEEDING_RESULT' | translate }}"
+>
+</e-column> -->
+
+<e-column
+  field="id"
+[allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [isPrimaryKey]="true"
+  [visible]="false"
+  headerText="ID"
+>
+</e-column>
+</e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+  <h4 [ngbTooltip]="title" class="modal-title">
+    <i class="fas fa-plus"></i> {{ title | translate }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label  for="recordMethod">{{ "FEEDING_USEUNIT" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+          id="recordMethod-remote"
+          [codeType]="'Feeding_UseUnit'"
+          [(selectedValue)]="model.useUnit"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label  for="frequency">{{ "FEEDING_FREQUENCY" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="frequency-remote"
+          [codeType]="'Feeding_Frequency'"
+          [(selectedValue)]="model.frequency"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="recordAmount">{{ "EST_AMOUNT" | translate }}</label>
+          <input
+            [(ngModel)]="model.estAmount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="recordAmount">{{ "RECORD_AMOUNT" | translate }}</label>
+          <input
+            [(ngModel)]="model.recordAmount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label  for="recordResult">{{ "FEEDING_RESULT" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="recordResult-remote"
+          [codeType]="'Feeding_Frequency'"
+          [(selectedValue)]="model.recordResult"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_FEEDING_FEED" for="recordMaterial">{{ "RECORD_FEEDING_FEED" | translate }}</label>
+          <app-feed-dropdownlist [(selectedValue)]='model.feedGuid'></app-feed-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="applyDays">{{
+            "RECORD_FEEDING_APPLY_DAYS" | translate
+          }}</label>
+          <input
+          id="applyDays"
+          [(ngModel)]="model.applyDays"
+          min="0"
+          type="number"
+          class="form-control"
+        />
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row bg-est">
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estDate">{{ "EST_DATE" | translate }}</label>
+          <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.estDate"></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estTime">{{ "EST_TIME" | translate }}</label>
+          <app-maskedtimetextbox [(selectedValue)]="model.estTime"></app-maskedtimetextbox>
+        </div>
+      </div>
+
+    </div>
+    <div class="row bg-record">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="realStartDate">{{ "RECORD_MOVE_RECORD_DATE" | translate }}</label>
+          <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.recordDate"></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_MOVE_TIME" for="recordTime">{{ "RECORD_MOVE_TIME" | translate }}</label>
+          <app-maskedtimetextbox [(selectedValue)]="model.recordTime"></app-maskedtimetextbox>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="text-white" for="estTime">&nbsp;</label>
+          <input
+          (click)="execute()"
+          type="button"
+          style="width:100px; cursor: pointer;"
+          value="{{ 'Execute' | translate }}"
+          class="form-control form-control-sm btn-secondary"
+        />
+        </div>
+        <!-- <button class="btn btn-sm bg-secondary mb-0" >{{ 'Execute' | translate }}</button> -->
+      </div>
+    </div>
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_FEEDING_TYPE" for="type">{{ "RECORD_FEEDING_TYPE" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+          id="record-feeding-type-remote"
+          [codeType]="'Record_Feeding_Type'"
+          [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label for="useType">{{ "FEEDING_USETYPE" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="useType-remote"
+          [codeType]="'Feeding_UseType'"
+          [(selectedValue)]="model.useType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+    <div class="col-md-12">
+      <div class="form-group">
+        <label ngbTooltip="RECORD_FEEDING_COMMENT" for="comment">{{ "RECORD_FEEDING_COMMENT" | translate }}</label>
+        <textarea
+          [(ngModel)]="model.comment"
+          name="comment"
+          type="text"
+          class="form-control"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+  <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  <button
+    [disabled]="!model.useUnit"
+    (click)="save()"
+    ngbTooltip="SAVE"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+  </div>
+  </ng-template>

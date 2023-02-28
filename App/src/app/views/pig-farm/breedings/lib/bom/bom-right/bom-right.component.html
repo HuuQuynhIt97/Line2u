@@ -1,0 +1,28 @@
+
+<div class="card main-card">
+  <div class="card-header table-responsive p-0">
+    <nav class="nav nav-pills nav-justified p-2" >
+      <a class="nav-link my-nav" (click)="onActive('Detail')" [ngClass]="{ 'active': active == 'Detail'}">{{'BOM_DETAIL' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Move')" [ngClass]="{ 'active': active == 'Move'}">{{'BOM_Move' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Feeding')" [ngClass]="{ 'active': active == 'Feeding'}">{{'BOM_Feeding' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Weighing')" [ngClass]="{ 'active': active == 'Weighing'}">{{'BOM_Weighing' | translate}}</a>
+      <a class="nav-link my-nav" (click)="onActive('Immunization')" [ngClass]="{ 'active': active == 'Immunization'}">{{'BOM_IMMUNIZATION' | translate}}</a>
+    </nav>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Detail'">
+    <app-bom-sow-detail></app-bom-sow-detail>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Move'">
+    <app-bom-move></app-bom-move>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Feeding'">
+    <app-bom-feeding></app-bom-feeding>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Weighing'">
+    <app-bom-weighing></app-bom-weighing>
+  </div>
+  <div class="card-body table-responsive p-0" *ngIf="active == 'Immunization'">
+    <app-immunization></app-immunization>
+  </div>
+</div>
+

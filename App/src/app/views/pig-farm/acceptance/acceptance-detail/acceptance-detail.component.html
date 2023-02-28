@@ -1,0 +1,99 @@
+<div class="row p-2" style='overflow-y: auto;'>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="requisitionGuid">{{ "REQUISITION" | translate }}</label>
+      <ejs-dropdownlist
+        [(ngModel)]="model.requisitionGuid"
+        [fields]="fields"
+        [dataSource]="requisitionData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="vaccine">{{
+        "ACCEPTANCE_DEPT" | translate
+      }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <app-code-type-dropdownlist
+      id="account-dept-remote"
+      [codeType]="'Account_Dept'"
+      [(selectedValue)]="model.acceptanceDept"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="userType">{{
+        "ACCEPTANCE_REASON" | translate
+      }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.acceptanceReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="acceptanceDate">{{ "ACCEPTANCE_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.acceptanceDate"></ejs-datepicker>
+    </div>
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="acceptanceTime">{{ "ACCEPTANCE_TIME" | translate }}</label>
+      <app-maskedtimetextbox [(selectedValue)]="model.acceptanceTime"></app-maskedtimetextbox>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="rejectDate">{{ "REJECT_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.rejectDate"></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="userType">{{
+        "REJECT_REASON" | translate
+      }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.rejectReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="comment">{{
+        "ACCEPTANCE_COMMENT" | translate
+      }}</label>
+      <textarea
+        [(ngModel)]="model.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="2"
+        rows="2"
+      ></textarea>
+    </div>
+  </div>
+</div>

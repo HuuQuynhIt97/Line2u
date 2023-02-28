@@ -1,0 +1,960 @@
+<ng-template #makeOrderGuidSearchTemplate let-data>
+  <app-makeorder-dropdownlist-toolbar
+  [placeholder]="translate.instant('Choose a make order')"
+  [(selectedValue)]="makeOrderGuidSearch"
+  (change)="onChangemakeOrderGuidSearch($event)"
+  ></app-makeorder-dropdownlist-toolbar>
+</ng-template>
+<ng-template #statusTemplate let-data>
+  <div class="row no-gutters">
+    <div
+      class="col-md d-flex align-items-center ml-2"
+      *ngFor="let item of orderStatus"
+    >
+      <ejs-checkbox
+        [label]="item.name | translate"
+        (change)="onCheckedChangeOrderStatus($event, item)"
+      ></ejs-checkbox>
+    </div>
+  </div>
+</ng-template>
+<ng-template #estTemplate let-data>
+  <ejs-datepicker
+    locale="en-US"
+    format="yyyy/MM/dd"
+    [(value)]="estDate"
+    (change)="onChangeEst($event)"
+    id="estDate-option"
+  ></ejs-datepicker>
+</ng-template>
+<ng-template #odsTemplate let-data>
+  <button
+    class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+    type="button"
+    id="grid_odsexport"
+    tabindex="-1"
+    (click)="odsExport()"
+    style="width: auto"
+  >
+    <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+    ><span class="e-tbar-btn-text">{{ "Ods Export" | translate }} </span>
+  </button>
+</ng-template>
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [query]="query"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+  (rowDataBound)="rowDataBoundApplyOrder($event)"
+  (excelExportComplete)="excelExpComplete($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="estDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EST_DATETIME' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="statusName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'ORDER_STATUS' | translate }}"
+    >
+    </e-column>
+    <!-- <e-column
+      field="orderNo"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'ORDER_NO' | translate }}"
+    >
+    </e-column> -->
+    <e-column
+      field="roomName"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'ROOM' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="applyName"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Apply_Name' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="agreeName"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Agree_Name/Reject_Name' | translate }}"
+    >
+      <ng-template #template let-data>
+        {{
+          data.status === 5
+            ? data.rejectName
+            : data.status === 2 || data.status === 4
+            ? data.agreeName
+            : ""
+        }}
+      </ng-template>
+    </e-column>
+    <e-column
+      field="inventoryName"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Inventory_Name' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="executeName"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Execute_Name' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="typeName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Disinfection_Type' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="applyDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'APPLY_DATE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="applyReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'APPLY_REASON' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="agreeDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'AGREE_DATE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="agreeReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'AGREE_REASON' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="rejectDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'REJECT_DATE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="rejectReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'REJECT_REASON' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="inventoryReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'INVENTORY_REASON' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="veterinaryDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'VETERINARY_DATE' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="executeDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EXECUTE_DATE' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="executeReason"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'EXECUTE_REASON' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="id"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modal">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="type">{{ "Disinfection_Type" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+            id="record-disinfection-type-remote"
+            [codeType]="'Record_Disinfection_Type'"
+            [(selectedValue)]="model.type"
+            [disabled]="
+              (model.status === statusConts.Close &&
+                disabledInput(model.executeDate)) ||
+              model.status === statusConts.Reject
+            "
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estDate">{{ "EST_DATE" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.estDate"
+            [disabled]="
+              (model.status === statusConts.Close &&
+                disabledInput(model.executeDate)) ||
+              model.status === statusConts.Reject
+            "
+          ></ejs-datepicker>
+        </div>
+      </div>
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+                    <label for="makeOrderGuid">{{ "Make_Order" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-makeorder-dropdownlist
+            [(selectedValue)]="model.makeOrderGuid"
+            (change)='onChangeMakeOrder($event)'
+            [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject"
+          >
+          </app-makeorder-dropdownlist>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="disinfectionGuid">{{ "DISINFECTION" | translate }}</label>
+          <app-disinfection-dropdownlist
+            id="disinfectionGuid"
+            [(selectedValue)]="model.disinfectionGuid"
+            (change)='onChangeDisinfection($event)'
+            [disabled]="
+              (model.status === statusConts.Close &&
+                disabledInput(model.executeDate)) ||
+              model.status === statusConts.Reject
+            "
+          >
+          </app-disinfection-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="capacity">{{
+            "Disinfection_Capacity" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+            id="capacity-remote"
+            [codeType]="'Disinfection_Capacity'"
+            [(selectedValue)]="model.capacity"
+            [disabled]="
+              (model.status === statusConts.Close &&
+                disabledInput(model.executeDate)) ||
+              model.status === statusConts.Reject
+            "
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="WarningText">{{ "WarningText" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.warningText"
+            maxlength="100"
+            type="text"
+            class="form-control"
+            [disabled]="
+              (model.status === statusConts.Close &&
+                disabledInput(model.executeDate)) ||
+              model.status === statusConts.Reject
+            "
+          />
+        </div>
+      </div>
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label for="useType">{{ "USE_TYPE" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="useType-remote"
+          [codeType]="'Disinfection_UseType'"
+          [(selectedValue)]="model.useType"
+          [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject"
+
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label for="useUnit">{{ "USE_UNIT" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="useUnit-remote"
+          [codeType]="'Disinfection_UseUnit'"
+          [(selectedValue)]="model.useUnit"
+          [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject"
+
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label for="capacity">{{ "CAPACITY" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="capacity-remote"
+          [codeType]="'Disinfection_Capacity'"
+          [(selectedValue)]="model.capacity"
+          [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject"
+
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label for="Frequency">{{ "FREQUENCY" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="frequency-remote"
+          [codeType]="'Disinfection_Frequency'"
+          [(selectedValue)]="model.frequency"
+          [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject"
+
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-4">
+        <div class="form-group">
+          <label for="applyDays">{{ "APPLY_DAYS" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="applyDays"
+          [codeType]="'Disinfection_ApplyDays'"
+          [(selectedValue)]="model.applyDays"
+          [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject"
+
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div> -->
+    </div>
+
+    <!-- Apply -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="applyDate">{{ "APPLY_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.applyDate"
+            [disabled]="model.applyGuid"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="applyReason">{{ "APPLY_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.applyReason"
+            maxlength="100"
+            type="text"
+            [disabled]="disabledApplyReason(model)"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="applyGuid">{{ "APPLY_GUID" | translate }}</label>
+              <app-account-dropdownlist
+                id="applyGuid"
+                [(selectedValue)]="model.applyGuid"
+                [disabled]="model.applyGuid"
+              >
+              </app-account-dropdownlist>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+              *ngIf="!(model.id > 0) || !model.applyDate"
+              [disabled]="!model.type || !model.estDate"
+              (click)="save()"
+              class="btn btn-primary mb-3 ml-2"
+            >
+              {{ "Apply" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End apply -->
+
+    <!-- Agree -->
+    <div
+      class="row"
+      *ngIf="
+        model.id > 0 && model.status !== statusConts.Reject && !model.rejectGuid
+      "
+    >
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="agreeDate">{{ "AGREE_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.agreeDate"
+            [disabled]="true"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="agreeReason">{{ "AGREE_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.agreeReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+            [disabled]="disabledAgreeReason(model)"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="agreeGuid">{{ "AGREE_GUID" | translate }}</label>
+              <app-account-dropdownlist
+                id="agreeGuid"
+                [(selectedValue)]="model.agreeGuid"
+                [disabled]="true"
+              >
+              </app-account-dropdownlist>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+              *ngIf="visibledAgree(model)"
+            [disabled]="model.agreeGuid"
+              (click)="agree()"
+              class="btn btn-success mb-3 ml-2"
+            >
+              {{ "Agree" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End agree -->
+
+    <!-- Reject -->
+    <div
+      class="row"
+      *ngIf="
+        model.id > 0 && model.status != statusConts.Agree && !model.agreeGuid
+      "
+    >
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="rejectDate">{{ "REJECT_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.rejectDate"
+            [disabled]="true"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="rejectReason">{{ "REJECT_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.rejectReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+            [disabled]="disabledRejectReason(model)"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="rejectGuid">{{ "REJECT_GUID" | translate }}</label>
+              <app-account-dropdownlist
+                id="rejectGuid"
+                [(selectedValue)]="model.rejectGuid"
+                [disabled]="true"
+              >
+              </app-account-dropdownlist>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+               *ngIf="visibledReject(model)"
+              [disabled]="model.agreeGuid"
+              (click)="reject()"
+              class="btn btn-danger mb-3 ml-2"
+            >
+              {{ "Reject" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End reject -->
+
+    <!-- Execute 2 inventory -->
+    <div
+      class="row"
+      *ngIf="
+        model.id > 0 &&
+        (model.agreeGuid || model.rejectGuid || model.inventoryGuid)
+      "
+    >
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="inventoryDate">{{ "INVENTORY_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.inventoryDate"
+            [disabled]="true"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="inventoryReason">{{
+            "INVENTORY_REASON" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.inventoryReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+            [disabled]="model.inventoryGuid"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="inventoryGuid">{{
+                "INVENTORY_GUID" | translate
+              }}</label>
+              <app-account-dropdownlist
+                id="inventoryGuid"
+                [(selectedValue)]="model.inventoryGuid"
+                [disabled]="true"
+              >
+              </app-account-dropdownlist>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+            *ngIf="model.id > 0 && !model.inventoryGuid && enabledInput(model.inventoryDate)"
+              (click)="inventory()"
+              class="btn btn-success mb-3 ml-2"
+            >
+              {{ "Execute 1" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End execute 2 inventory -->
+
+    <!-- Execute -->
+    <div
+      class="row"
+      *ngIf="model.id > 0 && (model.executeGuid || model.inventoryGuid)"
+    >
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="executeDate">{{ "EXECUTE_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.executeDate"
+            [disabled]="true"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="executeReason">{{ "EXECUTE_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.executeReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+            [disabled]="disabledInput(model.executeDate) && model.executeGuid"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="executeGuid">{{ "EXECUTE_GUID" | translate }}</label>
+              <app-account-dropdownlist
+                id="executeGuid"
+                [(selectedValue)]="model.executeGuid"
+                [disabled]="true"
+              >
+              </app-account-dropdownlist>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+              *ngIf="
+                (model.id > 0 && model.status === statusConts.Agree) ||
+                (model.id > 0 && enabledInput(model.executeDate))
+              "
+              (click)="execute()"
+              class="btn btn-success mb-3 ml-2"
+            >
+              {{ "Execute 2" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End execute -->
+    <div class="row">
+      <div class="col-md-4">
+        <label for="areaGuid">{{ "Area" | translate }}</label>
+        <app-area-dropdownlist
+          id="areaGuid"
+          [(selectedValue)]="areaGuid"
+          [disabled]="
+            (model.status === statusConts.Close &&
+              disabledInput(model.executeDate)) ||
+            model.status === statusConts.Reject
+          "
+          (change)="onChangeArea($event)"
+        >
+        </app-area-dropdownlist>
+      </div>
+
+      <div class="col-md-4">
+        <label for="barnGuid">{{ "Barn" | translate }}</label>
+        <app-barn-dropdownlist
+          id="barnGuid"
+          [areaGuid]="areaGuid"
+          [autoload]="false"
+          [(selectedValue)]="barnGuid"
+          [disabled]="
+            (model.status === statusConts.Close &&
+              disabledInput(model.executeDate)) ||
+            model.status === statusConts.Reject
+          "
+          (change)="onChangeBarn($event)"
+        >
+        </app-barn-dropdownlist>
+      </div>
+      <div class="col-md-4">
+        <label for="roomGuid">{{ "ROOM" | translate }}</label><span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <app-room-dropdownlist
+          id="roomGuid"
+          [(selectedValue)]="roomGuid"
+          [makeOrderGuid]="model?.makeOrderGuid"
+          [disabled]="
+            (model.status === statusConts.Close &&
+              disabledInput(model.executeDate)) ||
+            model.status === statusConts.Reject
+          "
+          (change)="onChangeRoom($event)"
+        >
+        </app-room-dropdownlist>
+      </div>
+      <div class="col-md-4">
+        <label for="penGuid">{{ "Pen" | translate }}</label>
+        <ejs-multiselect
+          id="multiselect-checkbox"
+          [enabled]="!(model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject)"
+          (actionComplete)="actionComplete($event)"
+          (filtering)="onFiltering($event)"
+          [allowFiltering]="true"
+          [dataSource]="dataPen"
+          [query]="queryPen"
+          [fields]="fields"
+          mode="CheckBox"
+          popupHeight="350px"
+          [showDropDownIcon]="true"
+          [(value)]="selectedPen"
+          (change)="onChangePen($event)"
+          showSelectAll="true"
+        ></ejs-multiselect>
+      </div>
+      <div class="col-md-12 mt-2">
+        <ejs-grid
+          #piggrid
+          [dataSource]="selectedPenData"
+          [enableInfiniteScrolling]="true"
+          [allowPaging]="false"
+          [pageSettings]="pageSettings"
+          [searchSettings]="searchOptions"
+          [toolbar]="['Search']"
+          [height]="300 + 'px'"
+          gridLines="Both"
+        >
+          <e-columns>
+            <e-column
+              field="name"
+              [allowSorting]="false"
+              [allowSearching]="false"
+              [allowGrouping]="false"
+              [allowFiltering]="false"
+              [allowEditing]="false"
+              textAlign="Left"
+              headerTextAlign="Center"
+              width="80"
+              headerTextAlign="Center"
+              headerText="{{ 'SELECTED PEN LIST' | translate }}"
+            >
+              <!-- <ng-template #template let-data>
+            <ejs-checkbox [disabled]="model.status === statusConts.Execute && disabledInput(model.executeDate) || model.status === statusConts.Reject" #checkbox (change)="onChangeChecked($event, data)" [label]="data.name" [checked]="data.checked"></ejs-checkbox>
+          </ng-template> -->
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_DISINFECTION_COMMENT" for="comment">{{
+            "RECORD_DISINFECTION_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">GUID</span> :
+          {{ model?.guid }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <div *ngFor="let item of configButtonData">
+      <button
+        type="button"
+        class="btn"
+        *ngIf="model.guid"
+        [class.btn-success]="item.no.includes('Next')"
+        [class.btn-danger]="item.no.includes('Exception')"
+        (click)="goToLink(item)"
+      >
+        {{ item.value | translate }}
+      </button>
+    </div>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+  </div>
+</ng-template>

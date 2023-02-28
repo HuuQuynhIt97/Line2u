@@ -1,0 +1,521 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (excelExportComplete)="excelExpComplete($event)"
+      >
+        <e-columns>
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text"
+                >{{ "Ods Export" | translate }}
+              </span>
+            </button>
+          </ng-template>
+          <e-column
+            field="option"
+            textAlign="Left"
+            headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="recordDate"
+            format="yyyy/MM/dd"
+            type="Date"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'RECORD_DATETIME' | translate }}"
+          >
+            <ng-template #template let-data>
+              {{
+                ((data.recordDate | date: "yyyy/MM/dd") || "") +
+                  " " +
+                  (data.recordTime || "")
+              }}
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="estDate"
+            format="yyyy/MM/dd"
+            type="Date"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'EST_DATETIME' | translate }}"
+          >
+            <ng-template #template let-data>
+              {{
+                ((data.estDate | date: "yyyy/MM/dd") || "") +
+                  " " +
+                  (data.estTime || "")
+              }}
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="inOutNo"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'IN_OUT_NO' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="inOutName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'IN_OUT_NAME' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="typeName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'RECORD_IN_OUT_TYPE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="rejectDate"
+            type="Date"
+            format="yyyy/MM/dd"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'REJECT_DATE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="rejectReason"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'REJECT_REASON' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="agreeDate"
+            type="Date"
+            format="yyyy/MM/dd"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'AGREE_DATE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="agreeReason"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'AGREE_REASON' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'COMMENT' | translate }}"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="inOutNo">{{ "IN_OUT_NO" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.inOutNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="inOutName">{{ "IN_OUT_NAME" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.inOutName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="type">{{ "IN_OUT_TYPE" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+
+          <app-code-type-dropdownlist
+            id="type"
+            [codeType]="'RECORD_IN_OUT_TYPE'"
+            [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="agreeDate">{{ "AGREE_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.agreeDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="agreeReason">{{ "AGREE_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.agreeReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="agreeGuid">{{ "AGREE_GUID" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.agreeGuid"
+            [fields]="fields"
+            [dataSource]="rejectData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="salesOrderDate">{{ "REJECT_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.rejectDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="rejectReason">{{ "REJECT_REASON" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.rejectReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="rejectGuid">{{ "REJECT_GUID" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.rejectGuid"
+            [fields]="fields"
+            [dataSource]="rejectData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="accountGuid">{{ "ACCOUNT_GUID" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.accountGuid"
+            [fields]="fields"
+            [dataSource]="rejectData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-group">
+          <label for="bom">{{ "CUSTOMER" | translate }}</label>
+          <app-customer-dropdownlist [(selectedValue)]="model.customerGuid">
+          </app-customer-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4" *ngIf="model.type === 'in'">
+        <div class="form-group">
+          <label for="fromFarm">{{ "FROM_FARM" | translate }}</label>
+          <app-farm-dropdownlist
+            id="fromFarm"
+            [(selectedValue)]="model.fromFarm"
+          >
+          </app-farm-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4" *ngIf="model.type === 'out'">
+        <div class="form-group">
+          <label for="toFarm">{{ "TO_FARM" | translate }}</label>
+          <app-farm-dropdownlist id="toFarm" [(selectedValue)]="model.toFarm">
+          </app-farm-dropdownlist>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+
+    <div class="row bg-est">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estDate">{{ "EST_DATE" | translate }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.estDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="estTime">{{ "EST_TIME" | translate }}</label>
+          <app-maskedtimetextbox
+            [(selectedValue)]="model.estTime"
+          ></app-maskedtimetextbox>
+        </div>
+      </div>
+    </div>
+
+    <div class="row bg-record">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="realStartDate">{{
+            "RECORD_MOVE_RECORD_DATE" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.recordDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="RECORD_MOVE_TIME" for="recordTime">{{
+            "RECORD_MOVE_TIME" | translate
+          }}</label>
+          <app-maskedtimetextbox
+            [(selectedValue)]="model.recordTime"
+          ></app-maskedtimetextbox>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="text-white" for="estTime">&nbsp;</label>
+          <input
+            (click)="execute()"
+            type="button"
+            style="width: 100px; cursor: pointer"
+            value="{{ 'Execute' | translate }}"
+            class="form-control form-control-sm btn-secondary"
+          />
+        </div>
+        <!-- <button class="btn btn-sm bg-secondary mb-0" >{{ 'Execute' | translate }}</button> -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <label for="pig">{{ "PIG" | translate }}</label>
+        <ejs-grid
+        #piggrid
+        [dataSource]="pigData"
+        [enableInfiniteScrolling]="true"
+        [allowPaging]="false"
+        [pageSettings]="pageSettings"
+        [searchSettings]="searchOptions"
+        [toolbar]="['Search']"
+        [height]="300 + 'px'"
+        gridLines="Both"
+        >
+        <e-columns>
+        <e-column
+          field="guid"
+          [allowSorting]="false"
+          [allowSearching]="false"
+          [allowGrouping]="false"
+          [allowFiltering]="false"
+          [allowEditing]="false"
+          textAlign="Left"
+                  headerTextAlign="Center"
+          width="80"
+          headerTextAlign="Center"
+          headerText="{{ 'PIG' | translate }}"
+        >
+          <ng-template #template let-data>
+            <ejs-checkbox #checkbox (change)="onChangeChecked($event, data)" [label]="data.name" [checked]="data.checked"></ejs-checkbox>
+          </ng-template>
+        </e-column>
+
+        </e-columns>
+        </ejs-grid>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>{{ "RECORD_IN_OUT_COMMENT" | translate }}</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.type"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

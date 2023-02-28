@@ -1,0 +1,305 @@
+<ejs-grid
+  #grid
+  id="grid-detail"
+  [dataSource]="dataSource"
+  [enableInfiniteScrolling]="true"
+  [allowPaging]="false"
+  [allowResizing]="true"
+  [pageSettings]="pageSettings"
+  [editSettings]="editSettingsPig"
+  [searchSettings]="searchOptions"
+  (actionBegin)="actionBeginPig($event)"
+  (actionComplete)="actionComplete($event)"
+  (created)="created()"
+  [toolbar]="['Search']"
+  [height]="300 + 'px'"
+  gridLines="Both"
+  (dataBound)="dataBound()"
+>
+  <e-columns>
+    <e-column
+      field="sowGuidName"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerTextAlign="Center"
+      headerText="{{ 'Sow_GUID' | translate }}"
+    >
+    </e-column>
+    <!-- <e-column
+    field="breedingGuid"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Breeding_GUID' | translate }}"
+  >
+    <ng-template #editTemplate let-data>
+      <app-breeding-dropdownlist
+        id="breedingGuid"
+        (change)="onChangeBreedingGuid($event, data)"
+        [(selectedValue)]="data.level"
+      >
+      </app-breeding-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.breedingGuidName | translate }}
+    </ng-template>
+  </e-column> -->
+
+  <e-column
+    field="penGuid"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Pen_GUID' | translate }}"
+  >
+    <ng-template #editTemplate let-data>
+      <app-pen-dropdownlist
+        id="penGuid"
+        [enabledLoad]="true"
+        (change)="onChangePenGuid($event, data)"
+        [(selectedValue)]="data.penGuid"
+      >
+      </app-pen-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.penGuidName | translate }}
+    </ng-template>
+  </e-column>
+
+    
+  <!-- <e-column
+  field="sowGuid"
+  [visible]="false"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Sow_GUID' | translate }}"
+>
+  <ng-template #editTemplate let-data>
+    <app-pig-dropdownlist
+      id="sowGuid"
+      (change)="onChangeSowGuid($event, data)"
+      [(selectedValue)]="data.sowGuid"
+    >
+    </app-pig-dropdownlist>
+  </ng-template>
+  <ng-template #template let-data>
+    {{ data.sowGuidName | translate }}
+  </ng-template>
+</e-column> -->
+<!-- 
+<e-column
+      field="breedingType"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_Type' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          id="Breeding_Type"
+          codeType="Breeding_Type"
+          (change)="onChangeBreedingType($event, data)"
+          [(selectedValue)]="data.breedingType"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.breedingTypeName | translate }}
+      </ng-template>
+    </e-column> -->
+
+<!--     
+<e-column
+field="breedingStatus1"
+textAlign="Left"
+headerTextAlign="Center"
+headerText="{{ 'Breeding_Status1' | translate }}"
+>
+<ng-template #editTemplate let-data>
+  <app-code-type-dropdownlist
+    id="Breeding_Status1"
+    codeType="Breeding_STATUS"
+    (change)="onChangeBreedingStatus1($event, data)"
+    [(selectedValue)]="data.breedingStatus1"
+  >
+  </app-code-type-dropdownlist>
+</ng-template>
+<ng-template #template let-data>
+  {{ data.breedingStatus1Name | translate }}
+</ng-template>
+</e-column>
+   
+<e-column
+field="breedingStatus2"
+textAlign="Left"
+headerTextAlign="Center"
+headerText="{{ 'Breeding_Status2' | translate }}"
+>
+<ng-template #editTemplate let-data>
+  <app-code-type-dropdownlist
+    id="Breeding_Status2"
+    codeType="Breeding_STATUS"
+    (change)="onChangeBreedingStatus2($event, data)"
+    [(selectedValue)]="data.breedingStatus2"
+  >
+  </app-code-type-dropdownlist>
+</ng-template>
+<ng-template #template let-data>
+  {{ data.breedingStatus2Name | translate }}
+</ng-template>
+</e-column> -->
+
+    <e-column
+      field="lastStatus"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_Last_Status' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <app-code-type-dropdownlist
+        id="Last_Status"
+        #lastStatus
+        codeType="Breeding_STATUS"
+        (change)="onChangeLastStatus($event, data)"
+        [(selectedValue)]="data.lastStatus"
+      >
+      </app-code-type-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.lastStatusName | translate }}
+    </ng-template>
+    </e-column>
+    
+    <!-- <e-column
+      field="lastResult"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_Last_Result' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <app-code-type-dropdownlist
+        id="Last_Result"
+        codeType="Breeding_Last_Result"
+        (change)="onChangeLastResult($event, data)"
+        [(selectedValue)]="data.lastResult"
+      >
+      </app-code-type-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.lastResultName | translate }}
+    </ng-template>
+    </e-column> -->
+    
+    <e-column
+      field="parity"
+      width="120"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericEdit"
+      headerText="{{ 'Parity' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="heatingDate"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Date' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.heatingDate"></ejs-datepicker>
+    </ng-template>
+    
+    <ng-template #template let-data>
+      {{ convertDateTime(data.heatingDate) }}
+    </ng-template>
+    </e-column>
+
+    
+    <e-column
+      field="heatingResult"
+      textAlign="Left"
+      
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Result' | translate }}"
+    >
+      <ng-template #editTemplate let-data *ngIf="allowEditHetingResult">
+        <app-code-type-dropdownlist
+          id="Heating_Result"
+          codeType="Heating_Result"
+          (change)="onChangeHeatingResult($event, data)"
+          [(selectedValue)]="data.heatingResult"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #editTemplate let-data *ngIf="!allowEditHetingResult">
+        {{ data.heatingResultName }}
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.heatingResultName }}
+      </ng-template>
+    </e-column>
+
+    
+    <e-column
+      field="matingDate"
+      editType="datepickeredit"
+      format="yyyy/MM/dd"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Date' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="model.matingDate"></ejs-datepicker>
+    </ng-template>
+    <ng-template #template let-data>
+      {{convertDateTime(data.matingDate)}}
+    </ng-template>
+    </e-column>
+
+    
+    <e-column
+      field="matingAccount"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Account' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-account-dropdownlist
+          id="Mating_Account"
+          (change)="onChangeMatingAccount($event, data)"
+          [(selectedValue)]="data.matingAccount"
+        >
+        </app-account-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.matingAccountName}}
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="semenGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Semen_GUID' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-semen-dropdownlist
+          id="semenGuid"
+          (change)="onChangeSemenGuid($event, data)"
+          [(selectedValue)]="data.semenGuid"
+        >
+        </app-semen-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.semenGuidName }}
+      </ng-template>
+    </e-column>
+
+  </e-columns>
+</ejs-grid>

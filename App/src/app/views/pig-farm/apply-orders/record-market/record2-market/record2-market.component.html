@@ -1,0 +1,166 @@
+<div class="row">
+
+<div class="col-md-12">
+
+<button
+  class="btn btn-sm btn-success my-2"
+  type="button"
+  (click)="file.click()"
+>
+<i class="fa fa-file-excel" aria-hidden="true"></i><span class="e-tbar-btn-text">{{ 'Choose file' | translate }}</span>
+</button>
+<button
+  class="btn btn-sm btn-success my-2"
+  type="button"
+  (click)="import()"
+>
+<i class="fa fa-file-excel" aria-hidden="true"></i><span class="e-tbar-btn-text">{{ 'Import_Excel_Record2Market' | translate }}</span>
+</button>
+<!-- <button
+  class="btn btn-sm btn-secondary my-2"
+  type="button"
+  (click)="downloadfile()"
+>
+<i class="fa fa-file-excel" aria-hidden="true"></i><span class="e-tbar-btn-text">{{ 'Download_Template_Record2Market' | translate }}</span>
+</button> -->
+<button
+  class="btn btn-sm btn-secondary my-2"
+  type="button"
+  (click)="excelExportRecordSale()"
+>
+<i class="fa fa-file-excel" aria-hidden="true"></i><span class="e-tbar-btn-text">{{ 'Export_Pigs_In_RecordSale' | translate }}</span>
+</button>
+<button
+  class="btn btn-sm btn-danger my-2"
+  type="button"
+  (click)="deleteImportExcel()"
+>
+  <i class="fa fa-trash"></i><span class="e-tbar-btn-text">{{ 'Delete_Record2Market' | translate }}</span>
+</button>
+<ejs-grid
+#grid
+  [dataSource]="dataSource"
+  [allowPaging]="false"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [height]="300 + 'px'"
+  gridLines="Both"
+  width="100%"
+  (actionComplete)="actionComplete($event)"
+  (actionBegin)="actionBegin($event)"
+  [locale]="locale"
+  (dataBound)="dataBound()"
+>
+  <e-columns>
+    <e-column headerText="" width="50" [commands]="commands"></e-column>
+    <e-column
+      field="id"
+      textAlign="Left"
+      [visible]="false"
+      headerTextAlign="Center"
+      headerText="{{ 'Id' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="type"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="dropdownedit"
+      headerText="{{ 'Record2Market_Type' | translate }}"
+    >
+    </e-column>
+
+
+
+  <e-column
+  field="seqNo"
+  textAlign="Left"
+  headerTextAlign="Center"
+  editType="numericEdit"
+  [edit]="numbericEdit"
+  headerText="{{ 'SEQ_NO' | translate }}"
+>
+</e-column>
+
+    <e-column
+      field="pigNo"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Pig_NO' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+    field="sex"
+    textAlign="Left"
+    headerTextAlign="Center"
+    width="130"
+    headerText="{{ 'Pig_Sex' | translate }}"
+  >
+  </e-column>
+
+    <e-column
+      field="weight"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericEdit"
+      headerText="{{ 'Record_Market_Weight' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="unitPrice"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericEdit"
+      headerText="{{ 'Record_Market_Unit' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="price"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericPriceEdit"
+      headerText="{{ 'Record_Market_Price' | translate }}"
+    >
+    <ng-template #template let-data>
+      {{round(data.price) }}
+    </ng-template>
+    </e-column>
+    
+    <e-column
+      field="other"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Record_Market_Other' | translate }}"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<input #file (change)="onChangeFile($event)" type="file" style="visibility: hidden" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
+</div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label for="avgWeight">{{ "Record2Market_AVG_WEIGHT" | translate }}: {{ avgWeight }}</label>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="avgWeight">{{ "Record2Market_TOTAL_WEIGHT" | translate }} : {{ totalWeight }}</label>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="avgWeight">{{ "Record2Market_Total_Pig" | translate }} : {{ totalPig }}</label>
+    </div>
+  </div>
+</div>

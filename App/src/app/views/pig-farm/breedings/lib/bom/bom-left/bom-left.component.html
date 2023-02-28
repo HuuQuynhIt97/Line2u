@@ -1,0 +1,602 @@
+
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  [selectedRowIndex]="0"
+  (rowSelected)="rowSelected($event)"
+  (recordClick)="recordClick($event)"
+  (recordDoubleClick)="onDoubleClick($event)"
+  [selectionSettings]="selectionOptions"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+    <e-column
+    field="bomNo"
+    textAlign="Left"
+        headerTextAlign="Center"
+    headerText="{{ 'BomSowNo' | translate }}"
+  >
+  </e-column>
+    <e-column
+      field="bomName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BomSowName' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="no">{{ "BomSow_NO" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.bomNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="bomName">{{ "BomSow_NAME" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.bomName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="bomVersion">{{ "BomSow_VERSION" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.bomVersion"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="bomBreed">{{ "BomSowBreed" | translate }}</label>
+          <app-code-type-dropdownlist
+          id="BomSow-breed-remote"
+          [codeType]="'BomSow_Breed'"
+          [(selectedValue)]="model.bomBreed"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowHeatingStartDate">{{ "Sow_Heating_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowHeatingStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowHeatingEndDate">{{ "Sow_Heating_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowHeatingEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowMatingStartDate">{{ "Sow_Mating_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowMatingStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowMatingEndDate">{{ "Sow_Mating_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowMatingEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowPregnancyTest1StartDate">{{ "Sow_PregnancyTest1_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowPregnancyTest1StartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowPregnancyTest1EndDate">{{ "Sow_PregnancyTest1_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowPregnancyTest1EndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowMoveStartDate">{{ "Sow_Move_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowMoveStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowMoveEndDate">{{ "Sow_Move_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowMoveEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowPregnancyTest2StartDate">{{ "Sow_PregnancyTest2_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowPregnancyTest2StartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowPregnancyTest2EndDate">{{ "Sow_PregnancyTest2_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowPregnancyTest2EndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowBodyConditionStartDate">{{ "Sow_BodyCondition_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowBodyConditionStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowBodyConditionEndDate">{{ "Sow_BodyCondition_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowBodyConditionEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowPreFarrowStartDate">{{ "Sow_PreFarrow_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowPreFarrowStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowPreFarrowEndDate">{{ "Sow_PreFarrow_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowPreFarrowEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowFarrowStartDate">{{ "Sow_Farrow_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowFarrowStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowFarrowEndDate">{{ "Sow_Farrow_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowFarrowEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowMilkingStartDate">{{ "Sow_Milking_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowMilkingStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowMilkingEndDate">{{ "Sow_Milking_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowMilkingEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowWeaningStartDate">{{ "Sow_Weaning_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowWeaningStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sowWeaningEndDate">{{ "Sow_Weaning_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sowWeaningEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed1StartDate">{{ "Pregnancy_Feed1_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed1StartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed1EndDate">{{ "Pregnancy_Feed1_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed1EndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed2StartDate">{{ "Pregnancy_Feed2_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed2StartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="spregnancyFeed2EndDate">{{ "Pregnancy_Feed2_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed2EndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed1Amount">{{ "Pregnancy_Feed1_Amount" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed1Amount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+  <div class="col-6">
+    <div class="form-group">
+      <label for="pregnancyFeed2Amount">{{ "Pregnancy_Feed2_Amount" | translate }}</label>
+      <input
+        [(ngModel)]="model.pregnancyFeed2Amount"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed3StartDate">{{ "Pregnancy_Feed3_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed3StartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed3EndDate">{{ "Pregnancy_Feed3_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed3EndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sucklingTeachingSlotStartDate">{{ "Suckling_TeachingSlot_StartDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sucklingTeachingSlotStartDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+  
+      <div class="col-6">
+        <div class="form-group">
+          <label for="sucklingTeachingSlotEndDate">{{ "Suckling_TeachingSlot_EndDate" | translate }}</label>
+          <input
+            [(ngModel)]="model.sucklingTeachingSlotEndDate"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="pregnancyFeed3Amount">{{ "Pregnancy_Feed3_Amount" | translate }}</label>
+          <input
+            [(ngModel)]="model.pregnancyFeed3Amount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="Suckling_TeachingSlot_Amount">{{ "Suckling_TeachingSlot_Amount" | translate }}</label>
+          <input
+            [(ngModel)]="model.sucklingTeachingSlotAmount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryMonth">{{
+            "ApplyEveryMonth" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryMonth' [(value)]="model.applyEveryMonth" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12]'></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryDay">{{
+            "ApplyEveryDay" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryDay' [(value)]="model.applyEveryDay" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]'></ejs-dropdownlist>
+        </div>
+      </div>
+      
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{ "BomSow_COMMENT" | translate }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.bomName"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

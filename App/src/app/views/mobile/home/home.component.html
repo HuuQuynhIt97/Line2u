@@ -1,0 +1,43 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item active"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+  </ol>
+</nav>
+<div class="main-content" id="main-text">
+
+  <div class="sidebar-content">
+    <div class="d-flex justify-content-center align-items-center my-3">
+      <div class="image-mobile">
+        <img style="border: 1px solid; width: 80px;" src="../../../../../assets/images/no-img.jpg" alt="Avatar" class="img-fluid rounded-circle">
+        <div class="edit-icon">
+          <i class="fa fa-edit" routerLink="/mobile/landlord-profile" style="font-size:20px"></i>
+        </div>
+      </div>
+     
+      <div class="ml-2">
+        <h4 class="mb-1 fs-base">{{user?.fullName}}</h4>
+        <div class="mb-1 fs-base">{{user?.mobile}}</div>
+        <div class="mb-1 fs-base">{{user?.email}}</div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+    <div class="flex-container-bio">
+      <div routerLink="/mobile/account">{{ 'My Account' | translate }}</div>
+    </div>
+
+    <div class="line"></div>
+    <div class="flex-container-bio">
+      <div routerLink="/mobile/report">{{ 'My Report' | translate }}</div>
+    </div>
+
+    <div class="flex-container-bio mr-mobile">
+      <div routerLink="/mobile/field">{{ 'My Field' | translate }}</div>
+    </div>
+
+    <div  class="flex-container-bio-desktop">
+      <div (click)="logout()">{{ 'SIGN_OUT' | translate }}</div>
+    </div>
+  </div>
+</div>
+

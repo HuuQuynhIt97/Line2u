@@ -1,0 +1,41 @@
+<agm-map 
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [disableDefaultUI]="false"
+  [zoomControl]="false"
+  (mapClick)="mapClicked($event)">
+
+  <agm-marker 
+      *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m.label, i)"
+      [latitude]="m.lat"
+      [longitude]="m.lng"
+      [label]="m.label"
+      [markerDraggable]="m.draggable"
+      (dragEnd)="markerDragEnd(m, $event)">
+      
+    <agm-info-window>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-left">
+            <i (click)="edit(m)" class="fa fa-edit" style="font-size: 20px; cursor: pointer;"></i>
+            <div class="font-weight-bold mb-1">{{m.siteName}}</div>
+            <div class="mb-1">{{m.address}}</div>
+            <div class="mb-1">{{m.comment}}</div>
+          </div>
+          <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
+            <a [href]="m.photo ? baseUrl + m.photo : '../../../../assets/images/no-img.jpg'">
+              <img [src]="m.photo ? baseUrl + m.photo : '../../../../assets/images/no-img.jpg'" class="img-thumbnail" [alt]="m.address" width="100">
+            </a>
+          </div>
+        </div>
+      </div>
+      
+    </agm-info-window>
+    
+  </agm-marker>
+  
+ 
+</agm-map>
+<app-site-action (saveChange)="saveChange()"></app-site-action>

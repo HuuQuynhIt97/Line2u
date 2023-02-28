@@ -1,0 +1,78 @@
+
+
+
+  <div class="row p-2 detail" >
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="makeOrderGuid">{{ "BIO_SECURITY_MAKE_ORDER" | translate }}</label>
+        <ejs-dropdownlist
+                [(value)]="model.makeOrderGuid"
+                [fields]="fields"
+                [dataSource]="makeOrderData"
+              ></ejs-dropdownlist>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="pigType">{{ "BIO_SECURITY_PIG_TYPE" | translate }}</label>
+        <input
+        [(ngModel)]="model.pigType"
+        type="text"
+        class="form-control"
+      />
+      </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="recordDate">{{ "BIO_SECURITY_RECORD_DATE" | translate }}</label>
+        <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.recordDate"></ejs-datepicker>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="recordTime">{{ "BIO_SECURITY_RECORD_TIME" | translate }}</label>
+        <app-maskedtimetextbox [(selectedValue)]="model.recordTime"></app-maskedtimetextbox>
+      </div>
+    </div>
+
+
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="comment">{{ "BIO_SECURITY_COMMENT" | translate }}</label>
+      <textarea
+        [(ngModel)]="model.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="2"
+        rows="2"
+      ></textarea>
+    </div>
+  </div>
+
+
+    <div class="col-12 d-flex">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+        </p>
+        <p>
+          <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+        </p>
+      </div>
+      <div class="ml-auto">
+        <button type="button" class="btn my-btn-sm btn-sm mr-2" (click)='save()'> <i class="fa fa-save"></i> {{ 'Save' | translate }}</button>
+        <button type="button" class="btn my-btn-sm btn-sm" (click)='loadData()'> <i class="fa fa-backward"></i> {{ 'Cancel' | translate }}</button>
+      </div>
+    </div>
+
+  </div>
+

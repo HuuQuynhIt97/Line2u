@@ -1,0 +1,348 @@
+<ng-template #odsTemplate let-data>
+  <button
+    class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+    type="button"
+    id="grid_odsexport"
+    tabindex="-1"
+    (click)="odsExport()"
+    style="width: auto"
+  >
+    <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+    ><span class="e-tbar-btn-text">{{ "Ods Export" | translate }} </span>
+  </button>
+</ng-template>
+<ejs-grid
+  #griddetail
+  id="grid-detail"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  [query]="query"
+  (toolbarClick)="toolbarClick($event)"
+  (excelExportComplete)="excelExpComplete($event)"
+>
+  <e-columns>
+    <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      width="120"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="breedingTypeName"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_Type' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="breedingStatus1Name"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_Status1' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="breedingStatus2Name"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Breeding_Status2' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="lastStatusName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Last_Status' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="lastResultName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Last_Result' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="parity"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Parity' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="heatingDate"
+      format="yyyy/MM/dd"
+      type="Date"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Date' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="heatingResult"
+      textAlign="Left"
+    
+      headerTextAlign="Center"
+      headerText="{{ 'Heating_Result' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="matingDate"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Date' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="matingAccountName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Mating_Account' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="semenGuidName"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Semen_GUID' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="id"
+      [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modal">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="Breeding_GUID">{{ "Breeding_GUID" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-breeding-dropdownlist [disabled]="true" [(selectedValue)]="model.breedingGuid">
+          </app-breeding-dropdownlist>
+        </div>
+      </div>
+      
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Breeding_Type">{{ "Breeding_Type" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Breeding_Type"
+      [codeType]="'Breeding_Type'"
+      [(selectedValue)]="model.breedingType"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+      
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Breeding_Status1">{{ "Breeding_Status1" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Breeding_Status1"
+      [codeType]="'Breeding_STATUS'"
+      [(selectedValue)]="model.breedingStatus1"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+
+        
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Breeding_Status2">{{ "Breeding_Status2" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Breeding_Status2"
+      [codeType]="'Breeding_STATUS'"
+      [(selectedValue)]="model.breedingStatus2"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+
+  
+        
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Last_Status">{{ "Last_Status" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Last_Status"
+      [codeType]="'Breeding_STATUS'"
+      [(selectedValue)]="model.lastStatus"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+  
+        
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Last_Result">{{ "Last_Result" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Last_Result"
+      [codeType]="'Breeding_Last_Result'"
+      [(selectedValue)]="model.lastResult"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Parity">{{ "Parity" | translate }}</label>
+      <input
+        [(ngModel)]="model.parity"
+        type="number"
+        min="0"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Heating_Date">{{ "Heating_Date" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.heatingDate"></ejs-datepicker>
+    </div>
+  </div>
+        
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Heating_Result">{{ "Heating_Result" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Heating_Result"
+      [codeType]="'Heating_Result'"
+      [(selectedValue)]="model.heatingResult"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Mating_Date">{{ "Mating_Date" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.matingDate"></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Mating_Account">{{ "Mating_Account" | translate }}</label>
+      <app-account-dropdownlist
+      id="Mating_Account"
+      [(selectedValue)]="model.matingAccount"
+    >
+    </app-account-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Semen_GUID">{{ "Semen_GUID" | translate }}</label>
+      <app-semen-dropdownlist
+      id="Semen_GUID"
+      [(selectedValue)]="model.semenGuid"
+    >
+    </app-semen-dropdownlist>
+    </div>
+  </div>
+
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">GUID</span> :
+          {{ model?.guid }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+    type="button"
+    class="btn btn-success"
+    (click)="save()"
+  >
+    {{ "Save" | translate }}
+  </button>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+  </div>
+</ng-template>

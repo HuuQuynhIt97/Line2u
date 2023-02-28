@@ -1,0 +1,307 @@
+<div class="row p-2">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="breedingNo">{{ "Breeding_NO" | translate }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.breedingNo"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="breedingName">{{ "Breeding_NAME" | translate }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.breedingName"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Breeding_Group">{{ "Breeding_Group" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="Breeding_Group"
+      [codeType]="'Breeding_Group'"
+      [(selectedValue)]="model.breedingGroup"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div>
+
+
+  <div class="col-4">
+    <div class="form-group">
+      <label for="roomGuid">{{
+        "Breeding_Room" | translate
+      }}</label>
+      <app-room-dropdownlist
+          [autoload]="true"
+          id="roomGuid"
+          (change)="onChangeRoom($event)"
+          [(selectedValue)]="roomGuid"
+      >
+      </app-room-dropdownlist>
+    </div>
+  </div>
+ 
+  
+<div class="col-4">
+  <div class="form-group">
+    <label for="roomGuid">{{
+      "Breeding_Pen" | translate
+    }}</label>
+    <app-pen-dropdownlist
+    [enabledLoad]="true"
+    [roomGuid]="roomGuid"
+    (change)="onChangePen($event)"
+    [(selectedValue)]="penGuid"
+    >
+    </app-pen-dropdownlist>
+  </div>
+</div>
+<div class="w-100"></div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="Breeding_Date">{{ "Breeding_Date" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.breedingDate"></ejs-datepicker>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="BreedingRealEndDate">{{ "Breeding_RealEndDate" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.breedingRealEndDate"></ejs-datepicker>
+  </div>
+</div>
+
+<div class="w-100"></div>
+
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="MatingStartDate">{{ "MatingStartDate" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.matingStartDate"></ejs-datepicker>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="MatingEndDate">{{ "MatingEndDate" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.matingEndDate"></ejs-datepicker>
+  </div>
+</div>
+
+<div class="w-100"></div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="WeaningStartDate">{{ "WeaningStartDate" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.weaningStartDate"></ejs-datepicker>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="WeaningEndDate">{{ "WeaningEndDate" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.weaningEndDate"></ejs-datepicker>
+  </div>
+</div>
+
+<div class="w-100"></div>
+
+
+</div>
+
+<div class="row p-2">
+
+<!--   
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="breedingStartDate">{{ "Breeding_StartDate" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.breedingStartDate"></ejs-datepicker>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="BreedingRealEndDate">{{ "Breeding_RealEndDate" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.breedingRealEndDate"></ejs-datepicker>
+    </div>
+  </div> -->
+<!--   
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="breedingEndDate">{{ "Breeding_EndDate" | translate }}</label>
+    <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.breedingEndDate"></ejs-datepicker>
+  </div>
+</div>
+<div class="w-100"></div> -->
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="initialQty">{{ "Initial_QTY" | translate }}</label>
+      <input
+        [(ngModel)]="model.initialQty"
+        type="number"
+        min="0"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="currentQty">{{ "Current_Qty" | translate }}</label>
+      <input
+        [(ngModel)]="model.currentQty"
+        type="number"
+        min="0"
+        class="form-control"
+      />
+    </div>
+  </div>
+  
+  <div class="w-100"></div>
+
+  
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="WeaningQty">{{ "WeaningQty" | translate }}</label>
+    <input
+      [(ngModel)]="model.weaningQty"
+      type="number"
+      min="0"
+      class="form-control"
+    />
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="CullingQty">{{ "CullingQty" | translate }}</label>
+    <input
+      [(ngModel)]="model.cullingQty"
+      type="number"
+      min="0"
+      class="form-control"
+    />
+  </div>
+</div>
+
+<div class="w-100"></div>
+
+
+</div>
+
+
+<div class="row p-2">
+
+
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="breedingStopNo">{{ "Breeding_StopNo" | translate }}</label>
+    <span class="max-length"> ( {{"Text length"| translate }} <= 40 )</span>
+
+    <input
+      [(ngModel)]="model.breedingStopNo"
+      type="text"
+      [maxLength]="40"
+      class="form-control"
+    />
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="Breeding_STATUS">{{ "Breeding_STATUS" | translate }}</label>
+    <app-code-type-dropdownlist
+    id="Breeding_STATUS"
+    [codeType]="'Breeding_STATUS'"
+    [(selectedValue)]="model.status"
+    >
+    </app-code-type-dropdownlist>
+
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="Lock_Flag">{{ "Lock_Flag" | translate }}</label>
+    <app-code-type-dropdownlist
+    id="Lock_Flag"
+    [codeType]="'Lock_Flag'"
+    [(selectedValue)]="model.lockFlag"
+    >
+    </app-code-type-dropdownlist>
+
+  </div>
+</div>
+
+
+
+<div class="col-md-12">
+  <div class="form-group">
+    <label ngbTooltip="Breeding_COMMENT" for="comment">{{ "Breeding_COMMENT" | translate }}</label>
+    <textarea
+      [(ngModel)]="model.comment"
+      name="comment"
+      type="text"
+      class="form-control"
+      cols="4"
+      rows="4"
+    ></textarea>
+  </div>
+</div>
+
+</div>
+
+<div class="row p-2">
+  <div class="col-12 d-flex">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+      <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+        <p>
+          <span class="mr-2">
+            <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">GUID</span> :
+            {{ model?.guid }}</span
+          >
+        </p>
+      </div>
+    </div>
+    <div class="ml-auto">
+      <button
+      *ngIf="!isLoadding"
+      [disabled]="!model.breedingNo"
+       type="button" class="btn btn-sm btn btn-primary mr-2" (click)='save()'> <i class="fa fa-save"></i> {{ 'Save' | translate }}</button>
+      <button class="btn btn-primary" type="button" disabled *ngIf="isLoadding">
+        <span class="spinner-bbreeding spinner-bbreeding-sm" role="status" aria-hidden="true"></span>
+       {{ 'Loading...' | translate}}
+      </button>
+      <button type="button" class="btn btn-sm btn-light" (click)='loadData(0)'> <i class="fa fa-backward"></i> {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

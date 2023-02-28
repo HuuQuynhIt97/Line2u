@@ -1,0 +1,98 @@
+
+<ejs-grid [dataSource]='data'
+[enableInfiniteScrolling]="true"
+[allowPaging]="false"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[height]="700 + 'px'"
+>
+<e-columns>
+    <e-column field='orderNo' headerText='' >
+      <ng-template #template let-data>
+          <div class="card m-0 p-0">
+            <div class="card-header bg-primary text-white">
+              編號:&nbsp;{{data.orderNo || ''}}&nbsp;名稱:&nbsp;{{data.orderName || ''}}
+            </div>
+            <div
+              class="card-body p-0"
+              [style.background-color]="data.estDate === null ? '#f5dada' : '#1576b61f' "
+            >
+
+             <div class="d-flex justify-content-start mt-2">
+
+                <div style="width: 50%">
+                  <div class="d-flex justify-content-start">
+
+                  <div style="width: 50%">
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "ORDER_AMOUNT" | translate }}:</div>
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "CURENT_AMOUNT" | translate }}:</div>
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "DayAge" | translate }}:</div>
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "REAL_START_DATE" | translate }}:</div>
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;標準:</div>
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;待售管理:</div>
+                    <div style=" word-wrap: break-word;">&nbsp;&nbsp;進出場:</div>
+                  </div>
+                  <div style="width: 50%">
+                    <div>&nbsp;&nbsp;{{data.orderAmout}}</div>
+                    <div>&nbsp;&nbsp;{{data.currentAmout}}</div>
+                    <div>&nbsp;&nbsp;{{data.dayAge}}</div>
+                    <div>&nbsp;&nbsp;{{data.realStartDate | date: 'yyyy/MM/dd'}}</div>
+                    <div>&nbsp;&nbsp;內豬標準(BOM)</div>
+                    <div>&nbsp;&nbsp;0</div>
+                    <div>&nbsp;&nbsp;0</div>
+
+                  </div>
+                </div>
+                </div>
+                <div style="width: 50%">
+                  <div class="d-flex justify-content-start">
+                    <div style="width: 50%">
+                      <div style=" word-wrap: break-word;">{{ "RECORD_FEEDING" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_IMMUNIZATION" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_WEIGHING" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_MOVE" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_CULLING" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_DEATH" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_PIGEAR" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">{{ "RECORD_TREATMENT" | translate }}:</div>
+
+                    </div>
+                    <div style="width: 50%">
+                      <div>{{data.recordFeeding}}</div>
+                      <div>{{data.recordimmunization}}</div>
+                      <div>{{data.recordWeighing}}</div>
+                      <div>{{data.recordMove}}</div>
+                      <div>{{data.recordCulling}}</div>
+                      <div>{{data.recordDeath}}</div>
+                      <div>{{data.recordPigEar}}</div>
+                      <div>{{data.recordTreatment}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-start mb-2">
+                <div style="width: 50%">
+                  <button class="btn btn-sm btn-warning ml-2" [routerLink]="'/mobile/pigdata/piglist/Gilt/' + data.guid " > {{'Pig List' | translate}}</button>
+                </div>
+                <div style="width: 50%"></div>
+              </div>
+            </div>
+          </div>
+      </ng-template>
+    </e-column>
+    <e-column [visible]="false" field='orderName' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='orderBreedName' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='dayAge' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='currentAmount' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='penName' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordFeeding' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordImmunization' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordWeighing' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordMove' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordCulling' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordDeath' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordPigEar' headerText='' > </e-column>
+    <e-column [visible]="false" [allowSearching]="false" field='recordTreatment' headerText='' > </e-column>
+
+</e-columns>
+</ejs-grid>

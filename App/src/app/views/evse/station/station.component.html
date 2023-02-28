@@ -1,0 +1,14 @@
+  <div class="row no-gutters">
+    <div class="col-4">
+      <app-site [(site)]="site"></app-site>
+    </div>
+    <div class="col-4">
+
+      <app-parking-lot [site]="site"  [(parkingLot)]="parkingLot"></app-parking-lot>
+    </div>
+  
+    <div class="col-4">
+      <app-device [(parkingLot)]="parkingLot"  [(site)]="site"></app-device>
+    </div>
+  
+  </div>

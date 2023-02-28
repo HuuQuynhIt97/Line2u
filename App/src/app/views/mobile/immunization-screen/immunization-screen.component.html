@@ -1,0 +1,111 @@
+<div class="main-content" id="main-text">
+  <div class="sidebar-content">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div class="heading">{{'Mobile_Immunization' | translate}}</div>
+      </div>
+    </div>
+
+    <div class="row my-2">
+      <div class="col-12 d-flex justify-content-start align-items-center">
+        <div class="mr-2" style="width: 35px">{{'Mobile_YearMonth' | translate}}</div>
+        <div style="width: 140px">
+          <ejs-datepicker
+            format="yyyy/MM"
+            depth="Year"
+            start="Year"
+            [enableMask]="true"
+            [(value)]="recordDate"
+            locale="en-US"
+          ></ejs-datepicker>
+        </div>
+
+        <div class="mx-2" style="width: 35px">{{'Mobile_Pen' | translate}}</div>
+        <div style="width: 140px">
+          <app-pen-dropdownlist
+            [id]="'pen-dropdownlist1'"
+            [enabledLoad]="true"
+            [(selectedValue)]="penGuid"
+            [placeholder]="'Choose a pen' | translate"
+          ></app-pen-dropdownlist>
+        </div>
+        <button class="btn btn-sm btn-primary mx-2" (click)="loadData()">{{'Mobile_Search' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ejs-grid [dataSource]='data'
+  [enableInfiniteScrolling]="true"
+  [allowPaging]="false"
+  [pageSettings]="pageSettings"
+  [height]="700 + 'px'"
+  >
+  <e-columns>
+      <e-column field='ContactName' headerText='' >
+        <ng-template #template let-data>
+            <div class="card m-0 p-0">
+              <div class="card-header bg-primary text-white">
+                {{ "PEN" | translate }}: {{data.penGuidName}}
+              </div>
+              <div
+                class="card-body p-0"
+                [style.background-color]="data.recordDate === null ? '#f5dada' : '#1576b61f' "
+              >
+
+               <div class="d-flex justify-content-start mt-2">
+
+                  <div style="width: 50%">
+                    <div class="d-flex justify-content-start">
+
+                    <div style="width: 50%">
+                      <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "DISEASE" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "MEDICINE" | translate }}:</div>
+                      <!-- <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "PIG_TYPE" | translate }}:</div>
+                      <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{ "PIG" | translate }}:</div> -->
+                    </div>
+                    <div style="width: 50%">
+                      <div>&nbsp;&nbsp;{{data.disease}}</div>
+                      <div>&nbsp;&nbsp;{{data.medicine}}</div>
+                      <!-- <div>&nbsp;&nbsp;{{data.pigType}}</div>
+                      <div>&nbsp;&nbsp;{{data.pigGuidName}}</div> -->
+
+                    </div>
+                  </div>
+                  </div>
+                  <div style="width: 50%">
+                    <div class="d-flex justify-content-start">
+                      <div style="width: 50%">
+                        <div style=" word-wrap: break-word;">{{ "RECORD_DATETIME" | translate }}:</div>
+                        <div style=" word-wrap: break-word;">{{ "EST_DATETIME" | translate }}:</div>
+                        <div style=" word-wrap: break-word;">{{ "RECORD_IMMUNIZATION_APPLY_DAYS" | translate }}:</div>
+                        <!-- <div style=" word-wrap: break-word;">{{ "RECORD_IMMUNIZATION_USETYPE" | translate }}:</div> -->
+                        <div style=" word-wrap: break-word;">{{ "RECORD_IMMUNIZATION_USEUNIT" | translate }}:</div>
+                        <!-- <div style=" word-wrap: break-word;">{{ "RECORD_IMMUNIZATION_FREQUENCY" | translate }}: </div> -->
+                        <div style=" word-wrap: break-word;">{{ "RECORD_IMMUNIZATION_NEEDLE" | translate }}: </div>
+                      </div>
+                      <div style="width: 50%">
+                        <div>{{data.recordDate | date: 'yyyy/MM/dd'}}&nbsp;{{data.recordTime}}</div>
+                        <div>{{data.estDate | date: 'yyyy/MM/dd'}}&nbsp;{{data.estTime}}</div>
+                        <div>{{data.applyDaysName}}&nbsp;</div>
+                        <!-- <div>{{data.useTypeName}}&nbsp;</div> -->
+                        <div>{{data.useUnitName}}&nbsp;</div>
+                        <!-- <div>{{data.frequencyName}}&nbsp;</div> -->
+                        <div>{{data.needleName}}&nbsp;</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-start mb-2">
+                  <div style="width: 50%">
+                    <button class="btn btn-sm btn-success ml-2" *ngIf="data.recordDate === null" (click)="toggleRecordDate(data.id)"> {{'Execute' | translate}}</button>
+                    <button class="btn btn-sm btn-secondary ml-2" *ngIf="data.recordDate !== null"  (click)="toggleRecordDate(data.id)"> {{'Cancel' | translate}}</button>
+                  </div>
+                  <div style="width: 50%"></div>
+                </div>
+              </div>
+            </div>
+        </ng-template>
+      </e-column>
+
+  </e-columns>
+</ejs-grid>

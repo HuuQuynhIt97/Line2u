@@ -1,0 +1,572 @@
+<!-- <div class="row">
+  <div class="col-4">
+    <div class="form-group">
+      <label for="estDate">{{ "Change Current Date" | translate }}</label>
+    <ejs-datepicker
+      locale="en-US"
+      format="yyyy/MM/dd"
+      [(ngModel)]="getDate"
+    ></ejs-datepicker>
+  </div>
+  </div>
+</div> -->
+
+<ng-template #odsTemplate let-data>
+    <button
+      class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+      type="button"
+      id="grid_odsexport"
+      tabindex="-1"
+      (click)="odsExport()"
+      style="width: auto"
+    >
+      <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+      ><span class="e-tbar-btn-text"
+        >{{ "Ods Export" | translate }}
+      </span>
+    </button>
+  </ng-template>
+  <ejs-grid
+    #grid
+    id="grid"
+    [dataSource]="data"
+    [allowPaging]="true"
+    [allowResizing]="true"
+    [allowSorting]="true"
+    gridLines="Both"
+    [query]="query"
+    [locale]="locale"
+    (actionBegin)="actionBegin($event)"
+  
+    [editSettings]="editSettings"
+    [pageSettings]="pageSettings"
+    [toolbar]="toolbarOptions"
+    [allowExcelExport]="true"
+    (rowSelected)="rowSelected($event)"
+    (recordClick)="recordClick($event)"
+    (recordDoubleClick)="onDoubleClick($event)"
+    [selectionSettings]="selectionOptions"
+    (toolbarClick)="toolbarClick($event)"
+    (rowDataBound)='rowDataBoundApplyOrder($event)'
+    (excelExportComplete)="excelExpComplete($event)"
+  >
+    <e-columns>
+      <e-column
+        field="option"
+        [allowSorting]="false"
+        [allowSearching]="false"
+        [allowGrouping]="false"
+        [allowFiltering]="false"
+        [allowEditing]="false"
+        textAlign="Left"
+        headerTextAlign="Center"
+        width="120"
+        headerTextAlign="Center"
+        headerText="{{ 'OPTION' | translate }}"
+      >
+        <ng-template #template let-data>
+          <span (click)="delete(data.id)" class="delete-grid">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span (click)="openModal(optionModal, data)" class="edit-grid">
+            <i class="fa fa-edit"></i>
+          </span>
+        </ng-template>
+      </e-column>
+          <e-column
+        field="estDate"
+        format="yyyy/MM/dd"
+        type="Date"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'EST_DATETIME' | translate }}"
+      >
+      </e-column>
+  <e-column
+      field="statusName"
+  [allowSearching]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'ORDER_STATUS' | translate }}"
+    >
+    </e-column>
+    <e-column
+    field="orderNo"
+  textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'ORDER_NO' | translate }}"
+  >
+  </e-column>
+    <e-column
+    field="roomName"
+  [allowSearching]="false"
+  textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'ROOM' | translate }}"
+  >
+  </e-column>
+  
+    <e-column
+    field="applyName"
+  [allowSearching]="false"
+  textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Apply_Name' | translate }}"
+  >
+  </e-column>
+  
+  <e-column
+  field="agreeName"
+  [allowSearching]="false"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Agree_Name/Reject_Name' | translate }}"
+  >
+  <ng-template #template let-data>
+    {{ data.status === 5 ? data.rejectName :  data.status === 2 || data.status === 4 ? data.agreeName : "" }}
+  </ng-template>
+  </e-column>
+  
+  <e-column
+  field="executeName"
+  [allowSearching]="false"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Execute_Name' | translate }}"
+  >
+  </e-column>
+  
+      <e-column
+        field="typeName"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'Boar_Feeding_Type' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="applyDate"
+        format="yyyy/MM/dd"
+        type="Date"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'APPLY_DATE' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="applyReason"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'APPLY_REASON' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="agreeDate"
+        format="yyyy/MM/dd"
+  [allowSearching]="false"
+  type="Date"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'AGREE_DATE' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="agreeReason"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'AGREE_REASON' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="rejectDate"
+        format="yyyy/MM/dd"
+  [allowSearching]="false"
+  type="Date"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'REJECT_DATE' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="rejectReason"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'REJECT_REASON' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="executeDate"
+        format="yyyy/MM/dd"
+  [allowSearching]="false"
+  type="Date"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'EXECUTE_DATE' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="executeReason"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'EXECUTE_REASON' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="id"
+        [allowSearching]="false"
+        textAlign="Left"
+        headerTextAlign="Center"
+        [isPrimaryKey]="true"
+        [visible]="false"
+        headerText="ID"
+      >
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+  
+  <ng-template #optionModal let-modal>
+    <div class="modal-header my-modal">
+      <h4 [ngbTooltip]="title" class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" id="modal">
+      <div class="row">
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="type">{{ "Boar_Feeding_Type" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <app-code-type-dropdownlist
+              id="record-feeding-type-remote"
+              [codeType]="'Boar_Feeding_Type'"
+              [(selectedValue)]="model.type"
+              [disabled]="model.status === 3"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div> -->
+        <div class="col-md-4">
+          <div class="form-group">
+                      <label for="makeOrderGuid">{{ "Make_Order" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <app-makeorder-dropdownlist
+              [(selectedValue)]="model.makeOrderGuid"
+              pigType="Boar"
+              (change)='onChangeMakeOrder($event)'
+              [disabled]="model.status === statusConts.Execute && disabledInput(model.applyDate) || model.status === statusConts.Reject"
+            >
+            </app-makeorder-dropdownlist>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+              <label for="estDate">{{ "EST_DATE" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              [(ngModel)]="model.estDate"
+            ></ejs-datepicker>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="feedGuid">{{ "FEED" | translate }}</label>
+            <app-feed-dropdownlist
+                id="feedGuid"
+                [(selectedValue)]="model.feedGuid"
+              >
+              </app-feed-dropdownlist>
+          </div>
+        </div>
+  
+         <div class="col-md-4">
+          <div class="form-group">
+            <label for="recordAmount">{{ "Boar_Feeding_AMOUNT" | translate }}</label>
+            <input
+            [(ngModel)]="model.recordAmount"
+            min="0"
+            type="number"
+            class="form-control"
+          />
+          </div>
+        </div>
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="recordResult">{{ "Boar_Feeding_RESULT" | translate }}</label>
+            <app-code-type-dropdownlist
+            id="recordResult-remote"
+            [codeType]="'Boar_Feeding_Result'"
+            [(selectedValue)]="model.recordResult"
+            [disabled]="model.status === 3"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div> -->
+  
+      </div>
+  
+      <div class="row">
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="feedGuid">{{ "FEED" | translate }}</label>
+            <app-account-dropdownlist
+                id="feedGuid"
+                [(selectedValue)]="model.feedGuid"
+                [disabled]="model.status === 3"
+              >
+              </app-account-dropdownlist>
+          </div>
+        </div> -->
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="useType">{{ "USE_TYPE" | translate }}</label>
+            <app-code-type-dropdownlist
+            id="useType-remote"
+            [codeType]="'Boar_Feeding_UseType'"
+            [(selectedValue)]="model.useType"
+            [disabled]="model.status === 3"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div> -->
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="useUnit">{{ "USE_UNIT" | translate }}</label>
+            <app-code-type-dropdownlist
+            id="useUnit-remote"
+            [codeType]="'Boar_Feeding_UseUnit'"
+            [(selectedValue)]="model.useUnit"
+            [disabled]="model.status === 3"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div> -->
+      </div>
+  
+      <div class="row">
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="estAmount">{{ "EST_AMOUNT" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 10 )</span
+            >
+            <input
+            [(ngModel)]="model.estAmount"
+            maxlength="10"
+            type="text"
+            class="form-control"
+            [disabled]="model.status === 3"
+          />
+          </div>
+        </div> -->
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="Frequency">{{ "FREQUENCY" | translate }}</label>
+            <app-code-type-dropdownlist
+            id="frequency-remote"
+            [codeType]="'Boar_Feeding_Frequency'"
+            [(selectedValue)]="model.frequency"
+            [disabled]="model.status === 3"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div> -->
+        <!-- <div class="col-md-4">
+          <div class="form-group">
+            <label for="recordAmount">{{ "Boar_Feeding_AMOUNT" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 10 )</span
+            >
+            <input
+            [(ngModel)]="model.recordAmount"
+            maxlength="10"
+            type="text"
+            class="form-control"
+            [disabled]="model.status === 3"
+          />
+          </div>
+        </div> -->
+      </div>
+  
+  
+  
+  
+  
+      <!-- Execute -->
+      <div
+        class="row"
+      >
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="executeDate">{{ "EXECUTE_DATE" | translate }}</label>
+            <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              [(ngModel)]="model.executeDate"
+              [disabled]="true"
+            ></ejs-datepicker>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="executeReason">{{ "EXECUTE_REASON" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 100 )</span
+            >
+            <input
+              [(ngModel)]="model.executeReason"
+              maxlength="100"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="row no-gutters">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="executeGuid">{{ "EXECUTE_GUID" | translate }}</label>
+                <app-account-dropdownlist
+                  id="executeGuid"
+                  [(selectedValue)]="model.executeGuid"
+                  [disabled]="true"
+                >
+                </app-account-dropdownlist>
+  
+  
+              </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button
+        (click)="execute()"
+        *ngIf="enabledInput(model.executeDate)"
+        class="btn btn-success mb-3 ml-2"
+      >
+        {{ "Execute" | translate }}
+      </button>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+      <!-- End execute -->
+      <div class="row">
+        <div class="col-md-4">
+          <label for="roomGuid">{{ "ROOM" | translate }}</label><span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-room-dropdownlist
+            id="roomGuid"
+            [(selectedValue)]="roomGuid"
+            [makeOrderGuid]="model.makeOrderGuid"
+            [disabled]="true"
+            (ngModelChange)="onChangeRoom($event)"
+          >
+          </app-room-dropdownlist>
+        </div>
+  
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label ngbTooltip="Boar_Feeding_COMMENT" for="comment">{{
+              "Boar_Feeding_COMMENT" | translate
+            }}</label>
+            <textarea
+              [(ngModel)]="model.comment"
+              name="comment"
+              type="text"
+              class="form-control"
+              cols="4"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class="mr-2">
+            <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+            : {{ audit?.createBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Create date time" | translate
+            }}</span>
+            : {{ audit?.createDate }}</span
+          >
+        </p>
+        <p>
+          <span class="mr-2"
+            ><span class="my-font-weight-bold">{{
+              "Update by" | translate
+            }}</span>
+            : {{ audit?.updateBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Update date time" | translate
+            }}</span>
+            : {{ audit?.updateDate }}</span
+          >
+        </p>
+      </div>
+      <div class="mr-auto primary-key" *ngIf="model?.id > 0">
+        <p>
+          <span class="mr-2">
+            <span class="my-font-weight-bold">ID</span> : {{ model?.id }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">GUID</span> :
+            {{ model?.guid }}</span
+          >
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ "Note: (*) is a required field" | translate }}
+      </span>
+      <div *ngFor="let item of configButtonData">
+        <button
+        type="button"
+        class="btn"
+        *ngIf="model.guid"
+        [class.btn-success]="item.no.includes('Next')"
+        [class.btn-danger]="item.no.includes('Exception')"
+        (click)="goToLink(item)"
+      >
+        {{ item.value | translate }}
+      </button>
+      </div>
+      <button
+        type="button"
+        class="btn btn-light"
+        ngbTooltip="CLOSE"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+  
+    </div>
+  </ng-template>
+  

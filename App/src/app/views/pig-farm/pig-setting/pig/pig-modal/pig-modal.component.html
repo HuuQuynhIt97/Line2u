@@ -1,0 +1,1000 @@
+<div class="modal-header my-modal" id="modal-header">
+  <h4 class="modal-title" [ngbTooltip]="title">
+    <i class="fas fa-plus"></i> {{ title | translate }}
+  </h4>
+<button
+  type="button"
+  class="close"
+  aria-label="Close"
+  (click)="activeModal.dismiss('Cross click')"
+>
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<!-- FarmGuid, Area, Barn, Room, Pen, Culling Tank -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+
+      <label ngbTooltip="FARM" for="farm">{{ "FARM" | translate }}</label>
+<app-farm-dropdownlist [disabled]="true" [(selectedValue)]="model.farmGuid">
+
+</app-farm-dropdownlist>
+      <!-- <ejs-dropdownlist
+      [disabled]="true"
+        [(ngModel)]="model.farmGuid"
+        [fields]="fields"
+        (change)="farmChange($event)"
+        [dataSource]="farmData"
+      ></ejs-dropdownlist> -->
+    </div>
+  </div>
+
+  <!-- <div class="col-md-6">
+    <div class="form-group">
+
+      <label ngbTooltip="AREA" for="area">{{ "AREA" | translate }}</label>
+
+      <ejs-dropdownlist
+        [(ngModel)]="model.areaGuid"
+        (change)="areaChange($event)"
+        [fields]="fields"
+        [dataSource]="areaData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+
+        <label ngbTooltip="BARN" for="barn">{{ "BARN" | translate }}</label>
+
+      <ejs-dropdownlist
+        [(ngModel)]="model.barnGuid"
+        (change)="barnChange($event)"
+        [fields]="fields"
+        [dataSource]="barnData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+        <label ngbTooltip="CULLING_TANK" for="cullingTank">{{ "CULLING_TANK" | translate }}</label>
+
+      <ejs-dropdownlist
+        [(ngModel)]="model.cullingTankGuid"
+        (change)="cullingTankChange($event)"
+        [fields]="fields"
+        [dataSource]="cullingTankData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>-->
+  <div class="col-md-6"></div> 
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+        <label ngbTooltip="ROOM" for="room">{{ "ROOM" | translate }}</label>
+
+      <ejs-dropdownlist
+        [(ngModel)]="model.roomGuid"
+        (change)="roomChange($event)"
+        [fields]="fields"
+        [dataSource]="roomData"
+      ></ejs-dropdownlist>
+    </div>
+  </div> 
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+      <label ngbTooltip="PEN" for="pen">{{ "PEN" | translate }}</label>
+      <app-pen-dropdownlist-modal
+      id="pen"
+      [(selectedValue)]="model.penGuid"
+      ></app-pen-dropdownlist-modal>
+    </div>
+  </div>
+</div>
+<!-- End FarmGuid, Area, Barn, Room, Pen, Culling Tank -->
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+
+        <label ngbTooltip="PIG_TYPE" for="pigType">{{ "PIG_TYPE" | translate }}</label>
+
+       <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+
+
+       <app-code-type-dropdownlist
+       id="pigType-remote"
+       [codeType]="'Pig_Type'"
+       [(selectedValue)]="model.pigType"
+       >
+       </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <!-- <div class="col-md-6">
+    <div class="form-group">
+
+      <label ngbTooltip="PIG_PHASE" for="phase">{{ "PIG_PHASE" | translate }}</label>
+
+      <app-code-type-dropdownlist
+      id="phase-remote"
+      [codeType]="'Pig_Phase'"
+      [(selectedValue)]="model.phase"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div> -->
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+       <label ngbTooltip="PIG_OUTSOURCING" for="outsourcing">{{ "PIG_OUTSOURCING" | translate }}</label>
+
+      <input
+        [(ngModel)]="model.outsourcing"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+    <label ngbTooltip="PIG_FATHER_GUID" for="fatherGuid">{{ "PIG_FATHER_GUID" | translate }}</label>
+
+    <app-pig-dropdownlist
+    id="father-remote"
+    (ngModelChange)="fatherChange($event)"
+    [selectedValue]="model.fatherGuid"
+    >
+    </app-pig-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+    <label ngbTooltip="PIG_MOTHER_GUID" for="motherGuid">{{ "PIG_MOTHER_GUID" | translate }}</label>
+
+    <app-pig-dropdownlist
+    id="mother-remote"
+    (ngModelChange)="motherChange($event)"
+    [selectedValue]="model.motherGuid"
+    >
+    </app-pig-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_IDNO" for="idno">{{ "PIG_IDNO" | translate }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span ngbTooltip="( Text length <= 40 )" class="max-length">
+        ( {{"Text length"| translate }} <= 40 )</span
+      >
+
+      <input
+        [(ngModel)]="model.idno"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+      <label ngbTooltip="PIG_EAR_NO" for="earNo">{{ "PIG_EAR_NO" | translate }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span ngbTooltip="( Text length <= 40 )" class="max-length">
+        ( {{"Text length"| translate }} <= 40 )</span
+      >
+      <input
+        [(ngModel)]="model.earNo"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+    <label ngbTooltip="PIG_EAR_TAG" for="earTag">{{ "PIG_EAR_TAG" | translate }}</label>
+    <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+    <span ngbTooltip="( Text length <= 40 )" class="max-length">
+      ( {{"Text length"| translate }} <= 40 )</span
+    >
+      <input
+        [(ngModel)]="model.earTag"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+
+    <label ngbTooltip="PIG_RFID_TAG" for="rfidtag">{{ "PIG_RFID_TAG" | translate }}</label>
+    <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span ngbTooltip="( Text length <= 40 )" class="max-length">
+        ( {{"Text length"| translate }} <= 40 )</span
+      >
+
+      <input
+        [(ngModel)]="model.rfidtag"
+        maxlength="40"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_BIRTHDAY" for="birthDay">{{ "PIG_BIRTHDAY" | translate }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.birthday"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_SEX" for="sex">{{ "PIG_SEX" | translate }}</label>
+
+      <app-code-type-dropdownlist
+        id="sex-remote"
+        [codeType]="'PIG_SEX'"
+        (ngModelChange)="sexChange($event)"
+        [selectedValue]="model.sex +''"
+        >
+        </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_DAY_AGE" for="dayAge">{{ "PIG_DAY_AGE" | translate }}</label>
+
+      <input
+        [(ngModel)]="model.dayAge"
+        (ngModelChange)="ngModelChange($event)"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="10_DAY_AGE">{{
+        "10_DAY_AGE" | translate
+      }}</label>
+
+      <input
+      id="10_DAY_AGE"
+        [(ngModel)]="model.tenDayAge"
+        min="0"
+        readonly
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_WEIGHT" for="weight">{{ "PIG_WEIGHT" | translate }}</label>
+
+      <input
+        [(ngModel)]="model.weight"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_WEIGHT_DATE" for="weightDate">{{ "PIG_WEIGHT_DATE" | translate }}</label>
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.weightDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_WEIGHT_DAY_AGE" for="weightDayAge">{{
+        "PIG_WEIGHT_DAY_AGE" | translate
+      }}</label>
+
+      <input
+        [(ngModel)]="model.weightDayAge"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+
+  <!-- <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_BREED" for="breed">{{ "PIG_BREED" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="breed-remote"
+      [codeType]="'Breed'"
+      [(selectedValue)]="model.breed"
+      >
+      </app-code-type-dropdownlist>
+
+    </div>
+  </div> -->
+
+  <!-- <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_BIRTH_PEN_GUID" for="birthPenGuid">{{
+        "PIG_BIRTH_PEN_GUID" | translate
+      }}</label>
+      <app-pen-dropdownlist
+      id="birthPenGuid-remote"
+      [(selectedValue)]="model.birthPenGuid"
+      >
+      </app-pen-dropdownlist>
+
+    </div>
+  </div> -->
+
+  <!-- <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_ENTER_ORIGIN" for="enterOrigin">{{ "PIG_ENTER_ORIGIN" | translate }}</label>
+      <app-pen-dropdownlist
+      id="birthPenGuid-remote"
+      [(selectedValue)]="model.enterOrigin"
+      >
+      </app-pen-dropdownlist>
+
+    </div>
+  </div> -->
+
+  <!-- <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_ENTER_DATE" for="enterDate">{{ "PIG_ENTER_DATE" | translate }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.enterDate"
+      ></ejs-datepicker>
+    </div>
+  </div> -->
+<!--
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_ENTER_DEPT" for="enterDept">{{ "PIG_ENTER_DEPT" | translate }}</label>
+
+      <input
+        [(ngModel)]="model.enterDept"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div> -->
+<!--
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_TRANSFER_MONEY" for="transferMoney">{{
+        "PIG_TRANSFER_MONEY" | translate
+      }}</label>
+      <input
+        [(ngModel)]="model.transferMoney"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div> -->
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_TRANSFER_DATE" for="transferDate">{{
+        "PIG_TRANSFER_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.transferDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_TRANSFER_FROM" for="transferFrom">{{
+        "PIG_TRANSFER_FROM" | translate
+      }}</label>
+      <input
+      id="transferFrom"
+      [(ngModel)]="model.transferFrom"
+      min="0"
+      type="number"
+      class="form-control"
+    />
+      <!-- <ejs-dropdownlist
+        id="transferFrom"
+        [(ngModel)]="model.transferFrom"
+        [fields]="fields"
+        (change)="farmChange($event)"
+        [dataSource]="farmData"
+      ></ejs-dropdownlist> -->
+
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="farrowStatus">{{
+        "PIG_FARROW_STATUS" | translate
+      }}</label>
+
+      <input type="number" id="farrowStatus" min="0" class="form-control" [(ngModel)]="model.farrowStatus" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    </div>
+  </div>
+
+  <!-- <div class="col-md-12">
+    <div class="form-group">
+      <label ngbTooltip="PIG_FARROW_COMMENT" for="farrowComment">{{
+        "PIG_FARROW_COMMENT" | translate
+      }}</label>
+
+      <textarea
+      [(ngModel)]="model.farrowComment"
+      type="text"
+      class="form-control"
+      rows="2"
+      cols="2"
+    ></textarea>
+    </div>
+  </div> -->
+</div>
+
+<!-- Sucking Date, status -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_SUCKING_CHECKIN_DATE" for="suckingCheckInDate">{{
+        "PIG_SUCKING_CHECKIN_DATE" | translate
+      }}</label>
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.suckingCheckInDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_SUCKING_CHECKIN_STATUS" for="suckingCheckInStatus">{{
+        "PIG_SUCKING_CHECKIN_STATUS" | translate
+      }}</label>
+
+      <app-code-type-dropdownlist
+      id="suckingCheckInStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.suckingCheckInStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_SUCKING_CHECKOUT_DATE" for="suckingCheckInDate">{{
+        "PIG_SUCKING_CHECKOUT_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.suckingCheckOutDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_SUCKING_CHECKOUT_STATUS" for="suckingCheckInStatus">{{
+        "PIG_SUCKING_CHECKOUT_STATUS" | translate
+      }}</label>
+
+      <app-code-type-dropdownlist
+      id="suckingCheckOutStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.suckingCheckOutStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+</div>
+<!-- End Sucking Date, status -->
+
+<!-- Grower Date, status -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_GROWER_CHECKIN_DATE" for="growerCheckInDate">{{
+        "PIG_GROWER_CHECKIN_DATE" | translate
+      }}</label>
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.growerCheckInDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_GROWER_CHECKIN_STATUS" for="growerCheckInStatus">{{
+        "PIG_GROWER_CHECKIN_STATUS" | translate
+      }}</label>
+      <app-code-type-dropdownlist
+      id="growerCheckInStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.growerCheckInStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_GROWER_CHECKOUT_DATE" for="growerCheckInDate">{{
+        "PIG_GROWER_CHECKOUT_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.growerCheckOutDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_GROWER_CHECKOUT_STATUS" for="growerCheckOutStatus">{{
+        "PIG_GROWER_CHECKOUT_STATUS" | translate
+      }}</label>
+
+      <app-code-type-dropdownlist
+      id="growerCheckOutStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.growerCheckOutStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+</div>
+<!-- End Grower Date, status -->
+
+<!-- Finisher Date, status -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_GROWER_CHECKOUT_STATUS" for="growerCheckInDate">{{
+        "PIG_FINISHER_CHECKIN_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.finisherCheckInDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_FINISHER_CHECKIN_STATUS" for="finisherCheckInStatus">{{
+        "PIG_FINISHER_CHECKIN_STATUS" | translate
+      }}</label>
+      <app-code-type-dropdownlist
+      id="finisherCheckInStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.finisherCheckInStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_FINISHER_CHECKOUT_DATE" for="finisherCheckInDate">{{
+        "PIG_FINISHER_CHECKOUT_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.finisherCheckOutDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_FINISHER_CHECKOUT_STATUS" for="finisherCheckOutStatus">{{
+        "PIG_FINISHER_CHECKOUT_STATUS" | translate
+      }}</label>
+      <app-code-type-dropdownlist
+      id="finisherCheckOutStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.finisherCheckOutStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+</div>
+<!-- End Finisher Date, status -->
+
+<!-- Nursery Date, status -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_GROWER_CHECKOUT_STATUS" for="growerCheckInDate">{{
+        "PIG_NURSERY_CHECKIN_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.nurseryCheckInDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_NURSERY_CHECKIN_STATUS" for="nurseryCheckInStatus">{{
+        "PIG_NURSERY_CHECKIN_STATUS" | translate
+      }}</label>
+      <app-code-type-dropdownlist
+      id="nurseryCheckInStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.nurseryCheckInStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_NURSERY_CHECKOUT_DATE" for="nurseryCheckInDate">{{
+        "PIG_NURSERY_CHECKOUT_DATE" | translate
+      }}</label>
+
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.nurseryCheckOutDate"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label ngbTooltip="PIG_NURSERY_CHECKOUT_STATUS" for="nurseryCheckOutStatus">{{
+        "PIG_NURSERY_CHECKOUT_STATUS" | translate
+      }}</label>
+      <app-code-type-dropdownlist
+      id="nurseryCheckOutStatus-remote"
+      [codeType]="'Pig_Status'"
+      [(selectedValue)]="model.nurseryCheckOutStatus"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+</div>
+<!-- End Nursery Date, status -->
+<div class="row">
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Register_No">{{ "Register_No" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.registerNo"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+<div class="w-100"></div>
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Father_BirthYear">{{ "Father_BirthYear" | translate }}</label>
+
+  <input
+  [(ngModel)]="model.fatherBirthYear"
+  min="0"
+  type="number"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Father_Name">{{ "Father_Name" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.fatherName"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Father_EarNo">{{ "Father_EarNo" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.fatherEarNo"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Father_Register_No">{{ "Father_Register_No" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.fatherRegisterNo"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Father_BirthDayAge">{{ "Father_BirthDayAge" | translate }}</label>
+
+  <input
+  [(ngModel)]="model.fatherBirthDayAge"
+  min="0"
+  type="number"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+<div class="w-100"></div>
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_BirthYear">{{ "Mother_BirthYear" | translate }}</label>
+
+  <input
+  [(ngModel)]="model.motherBirthYear"
+  min="0"
+  type="number"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_Name">{{ "Mother_Name" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.motherName"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_EarNo">{{ "Mother_EarNo" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.motherEarNo"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_Register_No">{{ "Mother_Register_No" | translate }}</label>
+  <span ngbTooltip="( Text length <= 40 )" class="max-length">
+    ( {{"Text length"| translate }} <= 40 )</span
+  >
+  <input
+  [(ngModel)]="model.motherRegisterNo"
+  maxlength="40"
+  type="text"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_BirthDayAge">{{ "Mother_BirthDayAge" | translate }}</label>
+
+  <input
+  [(ngModel)]="model.motherBirthDayAge"
+  min="0"
+  type="number"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+<div class="w-100"></div>
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_PregnancyDays">{{ "Mother_PregnancyDays" | translate }}</label>
+
+  <input
+  [(ngModel)]="model.motherPregnancyDays"
+  min="0"
+  type="number"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="Mother_Littermates">{{ "Mother_Littermates" | translate }}</label>
+
+  <input
+  [(ngModel)]="model.motherLittermates"
+  min="0"
+  type="number"
+  class="form-control"
+/>
+  
+  </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+    <label for="CurrentStatus">{{ "CurrentStatus" | translate }}</label>
+  
+    <app-code-type-dropdownlist
+       id="currentStatus-remote"
+       [codeType]="'CurrentStatus'"
+       [(selectedValue)]="model.currentStatus"
+       >
+       </app-code-type-dropdownlist>
+   
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+    <label for="currentStatusDate">{{ "CurrentStatus_Date" | translate }}</label>
+    <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.currentStatusDate"
+      ></ejs-datepicker>
+    
+    </div>
+  </div>
+
+  </div>
+<!-- Comment -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label ngbTooltip="PIG_COMMENT" for="comment">{{ "PIG_COMMENT" | translate }}</label>
+
+      <textarea
+        [(ngModel)]="model.comment"
+        type="text"
+        class="form-control"
+        rows="2"
+        cols="2"
+      ></textarea>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal-footer">
+<div class="mr-auto" *ngIf="model?.id > 0">
+  <p>
+    <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+    <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+  </p>
+  <p>
+    <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+    <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+  </p>
+</div>
+<span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+  {{ 'Note: (*) is a required field' | translate }}
+</span>
+<button
+  type="button"
+  class="btn btn-light"
+  ngbTooltip="CLOSE"
+  (click)="activeModal.close('Close click')"
+>
+{{ "CLOSE" | translate }}
+</button>
+<button [disabled]="!model.pigType || !model.idno || !model.earNo || !model.earTag || !model.rfidtag"(click)="save()" class="btn btn-primary">
+  {{ "SAVE" | translate }}
+</button>
+
+<button (click)="goToTop()" class="btn btn-warning">
+  <i class="fas fa-angle-double-up"></i>
+</button>
+</div>

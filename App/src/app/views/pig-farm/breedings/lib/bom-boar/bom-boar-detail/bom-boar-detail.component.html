@@ -1,0 +1,259 @@
+<div class="row p-2">
+  <div class="col-6">
+    <div class="form-group">
+      <label for="no">{{ "BomSow_NO" | translate }}</label>
+      <span class="max-length">
+        ( {{ "Text length" | translate }} <= 100 )</span
+      >
+      <input
+        [(ngModel)]="model.bomNo"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="bomName">{{ "BomSow_NAME" | translate }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span class="max-length">
+        ( {{ "Text length" | translate }} <= 100 )</span
+      >
+      <input
+        [(ngModel)]="model.bomName"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="bomVersion">{{ "BomSow_VERSION" | translate }}</label>
+      <span class="max-length">
+        ( {{ "Text length" | translate }} <= 100 )</span
+      >
+      <input
+        [(ngModel)]="model.bomVersion"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="bomBreed">{{ "BomSowBreed" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="BomSow-breed-remote"
+        [codeType]="'BomSow_Breed'"
+        [(selectedValue)]="model.bomBreed"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="semenVolume">{{ "Semen_Volume" | translate }}</label>
+      <input
+        [(ngModel)]="model.semenVolume"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Semen_Concentration">{{
+        "Semen_Concentration" | translate
+      }}</label>
+      <input
+        [(ngModel)]="model.semenConcentration"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Sperm_Motility">{{ "Sperm_Motility" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="ppermMotility-remote"
+        [codeType]="'Sperm_Motility'"
+        [(selectedValue)]="model.spermMotility"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Sperm_Color">{{ "Sperm_Color" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="spermColor-remote"
+        [codeType]="'Sperm_Color'"
+        [(selectedValue)]="model.spermColor"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Malformation_Head">{{
+        "Malformation_Head" | translate
+      }}</label>
+      <input
+        [(ngModel)]="model.malformationHead"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Malformation_Middle">{{
+        "Malformation_Middle" | translate
+      }}</label>
+      <input
+        [(ngModel)]="model.malformationMiddle"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Malformation_Tail">{{
+        "Malformation_Tail" | translate
+      }}</label>
+      <input
+        [(ngModel)]="model.malformationTail"
+        min="0"
+        type="number"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Sperm_Color">{{ "Sperm_Color" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="spermColor-remote"
+        [codeType]="'Sperm_Color'"
+        [(selectedValue)]="model.spermColor"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Ride_desire">{{ "Ride_desire" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="rideDesire-remote"
+        [codeType]="'Ride_desire'"
+        [(selectedValue)]="model.rideDesire"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="Ride_HindLeg">{{ "Ride_HindLeg" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="rideHindLeg-remote"
+        [codeType]="'Ride_HindLeg'"
+        [(selectedValue)]="model.rideHindLeg"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="ApplyEveryMonth">{{
+        "ApplyEveryMonth" | translate
+      }}</label>
+      <ejs-dropdownlist id='ApplyEveryMonth' [(value)]="model.applyEveryMonth" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12]'></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="ApplyEveryDay">{{
+        "ApplyEveryDay" | translate
+      }}</label>
+      <ejs-dropdownlist id='ApplyEveryDay' [(value)]="model.applyEveryDay" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]'></ejs-dropdownlist>
+    </div>
+  </div>
+  
+  <div class="col-12">
+    <div class="form-group">
+      <label for="comment">{{ "BomSow_COMMENT" | translate }}</label>
+      <textarea
+        [(ngModel)]="model.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="4"
+        rows="4"
+      ></textarea>
+    </div>
+  </div>
+</div>
+<div class="row p-2">
+  <div class="col-12 d-flex">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <div class="ml-auto">
+      <button type="button" class="btn my-btn-sm btn-sm mr-2" (click)="save()">
+        <i class="fa fa-save"></i> {{ "Save" | translate }}
+      </button>
+      <button type="button" class="btn my-btn-sm btn-sm" (click)="loadData()">
+        <i class="fa fa-backward"></i> {{ "Cancel" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="row p-2 detail">
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="type">{{ "PIG_HOUSE_CLEANING_TYPE" | translate }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <app-code-type-dropdownlist
+      id="type-remote"
+      [codeType]="'Cleaning_Type'"
+      [(selectedValue)]="model.type"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="pigType">{{ "PIG_TYPE" | translate }}</label>
+      <app-code-type-dropdownlist
+      id="pig-type-remote"
+      [codeType]="'Pig_Type'"
+      (ngModelChange)="pigTypeChange($event)"
+      [selectedValue]="model.pigType"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="recordDate">{{ "RECORD_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.recordDate"></ejs-datepicker>
+    </div>
+  </div>
+
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="recordGuid">{{ "RECORD_GUID" | translate }}</label>
+      <ejs-dropdownlist
+        [value]="model.recordGuid"
+        [fields]="fields"
+        [dataSource]="accountData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="form-group">
+      <label for="recordReason">{{
+        "RECORD_REASON" | translate
+      }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.recordReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="approveDate">{{ "APPROVE_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.approveDate"></ejs-datepicker>
+    </div>
+  </div>
+
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="approveGuid">{{ "APPROVE_GUID" | translate }}</label>
+      <ejs-dropdownlist
+        [value]="model.approveGuid"
+        [fields]="fields"
+        [dataSource]="accountData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="approveReason">{{
+        "APPROVE_REASON" | translate
+      }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.approveReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="pigDiseaseDate">{{ "REJECT_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.rejectDate"></ejs-datepicker>
+    </div>
+  </div>
+
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="rejectGuid">{{ "REJECT_GUID" | translate }}</label>
+      <ejs-dropdownlist
+        [value]="model.rejectGuid"
+        [fields]="fields"
+        [dataSource]="accountData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="rejectReason">{{
+        "REJECT_REASON" | translate
+      }}</label>
+      <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.rejectReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="comment">{{
+        "PIG_HOUSE_CLEANING_COMMENT" | translate
+      }}</label>
+      <textarea
+        [(ngModel)]="model.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="4"
+        rows="4"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <div class="ml-auto">
+      <button type="button" class="btn my-btn-sm btn-sm mr-2" (click)='save()'> <i class="fa fa-save"></i> {{ 'Save' | translate }}</button>
+      <button type="button" class="btn my-btn-sm btn-sm" (click)='loadData()'> <i class="fa fa-backward"></i> {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

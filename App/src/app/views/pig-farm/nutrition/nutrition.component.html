@@ -1,0 +1,405 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+
+<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (excelExportComplete)='excelExpComplete($event)'
+
+      >
+        <e-columns>
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+            </button>
+          </ng-template>
+          <e-column
+            field="#"
+            [allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            isPrimaryKey="true"
+            headerText="#"
+          >
+            <ng-template #template let-data>
+              {{ NO(data.index) }}
+            </ng-template>
+            <ng-template #editTemplate let-data> # </ng-template>
+          </e-column>
+
+          <e-column
+            field="option"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="nutritionNo"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'NUTRITION_NO' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="nutritionName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'NUTRITION_NAME' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="nutritionTypeName"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_TYPE' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="nutritionElement"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_ELEMENT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="nutritionEffect"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_EFFECT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="nutritionSideEffect"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_SIDE_EFFECT' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="nutritionBreed"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_BREED' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="nutritionRange"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_RANGE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="nutritionCare"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_CARE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'NUTRITION_COMMENT' | translate }}"
+          >
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_NO" for="no">{{
+            "NUTRITION_NO" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionNo"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_NAME" for="name">{{
+            "NUTRITION_NAME" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionName"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_TYPE" for="nutritionType">{{
+            "NUTRITION_TYPE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="type-remote"
+          [codeType]="'Nutrition_Type'"
+          [(selectedValue)]="model.nutritionType"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_ELEMENT" for="nutritionElement">{{
+            "NUTRITION_ELEMENT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionElement"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_EFFECT" for="idCard">{{
+            "NUTRITION_EFFECT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionEffect"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_SIDE_EFFECT" for="nutritionSideEffect">{{
+            "NUTRITION_SIDE_EFFECT" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionSideEffect"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_BREED" for="Tel">{{
+            "NUTRITION_BREED" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionBreed"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_RANGE" for="nutritionRange">{{
+            "NUTRITION_RANGE" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionRange"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label ngbTooltip="NUTRITION_CARE" for="nutritionCare">{{
+            "NUTRITION_CARE" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{"Text length"| translate }} <= 100 )</span
+          >
+
+          <input
+            [(ngModel)]="model.nutritionCare"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <label ngbTooltip="NUTRITION_COMMENT">{{
+          "NUTRITION_COMMENT" | translate
+        }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.nutritionName || !model.nutritionNo"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,9 @@
+.btn-mobile-login {
+  font-size: 1rem !important;
+    font-weight: bold !important;
+}
+.btn-mobile-login:hover {
+  color: #000000;
+  opacity: .9;
+  transition: all .5;
+}

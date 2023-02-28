@@ -1,0 +1,105 @@
+<div class="row p-2" style='overflow-y: auto;'>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="requisitionDate">{{ "REQUISITION_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.requisitionDate"></ejs-datepicker>
+    </div>
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="requisitionTime">{{ "REQUISITION_TIME" | translate }}</label>
+      <app-maskedtimetextbox [(selectedValue)]="model.requisitionTime"></app-maskedtimetextbox>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="vaccine">{{
+        "REQUISITION_DEPT" | translate
+      }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.requisitionDept"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="requisitionReason">{{
+        "REQUISITION_REASON" | translate
+      }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.requisitionReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="requisitionDate">{{ "REJECT_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.rejectDate"></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="userType">{{
+        "REJECT_REASON" | translate
+      }}</label>
+      <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+      <input
+        [(ngModel)]="model.rejectReason"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="rejectGuid">{{ "REJECT_GUID" | translate }}</label>
+      <ejs-dropdownlist
+        [(ngModel)]="model.rejectGuid"
+        [fields]="fields"
+        [dataSource]="rejectData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="accountGuid">{{ "ACCOUNT_GUID" | translate }}</label>
+      <ejs-dropdownlist
+        [(ngModel)]="model.accountGuid"
+        [fields]="fields"
+        [dataSource]="rejectData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="form-group">
+      <label for="comment">{{
+        "REQUISITION_COMMENT" | translate
+      }}</label>
+      <textarea
+        [(ngModel)]="model.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="4"
+        rows="4"
+      ></textarea>
+    </div>
+  </div>
+</div>

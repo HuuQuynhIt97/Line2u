@@ -1,0 +1,117 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="false"
+[allowResizing]="true"
+[showColumnMenu]="false"
+[allowSorting]="true"
+[pageSettings]="pageSettings"
+[enableInfiniteScrolling]="true"
+height="20vh"
+gridLines="Both"
+[editSettings]="editSettings"
+(toolbarClick)="toolbarClick($event)"
+(dataBound)="dataBound()"
+>
+<e-columns>
+  <ng-template #odsTemplate let-data>
+    <button
+      class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+      type="button"
+      id="grid_odsexport"
+      tabindex="-1"
+      (click)="odsExport()"
+      style="width: auto"
+    >
+      <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+      ><span class="e-tbar-btn-text"
+        >{{ "Ods Export" | translate }}
+      </span>
+    </button>
+  </ng-template>
+  
+
+  <e-column
+    field="id"
+    [allowSearching]="false"
+    textAlign="Left"
+    headerTextAlign="Center"
+    [visible]="false"
+    isPrimaryKey="true"
+    headerText="{{ 'ID' | translate  }}"
+  >
+  </e-column>
+
+  <e-column
+    field="seq"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'SEQ' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="sowEarNO"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'SOW EarNO' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="penName"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'PenName' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+  field="feeding"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'Feeding' | translate }}"
+>
+</e-column>
+
+  <e-column
+    field="silo"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Silo' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="diagnosis"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Diagnosis' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="death"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerTextAlign="Center"
+    headerText="{{ 'Death' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="earTag"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerTextAlign="Center"
+  headerText="{{ 'EarTag' | translate }}"
+>
+</e-column>
+<e-column
+field="move"
+textAlign="Left"
+headerTextAlign="Center"
+headerTextAlign="Center"
+headerText="{{ 'Move' | translate }}"
+>
+</e-column>
+</e-columns>
+</ejs-grid>

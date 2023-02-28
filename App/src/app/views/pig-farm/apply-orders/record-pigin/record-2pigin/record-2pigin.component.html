@@ -1,0 +1,145 @@
+<button
+  class="btn btn-sm btn-success my-2"
+  type="button"
+  (click)="grid.addRecord()"
+>
+  <i class="fa fa-plus"></i><span class="e-tbar-btn-text">{{ 'Add_Record2PigIn' | translate }}</span>
+</button>
+<ejs-grid
+  [dataSource]="dataSource"
+  [allowPaging]="false"
+  [pageSettings]="pageSettings"
+  [editSettings]="editSettings"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [height]="300 + 'px'"
+  gridLines="Both"
+  [locale]="locale"
+>
+  <e-columns>
+    <e-column headerText="" width="50" [commands]="commands"></e-column>
+    <e-column
+      field="id"
+      textAlign="Left"
+      [visible]="false"
+      headerTextAlign="Center"
+      headerText="{{ 'Id' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="penGuid"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="dropdownedit"
+      headerText="{{ 'Pen' | translate }}"
+      width="200"
+    >
+      <ng-template #editTemplate let-data>
+        <app-pen-dropdownlist
+          id="pen"
+          [roomGuid]="roomGuid"
+          [enabledLoad]="enabledLoad"
+          [(selectedValue)]="record2pigInItem.penGuid"
+          (selectedNameChange)="selectedValueName($event)"
+        >
+        </app-pen-dropdownlist>
+      </ng-template>
+
+      <ng-template #template let-data>
+        {{ data.penName }}
+      </ng-template>
+    </e-column>
+
+    <e-column
+    field="sex"
+    textAlign="Left"
+    headerTextAlign="Center"
+    editType="dropdownedit"
+    width="130"
+    headerText="{{ 'Pig_Sex' | translate }}"
+  >
+    <ng-template #editTemplate let-data>
+      <app-code-type-dropdownlist
+        [codeType]="'Pig_Sex'"
+        [(selectedValue)]="record2pigInItem.sex"
+        (selectedNameChange)="selectedSexValueName($event)"
+      >
+      </app-code-type-dropdownlist>
+    </ng-template>
+
+    <ng-template #template let-data>
+      {{ data.sexName }}
+    </ng-template>
+  </e-column>
+
+    <e-column
+      field="recordQty"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericEdit"
+      headerText="{{ 'Record_Qty' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="recordWeight"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericEdit"
+      headerText="{{ 'Record_Weight' | translate }}"
+    >
+    </e-column>
+
+    <!-- <e-column
+      field="recordAmount"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="numericEdit"
+      [edit]="numbericEdit"
+      headerText="{{ 'Record_Amount' | translate }}"
+    >
+    </e-column> -->
+
+    <e-column
+      field="birthDay"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Record_BirthDate' | translate }}"
+    >
+    <ng-template #editTemplate let-data>
+      <ejs-datepicker format='yyyy/MM/dd' locale="en-US"
+      [(ngModel)]="record2pigInItem.birthDay"></ejs-datepicker>
+    </ng-template>
+    
+    <ng-template #template let-data>
+     {{convertDateToString(data.birthDay)}}
+    </ng-template>
+    
+
+    </e-column>
+
+    <e-column
+      field="recordNext"
+      textAlign="Left"
+      headerTextAlign="Center"
+      editType="dropdownedit"
+      headerText="{{ 'RecordPigIn_Next' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          [codeType]="'RecordPigIn_Next'"
+          [(selectedValue)]="record2pigInItem.recordNext"
+          (selectedNameChange)="selectedRecordNextValueName($event)"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+
+      <ng-template #template let-data>
+        {{ data.recordNextName }}
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>

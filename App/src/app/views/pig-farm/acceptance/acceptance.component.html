@@ -1,0 +1,346 @@
+<div class="row my-row">
+  <div class="col-md-12 ">
+    <div class="card">
+      <div class="card-body p-0">
+        <div style="height: 43px; line-height: 43px; font-weight: 500">
+          <span style="padding-left: 0.5rem">
+            {{ "ACCEPTANCE" | translate }}
+          </span>
+        </div>
+        <ejs-grid
+          #grid
+          id="grid"
+          [dataSource]="data"
+          [allowPaging]="false"
+          [allowResizing]="true"
+          [allowSorting]="true"
+          gridLines="Both"
+          [locale]="locale"
+          (actionBegin)="actionBegin($event)"
+          (actionComplete)="actionComplete($event)"
+          [editSettings]="editSettings"
+          [pageSettings]="pageSettings"
+          [toolbar]="toolbarOptions"
+          [allowExcelExport]="true"
+          [selectedRowIndex]="0"
+          enableInfiniteScrolling='true'
+          (rowSelected)="rowSelected($event)"
+          (recordClick)="recordClick($event)"
+          [selectionSettings]="selectionOptions"
+          (toolbarClick)="toolbarClick($event)"
+          [height]="topHeight"
+        >
+          <e-columns>
+            <e-column
+              field="option"
+              [allowSorting]="false"
+              [allowSearching]="false"
+              [allowGrouping]="false"
+              [allowFiltering]="false"
+              [allowEditing]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              width="120"
+              headerTextAlign="Center"
+              headerText="{{ 'OPTION' | translate }}"
+            >
+              <ng-template #template let-data>
+                <span (click)="delete(data.id)" class="delete-grid">
+                  <i class="fa fa-trash"></i>
+                </span>
+                <span (click)="openModal(optionModal, data)" class="edit-grid">
+                  <i class="fa fa-edit"></i>
+                </span>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="acceptanceDeptName"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'ACCEPTANCE_DEPT' | translate }}"
+            >
+            </e-column>
+
+              <e-column
+              field="acceptanceReason"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'ACCEPTANCE_REASON' | translate }}"
+            >
+            </e-column>
+
+            <e-column
+            field="acceptanceDate"
+            type='Date'
+            format='yyyy/MM/dd'
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'ACCEPTANCE_DATE' | translate }}"
+          >
+          </e-column>
+
+            <e-column
+            field="acceptanceTime"
+            textAlign="Left"
+          headerTextAlign="Center"
+            headerText="{{ 'ACCEPTANCE_TIME' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+          field="rejectDate"
+          type='Date'
+          format='yyyy/MM/dd'
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'REJECT_DATE' | translate }}"
+        >
+        </e-column>
+
+        <e-column
+        field="rejectReason"
+        textAlign="Left"
+          headerTextAlign="Center"
+        headerText="{{ 'REJECT_REASON' | translate }}"
+      >
+      </e-column>
+
+      <e-column
+      field="comment"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'ACCEPTANCE_COMMENT' | translate }}"
+    >
+    </e-column>
+
+            <e-column
+              field="id"
+[allowSearching]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              [isPrimaryKey]="true"
+              [visible]="false"
+              headerText="ID"
+            >
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 mt-2" [style.height]='rightHeight'>
+    <div class="card">
+      <div class="card-body p-0">
+        <nav class="nav nav-pills nav-justified p-2">
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Detail'"
+            [ngClass]="{ active: active == 'Detail' }"
+            >{{ "ACCEPTANCE_DETAIL" | translate }}</a
+          >
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Check'"
+            [ngClass]="{ active: active == 'Check' }"
+            >{{ "ACCEPTANCE_CHECK" | translate }}</a
+          >
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Check In'"
+            [ngClass]="{ active: active == 'Check In' }"
+            >{{ "ACCEPTANCE_CHECKIN" | translate }}</a
+          >
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Inspection'"
+            [ngClass]="{ active: active == 'Inspection' }"
+            >{{ "ACCEPTANCE_INSPECTION" | translate }}</a
+          >
+        </nav>
+        <ng-container *ngIf="active == 'Detail'">
+          <app-acceptance-detail [bottomDetailHeight]='bottomDetailHeight'></app-acceptance-detail>
+         </ng-container>
+
+         <ng-container *ngIf="active == 'Check'">
+          <app-acceptance-check [bottomHeight]='bottomHeight'></app-acceptance-check>
+         </ng-container>
+
+         <ng-container *ngIf="active == 'Check In'">
+          <app-acceptance-checkin [bottomHeight]='bottomHeight'></app-acceptance-checkin>
+         </ng-container>
+
+         <ng-container *ngIf="active == 'Inspection'">
+          <app-acceptance-inspection [bottomHeight]='bottomHeight'></app-acceptance-inspection>
+         </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="requisitionGuid">{{ "REQUISITION" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.requisitionGuid"
+            [fields]="fields"
+            [dataSource]="requisitionData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="vaccine">{{
+            "ACCEPTANCE_DEPT" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+          id="account-dept-remote"
+          [codeType]="'Account_Dept'"
+          [(selectedValue)]="model.acceptanceDept"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="userType">{{
+            "ACCEPTANCE_REASON" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.acceptanceReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="acceptanceDate">{{ "ACCEPTANCE_DATE" | translate }}</label>
+          <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.acceptanceDate"></ejs-datepicker>
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="acceptanceTime">{{ "ACCEPTANCE_TIME" | translate }}</label>
+          <app-maskedtimetextbox [(selectedValue)]="model.acceptanceTime"></app-maskedtimetextbox>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="acceptanceDate">{{ "REJECT_DATE" | translate }}</label>
+          <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.rejectDate"></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="userType">{{
+            "REJECT_REASON" | translate
+          }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+          <input
+            [(ngModel)]="model.rejectReason"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="rejectGuid">{{ "REJECT_GUID" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.rejectGuid"
+            [fields]="fields"
+            [dataSource]="rejectData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="accountGuid">{{ "ACCOUNT_GUID" | translate }}</label>
+          <ejs-dropdownlist
+            [(ngModel)]="model.accountGuid"
+            [fields]="fields"
+            [dataSource]="rejectData"
+          ></ejs-dropdownlist>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="comment">{{
+            "ACCEPTANCE_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.acceptanceDept|| !model.acceptanceReason"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>
+

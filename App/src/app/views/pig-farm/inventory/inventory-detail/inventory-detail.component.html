@@ -1,0 +1,68 @@
+<div class="row p-2" [style.height]="bottomDetailHeight + 'px'" style='overflow-y: auto;'>
+  <div class="col-6">
+    <div class="form-group">
+      <label for="inventoryNo">{{ "INVENTORY_NO" | translate }}</label>
+      <span class="max-length">
+        ( {{ "Text length" | translate }} <= 100 )</span
+      >
+      <input
+        [(ngModel)]="model.inventoryNo"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="userType">{{ "INVENTORY_NAME" | translate }}</label>
+      <span class="max-length">
+        ( {{ "Text length" | translate }} <= 100 )</span
+      >
+      <input
+        [(ngModel)]="model.inventoryName"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-group">
+      <label for="inventoryLocation">{{
+        "INVENTORY_LOCATION" | translate
+      }}</label>
+      <app-code-type-dropdownlist
+          id="inventory-location-remote"
+          [codeType]="'Inventory_Location'"
+          [(selectedValue)]="model.inventoryLocation"
+          >
+          </app-code-type-dropdownlist>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="accountGuid">{{ "ACCOUNT_GUID" | translate }}</label>
+      <ejs-dropdownlist
+        [(ngModel)]="model.accountGuid"
+        [fields]="fields"
+        [dataSource]="rejectData"
+      ></ejs-dropdownlist>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="comment">{{ "INVENTORY_COMMENT" | translate }}</label>
+      <textarea
+        [(ngModel)]="model.comment"
+        name="comment"
+        type="text"
+        class="form-control"
+        cols="4"
+        rows="4"
+      ></textarea>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,200 @@
+<div *ngIf="isOpen; else elseTemplate">
+  <div class="row">
+    <div class="col-12">
+      <div class="btn-group" role="group">
+        <button
+          id="export"
+          type="button"
+          class="btn btn-success dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ "Export" | translate }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="export">
+          <a class="dropdown-item" (click)="pdfExport()">
+            {{ "PDF" | translate }}</a
+          >
+          <a class="dropdown-item" (click)="excelExport()">{{
+            "Excel" | translate
+          }}</a>
+          <a class="dropdown-item" (click)="odsExport()">{{
+            "Ods Export" | translate
+          }}</a>
+        </div>
+        <button (click)="print()" type="button" class="btn btn-success ml-2">
+          {{ "Print" | translate }}
+        </button>
+      </div>
+    </div>
+    <div
+      class="col"
+      *ngFor="let chart of chartData; let i = index"
+      [ngClass]="{ 'col-12': data.length == 1 }"
+    >
+      <ejs-accumulationchart
+        [id]="'container' + i"
+        #pie
+        style="display: block; width: 100%"
+        [legendSettings]="legendSettings"
+        [tooltip]="tooltip"
+        [title]="title"
+        (load)="load($event)"
+        [enableAnimation]="enableAnimation"
+        [center]="center"
+      >
+        <e-accumulation-series-collection>
+          <e-accumulation-series
+            [name]="chart.legend"
+            [dataSource]="data[i]"
+            xName="x"
+            yName="y"
+            [startAngle]="startAngle"
+            [endAngle]="endAngle"
+            innerRadius="0%"
+            radius="70%"
+            [dataLabel]="dataLabel"
+            [explode]="explode"
+            explodeOffset="0%"
+            [explodeIndex]="0"
+          >
+          </e-accumulation-series>
+        </e-accumulation-series-collection>
+      </ejs-accumulationchart>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col d-flex justify-content-center flex-column">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <ng-container *ngFor="let itemHeader of headerData; let i = index">
+              <th class="text-center" scope="col" *ngIf="i === 0"></th>
+              <th class="text-center" *ngIf="i !== 0" scope="col">
+                {{ itemHeader }}
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemBody of bodyData">
+            <ng-container *ngFor="let itemSubBody of itemBody; let i = index">
+              <th
+                class="text-center"
+                scope="row"
+                *ngIf="i === 0; else elseTemplate"
+              >
+                {{ itemSubBody }}
+              </th>
+              <ng-template #elseTemplate>
+                <td class="text-center">{{ itemSubBody }}</td>
+              </ng-template>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #elseTemplate>
+  <div class="row">
+    <div class="col-12">
+      <div class="btn-group" role="group">
+        <button
+          id="export"
+          type="button"
+          class="btn btn-success dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ "Export" | translate }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="export">
+          <a class="dropdown-item" (click)="pdfExport()">
+            {{ "PDF" | translate }}</a
+          >
+          <a class="dropdown-item" (click)="excelExport()">{{
+            "Excel" | translate
+          }}</a>
+        </div>
+        <button (click)="print()" type="button" class="btn btn-success ml-2">
+          {{ "Print" | translate }}
+        </button>
+      </div>
+    </div>
+    <div
+      class="col"
+      *ngFor="let chart of chartDataTemp; let i = index"
+      [ngClass]="{ 'col-12': dataTemp.length == 1 }"
+    >
+      <ejs-accumulationchart
+        [id]="'container' + i"
+        #pie
+        style="display: block; width: 100%"
+        [legendSettings]="legendSettings"
+        [tooltip]="tooltip"
+        [title]="title"
+        (load)="load($event)"
+        [enableAnimation]="enableAnimation"
+        [center]="center"
+      >
+        <e-accumulation-series-collection>
+          <e-accumulation-series
+            [name]="chart.legend"
+            [emptyPointSettings]="{mode: 'Zero'}"
+            [dataSource]="dataTemp[i]"
+            xName="x"
+            yName="y"
+            [startAngle]="startAngle"
+            [endAngle]="endAngle"
+            innerRadius="0%"
+            radius="70%"
+            [dataLabel]="dataLabel"
+            [explode]="explode"
+            [emptyPointSettings]="{ mode: 'Zero' }"
+            explodeOffset="0%"
+            [explodeIndex]="0"
+          >
+          </e-accumulation-series>
+        </e-accumulation-series-collection>
+      </ejs-accumulationchart>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+      <div class="col d-flex justify-content-center flex-column">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <ng-container
+                *ngFor="let itemHeader of headerDataTemp; let i = index"
+              >
+                <th class="text-center" scope="col" *ngIf="i === 0"></th>
+                <th class="text-center" *ngIf="i !== 0" scope="col">{{ itemHeader }}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let itemBody of bodyDataTemp">
+              <ng-container *ngFor="let itemSubBody of itemBody; let i = index">
+                <th
+                class="text-center"
+                scope="row"
+                *ngIf="i === 0; else elseTemplate"
+              >
+                {{ itemSubBody }}
+              </th>
+              <ng-template #elseTemplate>
+                <td class="text-center">{{ itemSubBody }}</td>
+              </ng-template>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</ng-template>

@@ -1,0 +1,330 @@
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="true"
+  [allowResizing]="true"
+  [allowSorting]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [sortSettings]="sortSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  (recordDoubleClick)="onDoubleClick($event)"
+  (toolbarClick)="toolbarClick($event)"
+>
+  <e-columns>
+    <e-column
+      field="#"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      isPrimaryKey="true"
+      headerText="#"
+    >
+      <ng-template #template let-data>
+        {{ NO(data.index) }}
+      </ng-template>
+      <ng-template #editTemplate let-data> # </ng-template>
+    </e-column>
+
+    <e-column
+      field="option"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate }}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="disease"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'DISEASE' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="medicine"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'MEDICINE' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="applyDays"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_APPLY_DAYS' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="useTypeName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_USE_TYPE' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="useUnitName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_USE_UNIT' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="capacityName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_CAPACITY' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+      field="frequencyName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_FREQUENCY' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="needleName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_NEEDLE' | translate }}"
+    >
+    </e-column>
+
+
+    <e-column
+      field="comment"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BOM_IMMUNIZATION_COMMENT' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="disease">{{ "DISEASE" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-disease-dropdownlist
+          [(selectedValue)]="model.diseaseGuid"
+          >
+          </app-disease-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="medicine">{{
+            "MEDICINE" | translate
+          }}</label>
+          <app-medicine-dropdownlist
+          [(selectedValue)]="model.medicineGuid"
+          >
+          </app-medicine-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="useType">{{
+            "BOM_IMMUNIZATION_USE_TYPE" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="immunization-type-remote"
+          [codeType]="'BOM_Immunization_UseType'"
+          [(selectedValue)]="model.useType"
+          >
+          </app-code-type-dropdownlist>
+
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="applyDays">{{
+            "BOM_IMMUNIZATION_APPLY_DAYS" | translate
+          }}</label>
+          <input
+          id="applyDays"
+          [(ngModel)]="model.applyDays"
+          min="0"
+          type="number"
+          class="form-control"
+        />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryMonth">{{
+            "ApplyEveryMonth" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryMonth' [(value)]="model.applyEveryMonth" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12]'></ejs-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="ApplyEveryDay">{{
+            "ApplyEveryDay" | translate
+          }}</label>
+          <ejs-dropdownlist id='ApplyEveryDay' [(value)]="model.applyEveryDay" [dataSource]='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]'></ejs-dropdownlist>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="useUnit">{{
+            "BOM_IMMUNIZATION_USE_UNIT" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="immunization-unit"
+          [codeType]="'BOM_Immunization_UseUnit'"
+          [(selectedValue)]="model.useUnit"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="capacity">{{
+            "BOM_IMMUNIZATION_CAPACITY" | translate
+          }}</label>
+           <app-code-type-dropdownlist
+          id="immunization-cap"
+          [codeType]="'BOM_Immunization_Capacity'"
+          [(selectedValue)]="model.capacity"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="frequency">{{
+            "BOM_IMMUNIZATION_FREQUENCY" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="method-fre-remote"
+          [codeType]="'BOM_Immunization_Frequency'"
+          [(selectedValue)]="model.frequency"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="needle">{{
+            "BOM_IMMUNIZATION_NEEDLE" | translate
+          }}</label>
+          <app-code-type-dropdownlist
+          id="method-needle-remote"
+          [codeType]="'BOM_Immunization_Needle'"
+          [(selectedValue)]="model.needle"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="comment">{{
+            "BOM_IMMUNIZATION_COMMENT" | translate
+          }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+      </p>
+      <p>
+        <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+        <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.diseaseGuid"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

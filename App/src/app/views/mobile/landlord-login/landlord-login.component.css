@@ -1,0 +1,33 @@
+#left-2020{width: 130px;left:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}#right-2020{width: 130px;right:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}.left-2019{top:0px}.right-2019{top:0px}.text-2019-l{top:50px}.text-2019-r{top:50px}@media screen and (max-width:1024px){.tet-2019{display:none}}@media screen and (max-width:1440px){#shareduyblogs{display:none}}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+input {
+  cursor: pointer;
+}
+
+#line-login-btn.btn{
+  background-color: #02C755;
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+}
+#line-login-btn.btn:hover{
+  background-color: #09B24B;
+}
+#line-login-btn.btn:active{
+  background-color: #028B3A;
+}
+#line-login-btn.btn svg{
+  width: 3em;
+  vertical-align: middle;
+  padding: 5px;
+  margin-left: 2px;
+}
+#line-login-btn.btn .line-login-text{
+  padding: 13px 30px;
+  display: inline-block;
+  border-left: 1px solid rgba(0,0,0,0.1);
+}

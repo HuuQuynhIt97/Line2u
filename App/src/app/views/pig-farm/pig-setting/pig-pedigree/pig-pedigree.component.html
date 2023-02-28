@@ -1,0 +1,311 @@
+<div class="row">
+  <div class="col-md-4 left">
+    <div class="card main-card">
+      <div class="card-body p-0">
+        <div style="height: 43px; line-height: 43px; font-weight: 500">
+          <span style="padding-left: 0.5rem">
+            {{ "PIG_PEDIGREE" | translate }}
+          </span>
+        </div>
+        <ejs-grid
+          #grid
+          id="grid"
+          [dataSource]="data"
+          [allowPaging]="true"
+          [allowResizing]="true"
+          [allowSorting]="true"
+          gridLines="Both"
+          [locale]="locale"
+          (actionBegin)="actionBegin($event)"
+          (actionComplete)="actionComplete($event)"
+          [editSettings]="editSettings"
+          [pageSettings]="pageSettings"
+          [toolbar]="toolbarOptions"
+          [allowExcelExport]="true"
+          [selectedRowIndex]="0"
+          (rowSelected)="rowSelected($event)"
+          (recordClick)="recordClick($event)"
+          (recordDoubleClick)="onDoubleClick($event)"
+          [selectionSettings]="selectionOptions"
+          (toolbarClick)="toolbarClick($event)"
+        >
+          <e-columns>
+            <e-column
+              field="option"
+              [allowSorting]="false"
+              [allowSearching]="false"
+              [allowGrouping]="false"
+              [allowFiltering]="false"
+              [allowEditing]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              width="120"
+              headerTextAlign="Center"
+              headerText="{{ 'OPTION' | translate }}"
+            >
+              <ng-template #template let-data>
+                <span (click)="delete(data.id)" class="delete-grid">
+                  <i class="fa fa-trash"></i>
+                </span>
+                <span (click)="openModal(optionModal, data)" class="edit-grid">
+                  <i class="fa fa-edit"></i>
+                </span>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="pedigreeName"
+              textAlign="Left"
+          headerTextAlign="Center"
+              headerText="{{ 'PIG_PEDIGREE_NAME' | translate }}"
+            >
+            </e-column>
+            <e-column
+              field="id"
+[allowSearching]="false"
+              textAlign="Left"
+          headerTextAlign="Center"
+              [isPrimaryKey]="true"
+              [visible]="false"
+              headerText="ID"
+            >
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card main-card">
+      <div class="card-body p-0">
+        <nav class="nav nav-pills nav-justified p-2">
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Detail'"
+            [ngClass]="{ active: active == 'Detail' }"
+            >{{ "PIG_PEDIGREE_DETAIL" | translate }}</a
+          >
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Code'"
+            [ngClass]="{ active: active == 'Code' }"
+            >{{ "PIG_CODE" | translate }}</a
+          >
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Genetic'"
+            [ngClass]="{ active: active == 'Genetic' }"
+            >{{ "PIG_GENETIC" | translate }}</a
+          >
+          <a
+            class="nav-link my-nav"
+            (click)="active = 'Testing'"
+            [ngClass]="{ active: active == 'Testing' }"
+            >{{ "PIG_TESTING" | translate }}</a
+          >
+        </nav>
+        <ng-container *ngIf="active == 'Detail'">
+          <app-pig-pedigree-detail [pigPedigree]="pigPedigree"></app-pig-pedigree-detail>
+        </ng-container>
+        <ng-container *ngIf="active == 'Code'">
+          <app-pig-code [pigPedigree]="pigPedigree"></app-pig-code>
+        </ng-container>
+
+        <ng-container *ngIf="active == 'Genetic'">
+          <app-pig-genetic [pigPedigree]="pigPedigree"></app-pig-genetic>
+        </ng-container>
+
+        <ng-container *ngIf="active == 'Testing'">
+          <app-pig-testing [pigPedigree]="pigPedigree"></app-pig-testing>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #optionModal let-modal>
+
+    <div class="modal-header my-modal">
+      <h4 class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="fatherGuid">{{
+              "PIG_PEDIGREE_FATHER" | translate
+            }}</label>
+            <app-pig-dropdownlist
+            id="father-remote"
+            (ngModelChange)="fatherChange($event)"
+            [selectedValue]="model.fatherGuid"
+            >
+            </app-pig-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="motherGuid">{{
+              "PIG_PEDIGREE_MOTHER" | translate
+            }}</label>
+            <app-pig-dropdownlist
+            id="mother-remote"
+            (ngModelChange)="motherChange($event)"
+            [selectedValue]="model.motherGuid"
+            >
+            </app-pig-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="pedigreeName">{{
+              "PIG_PEDIGREE_NAME" | translate
+            }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.pedigreeName"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="fromPigFarm">{{
+              "PIG_PEDIGREE_FROM_FARM" | translate
+            }}</label>
+            <app-farm-dropdownlist
+            id="farm-remote"
+            (ngModelChange)="fromFarmChange($event)"
+            [selectedValue]="model.fromPigFarm"
+            >
+            </app-farm-dropdownlist>
+
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="breed">{{ "PIG_PEDIGREE_BREED" | translate }}</label>
+            <app-code-type-dropdownlist
+            id="breed-remote"
+            [codeType]="'Breed'"
+            [(selectedValue)]="model.breed"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="earNo">{{ "PIG_PEDIGREE_EAR_NO" | translate }}</label>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.earNo"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="earTag">{{ "PIG_PEDIGREE_EAR_TAG" | translate }}</label>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.earTag"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="rfid">{{ "PIG_PEDIGREE_RFID" | translate }}</label>
+            <span class="max-length"> {{ '( Text length <= 40 )' | translate }}</span>
+            <input
+              [(ngModel)]="model.rfid"
+              maxlength="40"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="birthDay">{{
+              "PIG_PEDIGREE_BIRTHDAY" | translate
+            }}</label>
+            <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              [(ngModel)]="model.birthDay"
+            ></ejs-datepicker>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="comment">{{
+              "PIG_PEDIGREE_COMMENT" | translate
+            }}</label>
+            <textarea
+            [(ngModel)]="model.comment"
+            type="text"
+            class="form-control"
+            rows="4"
+            cols="4"
+          ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+        </p>
+        <p>
+          <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+          <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ 'Note: (*) is a required field' | translate }}
+      </span>
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+      <button
+        [disabled]="!model.pedigreeName"
+        (click)="save()"
+        class="btn btn-primary"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+</ng-template>

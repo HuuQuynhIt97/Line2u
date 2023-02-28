@@ -1,0 +1,74 @@
+
+<div class="row">
+  <div class="col-md-4 left">
+  <div class="card main-card">
+    <div class="card-body p-0">
+     <div style="height: 43px; line-height: 43px; font-weight: 500">
+       <span ngbTooltip="MAKE_ORDER" style="padding-left: 0.5rem">
+         {{ "MAKE_ORDER" | translate }}
+       </span>
+     </div>
+     <app-make-order (selectMakeOrder)='onSelectMakeOrder($event)' [pigType]="pigType"></app-make-order>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-md-8 right">
+  <div class="card main-card">
+   <div class="card-body p-0">
+    <nav class="nav nav-pills nav-justified p-2" >
+      <a class="nav-link my-nav" (click)="active='Detail'" [ngClass]="{ 'active': active == 'Detail'}">{{'MAKE_ORDER_DETAIL' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Pen'" [ngClass]="{ 'active': active == 'Pen'}">{{'PEN' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Pig'" [ngClass]="{ 'active': active == 'Pig'}">{{'PIG' | translate}}</a>
+      <!-- <a class="nav-link my-nav" (click)="active='Feeding'" [ngClass]="{ 'active': active == 'Feeding'}">{{'RECORD_FEEDING' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Immunization'" [ngClass]="{ 'active': active == 'Immunization'}">{{'RECORD_IMMUNIZATION' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Weighing'" [ngClass]="{ 'active': active == 'Weighing'}">{{'RECORD_WEIGHING' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Move'" [ngClass]="{ 'active': active == 'Move'}">{{'RECORD_MOVE' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Culling'" [ngClass]="{ 'active': active == 'Culling'}">{{'RECORD_CULLING' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='EarTag'" [ngClass]="{ 'active': active == 'EarTag'}">{{'RECORD_EAR_TAG' | translate}}</a>
+      <a class="nav-link my-nav" (click)="active='Death'" [ngClass]="{ 'active': active == 'Death'}">{{'RECORD_DEATH' | translate}}</a> -->
+    </nav>
+     <ng-container *ngIf="active == 'Detail'">
+       <app-make-order-detail [pigType]="pigType" ></app-make-order-detail>
+     </ng-container>
+     <ng-container *ngIf="active == 'Pen'">
+      <app-make-order-pen [makeOrderGuid]="makeOrderGuid"></app-make-order-pen>
+    </ng-container>
+     <ng-container *ngIf="active == 'Pig'">
+      <app-pig2 [pigType]="pigType" [makeOrderGuid]="makeOrderGuid"></app-pig2>
+    </ng-container>
+
+     <ng-container *ngIf="active == 'Move'">
+       <app-record-move></app-record-move>
+     </ng-container>
+
+     <ng-container *ngIf="active == 'Feeding'">
+       <app-record-feeding></app-record-feeding>
+     </ng-container>
+
+     <ng-container *ngIf="active == 'Immunization'">
+      <app-immunization2></app-immunization2>
+    </ng-container>
+
+     <ng-container *ngIf="active == 'Culling'">
+       <app-culling></app-culling>
+     </ng-container>
+
+     <ng-container *ngIf="active == 'EarTag'">
+       <app-ear-tag></app-ear-tag>
+     </ng-container>
+
+     <ng-container *ngIf="active == 'Weighing'">
+       <app-weighing></app-weighing>
+     </ng-container>
+
+     <ng-container *ngIf="active == 'Death'">
+       <app-death></app-death>
+     </ng-container>
+
+
+   </div>
+  </div>
+
+  </div>
+ </div>

@@ -1,0 +1,632 @@
+
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="true"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+(rowSelected)="rowSelected($event)"
+(recordClick)="recordClick($event)"
+(recordDoubleClick)="onDoubleClick($event)"
+[selectionSettings]="selectionOptions"
+(toolbarClick)="toolbarClick($event)"
+(dataBound)="dataBound()"
+>
+<e-columns>
+<e-column
+  field="option"
+  [allowSorting]="false"
+  [allowSearching]="false"
+  [allowGrouping]="false"
+  [allowFiltering]="false"
+  [allowEditing]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  width="80"
+  headerTextAlign="Center"
+  headerText="{{ 'OPTION' | translate }}"
+>
+  <ng-template #template let-data>
+    <span (click)="delete(data.id)" class="delete-grid">
+      <i class="fa fa-trash"></i>
+    </span>
+    <span (click)="openModal(optionModal, data)" class="edit-grid">
+      <i class="fa fa-edit"></i>
+    </span>
+  </ng-template>
+</e-column>
+<e-column
+  field="orderNo"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'ORDER_NO' | translate }}"
+>
+</e-column>
+<e-column
+  field="orderName"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'NAME' | translate }}"
+>
+</e-column>
+<e-column
+  field="dayAge"
+  [allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'DAYAGE' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="currentAmount"
+  [allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'CURRENT_AMOUNT' | translate }}"
+>
+</e-column>
+
+<e-column
+  field="roomName"
+  [allowSearching]="false"
+  [allowFiltering]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  headerText="{{ 'ROOM' | translate }}"
+>
+</e-column>
+<e-column
+  field="statusName"
+[allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [isPrimaryKey]="true"
+  [allowSearching]="false"
+  [allowFiltering]="false"
+  headerText="{{ 'Status MakeOrder' | translate }}"
+>
+</e-column>
+<e-column
+  field="status"
+[allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [isPrimaryKey]="true"
+  [visible]="false"
+  [allowSearching]="false"
+  [allowFiltering]="false"
+  headerText="status"
+>
+</e-column>
+<e-column
+  field="pigType"
+[allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [isPrimaryKey]="true"
+  [visible]="false"
+  [allowSearching]="false"
+  [allowFiltering]="false"
+  headerText="pigType"
+>
+</e-column>
+
+<e-column
+  field="id"
+[allowSearching]="false"
+  textAlign="Left"
+          headerTextAlign="Center"
+  [isPrimaryKey]="true"
+  [visible]="false"
+  headerText="ID"
+>
+</e-column>
+</e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+<div class="modal-header my-modal">
+<h4 [ngbTooltip]="title" class="modal-title">
+  <i class="fas fa-plus"></i> {{ title | translate }}
+</h4>
+<button
+  type="button"
+  class="close"
+  aria-label="Close"
+  (click)="modal.dismiss('Cross click')"
+>
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_NO" for="orderNo">{{ "MAKE_ORDER_NO" | translate }}</label>
+        <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+        <input
+          [(ngModel)]="model.orderNo"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_NAME" for="orderName">{{ "MAKE_ORDER_NAME" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+
+
+        <input
+          [(ngModel)]="model.orderName"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_BREED" for="orderBreed">{{ "MAKE_ORDER_BREED" | translate }}</label>
+        <app-code-type-dropdownlist
+        id="orderBreed-remote"
+        [codeType]="'Breed'"
+        [(selectedValue)]="model.orderBreed"
+        >
+        </app-code-type-dropdownlist>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_AMOUNT" for="orderAmount">{{ "MAKE_ORDER_AMOUNT" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <input
+          [(ngModel)]="model.orderAmound"
+          type="number"
+          min="0"
+          max="9999"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_TYPE" for="orderType">{{ "MAKE_ORDER_TYPE" | translate }}</label>
+        <app-code-type-dropdownlist
+        id="type-remote"
+        [codeType]="'Order_Type'"
+        [(selectedValue)]="model.orderType"
+        >
+        </app-code-type-dropdownlist>
+
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_FARM" for="orderFarm">{{ "MAKE_ORDER_FARM" | translate }}</label>
+        <app-farm-dropdownlist
+        id="type-remote"
+        [(selectedValue)]="model.orderFarm"
+        >
+        </app-farm-dropdownlist>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label ngbTooltip="MAKE_ORDER_REAL_START_DATE" for="realStartDate">{{ "MAKE_ORDER_REAL_START_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.realStartDate"></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label ngbTooltip="MAKE_ORDER_REAL_END_DATE" for="realEndDate">{{ "MAKE_ORDER_REAL_END_DATE" | translate }}</label>
+      <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.realEndDate"></ejs-datepicker>
+    </div>
+  </div>
+
+  <!-- <div class="col-md-4">
+    <div class="form-group">
+      <label ngbTooltip="MAKE_ORDER_PRICE" for="orderPrice">{{ "MAKE_ORDER_PRICE" | translate }}</label>
+      <input
+        [(ngModel)]="model.orderPrice"
+        type="number"
+          min="0"
+        class="form-control"
+      />
+    </div>
+  </div> -->
+
+  </div>
+
+  <div class="row">
+
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_ESTIMATE_START_DATE" for="estimateStartDate">{{ "MAKE_ORDER_ESTIMATE_START_DATE" | translate }}</label>
+        <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [disabled]='model.id === 0' [(ngModel)]="model.estimateStartDate"></ejs-datepicker>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_ESTIMATE_END_DATE" for="estimateEndDate">{{ "MAKE_ORDER_ESTIMATE_END_DATE" | translate }}</label>
+        <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [disabled]='model.id === 0' [(ngModel)]="model.estimateEndDate"></ejs-datepicker>
+      </div>
+    </div>
+
+    <!-- <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_DATE" for="orderDate">{{ "MAKE_ORDER_DATE" | translate }}</label>
+        <ejs-datepicker locale='en-US' format='yyyy/MM/dd' #orderDate [(ngModel)]="model.orderDate"></ejs-datepicker>
+      </div>
+    </div> -->
+
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="inAmound">{{ "In_Amound" | translate }}</label>
+        <input
+          [(ngModel)]="model.inAmound"
+          [disabled]="true"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="currentAmound">{{ "Current_Amound" | translate }}</label>
+        <input
+          [(ngModel)]="model.currentAmound"
+          [disabled]="true"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="cullingAmound">{{ "Culling_Amound" | translate }}</label>
+        <input
+          [(ngModel)]="model.cullingAmound"
+          [disabled]="true"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="deathAmound">{{ "Death_Amound" | translate }}</label>
+        <input
+          [(ngModel)]="model.deathAmound"
+          [disabled]="true"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="saleAmound">{{ "Sale_Amound" | translate }}</label>
+        <input
+          [(ngModel)]="model.saleAmound"
+          [disabled]="true"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="donateAmound">{{ "Donate_Amound" | translate }}</label>
+        <input
+          [(ngModel)]="model.donateAmound"
+          [disabled]="true"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+    <!-- <div class="col-md-4">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_DELIVERY_DATE" for="deliveryDate">{{ "MAKE_ORDER_DELIVERY_DATE" | translate }}</label>
+        <ejs-datepicker locale='en-US' format='yyyy/MM/dd' [(ngModel)]="model.deliveryDate"></ejs-datepicker>
+      </div>
+    </div> -->
+    <div class="col-4" *ngIf="pigType == 'Gilt'">
+      <div class="form-group">
+        <label for="bom">{{
+          "BOM_GILT" | translate
+        }}</label>
+        <app-bom-gilt-dropdownlist
+        [(selectedValue)]="model.bomGuid"
+        >
+        </app-bom-gilt-dropdownlist>
+      </div>
+    </div>
+    
+    <div class="col-4" *ngIf="pigType == 'Boar'">
+      <div class="form-group">
+        <label for="bom">{{
+          "BOM_Boar" | translate
+        }}</label>
+        <app-bom-boar-dropdownlist
+        [(selectedValue)]="model.bomGuid"
+        >
+        </app-bom-boar-dropdownlist>
+      </div>
+    </div>
+    
+
+    <div class="col-4" *ngIf="pigType != 'Gilt' && pigType != 'Boar'">
+      <div class="form-group">
+        <label for="bom">{{
+          "BOM" | translate
+        }}</label>
+        <app-bom-dropdownlist
+        [(selectedValue)]="model.bomGuid"
+        >
+        </app-bom-dropdownlist>
+      </div>
+    </div>
+    
+
+    <div class="col-4">
+      <div class="form-group">
+        <label for="roomGuid">{{
+          "ROOM" | translate
+        }}</label>
+        <app-room-dropdownlist
+        [(selectedValue)]="roomGuid"
+        (change)="onChangeRoom($event)"
+        >
+        </app-room-dropdownlist>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="Stolen_Amound">{{ "Stolen_Amound" | translate }}</label>
+        <input
+         [disabled]="true"
+          [(ngModel)]="model.stolenAmound"
+          type="number"
+          min="0"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+
+    <div class="col-md-12">
+      <div class="form-group">
+        <label ngbTooltip="MAKE_ORDER_COMMENT" for="comment">{{ "MAKE_ORDER_COMMENT" | translate }}</label>
+        <textarea
+          [(ngModel)]="model.comment"
+          name="comment"
+          type="text"
+          class="form-control"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+    
+
+  </div>
+<!-- Close -->
+<div
+class="row"
+*ngIf="model.id > 0"
+>
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="closeDate">{{ "CLOSE_DATE" | translate }}</label>
+    <ejs-datepicker
+      locale="en-US"
+      format="yyyy/MM/dd"
+      [(ngModel)]="model.closeDate"
+      [disabled]="true"
+    ></ejs-datepicker>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="form-group">
+    <label for="closeReason">{{ "CLOSE_REASON" | translate }}</label>
+    <span class="max-length">
+      ( {{ "Text length" | translate }} <= 100 )</span
+    >
+    <input
+      [(ngModel)]="model.closeReason"
+      [disabled]="model.closeGuid && (model.status === 4  || model.status === 3)"
+      maxlength="100"
+      type="text"
+      class="form-control"
+    />
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="row no-gutters">
+    <div class="col-md-8">
+      <div class="form-group">
+        <label for="closeGuid">{{ "CLOSE_GUID" | translate }}</label>
+        <app-account-dropdownlist
+          id="closeGuid"
+          [(selectedValue)]="model.closeGuid"
+          [disabled]="true"
+        >
+        </app-account-dropdownlist>
+      </div>
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+      <button
+      [disabled]="model.closeGuid && (model.status === 4  || model.status === 3)"
+      (click)="close()"
+      class="btn btn-success mb-3 ml-2"
+    >
+      {{ "Close MakeOrder" | translate }}
+    </button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- End close -->
+  <!-- Agree -->
+  <div
+  class="row"
+  *ngIf="model.id > 0 && model.closeGuid && model.status > 1"
+>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="agreeDate">{{ "AGREE_DATE" | translate }}</label>
+      <ejs-datepicker
+        locale="en-US"
+        format="yyyy/MM/dd"
+        [(ngModel)]="model.agreeDate"
+        [disabled]="true"
+      ></ejs-datepicker>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="agreeReason">{{ "AGREE_REASON" | translate }}</label>
+      <span class="max-length">
+        ( {{ "Text length" | translate }} <= 100 )</span
+      >
+      <input
+        [(ngModel)]="model.agreeReason"
+        [disabled]="model.agreeGuid && model.status > 3"
+        maxlength="100"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="row no-gutters">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="agreeGuid">{{ "AGREE_GUID" | translate }}</label>
+          <app-account-dropdownlist
+            id="agreeGuid"
+            [(selectedValue)]="model.agreeGuid"
+            [disabled]="true"
+          >
+          </app-account-dropdownlist>
+        </div>
+      </div>
+      <div class="col-md-4 d-flex align-items-end">
+        <button
+        (click)="agree()"
+        [disabled]="model.status > 3"
+        class="btn btn-success mb-3 ml-2"
+      >
+        {{ "Agree" | translate }}
+      </button>
+
+      <button
+      (click)="reject()"
+      class="btn btn-danger mb-3 ml-2"
+    >
+      {{ "Reject" | translate }}
+    </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- End agree -->
+</div>
+<div class="modal-footer">
+  <div class="mr-auto" *ngIf="model?.id > 0">
+    <p>
+      <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+      <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+    </p>
+    <p>
+      <span class='mr-2'><span class='my-font-weight-bold'>{{ 'Update by' | translate}}</span> : {{audit?.updateBy}}</span>
+      <span><span class='my-font-weight-bold'>{{ 'Update date time' | translate}}</span> : {{audit?.updateDate}}</span>
+    </p>
+  </div>
+  <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+    {{ 'Note: (*) is a required field' | translate }}
+  </span>
+<button
+  type="button"
+  class="btn btn-light"
+  (click)="modal.close('Close click')"
+>
+  {{ "CLOSE" | translate }}
+</button>
+<button
+*ngIf="!isLoadding"
+  [disabled]="!model.orderName || model.orderAmound < 0"
+  (click)="save()"
+  class="btn btn-primary"
+>
+  {{ "SAVE" | translate }}
+</button>
+<button class="btn btn-primary" type="button" disabled *ngIf="isLoadding">
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+ {{ 'Loading...' | translate}}
+</button>
+
+</div>
+</ng-template>

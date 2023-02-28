@@ -1,0 +1,79 @@
+<div class="card">
+  <div class="card-body p-0">
+    <span class="title">{{'ParkingLot' | translate}}</span>
+      <ejs-grid
+    #grid
+    id="grid"
+    [dataSource]="dataSource"
+    [query]="query"
+    [allowPaging]="true"
+    [allowResizing]="true"
+    [allowSorting]="true"
+    [allowMultiSorting]='true'
+    [enableInfiniteScrolling]="true"
+    gridLines="Both"
+    [editSettings]="editSettings"
+    [toolbar]="toolbarOptions"
+    (toolbarClick)="toolbarClick($event)"
+  (recordClick)="recordClick($event)"
+    
+  >
+    <e-columns>
+      <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate}}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)"class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="edit(data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+      <e-column
+        field="parkingLotNo"
+        [width]="120"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_NO' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="parkingLotName"
+        [width]="120"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Name' | translate }}"
+      >
+      </e-column>
+  
+     
+  
+      <e-column
+        field="id"
+        [allowSearching]="false"
+        textAlign="Left"
+        headerTextAlign="Center"
+        [isPrimaryKey]="true"
+        [visible]="false"
+        headerText="ID"
+      >
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+
+  </div>
+</div>
+<app-parking-lot-action [site]="site" (saveChange)="saveChange()"></app-parking-lot-action>

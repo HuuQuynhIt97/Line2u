@@ -1,0 +1,133 @@
+<ejs-grid
+  #grid
+  id="grid"
+  [dataSource]="data"
+  [allowPaging]="false"
+  [allowResizing]="true"
+  gridLines="Both"
+  [locale]="locale"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [editSettings]="editSettings"
+  [pageSettings]="pageSettings"
+  [toolbar]="toolbarOptions"
+  [allowExcelExport]="true"
+  enableInfiniteScrolling='true'
+  (recordDoubleClick)="onDoubleClick($event)"
+  (toolbarClick)="toolbarClick($event)"
+  [height]='bottomHeight'
+>
+  <e-columns>
+    <e-column
+      field="#"
+      [allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      isPrimaryKey="true"
+      headerText="#"
+    >
+      <ng-template #template let-data>
+        {{ NO(data.index) }}
+      </ng-template>
+      <ng-template #editTemplate let-data> # </ng-template>
+    </e-column>
+    <e-column
+      field="option"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      headerText="{{ 'OPTION' | translate}}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)" class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="openModal(optionModal, data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="penName"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BIO_SECURITY_2PEN_NAME' | translate }}"
+    >
+    </e-column>
+    <!-- <e-column
+      field="bioSMasterGuid"
+      textAlign="Left"
+          headerTextAlign="Center"
+      headerText="{{ 'BIO_SECURITY_2PEN_MASTER_GUID' | translate }}"
+    >
+    </e-column> -->
+
+    <e-column
+      field="id"
+[allowSearching]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      [isPrimaryKey]="true"
+      [visible]="false"
+      headerText="ID"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="makeOrderGuid">{{ "BIO_SECURITY_2PEN" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <ejs-dropdownlist
+                  [(ngModel)]="model.penGuid"
+                  [fields]="fields"
+                  [dataSource]="penData"
+                ></ejs-dropdownlist>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      [disabled]="!model.penGuid"
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

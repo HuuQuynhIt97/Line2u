@@ -1,0 +1,343 @@
+<div class="row my-row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body p-0">
+        <div style="height: 43px; line-height: 43px; font-weight: 500">
+          <span ngbTooltip="SYSTEM_REPORT_MENU" style="padding-left: 0.5rem">
+            {{ "SYSTEM_REPORT_MENU" | translate }}
+          </span>
+        </div>
+        <ejs-grid
+          #grid
+          id="grid"
+          [dataSource]="data"
+          [allowPaging]="false"
+          [allowResizing]="true"
+          [allowSorting]="true"
+          gridLines="Both"
+          [locale]="locale"
+          (actionBegin)="actionBegin($event)"
+          (actionComplete)="actionComplete($event)"
+          [editSettings]="editSettings"
+          [pageSettings]="pageSettings"
+          [toolbar]="toolbarOptions"
+          [allowExcelExport]="true"
+          [enableInfiniteScrolling]="false"
+          (recordDoubleClick)="onDoubleClick($event)"
+          (rowSelected)="rowSelected($event)"
+          (toolbarClick)="toolbarClick($event)"
+          (headerCellInfo)="headerCellInfo($event)"
+          (dataBound)="dataBound()"
+          (rowDataBound)="rowDataBound($event)"
+          [height]="'70vh'"
+          [query]="query"
+          (excelExportComplete)="excelExpComplete($event)"
+        >
+          <e-columns>
+            <ng-template #odsTemplate let-data>
+              <button
+                class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                type="button"
+                id="grid_odsexport"
+                tabindex="-1"
+                (click)="odsExport()"
+                style="width: auto"
+              >
+                <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+                ><span class="e-tbar-btn-text"
+                  >{{ "Ods Export" | translate }}
+                </span>
+              </button>
+            </ng-template>
+            <e-column
+            field="#"
+            [allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            width="80"
+            isPrimaryKey="true"
+            headerText="#"
+          >
+            <ng-template #template let-data>
+              {{ NO(data.index) }}
+            </ng-template>
+            <ng-template #editTemplate let-data> # </ng-template>
+          </e-column>
+            <e-column
+              field="storedProceduresName"
+              textAlign="Left"
+              headerTextAlign="Center"
+              [validationRules]="commonRules"
+              headerText="{{ 'SYSTEM_MENU_STORED_PROCEDURES' | translate }}"
+            >
+            </e-column>
+
+            <e-column
+              field="menuName"
+              textAlign="Left"
+              headerTextAlign="Center"
+              [validationRules]="nameRules"
+              headerText="{{ 'SYSTEM_MENU_NAME' | translate }}"
+            >
+            </e-column>
+            <e-column
+              field="menuNameEn"
+              textAlign="Left"
+              headerTextAlign="Center"
+              [validationRules]="commonRules"
+              headerText="{{ 'SYSTEM_MENU_NAMEEN' | translate }}"
+            >
+            </e-column>
+            <e-column
+              field="menuNameVn"
+              textAlign="Left"
+              headerTextAlign="Center"
+              [validationRules]="commonRules"
+              headerText="{{ 'SYSTEM_MENU_NAMEVN' | translate }}"
+            >
+            </e-column>
+            <e-column
+              field="menuNameCn"
+              textAlign="Left"
+              headerTextAlign="Center"
+              [validationRules]="commonRules"
+              headerText="{{ 'SYSTEM_MENU_NAMECN' | translate }}"
+            >
+            </e-column>
+           
+          </e-columns>
+        </ejs-grid>
+
+        <ng-template #optionModal let-modal>
+          <div class="modal-header my-modal">
+            <h4 [ngbTooltip]="title" class="modal-title">
+              <i class="fas fa-plus"></i> {{ title | translate }}
+            </h4>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_PARENT" for="upperId">{{
+                    "SYSTEM_MENU_PARENT" | translate
+                  }}</label>
+                  <ejs-dropdownlist
+                    [(ngModel)]="model.upperId"
+                    [allowFiltering]="true"
+                    [fields]="fields"
+                    [dataSource]="parentData"
+                    (filtering)="onFiltering($event)"
+                  ></ejs-dropdownlist>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_TYPE" for="type">{{
+                    "SYSTEM_MENU_TYPE" | translate
+                  }}</label>
+                  <span class="max-length">
+                    {{ "( Text length <= 20 )" | translate }}</span
+                  >
+                  <input
+                    [(ngModel)]="model.type"
+                    maxlength="20"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_NAME" for="menuName">{{
+                    "SYSTEM_MENU_NAME" | translate
+                  }}</label>
+                  <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+                  <span ngbTooltip="( Text length <= 200 )" class="max-length">
+                    ( {{ "Text length" | translate }} <= 200 )</span
+                  >
+                  <input
+                    [(ngModel)]="model.menuName"
+                    maxlength="200"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_NAMEEN" for="menuNameEn">{{
+                    "SYSTEM_MENU_NAMEEN" | translate
+                  }}</label>
+                  <span ngbTooltip="( Text length <= 200 )" class="max-length">
+                    ( {{ "Text length" | translate }} <= 200 )</span
+                  >
+                  <input
+                    [(ngModel)]="model.menuNameEn"
+                    maxlength="200"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_NAMEVN" for="menuNameVn">{{
+                    "SYSTEM_MENU_NAMEVN" | translate
+                  }}</label>
+                  <span ngbTooltip="( Text length <= 200 )" class="max-length">
+                    ( {{ "Text length" | translate }} <= 200 )</span
+                  >
+                  <input
+                    [(ngModel)]="model.menuNameVn"
+                    maxlength="200"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_ICON" for="menuIcon">{{
+                    "SYSTEM_MENU_ICON" | translate
+                  }}</label>
+                  <span ngbTooltip="( Text length <= 200 )" class="max-length">
+                    ( {{ "Text length" | translate }} <= 200 )</span
+                  >
+
+                  <input
+                    [(ngModel)]="model.menuIcon"
+                    maxlength="200"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_LINK" for="menuLink">{{
+                    "SYSTEM_MENU_LINK" | translate
+                  }}</label>
+                  <span ngbTooltip="( Text length <= 200 )" class="max-length">
+                    ( {{ "Text length" | translate }} <= 200 )</span
+                  >
+
+                  <input
+                    [(ngModel)]="model.menuLink"
+                    maxlength="200"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label
+                    ngbTooltip="SYSTEM_MENU_STORED_PROCEDURES"
+                    for="sortId"
+                    >{{ "SYSTEM_MENU_STORED_PROCEDURES" | translate }}</label
+                  >
+                  <span ngbTooltip="( Text length <= 200 )" class="max-length">
+                    ( {{ "Text length" | translate }} <= 200 )</span
+                  >
+                  <input
+                    [(ngModel)]="model.storedProceduresName"
+                    name="storedProceduresName"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_SORTID" for="sortId">{{
+                    "SYSTEM_MENU_SORTID" | translate
+                  }}</label>
+                  <input
+                    [(ngModel)]="model.sortId"
+                    name="sortId"
+                    type="number"
+                    min="0"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label ngbTooltip="SYSTEM_MENU_COMMENT" for="comment">{{
+                    "SYSTEM_MENU_COMMENT" | translate
+                  }}</label>
+                  <textarea
+                    [(ngModel)]="model.comment"
+                    name="comment"
+                    type="text"
+                    class="form-control"
+                    rows="4"
+                    cols="4"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <span
+              ngbTooltip="Note: (*) is a required field"
+              *ngIf="!(model.id > 0)"
+              class="my-note mr-auto"
+            >
+              {{ "Note: (*) is a required field" | translate }}
+            </span>
+            <button
+              type="button"
+              class="btn btn-light"
+              ngbTooltip="CLOSE"
+              (click)="modal.close('Close click')"
+            >
+              {{ "CLOSE" | translate }}
+            </button>
+            <button
+              [disabled]="!model.menuName"
+              (click)="save()"
+              ngbTooltip="SAVE"
+              class="btn btn-primary"
+            >
+              {{ "SAVE" | translate }}
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8 mt-2">
+    <div class="card">
+      <div class="card-body p-0">
+        <div style="height: 43px; line-height: 43px; font-weight: 500">
+          <span ngbTooltip="COLUMN_REPORT" style="padding-left: 0.5rem">
+            {{ "COLUMN_REPORT" | translate }}
+          </span>
+        </div>
+        <app-column-config
+          [systemMenuGuid]="systemMenuGuid"
+        ></app-column-config>
+      </div>
+    </div>
+  </div>
+</div>

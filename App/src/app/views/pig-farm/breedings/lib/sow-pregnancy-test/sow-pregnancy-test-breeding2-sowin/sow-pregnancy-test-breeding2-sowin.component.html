@@ -1,0 +1,91 @@
+<ejs-grid
+  #grid
+  id="grid-detail"
+  [dataSource]="dataSource"
+  [enableInfiniteScrolling]="true"
+  [allowPaging]="false"
+  [allowResizing]="true"
+  [pageSettings]="pageSettings"
+  [editSettings]="editSettingsPig"
+  [searchSettings]="searchOptions"
+  (actionBegin)="actionBeginPig($event)"
+  (actionComplete)="actionComplete($event)"
+  (created)="created()"
+  [toolbar]="['Search']"
+  [height]="300 + 'px'"
+  gridLines="Both"
+  (dataBound)="dataBound()"
+>
+  <e-columns>
+    <e-column [visible]="visibleCommands" width=50 [commands]='commands'></e-column>
+    <e-column
+      field="id"
+      textAlign="Left"
+      [visible]="false"
+      [isPrimaryKey]='true'
+      headerTextAlign="Center"
+      headerText="{{ 'Id' | translate }}"
+    >
+    </e-column>
+    <e-column
+      field="sowGuidName"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerTextAlign="Center"
+      headerText="{{ 'Sow_GUID' | translate }}"
+    >
+    </e-column>
+
+    
+    <e-column
+      field="testResult"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'Test_Result' | translate }}"
+    >
+      <ng-template #editTemplate let-data>
+        <app-code-type-dropdownlist
+          id="Test_Result"
+          codeType="SowPregnancyTest_Result"
+          (change)="onChangeTestResult($event, data)"
+          [(selectedValue)]="data.testResult"
+        >
+        </app-code-type-dropdownlist>
+      </ng-template>
+      <ng-template #template let-data>
+        {{ data.testResultName }}
+      </ng-template>
+    </e-column>
+
+
+  <e-column
+    field="penGuid"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'Pen_GUID' | translate }}"
+  >
+    <ng-template #editTemplate let-data>
+      <app-pen-dropdownlist
+        id="penGuid"
+        [enabledLoad]="true"
+        [roomGuid]="roomGuid"
+        (change)="onChangePenGuid($event, data)"
+        [(selectedValue)]="data.penGuid"
+      >
+      </app-pen-dropdownlist>
+    </ng-template>
+    <ng-template #template let-data>
+      {{ data.penGuidName | translate }}
+    </ng-template>
+  </e-column>
+
+    
+    
+    
+  </e-columns>
+</ejs-grid>

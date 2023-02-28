@@ -1,0 +1,128 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="false"
+[allowResizing]="true"
+[showColumnMenu]="false"
+[allowSorting]="true"
+[pageSettings]="pageSettings"
+[enableInfiniteScrolling]="true"
+height="20vh"
+gridLines="Both"
+[editSettings]="editSettings"
+(toolbarClick)="toolbarClick($event)"
+(dataBound)="dataBound()"
+>
+<e-columns>
+  <ng-template #odsTemplate let-data>
+    <button
+      class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+      type="button"
+      id="grid_odsexport"
+      tabindex="-1"
+      (click)="odsExport()"
+      style="width: auto"
+    >
+      <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+      ><span class="e-tbar-btn-text"
+        >{{ "Ods Export" | translate }}
+      </span>
+    </button>
+  </ng-template>
+  
+
+  <e-column
+    field="id"
+    [allowSearching]="false"
+    textAlign="Left"
+    headerTextAlign="Center"
+    [visible]="false"
+    isPrimaryKey="true"
+    headerText="{{ 'ID' | translate  }}"
+  >
+  </e-column>
+
+  <e-column
+    field="seq"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'SEQ' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="sowEarNO"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'SOW EarNO' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="penName"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'PenName' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+  field="sowFarrow"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'SowFarrow' | translate }}"
+>
+</e-column>
+
+  <e-column
+    field="sowMilking"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'SowMilking' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="sucklingCastration"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'SucklingCastration' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="sucklingTeachingSlot"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerTextAlign="Center"
+    headerText="{{ 'SucklingTeachingSlot' | translate }}"
+  >
+  </e-column>
+
+  <e-column
+    field="showFoster"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerTextAlign="Center"
+    headerText="{{ 'ShowFoster' | translate }}"
+  >
+  </e-column>
+  
+  <e-column
+    field="sucklingWeighing"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerTextAlign="Center"
+    headerText="{{ 'SucklingWeighing' | translate }}"
+  >
+  </e-column>
+    
+  <e-column
+    field="sowWeaning"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerTextAlign="Center"
+    headerText="{{ 'SowWeaning' | translate }}"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>
