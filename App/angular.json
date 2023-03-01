@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "PigFarm": {
+    "Line2U": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../Evse/wwwroot/ClientApp",
+            "outputPath": "../Line2u/wwwroot/ClientApp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -73,18 +73,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "PigFarm:build"
+            "browserTarget": "Line2U:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "PigFarm:build:production"
+              "browserTarget": "Line2U:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PigFarm:build"
+            "browserTarget": "Line2U:build"
           }
         },
         "test": {
@@ -121,18 +121,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "PigFarm:serve"
+            "devServerTarget": "Line2U:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "PigFarm:serve:production"
+              "devServerTarget": "Line2U:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "PigFarm",
+  "defaultProject": "Line2U",
   "cli": {
     "analytics": false
   }

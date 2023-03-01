@@ -5,16 +5,16 @@
       "@pigfarm-core": [
         "projects/pigfarm-core/src/public-api.ts",
         "dist/pigfarm-core",
-      ],
-      "ngx-org-chart": [
-        "projects/ngx-org-chart/*",
-        "dist/ngx-org-chart/ngx-org-chart",
-        "dist/ngx-org-chart"
-      ],
-      "ngx-org-chart/*": [
-        "projects/ngx-org-chart/*",
-        "dist/ngx-org-chart/*"
       ]
+      // "ngx-org-chart": [
+      //   "projects/ngx-org-chart/*",
+      //   "dist/ngx-org-chart/ngx-org-chart",
+      //   "dist/ngx-org-chart"
+      // ],
+      // "ngx-org-chart/*": [
+      //   "projects/ngx-org-chart/*",
+      //   "dist/ngx-org-chart/*"
+      // ]
     
     },
     "baseUrl": "./",
@@ -37,7 +37,7 @@
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "enableIvy": true
+    "strictInjectionParameters": true
+    // "enableIvy": true
   }
 }

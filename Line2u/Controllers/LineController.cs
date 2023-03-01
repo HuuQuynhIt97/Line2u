@@ -244,13 +244,13 @@ namespace Line2u.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMessageFromGPT(string msg)
         {
-            string apiKey = "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";
+            string apiKey = "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";
             string response = "";
             OpenAIAPI openai = new OpenAIAPI(apiKey);
             CompletionRequest completion = new CompletionRequest();
             completion.Prompt = msg;
-            //completion.Model = "text-davinci-003";
-            completion.Model = OpenAI_API.Models.Model.DavinciText;
+            completion.Model = "text-davinci-003";
+            //completion.Model = OpenAI_API.Models.Model.DavinciText;
             completion.MaxTokens = 4000;
             var output = await openai.Completions.CreateCompletionAsync(completion);
             if (output != null)

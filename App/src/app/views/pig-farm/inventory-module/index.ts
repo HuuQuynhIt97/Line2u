@@ -1,5 +1,0 @@
-export * from './rfid/rfid.component'
-export * from './semen/semen.component'
-export * from './semen-mix/semen-mix.component'
-export * from './treatment/treatment.component'
-export * from './treatment/treatment-detail/treatment-detail.component'

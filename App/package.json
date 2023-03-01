@@ -1,5 +1,5 @@
 {
-  "name": "pigfarm",
+  "name": "line2u",
   "version": "1.5.0",
   "scripts": {
     "ng": "ng",
@@ -7,10 +7,10 @@
     "build:lib2": "ng build --project @pigfarm-core --configuration production && yarn run scss:bundle",
     "scss:bundle": "scss-bundle -e ./projects/ngx-org-chart/src/_theming.scss -o ./dist/ngx-org-chart/_theming.scss",
     "lint": "node --max_old_space_size=8192 --harmony node_modules/@angular/cli/bin/ng lint",
-    "start": "ng serve --open --host localhost --port 1000 --disable-host-check",
+    "starts": "ng serve --open --host localhost --port 1000 --disable-host-check",
     "pro": "ng serve --open --host localhost --port 1005 --disable-host-check",
     "dev": "ng serve --port 1000 --disable-host-check",
-    "mserve":"set NODE_OPTIONS=--max_old_space_size=17384 & ng serve --open",
+    "start":"set NODE_OPTIONS=--max_old_space_size=17384 & ng serve --open",
     "build": "ng build --prod --no-aot --build-optimizer false",
     "build2": "ng build --prod --stats-json --source-map=false",
     "test": "ng test",

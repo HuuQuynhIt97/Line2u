@@ -1,6 +1,0 @@
-export * from './pig-farm-vector.component'
-export * from './pig-farm-vector-detail/pig-farm-vector-detail.component'
-export * from './pig-farm-vector-plan/pig-farm-vector-plan.component'
-export * from './pig-farm-vector-record/pig-farm-vector-record.component'
-export * from './pig-farm-vector-schedule/pig-farm-vector-schedule.component'
-export * from './pig-farm-vectorcontrol/pig-farm-vectorcontrol.component'

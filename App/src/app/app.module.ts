@@ -110,17 +110,9 @@ import { BasicAuthInterceptor } from './_core/_helper/basic-auth.interceptor';
 
 import { CoreModule } from './_core/core.module';
 import { VersionCheckService } from './_core/_service/version-check.service';
-import { ChangePasswordComponent } from './views/pig-farm/change-password/change-password.component';
-import { ProfileComponent } from './views/pig-farm/profile/profile.component';
-import { ReportComponent } from './views/pig-farm/report/report.component';
 import { NgbModule, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CustomLoader } from './_core/_helper/custom-loader';
-import { ReportChartComponent } from './views/pig-farm/report/report-chart/report-chart.component';
-import { ReportListComponent } from './views/pig-farm/report/report-list/report-list.component';
-import { ReportBarChartComponent } from './views/pig-farm/report/report-chart/report-bar-chart/report-bar-chart.component';
-import { ReportLineChartComponent } from './views/pig-farm/report/report-chart/report-line-chart/report-line-chart.component';
-import { ReportPieChartComponent } from './views/pig-farm/report/report-chart/report-pie-chart/report-pie-chart.component';
 import { AccumulationChartAllModule, CategoryService, ChartAllModule, ChartModule, ColumnSeriesService, LegendService } from '@syncfusion/ej2-angular-charts';
 import { DashboardService } from './_core/_service/dashboard.service';
 import { PigfarmCoreModule } from 'herr-core';
@@ -147,17 +139,9 @@ if (!lang) {
     P404Component,
     P500Component,
     HomeComponent,
-    ChangePasswordComponent,
-    ProfileComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ForgotUsernameComponent,
-    ReportComponent,
-    ReportListComponent,
-    ReportChartComponent,
-    ReportPieChartComponent,
-    ReportBarChartComponent,
-    ReportLineChartComponent,
     NavbarComponent,
     NewsComponent,
     NewRoleComponent,

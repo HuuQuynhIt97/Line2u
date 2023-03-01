@@ -8,8 +8,6 @@ import { LoginComponent } from './views/login/login.component';
 
 import { P404Component } from './views/p404/p404.component';
 import { P500Component } from './views/p500/p500.component';
-import { ChangePasswordComponent } from './views/pig-farm/change-password/change-password.component';
-import { ReportComponent } from './views/pig-farm/report/report.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { AuthGuard } from './_core/_guards/auth.guard';
 import { SelectivePreloadingStrategyService } from './_core/_preloading/selective-preloading-strategy.service';
@@ -33,37 +31,23 @@ const routes: Routes = [
     // canActivate: [AuthGuard],
     children: [
       {
-        path: 'report/:kind',
-        component: ReportComponent,
-        data: {
-          title: 'Report',
-          module: 'Report',
-          breadcrumb: 'Report',
-          functionCode: 'Report'
-        },
-        // canActivate: [AuthGuard]
-      },
-      {
         path: '',
         loadChildren: () =>
           import('./views/evse/evse.module').then(m => m.EvseModule)
       },
       
-      {
-        path: '',
-        loadChildren: () =>
-          import('./views/pig-farm/pig-farm.module').then(m => m.PigFarmModule)
-      },{
-        path: 'change-password',
-        component: ChangePasswordComponent,
-        data: {
-          title: 'Change Password',
-          module: 'Account',
-          breadcrumb: 'Change Password',
-          functionCode: 'Change Password'
-        },
-       canActivate: [AuthGuard]
-      },
+     
+      // {
+      //   path: 'change-password',
+      //   component: ChangePasswordComponent,
+      //   data: {
+      //     title: 'Change Password',
+      //     module: 'Account',
+      //     breadcrumb: 'Change Password',
+      //     functionCode: 'Change Password'
+      //   },
+      //  canActivate: [AuthGuard]
+      // },
     ]
   },
   {

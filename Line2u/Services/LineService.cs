@@ -141,7 +141,7 @@ namespace Line2u.Services
 
             string OutPutResult = "";
 
-            var content = new StringContent("{\"model\": \"text-davinci-003\", \"prompt\": \"" + msg + "\",\"temperature\": 1,\"max_tokens\": 100}",
+            var content = new StringContent("{\"model\": \"text-davinci-003\", \"prompt\": \"" + msg + "\",\"temperature\": 1,\"max_tokens\": 4000}",
                 Encoding.UTF8, "application/json");
             CompletionResponse completionResponse = new CompletionResponse();
             using (HttpClient httpClient = new HttpClient())
