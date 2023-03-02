@@ -61,6 +61,10 @@ namespace Line2u.Models
         public string SiteGuid2 { get; set; }
         public string SiteGuid3 { get; set; }
         public string LocalLogin { get; set; }
+        public string LineID { get; set; }
+        public string LineName { get; set; }
+        public string LinePicture { get; set; }
+        public string LineEmail { get; set; }
 
         public string IsLineAccount { get; set; }
     }

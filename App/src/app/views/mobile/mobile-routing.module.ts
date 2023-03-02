@@ -16,6 +16,7 @@ import { FieldScreenDetailComponent } from './field/field-screen-detail/field-sc
 import { BankAccountScreenComponent } from './account-screen/bank-account-screen/bank-account-screen.component';
 import { BankAccountFinishScreenComponent } from './account-screen/bank-account-finish-screen/bank-account-finish-screen.component';
 import { AlertScreenComponent } from './alert-screen/alert-screen.component';
+import { LineUserLoginComponent } from './lineUser-login/lineUser-login.component';
 
 const routes: Routes = [
   {
@@ -148,6 +149,13 @@ const routes: Routes = [
   {
     path: 'landlord-login',
     component: LandlordLoginComponent,
+    data: {
+      title: 'Login'
+    }
+  },
+  {
+    path: 'userLine-login',
+    component: LineUserLoginComponent,
     data: {
       title: 'Login'
     }

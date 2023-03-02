@@ -1,0 +1,194 @@
+<div *ngIf="isOpen; else elseTemplate">
+  <div class="btn-group" role="group">
+    <button
+      id="export"
+      type="button"
+      class="btn btn-success dropdown-toggle"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      {{ "Export" | translate }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="export">
+      <a class="dropdown-item" (click)="pdfExport()">
+        {{ "PDF" | translate }}</a
+      >
+      <a class="dropdown-item" (click)="excelExport()">{{
+        "Excel" | translate
+      }}</a>
+      <a class="dropdown-item" (click)="odsExport()">{{
+        "Ods Export" | translate
+      }}</a>
+    </div>
+    <button (click)="print()" type="button" class="btn btn-success ml-2">
+      {{ "Print" | translate }}
+    </button>
+  </div>
+
+  <ejs-chart
+    #chart
+    style="display: block"
+    [chartArea]="chartArea"
+    [width]="width"
+    align="center"
+    id="chartcontainer"
+    [primaryXAxis]="primaryXAxis"
+    [legendSettings]="legendSettings"
+    [primaryYAxis]="primaryYAxis"
+    [title]="title"
+    [tooltip]="tooltip"
+    [enableAnimation]="enableAnimation"
+  >
+    <e-series-collection>
+      <e-series
+        *ngFor="let chart of chartData; let i = index"
+        [dataSource]="data[i]"
+        legendShape="Rectangle"
+        [type]="chart.type"
+        xName="x"
+        yName="y"
+        opacity="0.8"
+        [fill]="chart.colorName"
+        [name]="chart.legend"
+        [cornerRadius]="radius"
+        [marker]="marker"
+      ></e-series>
+      <e-series
+        [dataSource]="dataSource"
+        type="Line"
+        [visible]="visibleTarget"
+        xName="x"
+        yName="y"
+        fill="#007bff"
+        width="2"
+        [animation]="true"
+        name="Target"
+      ></e-series>
+    </e-series-collection>
+  </ejs-chart>
+
+  <div class="row mt-2">
+      <div
+        class="col d-flex justify-content-center flex-column"
+      >
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <ng-container *ngFor="let itemHeader of headerData; let i = index">
+              <th class="text-center" scope="col" *ngIf="i === 0"></th>
+              <th class="text-center" *ngIf="i !== 0" scope="col">
+                {{ itemHeader }}
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemBody of bodyData">
+            <ng-container *ngFor="let itemSubBody of itemBody; let i = index">
+              <th
+                class="text-center"
+                scope="row"
+                *ngIf="i === 0; else elseTemplate"
+              >
+                {{ itemSubBody }}
+              </th>
+              <ng-template #elseTemplate>
+                <td class="text-center">{{ itemSubBody }}</td>
+              </ng-template>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+  </div>
+</div>
+
+<ng-template #elseTemplate>
+  <div class="btn-group" role="group">
+    <button
+      id="export"
+      type="button"
+      class="btn btn-success dropdown-toggle"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      {{ "Export" | translate }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="export">
+      <a class="dropdown-item" (click)="pdfExport()">
+        {{ "PDF" | translate }}</a
+      >
+      <a class="dropdown-item" (click)="excelExport()">{{
+        "Excel" | translate
+      }}</a>
+    </div>
+    <button (click)="print()" type="button" class="btn btn-success ml-2">
+      {{ "Print" | translate }}
+    </button>
+  </div>
+  <ejs-chart
+    #chart
+    style="display: block"
+    [chartArea]="chartArea"
+    [width]="width"
+    align="center"
+    id="chartcontainer2"
+    [primaryXAxis]="primaryXAxis"
+    [legendSettings]="legendSettings"
+    [primaryYAxis]="primaryYAxis"
+    [title]="title"
+    [tooltip]="tooltip"
+    [enableAnimation]="enableAnimation"
+  >
+    <e-series-collection>
+      <e-series
+        *ngFor="let chart of chartDataTemp; let i = index"
+        [dataSource]="dataTemp[i]"
+        legendShape="Rectangle"
+        type="Column"
+        xName="x"
+        yName="y"
+        [fill]="chart.colorName"
+        [name]="chart.legend"
+        [marker]="marker"
+      ></e-series>
+    </e-series-collection>
+  </ejs-chart>
+
+  <div class="row mt-2">
+      <div class="col d-flex justify-content-center flex-column">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <ng-container
+                *ngFor="let itemHeader of headerDataTemp; let i = index"
+              >
+                <th class="text-center" scope="col" *ngIf="i === 0"></th>
+                <th class="text-center" *ngIf="i !== 0" scope="col">{{ itemHeader }}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let itemBody of bodyDataTemp">
+              <ng-container *ngFor="let itemSubBody of itemBody; let i = index">
+                <th
+                class="text-center"
+                scope="row"
+                *ngIf="i === 0; else elseTemplate"
+              >
+                {{ itemSubBody }}
+              </th>
+              <ng-template #elseTemplate>
+                <td class="text-center">{{ itemSubBody }}</td>
+              </ng-template>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</ng-template>
+
+

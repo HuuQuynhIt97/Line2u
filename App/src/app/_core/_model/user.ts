@@ -12,6 +12,7 @@ export interface User {
   nickName: string;
   email: string;
   groupCode: string;
+  isLineAccount: string;
   groupID: any;
   token: any;
   refresToken: any;

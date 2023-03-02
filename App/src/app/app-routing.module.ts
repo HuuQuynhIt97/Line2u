@@ -5,6 +5,7 @@ import { ForgotUsernameComponent } from './views/forgot-username/forgot-username
 import { HomeComponent } from './views/home/home.component';
 import { LayoutComponent } from './views/layout/layout/layout.component';
 import { LoginComponent } from './views/login/login.component';
+import { LineUserLoginFailComponent } from './views/mobile/lineUser-login/lineUserLoginFail/lineUserLoginFail.component';
 
 import { P404Component } from './views/p404/p404.component';
 import { P500Component } from './views/p500/p500.component';
@@ -36,7 +37,11 @@ const routes: Routes = [
           import('./views/evse/evse.module').then(m => m.EvseModule)
       },
       
-     
+      {
+        path: '',
+        loadChildren: () =>
+          import('./views/pig-farm/pig-farm.module').then(m => m.PigFarmModule)
+      }
       // {
       //   path: 'change-password',
       //   component: ChangePasswordComponent,
@@ -89,6 +94,13 @@ const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'Login'
+    }
+  },
+  {
+    path: 'login-Fail',
+    component: LineUserLoginFailComponent,
+    data: {
+      title: 'login-Fail'
     }
   },
   {

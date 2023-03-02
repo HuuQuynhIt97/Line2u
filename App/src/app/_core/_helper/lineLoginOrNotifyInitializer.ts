@@ -11,9 +11,8 @@ export function lineLoginOrNotifyInitializer(
     new Promise((resolve, reject) => {
       if (window.location.href.indexOf('tokenLogin=') > 0) {
         let token = window.location.href.split('?')[1].replace('tokenLogin=', '');
-        // console.log(token)
-        console.log('load real')
-        lineService.getProfile(token).subscribe(data => {
+        let userID = JSON.parse(localStorage.getItem('user'))?.uid || 0
+        lineService.getProfile(token,userID).subscribe(data => {
           let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
           let backUrl = '/home';
           // let uri = this.route.snapshot.queryParams.uri || backUrl;
@@ -25,7 +24,6 @@ export function lineLoginOrNotifyInitializer(
           }
         }).add(resolve);
       }else {
-        console.log('load fake')
         lineService.getProfileFake('').subscribe(data => {}).add(resolve);
       }
     });

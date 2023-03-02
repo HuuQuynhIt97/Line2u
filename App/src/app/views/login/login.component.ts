@@ -43,8 +43,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loginRememberMe(+this.key);
       }
     }
-    let backUrl = '/line2u/home';
-    this.uri = this.route.snapshot.queryParams.uri || backUrl;
+    let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
+    if(isLineAccount === "1") {
+      let mobileUrl = '/mobile/home';
+      this.router.navigate([mobileUrl]);
+    }else {
+      let backUrl = '/line2u/home';
+      this.uri = this.route.snapshot.queryParams.uri || backUrl;
+    }
   }
   role: number;
   ngAfterViewInit(): void {
@@ -53,15 +59,22 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
+    let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
     if (accessToken && refreshToken && this.route.routeConfig.path === 'login') {
       let backUrl = '/line2u/home';
       const uri = decodeURI(this.uri) || backUrl;
       this.router.navigate([uri]);
     }
     if (this.authService.loggedIn()) {
-      let backUrl = '/line2u/home';
-      const uri = decodeURI(this.uri) || backUrl;
-      this.router.navigate([uri]);
+      if(isLineAccount === "1") {
+        let mobileUrl = '/mobile/home';
+        this.router.navigate([mobileUrl]);
+      }else {
+
+        let backUrl = '/line2u/home';
+        const uri = decodeURI(this.uri) || backUrl;
+        this.router.navigate([uri]);
+      }
     }
   }
   onChangeRemember(args) {
@@ -72,12 +85,19 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       .login(this.username, this.password).toPromise();
   }
 
+  checkAccountGroupUser() {
+    return this.authService
+      .checkAccountGroupUser(this.username, this.password).toPromise();
+  }
+
   async login() {
     if (!this.username || !this.password) {
       return;
     }
     this.loading = 1;
     try {
+      var group_user = await this.checkAccountGroupUser();
+      console.log(group_user)
       const data = await this.authentication();
       const currentLang = localStorage.getItem('lang');
       if (currentLang) {
@@ -102,9 +122,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       localStorage.setItem('languages', JSON.stringify(languages));
       const uri = decodeURI(this.uri);
       const check = this.checkLocalRole();
-      if(data.user.groupCode === SystemGroupNo.LandRoyal || data.user.groupCode === SystemGroupNo.Member || data.user.groupCode === SystemGroupNo.Engineer) {
-        let mobileUrl = '/mobile/home';
+
+      if(data.user.groupCode === SystemGroupNo.Customer || data.user.groupCode === SystemGroupNo.Member ) {
+        if(data.user.isLineAccount === '1') {
+          let mobileUrl = '/mobile/home';
           this.router.navigate([mobileUrl]);
+        }else {
+          let mobileUrl = '/mobile/userLine-login';
+          this.router.navigate([mobileUrl]);
+        }
       }else {
         if (check ) {
           const uri = decodeURI(this.uri);
@@ -120,8 +146,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     } catch (error) {
+      console.log(error)
      if (error.indexOf('error') == -1) {
-       this.alertifyService.warning(this.trans.instant(error), true);
+      if(group_user ===  SystemGroupNo.Customer) {
+        let Url = '/login-Fail';
+        this.router.navigate([Url]);
+      }else { 
+        this.alertifyService.warning(this.trans.instant(error), true);
+      }
      } else {
       this.alertifyService.warning(this.trans.instant('Server error!'), true);
 

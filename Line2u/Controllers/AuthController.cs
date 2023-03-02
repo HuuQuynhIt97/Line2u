@@ -44,7 +44,15 @@ namespace Line2u.Controllers
         {
             return StatusCodeResult(await _authService.LoginAsync(model));
         }
-         [HttpPost]
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CheckAccountGroupUser([FromBody] UserForLoginDto model)
+        {
+            return StatusCodeResult(await _authService.CheckAccountGroupUser(model));
+        }
+
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> LoginLandlordAsync([FromBody] UserForLoginDto model)
         {

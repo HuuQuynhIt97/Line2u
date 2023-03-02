@@ -2,5 +2,6 @@ export enum SystemGroupNo {
   ADMIN = 'ADMIN',
   LandRoyal= 'LandRoyal',
   Engineer = 'Engineer',
-  Member   = 'Member'
+  Member   = 'Member',
+  Customer   = 'Customer'
 }

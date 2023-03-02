@@ -69,6 +69,17 @@ export class AuthService implements OnDestroy {
         })
       );
   }
+
+  checkAccountGroupUser(username: string, password: string) {
+    return this.http
+      .post<OperationResult>(`${this.apiUrl}/checkAccountGroupUser`, { username, password })
+      .pipe(
+        map(res => {
+          const applicationUser = res.data;
+          return applicationUser;
+        })
+      );
+  }
   loginlanlord(username: string, password: string) {
     return this.http
       .post<OperationResult>(`${this.apiUrl}/loginlandlord`, { username, password })

@@ -648,10 +648,12 @@ ILine2uLoggerService logger,
                 itemModel = await _repo.FindAll(x => x.Uid == model.Uid).FirstOrDefaultAsync();
             }
             var item = _mapper.Map<XAccount>(itemModel);
-
-            if (itemModel.Upwd != model.Upwd)
+            if (model.IsLineAccount != "1")
             {
-                item.Upwd = model.Upwd.ToSha512();
+                if (itemModel.Upwd != model.Upwd)
+                {
+                    item.Upwd = model.Upwd.ToSha512();
+                }
             }
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
@@ -673,19 +675,11 @@ ILine2uLoggerService logger,
 
             try
             {
-                //if (model.Upwd.IsBase64() == false)
-                //    item.Upwd = model.Upwd.ToEncrypt();
-                //item.Uid = model.Uid;
-                //item.AccountNo = model.AccountNo;
-                //item.AccountName = model.AccountName;
-                //item.AccountSex = model.AccountSex;
-                //item.AccountName = model.AccountName;
-                //item.AccountBirthday = model.AccountBirthday;
-                //item.AccountNickname = model.AccountNickname;
-                //item.AccountTel = model.AccountTel;
-                //item.Comment = model.Comment;
-                item.AccountNo = model.AccountNo;
-                item.AccountName = model.AccountName;
+                
+                item.LineID = model.LineID;
+                item.LineName = model.LineName;
+                item.LinePicture = model.LinePicture;
+                item.IsLineAccount = model.IsLineAccount;
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
 

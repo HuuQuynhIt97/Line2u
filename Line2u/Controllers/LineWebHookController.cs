@@ -26,7 +26,7 @@ namespace isRock.Template
         public async Task<IActionResult> POST()
         {
             string channelAccessTokenMessage = _configuration.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
-            var AdminUserId = "Ua536016d141459cc41bdd2bacfaac5ae";
+            //var AdminUserId = "Ua536016d141459cc41bdd2bacfaac5ae";
 
             try
             {

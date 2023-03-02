@@ -2037,6 +2037,19 @@ namespace Line2u.Data
                     .IsRequired()
                     .HasColumnName("UPWD")
                     .HasMaxLength(200);
+
+                entity.Property(e => e.LineID)
+                    .HasColumnName("Line_ID")
+                    .HasMaxLength(100);
+                entity.Property(e => e.LineName)
+                    .HasColumnName("Line_Name")
+                    .HasMaxLength(100);
+                entity.Property(e => e.LinePicture)
+                    .HasColumnName("Line_Picture")
+                    .HasMaxLength(100);
+                entity.Property(e => e.LineEmail)
+                    .HasColumnName("Line_Email")
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<XAccountGroup>(entity =>

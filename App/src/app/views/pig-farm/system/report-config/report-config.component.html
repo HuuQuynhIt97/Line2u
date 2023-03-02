@@ -1,0 +1,29 @@
+<div class="row my-row">
+  <div class="col-md-12">
+  <div class="card">
+    <div class="card-body p-0">
+
+     <div style="height: 43px; line-height: 43px; font-weight: 500">
+       <span ngbTooltip="SYSTEM_REPORT_MENU" style="padding-left: 0.5rem">
+         {{ "SYSTEM_REPORT_MENU" | translate }}
+       </span>
+     </div>
+     <app-system-menu-report-config [topHeight]="topHeight" (systemMenuGuid)="onSystemMenuGuid($event)"></app-system-menu-report-config>
+    </div>
+  </div>
+
+  </div>
+  <div class="col-md-12 mt-2" [style.height]='rightHeight'>
+  <div class="card">
+   <div class="card-body p-0">
+    <div style="height: 43px; line-height: 43px; font-weight: 500">
+      <span ngbTooltip="COLUMN_REPORT" style="padding-left: 0.5rem">
+        {{ "COLUMN_REPORT" | translate }}
+      </span>
+    </div>
+     <app-report-column-config  [bottomHeight]='bottomHeight' [systemMenuGuid]="systemMenuGuid"></app-report-column-config>
+   </div>
+  </div>
+
+  </div>
+ </div>

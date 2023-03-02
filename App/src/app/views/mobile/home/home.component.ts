@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
       localStorage.removeItem('user')
       localStorage.removeItem('token')
       // this.router.navigate(['/mobile/landlord-login']);
-      this.router.navigate(['/login']);
+      this.router.navigate(['/home']);
       this.alertify.message(this.trans.instant('Logged out'));
     });
   }

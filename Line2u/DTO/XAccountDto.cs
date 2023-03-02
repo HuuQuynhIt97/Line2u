@@ -67,6 +67,11 @@ namespace Line2u.DTO
         public string StatusName { get; set; }
         public string IsLineAccount { get; set; }
 
+        public string LineID { get; set; }
+        public string LineName { get; set; }
+        public string LinePicture { get; set; }
+        public string LineEmail { get; set; }
+
         public List<IFormFile> File { get; set; }
 
     }

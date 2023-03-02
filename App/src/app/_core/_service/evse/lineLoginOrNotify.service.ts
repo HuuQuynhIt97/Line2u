@@ -44,9 +44,9 @@ export class LineLoginOrNotifyService extends CURDService<XuserLine> {
     }
     return this.http.post<OperationResult>(`${this.baseUrl}Line/sendFormMessage`, params).pipe(catchError(this.handleError));
   }
-  getProfile(accessToken) {
+  getProfile(accessToken,userID) {
     return this.http
-      .get<any>(this.baseUrl + `Line/GetProfile?accessToken=${accessToken}`)
+      .get<any>(this.baseUrl + `Line/GetProfile?accessToken=${accessToken}&userID=${userID}`)
       .pipe(
         map(res => {
           const applicationUser = res.data as ApplicationUser;

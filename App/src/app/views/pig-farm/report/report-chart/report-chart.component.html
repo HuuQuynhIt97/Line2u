@@ -1,0 +1,190 @@
+
+<div class="card mb-2 my-box-shadow">
+  <div class="card-body" style="padding: 0.5rem;">
+    <div class="row">
+      <div class="col-lg col-6">
+        <div class="form-group">
+          <label ngbTooltip="REPORT_START_DATE" for="startDate">{{ "REPORT_START_DATE" | translate }}</label>
+          <ejs-datepicker [locale]="'en-US'" [(ngModel)]="startDate"></ejs-datepicker>
+        </div>
+      </div>
+      <div class="col-lg col-6">
+        <div class="form-group">
+          <label ngbTooltip="REPORT_END_DATE" for="endDate">{{ "REPORT_END_DATE" | translate }}</label>
+          <ejs-datepicker [locale]="'en-US'" [(ngModel)]="endDate"></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-lg col-2">
+          <button ngbTooltip="OPEN" class="btn btn-success" (click)='filter()' style="margin-top: 35px;">{{'OPEN' | translate}}</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-2 col-6" *ngIf="makeOrderGuid1Visibled">
+        <div class="form-group">
+          <label for="makeOrderGuid1">{{
+            "MakeOrderGuid1" | translate
+          }}</label>
+          <app-makeorder-dropdownlist
+          id="makeOrderGuid1"
+          [(selectedValue)]="makeOrderGuid1"
+          ngDefaultControl
+          ></app-makeorder-dropdownlist>
+        </div>
+      </div>
+      <div class="col-lg-2 col-6" *ngIf="makeOrderGuid2Visibled">
+        <div class="form-group">
+          <label for="makeOrderGuid2">{{
+            "MakeOrderGuid2" | translate
+          }}</label>
+          <app-makeorder-dropdownlist
+          id="makeOrderGuid2"
+          [(selectedValue)]="makeOrderGuid2"
+          ngDefaultControl
+          ></app-makeorder-dropdownlist>
+        </div>
+      </div>
+      <div class="col-lg-2 col-12 mb-3" *ngIf="roomGuid1Visibled">
+        <label for="roomGuid1">{{
+          "RoomGuid1" | translate
+        }}</label>
+        <app-room-dropdownlist
+        id="roomGuid1"
+        [(selectedValue)]="roomGuid1"
+        ngDefaultControl
+        ></app-room-dropdownlist>
+      </div>
+      <div class="col-lg-2 col-5" *ngIf="roomGuid2Visibled">
+        <label for="roomGuid2">{{
+          "RoomGuid2" | translate
+        }}</label>
+        <app-room-dropdownlist
+        id="roomGuid2"
+        [(selectedValue)]="roomGuid2"
+        ngDefaultControl
+        ></app-room-dropdownlist>
+      </div>
+
+      <div class="col-lg-2 col-5">
+      </div>
+      <div class="col-lg-2 col-2">
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+
+  <ng-container *ngIf="chartType == 'Bar'">
+
+    <app-report-bar-chart
+    [startDate]="startDate"
+    [endDate]="endDate"
+    [kind]="kind"
+    [legendChecked]="legendChecked"
+    [maximum]="maximum"
+    [minimum]="minimum"
+    [interval]="interval"
+    [data]="data"
+    [isOpen]="isOpen"
+    [visibleMasker]="visibleMasker"
+    [target]="target"
+    [visibleTarget]="visibleTarget"
+    [chartData]="chartData"
+    ></app-report-bar-chart>
+  </ng-container>
+  <ng-container *ngIf="chartType == 'Lines'">
+      <app-report-line-chart
+      [startDate]="startDate"
+      [endDate]="endDate"
+      [kind]="kind"
+      [legendChecked]="legendChecked"
+      [maximum]="maximum"
+      [minimum]="minimum"
+      [interval]="interval"
+      [data]="data"
+      [isOpen]="isOpen"
+      [visibleMasker]="visibleMasker"
+      [target]="target"
+      [visibleTarget]="visibleTarget"
+      [chartData]="chartData"
+      ></app-report-line-chart>
+</ng-container>
+
+  <ng-container *ngIf="chartType == 'Pie'">
+    <app-report-pie-chart
+    [startDate]="startDate"
+    [endDate]="endDate"
+    [kind]="kind"
+    [legendChecked]="legendChecked"
+    [visibleMasker]="visibleMasker"
+    [data]="data"
+    [isOpen]="isOpen"
+    [chartData]="chartData"
+    ></app-report-pie-chart>
+  </ng-container>
+
+  <div class="row">
+    <div class="col" [ngClass]="{'col-5': chartType == 'Pie'}">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for='chartType'>{{'Chart type' | translate}}</label>
+            <ejs-dropdownlist id="chartType" [(value)]="chartType" [fields]="fields2" [dataSource]="chartTypeData">
+            </ejs-dropdownlist>
+
+          </div>
+
+        </div>
+        <div class="col">
+          <div class="form-group" style="margin-top: 24px;">
+            <ejs-checkbox [label]="'Legend' | translate" [(ngModel)]="legendChecked"></ejs-checkbox>
+          </div>
+          <div class="form-group">
+            <ejs-checkbox [label]="'Mask' | translate" [(ngModel)]="visibleMasker"></ejs-checkbox>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col" *ngIf="chartType != 'Pie'">
+      <div class="form-group row ">
+        <label class="col-4 col-form-label">{{'Maximum' | translate}}</label>
+        <div class="col-8">
+          <input class="form-control" [(ngModel)]="maximum" type="number">
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-4 col-form-label">{{'Minimum' | translate}}</label>
+        <div class="col-8">
+          <input class="form-control" [(ngModel)]="minimum" type="number">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col" *ngIf="chartType != 'Pie'">
+
+      <div class="form-group row ">
+        <label class="col-4 col-form-label">{{'Increase' | translate}}</label>
+        <div class="col-8">
+          <input class="form-control" [(ngModel)]="interval" type="number">
+        </div>
+      </div>
+
+      <div class="form-group row ">
+        <div class="col-4">
+          <ejs-checkbox [label]="'Target' | translate" [(ngModel)]="visibleTarget"></ejs-checkbox>
+        </div>
+        <div class="col-8">
+          <input class="form-control" [(ngModel)]="target" type="number">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>

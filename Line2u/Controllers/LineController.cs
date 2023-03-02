@@ -6,10 +6,12 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Line2u.DTO;
 using Line2u.DTO.Line;
+using Line2u.Helpers;
 using Line2u.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NetUtility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
@@ -36,7 +38,7 @@ namespace Line2u.Controllers
         private readonly ILineService _service;
         private readonly IAuthService _authService;
         private readonly IXAccountGroupService _accountGroupService;
-
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _QRUrl;
         private HttpClient httpClient
         {
@@ -50,7 +52,14 @@ namespace Line2u.Controllers
         }
 
 
-        public LineController(IConfiguration config, ILineService service, IXAccountService accountService, IAuthService authService, IXAccountGroupService accountGroupService)
+        public LineController(
+            IConfiguration config, 
+            ILineService service, 
+            IXAccountService accountService, 
+            IAuthService authService, 
+            IXAccountGroupService accountGroupService,
+            IHttpContextAccessor httpContextAccessor
+            )
         {
             _config = config;
             _service = service;
@@ -67,6 +76,7 @@ namespace Line2u.Controllers
             _authService = authService;
             _accountGroupService = accountGroupService;
             _QRUrl = lineConfig.GetValue<string>("urlLineQr");
+            _httpContextAccessor = httpContextAccessor;
         }
         // GET: api/Authorize
         [HttpGet]
@@ -149,9 +159,12 @@ namespace Line2u.Controllers
         /// <returns></returns>
         /// 
         [HttpGet]
-        public async Task<IActionResult>  GetProfile(string accessToken)
+        public async Task<IActionResult>  GetProfile(string accessToken,string userID)
         {
-        //https://www.line2you.com/api/LineBotWebHook
+            //https://www.line2you.com/api/LineBotWebHook
+
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await httpClient.GetAsync("https://api.line.me/v2/profile");
             var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
@@ -162,8 +175,13 @@ namespace Line2u.Controllers
             {
                 var model = new XAccountDto();
                 model.Uid = userProfile.UserId;
+                //model.AccountId = accountId;
                 model.AccountNo = userProfile.DisplayName;
                 model.AccountName = userProfile.DisplayName;
+                model.LineID = userProfile.UserId;
+                model.LineName = userProfile.DisplayName;
+                model.LinePicture = userProfile.PictureUrl;
+                model.Upwd = "0000";
                 model.IsLineAccount = "1";
                 //model.AccountGroup = group_guid;
                 //check exist

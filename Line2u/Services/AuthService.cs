@@ -38,6 +38,7 @@ namespace Line2u.Services
         Task<OperationResult> ForgotPassword(string email);
         Task<OperationResult> ForgotUsername(string email);
         Task<OperationResult> LoginAsync(UserForLoginDto loginDto);
+        Task<OperationResult> CheckAccountGroupUser(UserForLoginDto loginDto);
         Task<OperationResult> LoginAsync(decimal ID);
         Task<OperationResult> RefreshTokenAsync(string token, string refreshToken);
         Task<OperationResult> LoginLandlordAsync(UserForLoginDto loginDto);
@@ -163,7 +164,7 @@ namespace Line2u.Services
 
         }
 
- public async Task<OperationResult> LoginLandlordAsync(UserForLoginDto loginDto)
+        public async Task<OperationResult> LoginLandlordAsync(UserForLoginDto loginDto)
         {
             var account = await _repoLandlord.FindAll(x => x.Uid == loginDto.Username && (x.Status == 1 || x.Status == 0))
                 .FirstOrDefaultAsync();
@@ -861,6 +862,21 @@ namespace Line2u.Services
         {
             var account = await _repo.FindAll(x => x.Uid == UID && x.Status == "1").FirstOrDefaultAsync();
             return await GenerateOperationResultForUserAsync(account, "");
+        }
+
+        public async Task<OperationResult> CheckAccountGroupUser(UserForLoginDto loginDto)
+        {
+            var account = await _repo.FindAll(x => x.Uid == loginDto.Username && (x.Status == "1" || x.Status == "0"))
+                 .FirstOrDefaultAsync();
+            var account_group = _repoXAccountGroup.FindAll(o => o.Guid == account.AccountGroup).FirstOrDefault().GroupNo;
+
+            return new OperationResult
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = "Success",
+                Data = account_group,
+                Success = true
+            };
         }
     }
 }
