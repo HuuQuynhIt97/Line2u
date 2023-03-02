@@ -128,7 +128,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           let mobileUrl = '/mobile/home';
           this.router.navigate([mobileUrl]);
         }else {
-          let mobileUrl = '/mobile/userLine-login';
+          let mobileUrl = '/userLine-login';
           this.router.navigate([mobileUrl]);
         }
       }else {

@@ -5,6 +5,7 @@ import { ForgotUsernameComponent } from './views/forgot-username/forgot-username
 import { HomeComponent } from './views/home/home.component';
 import { LayoutComponent } from './views/layout/layout/layout.component';
 import { LoginComponent } from './views/login/login.component';
+import { LineUserLoginComponent } from './views/mobile/lineUser-login/lineUser-login.component';
 import { LineUserLoginFailComponent } from './views/mobile/lineUser-login/lineUserLoginFail/lineUserLoginFail.component';
 
 import { P404Component } from './views/p404/p404.component';
@@ -96,11 +97,26 @@ const routes: Routes = [
       title: 'Login'
     }
   },
+
   {
-    path: 'login-Fail',
-    component: LineUserLoginFailComponent,
+    path: 'login',
+    component: LoginComponent,
     data: {
-      title: 'login-Fail'
+      title: 'Login'
+    }
+  },
+  {
+    path: 'admin/login',
+    component: LoginComponent,
+    data: {
+      title: 'Login'
+    }
+  },
+  {
+    path: 'userLine-login',
+    component: LineUserLoginComponent,
+    data: {
+      title: 'Login'
     }
   },
   {

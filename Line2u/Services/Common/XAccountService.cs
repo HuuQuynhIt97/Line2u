@@ -677,6 +677,9 @@ ILine2uLoggerService logger,
             {
                 
                 item.LineID = model.LineID;
+                item.AccountNo = model.AccountNo;
+                item.AccountName = model.AccountName;
+                item.LineID = model.LineID;
                 item.LineName = model.LineName;
                 item.LinePicture = model.LinePicture;
                 item.IsLineAccount = model.IsLineAccount;

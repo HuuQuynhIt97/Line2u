@@ -145,7 +145,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.cookieService.delete('remember_landlord');
       this.cookieService.delete('key_temp_landlord');
 
-      this.router.navigate(["login"], {
+      this.router.navigate(["admin/login"], {
         queryParams: { uri },
         replaceUrl: true,
       });
