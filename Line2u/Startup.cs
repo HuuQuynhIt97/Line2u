@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.ResponseCompression;
 using NetUtility;
 using System.Linq;
+using Line2u.Hubs;
 
 namespace Line2u
 {
@@ -62,7 +63,15 @@ namespace Line2u
                     ResponseCompressionDefaults.MimeTypes.Concat(
                         new[] { "image/svg+xml" });
             });
-            services.AddCors();
+            services.AddSignalR();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                builder.SetIsOriginAllowed(_ => true).
+                AllowAnyMethod().
+                AllowAnyHeader().
+                AllowCredentials());
+            });
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = @"wwwroot/ClientApp";
@@ -81,9 +90,10 @@ namespace Line2u
             app.UseResponseCompression();
             //app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors(x => x.AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowAnyOrigin());
+            app.UseCors("CorsPolicy");
+            //app.UseCors(x => x.AllowAnyHeader()
+            //   .AllowAnyMethod()
+            //   .AllowAnyOrigin());
             app.UseSwagger();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -94,6 +104,7 @@ namespace Line2u
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<Line2uHub>("/line2u-hub");
                 endpoints.MapControllers();
             });
             app.UseSpaStaticFiles();

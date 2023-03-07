@@ -2,7 +2,8 @@
   <div class="item">
       <form class="login_box" #form="ngForm">
           <!-- <img src="../../../assets/images/logo.png" alt="logo" style="padding-bottom: 10px;" /> -->
-          <h3 style="color:#5D3422">{{'LINE2_U' | translate}}</h3>
+          <div [innerHtml]="templateData(sysConf?.title)"></div>
+          <!-- <h3  style="color:#5D3422">{{'LINE2_U' | translate}}</h3> -->
           <div class="account" style="color: transparent;">
             <label style="color: transparent;" > {{'Username' | translate}} </label>
           </div>

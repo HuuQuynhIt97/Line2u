@@ -47,7 +47,7 @@ const PHASE4_COMPONENT = [
     PigFarmRoutingModule,
     NgbModule,
     DatePickerAllModule,
-    CoreDirectivesModule,
+    // CoreDirectivesModule,
     ChartModule,
     SharedModule.forRoot(),
     PigfarmCoreModule.forRoot(environment.apiUrl),

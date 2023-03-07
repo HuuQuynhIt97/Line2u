@@ -64,7 +64,7 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     EvseRoutingModule,
     NgbModule,
     DatePickerAllModule,
-    CoreDirectivesModule,
+    // CoreDirectivesModule,
     ChartModule,
     RichTextEditorModule,
     SharedModule.forRoot(),

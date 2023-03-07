@@ -61,6 +61,9 @@ import { ReportScreenComponent } from './report-screen/report-screen.component';
 import { loadCldr, setCulture, L10n } from '@syncfusion/ej2-base';
 import { LineUserLoginComponent } from './lineUser-login/lineUser-login.component';
 import { LineUserLoginFailComponent } from './lineUser-login/lineUserLoginFail/lineUserLoginFail.component';
+import { SendMessageComponent } from './send-message/send-message.component';
+import { ChatBoxDirective } from 'src/app/_core/_directive/chatBox.directive';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -119,7 +122,11 @@ loadCldr(
     AlertScreenComponent,
     ReportScreenComponent,
     LineUserLoginComponent,
-    LineUserLoginFailComponent
+    LineUserLoginFailComponent,
+    SendMessageComponent,
+    UserProfileComponent
+    // CoreDirectivesModule
+    // ChatBoxDirective
     
   ],
   imports: [

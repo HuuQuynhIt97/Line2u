@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { Landlord } from '../../_model/evse/model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { XAccount } from '../../_model/xaccount';
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +37,7 @@ export class LandlordService extends CURDService<Landlord> {
     params.append("file", file);
     return this.http.post<OperationResult>(`${this.base}Landlord/AddForm`, params).pipe(catchError(this.handleError));
   }
-  updateForm(model: Landlord): Observable<OperationResult> {
+  updateForm(model: XAccount): Observable<OperationResult> {
     for (const key in model) {
       if (Object.prototype.hasOwnProperty.call(model, key)) {
         let item = model[key];
@@ -48,6 +49,7 @@ export class LandlordService extends CURDService<Landlord> {
 
     const file = model.file;
     delete model.file;
+   
     const params = this.utilitiesService.ToFormData(model);
     params.append("file", file);
 

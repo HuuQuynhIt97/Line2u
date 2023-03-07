@@ -17,6 +17,8 @@ import { BankAccountScreenComponent } from './account-screen/bank-account-screen
 import { BankAccountFinishScreenComponent } from './account-screen/bank-account-finish-screen/bank-account-finish-screen.component';
 import { AlertScreenComponent } from './alert-screen/alert-screen.component';
 import { LineUserLoginComponent } from './lineUser-login/lineUser-login.component';
+import { SendMessageComponent } from './send-message/send-message.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,13 @@ const routes: Routes = [
         component: LandlordProfileComponent,
         data: {
           title: 'Landlord Profile'
+        }
+      },
+      {
+        path: 'user-profile',
+        component: UserProfileComponent,
+        data: {
+          title: 'User Profile'
         }
       },
       {
@@ -111,6 +120,13 @@ const routes: Routes = [
         //canActivate: [AuthGuard]
       },
       {
+        path: 'send-message',
+        component: SendMessageComponent,
+        data: {
+          title: 'Send Message'
+        }
+      },
+      {
         path: 'account/bank',
         component: BankAccountScreenComponent,
         data: {
@@ -160,6 +176,7 @@ const routes: Routes = [
       title: 'Login'
     }
   },
+  
   {
     path: 'login',
     component: LandlordLoginComponent,

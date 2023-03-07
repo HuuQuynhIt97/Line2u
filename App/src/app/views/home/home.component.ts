@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService } from 'herr-core';
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 declare let $: any;
 declare let window: any;
 import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
-
+import { Browser } from '@syncfusion/ej2-base';
 import SwiperCore , {
   Navigation,
   Pagination,
@@ -23,6 +23,7 @@ import SwiperCore , {
   Controller,
 } from 'swiper';
 import { WebBannerService } from 'src/app/_core/_service/evse/web-banner.service';
+import { eventClick } from '@syncfusion/ej2-angular-schedule';
 
 SwiperCore.use([
   Navigation,
@@ -55,29 +56,41 @@ export class HomeComponent implements OnInit, AfterViewInit {
   subscription: Subscription = new Subscription();
   languageData = [
     { id: "Tw", name: "Tw" },
-    { id: "Cn", name: "Cn" },
     { id: "En", name: "En" },
-    { id: "Vi", name: "Vi" },
+    // { id: "Cn", name: "Cn" },
+    // { id: "Vi", name: "Vi" },
   ];
   baseUrl = environment.apiUrlImage;
   banners= [];
   news= [];
   logo: any;
+  isMobileBrowser: boolean = false
+  @ViewChild('printableArea', { static: false }) printableArea!: ElementRef;
+  ctx: HTMLElement;
+  @HostListener('window:afterprint', ['$event'])
+  onWindowAfterPrint(event) {
+    console.log('... afterprint', event);
+  }
   constructor(
     private spinner: NgxSpinnerService,
     private webBannerService: WebBannerService,
     private sysMenuService: SysMenuService,
-    private dashService: DashboardService,
-    private translate: TranslateService,
     private alertify: AlertifyService,
-    private router: Router,
+    private translate: TranslateService,
+    private router: Router
 
-  ) { }
+  ) { 
+    this.isMobileBrowser = Browser.isDevice
+  }
+  @HostListener("window:beforeprint", ["$event"])
+  onBeforePrint() {
+    console.log("onBeforePrint");
+  }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
-   
+    this.ctx = document.getElementById('share') as HTMLElement
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadBannerData();
@@ -93,7 +106,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     
     $(function () {
-     
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');
@@ -114,35 +126,50 @@ export class HomeComponent implements OnInit, AfterViewInit {
   });
   }
   navigate(data) {
-    const functionCode = data.functionCode;
-    if (functionCode === 'Report'&& data.level === 2) {
-      return;
-    }
-    if (functionCode === 'Report'&& data.level === 3) {
-      return this.router.navigate([data.url])
-    }
-    const functions = JSON.parse(localStorage.getItem('functions')) || [];
-    const permissions = functions.includes(functionCode);
-    if(permissions) {
-      if (data.url) {
-        return  this.router.navigate([data.url])
-      }
-    } else {
-      this.alertify.errorBackToLogin(this.translate.instant(this.title), this.translate.instant(this.btnText), () => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh-token');
-        localStorage.removeItem('login-event');
-        localStorage.removeItem('functions');
-        localStorage.removeItem('menuItem');
-        localStorage.removeItem('farmGuid');
-        localStorage.removeItem('menus2');
-        this.router.navigate(['/login']);
-      }, true, () => {
-        return;
-      });
-      return;
-    }
+  //   this.ctx.onclick = function (evt) {
+  //     console.log('aaaaa',evt)
+  //     var popup = window.open('http://www.facebook.com/sharer/sharer.php?u=http://www.google.com', '', "width=400, height=400");
+  
+  //     var popupTick = setInterval(function() {
+  //       if (popup.closed) {
+  //         clearInterval(popupTick);
+  //         console.log('window closed!');
+  //       }
+  //     }, 500);
+  
+  //     return false;
+  // };
+    if(data.url === null || data.url === '/')
+      return this.router.navigate(['404'])
+    return this.router.navigate([data.url])
+    // const functionCode = data.functionCode;
+    // if (functionCode === 'Report'&& data.level === 2) {
+    //   return;
+    // }
+    // if (functionCode === 'Report'&& data.level === 3) {
+    // }
+    // const functions = JSON.parse(localStorage.getItem('functions')) || [];
+    // const permissions = functions.includes(functionCode);
+    // if(permissions) {
+    //   if (data.url) {
+    //     return  this.router.navigate([data.url])
+    //   }
+    // } else {
+    //   this.alertify.errorBackToLogin(this.translate.instant(this.title), this.translate.instant(this.btnText), () => {
+    //     localStorage.removeItem('user');
+    //     localStorage.removeItem('token');
+    //     localStorage.removeItem('refresh-token');
+    //     localStorage.removeItem('login-event');
+    //     localStorage.removeItem('functions');
+    //     localStorage.removeItem('menuItem');
+    //     localStorage.removeItem('farmGuid');
+    //     localStorage.removeItem('menus2');
+    //     this.router.navigate(['/login']);
+    //   }, true, () => {
+    //     return;
+    //   });
+    //   return;
+    // }
   }
   getMenu() {
     this.spinner.show();

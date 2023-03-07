@@ -47,8 +47,17 @@ export interface XAccount {
   errorLogin: number | null;
   photoPath: string;
   employeeGuid: string;
+  isLineAccount: string;
+  lineId: string;
+  lineName: string;
+  lineOfficialId: string;
+  lineQrPath: string;
+  siteId: string;
+  siteName: string;
+  siteTel: string;
   accountDomicileAddress: string;
   file: any;
+  fileQR: any;
 }
 export interface Profile {
   nickName: string;

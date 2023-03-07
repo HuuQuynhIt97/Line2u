@@ -25,9 +25,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   lang= this.capitalize(localStorage.getItem("lang"));
   languageData = [
     { id: "Tw", name: "Tw" },
-    { id: "Cn", name: "Cn" },
     { id: "En", name: "En" },
-    { id: "Vi", name: "Vi" },
+    // { id: "Cn", name: "Cn" },
+    // { id: "Vi", name: "Vi" },
   ];
   @ViewChild("sidebarTreeviewInstance")
   public sidebarTreeviewInstance: SidebarComponent;

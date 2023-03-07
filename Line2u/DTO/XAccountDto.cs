@@ -72,7 +72,14 @@ namespace Line2u.DTO
         public string LinePicture { get; set; }
         public string LineEmail { get; set; }
 
+        public string LineOfficialId { get; set; }
+        public string LineQrPath { get; set; }
+        public string SiteId { get; set; }
+        public string SiteName { get; set; }
+        public decimal? SiteTel { get; set; }
+
         public List<IFormFile> File { get; set; }
+        public List<IFormFile> FileQR { get; set; }
 
     }
     public partial class StorePermissionDto

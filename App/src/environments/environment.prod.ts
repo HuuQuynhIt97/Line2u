@@ -13,6 +13,7 @@ const lineConfig = {
 export const environment = {
   production: true,
   apiUrl: '/api/',
+  hub: `/line2u-hub`,
   apiUrlImage: '',
   redirectOfficialAccount: `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${lineConfig.client_id}&redirect_uri=${lineConfig.redirect_uri}&state=NO_STATE&bot_prompt=aggressive&scope=profile%20openid%20email
   `,

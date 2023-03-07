@@ -1,98 +1,143 @@
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
-  <div class="container-fluid">
-      <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
-        <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div id="navbarNavDropdown" class="navbar-collapse collapse">
-          <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
-          <ul class="navbar-nav">
-            <ng-container *ngFor="let item of menus">
-              <li class="nav-item dropdown" *ngIf="item.hasChildren">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
-                <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <ng-container *ngFor="let subItem of item.children">
-                    <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
-                  </ng-container>
-                   
-                  </div>
-            </li>
-            <li class="nav-item" *ngIf="!item.hasChildren">
-              <a class="nav-link"  (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
-             </li>
-            </ng-container>
-            
-            <div class="lang-select">
-              <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
-                <ng-template #itemTemplate="" let-data="">
+<!-- <div class="nav-link" #share id="share" (click)="navigate('item')" >Print</div> -->
+<div *ngIf="!isMobileBrowser">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
+    <div class="container-fluid">
+        <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
+          <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarNavDropdown" class="navbar-collapse collapse">
+            <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
+            <ul class="navbar-nav">
+              <ng-container *ngFor="let item of menus">
+                <li class="nav-item dropdown" *ngIf="item.hasChildren">
+                  <a class="nav-link dropdown-toggle"  data-toggle="dropdown" >{{ item.name }}</a>
+                  <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <ng-container *ngFor="let subItem of item.children">
+                      <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
+                    </ng-container>
+                    
+                    </div>
+              </li>
+              <li class="nav-item" *ngIf="!item.hasChildren">
+                <a class="nav-link" id="share" (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
+              </li>
+              </ng-container>
+              
+              <div class="lang-select">
+                <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
+                  <ng-template #itemTemplate="" let-data="">
+                    <div class="text-black">{{data.id | translate}}</div>
+                </ng-template>
+                <ng-template #valueTemplate="" let-data="">
                   <div class="text-black">{{data.id | translate}}</div>
               </ng-template>
-              <ng-template #valueTemplate="" let-data="">
-                <div class="text-black">{{data.id | translate}}</div>
-            </ng-template>
-              </ejs-dropdownlist>
-          </div>
-           
-              <li class="nav-item">
-                  <a class="nav-link" routerLink="/userLine-login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-              </li>
-          </ul>
-          <!-- <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="全站搜尋 (關鍵字)" aria-label="Search">
-          </form> -->
-       
+                </ejs-dropdownlist>
+            </div>
+            
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
+                </li>
+            </ul>
+            <!-- <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="全站搜尋 (關鍵字)" aria-label="Search">
+            </form> -->
+        
 
+        </div>
+    </div>
+  </nav>
+  <swiper
+  [loop]="true"
+  [navigation]="true"
+  [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+  [pagination]="{ clickable: true, dynamicBullets: true }"
+  >
+  <ng-container  *ngFor="let item of banners; let i = index">
+  <ng-template  swiperSlide>
+    <a [href]="item.link" target="_blank">
+      <img  style="  display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
+    </a>
+    
+  </ng-template>
+  </ng-container>
+  </swiper>
+
+
+    <div class="row my-4">
+      <div class="col-12">
+        
       </div>
-  </div>
-</nav>
-<swiper
-[loop]="true"
-[navigation]="true"
-[autoplay]="{ delay: 2000, disableOnInteraction: false }"
-[pagination]="{ clickable: true, dynamicBullets: true }"
->
-<ng-container  *ngFor="let item of banners; let i = index">
-<ng-template  swiperSlide>
-  <a [href]="item.link" target="_blank">
-    <img  style="  display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
-  </a>
-  
-</ng-template>
-</ng-container>
-</swiper>
-
-
-  <div class="row my-4">
-    <div class="col-12">
-        <!-- <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="#" class="font-weight-bold">上 新 活動 門 相 報</a></li>
-            <li class="breadcrumb-item"><a href="#">提供 最 新</a></li>
-            <li class="breadcrumb-item"><a href="#">最 熱門 的 各 類 活動 資訊</a></li>
-            <li class="breadcrumb-item active" aria-current="page">每 周 更 新</li>
-          </ol> -->
     </div>
-  </div>
-<app-news></app-news>
-<app-new-role></app-new-role>
+  <app-news></app-news>
+  <app-new-role></app-new-role>
 
-<div class="footer" style="height: auto; background-color: #233b2e">
+  <div class="footer" style="height: auto; background-color: #233b2e">
 
-  <div class="row">
-    <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
-      <a class="btn-mobile-login" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
+    <div class="row">
+      <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
+        <a class="btn-mobile-login" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
+      </div>
     </div>
-  </div>
-  <div class="container">
+    <div class="container">
 
-      <!-- <p>服務時間：平日週一~週五 8:30 ~12:00, 13:30~17:30</p>
-      <p>Email：agrservice@mail.linkchain.tw 系統維運：07-9703898#3#2</p>
-      <p>Copyright©2020行政院農業委員會. All rights reserved. | <a class="text-info" href="javascript:void(0)">個人資料保護暨隱私權聲明</a> | <a class="text-info" href="javascript:void(0)">服務授權使用協議</a></p>
-      <p>瀏覽解析度 360 X 640 ~ 1280 X 768 以上 ，支援 Firefox、Google Chrome</p> -->
+        <!-- <p>服務時間：平日週一~週五 8:30 ~12:00, 13:30~17:30</p>
+        <p>Email：agrservice@mail.linkchain.tw 系統維運：07-9703898#3#2</p>
+        <p>Copyright©2020行政院農業委員會. All rights reserved. | <a class="text-info" href="javascript:void(0)">個人資料保護暨隱私權聲明</a> | <a class="text-info" href="javascript:void(0)">服務授權使用協議</a></p>
+        <p>瀏覽解析度 360 X 640 ~ 1280 X 768 以上 ，支援 Firefox、Google Chrome</p> -->
+    </div>
   </div>
 </div>
+<div *ngIf="isMobileBrowser">
+  <div >
+    <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
+      <div class="col-12 text-center">
+        <h3 style="color: whitesmoke;">{{'HOME_PAGE' | translate}}</h3>
+      
+      </div>
+    </nav>
+    <swiper
+  [loop]="true"
+  [navigation]="true"
+  [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+  [pagination]="{ clickable: true, dynamicBullets: true }"
+  >
+  <ng-container  *ngFor="let item of banners; let i = index">
+  <ng-template  swiperSlide>
+    <a [href]="item.link" target="_blank">
+      <img  style="  display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
+    </a>
+    
+  </ng-template>
+  </ng-container>
+  </swiper>
+
+
+    <div class="row my-4">
+      <div class="col-12">
+        
+      </div>
+    </div>
+  <app-news></app-news>
+  <app-new-role></app-new-role>
+  <app-home-user-anonymous></app-home-user-anonymous>
+  </div>
+
+  <!-- <div class="footer" style="background-color: #233b2e">
+
+   
+   
+  </div> -->
+</div>
+
+
+
+

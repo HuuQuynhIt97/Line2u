@@ -15,11 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[User2Message]",
+         "Name": "[dbo].[xAccount]",
          "ObjectType": 0
       }
    ],
-   "UiHint": "WIN-R03G03NSERJ.Line2u",
+   "UiHint": "Leo.line2u_T",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

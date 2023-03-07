@@ -28,7 +28,8 @@ namespace Line2u.Installer
          
             services.AddScoped<ICodeTypeService, CodeTypeService>();
             services.AddScoped<ISystemConfigService, SystemConfigService>();
-          
+            services.AddScoped<IChatService, ChatService>();
+
         }
     }
 }

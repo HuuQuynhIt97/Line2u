@@ -26,18 +26,18 @@ export class P404Component implements OnInit {
       this.eulaContent = this.sanitizer.bypassSecurityTrustHtml(data);
     })
     this.loadLang();
-    this.alertify.errorBackToLogin(this.title, this.btnText, () => {
-      this.cookieService.deleteAll('/');
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.removeItem('refresh-token');
-      localStorage.removeItem('login-event');
-      localStorage.removeItem('functions');
-      localStorage.removeItem('menuItem');
-      localStorage.removeItem('farmGuid');
-      localStorage.removeItem('menus');
-      this.router.navigateByUrl('/login');
-    });
+    // this.alertify.errorBackToLogin(this.title, this.btnText, () => {
+    //   this.cookieService.deleteAll('/');
+    //   localStorage.removeItem('user');
+    //   localStorage.removeItem('token');
+    //   localStorage.removeItem('refresh-token');
+    //   localStorage.removeItem('login-event');
+    //   localStorage.removeItem('functions');
+    //   localStorage.removeItem('menuItem');
+    //   localStorage.removeItem('farmGuid');
+    //   localStorage.removeItem('menus');
+    //   this.router.navigateByUrl('/login');
+    // });
   }
   loadLang() {
     this.translate.get("Access-denied").subscribe(res => {

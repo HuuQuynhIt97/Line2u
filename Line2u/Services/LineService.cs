@@ -172,7 +172,7 @@ namespace Line2u.Services
                 }
 
             }
-            return OutPutResult.Trim();
+            return OutPutResult;
 
             //string apiKey = _chatGPTKey;
             //string response = "";

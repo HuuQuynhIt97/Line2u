@@ -39,6 +39,7 @@ namespace Line2u.Helpers.AutoMapper
             CreateMap<ParkingLot, ParkingLotDto>();
 
             CreateMap<Bank, BankDto>();
+            CreateMap<Chat, ChatDto>();
             CreateMap<WebBanner, WebBannerDto>();
             CreateMap<Contract, ContractDto>();
             CreateMap<WebNews, WebNewsDto>();

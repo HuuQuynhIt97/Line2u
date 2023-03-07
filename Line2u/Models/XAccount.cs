@@ -67,5 +67,11 @@ namespace Line2u.Models
         public string LineEmail { get; set; }
 
         public string IsLineAccount { get; set; }
+
+        public string LineOfficialId { get; set; }
+        public string LineQrPath { get; set; }
+        public string SiteId { get; set; }
+        public string SiteName { get; set; }
+        public decimal? SiteTel { get; set; }
     }
 }

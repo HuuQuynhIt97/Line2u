@@ -24,9 +24,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     password: ''
   };
   uri: any;
+  title: any;
+  btnText: any;
   remember = false;
   loading = 0;
   key: string;
+  sysConf: any;
   public urlLineAuth = environment.redirectOfficialAccount;
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private alertifyService: AlertifyService,
     private trans: TranslateService
   ) {
+    this.loadLang()
     if (this.cookieService.get('remember') !== undefined) {
       if (this.cookieService.get('remember') === 'Yes') {
         this.key = this.cookieService.get('key_temp');
@@ -45,8 +49,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
     if(isLineAccount === "1") {
-      let mobileUrl = '/mobile/home';
-      this.router.navigate([mobileUrl]);
+      // let mobileUrl = '/mobile/home';
+      this.alertifyService.errorBackToLogin(this.title, this.btnText, () => {
+      this.router.navigateByUrl('/home');
+      });
+      // this.router.navigate(['404']);
     }else {
       let backUrl = '/line2u/home';
       this.uri = this.route.snapshot.queryParams.uri || backUrl;
@@ -56,7 +63,18 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
 
   }
+  loadLang() {
+    this.trans.get("Access-denied").subscribe(res => {
+      this.title = res;
+    });
+    this.trans.get("OK").subscribe(res => {
+      this.btnText = res;
+    });
+  }
   ngOnInit(): void {
+    this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
+    console.log(this.sysConf)
+    this.loadLang()
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
     let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
@@ -67,8 +85,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (this.authService.loggedIn()) {
       if(isLineAccount === "1") {
-        let mobileUrl = '/mobile/home';
-        this.router.navigate([mobileUrl]);
+        // let mobileUrl = '/mobile/home';
+        // this.router.navigate([mobileUrl]);
+        this.router.navigateByUrl('/home');
+        // this.alertifyService.errorBackToLogin(this.title, this.btnText, () => {
+        // });
       }else {
 
         let backUrl = '/line2u/home';

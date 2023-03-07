@@ -25,6 +25,12 @@ export class XAccountService extends CURDService<XAccount> {
   getXAccountsToSendMessage() {
     return this.http.get<any>(`${this.base}XAccount/GetXAccountsToSendMessage`, {});
   }
+  getXAccountsToSendMessageWithKeyWord(key) {
+    return this.http.get<any>(`${this.base}XAccount/GetXAccountsToSendMessageWithKey?keywork=${key}`, {});
+  }
+  GetWithGuid(key) {
+    return this.http.get<any>(`${this.base}XAccount/GetWithGuid?guid=${key}`, {});
+  }
   changePassword(model): Observable<OperationResult> {
     return this.http.put<OperationResult>(`${this.base}XAccount/changePassword`, model).pipe(catchError(this.handleError));
   }
@@ -55,10 +61,33 @@ export class XAccountService extends CURDService<XAccount> {
 
     const file = model.file;
     delete model.file;
+    const fileQR = model.fileQR;
+    delete model.fileQR;
     const params = this.utilitiesService.ToFormData(model);
     params.append("file", file);
+    params.append("fileQR", fileQR);
 
     return this.http.put<OperationResult>(`${this.base}XAccount/updateForm`, params).pipe(catchError(this.handleError));
+  }
+  updateFormMobile(model: XAccount): Observable<OperationResult> {
+    for (const key in model) {
+      if (Object.prototype.hasOwnProperty.call(model, key)) {
+        let item = model[key];
+        if (item instanceof Date) {
+          model[key] = `${(item as Date).toLocaleDateString()} ${(item as Date).toLocaleTimeString('en-GB')}`
+        }
+      }
+    }
+
+    const file = model.file;
+    delete model.file;
+    const fileQR = model.fileQR;
+    delete model.fileQR;
+    const params = this.utilitiesService.ToFormData(model);
+    params.append("file", file);
+    params.append("fileQR", fileQR);
+
+    return this.http.put<OperationResult>(`${this.base}XAccount/updateFormMobile`, params).pipe(catchError(this.handleError));
   }
   getPermissionsDropdown(accountGuid, lang) {
     return this.http.get<any>(`${this.base}XAccount/getPermissionsDropdown?lang=${lang}&accountGuid=${accountGuid}`, {});

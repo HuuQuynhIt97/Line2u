@@ -77,7 +77,7 @@ if (!lang) {
     PigDataRoutingModule,
     NgbModule,
     DatePickerAllModule,
-    CoreDirectivesModule,
+    // CoreDirectivesModule,
     ChartModule,
     SidebarModule,
     MenuAllModule,

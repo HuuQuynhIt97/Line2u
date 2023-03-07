@@ -17,6 +17,7 @@ const lineConfig = {
 export const environment = {
   production: false,
   apiUrl: `http://${ip}:58/api/`,
+  hub: `http://${ip}:58/line2u-hub`,
   apiUrlImage: `http://${ip}:58`,
   versionCheckURL : '/assets/version.json',
   redirectOfficialAccount: `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${lineConfig.client_id}&redirect_uri=${lineConfig.redirect_uri}&state=NO_STATE&bot_prompt=aggressive&scope=profile%20openid%20email

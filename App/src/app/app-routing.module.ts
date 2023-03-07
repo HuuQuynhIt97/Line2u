@@ -2,7 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ForgotPasswordComponent } from './views/forgot-password/forgot-password.component';
 import { ForgotUsernameComponent } from './views/forgot-username/forgot-username.component';
+import { BannerComponent } from './views/home/home-user-anonymous/banner/banner.component';
+import { HelpGuidComponent } from './views/home/home-user-anonymous/help-guid/help-guid.component';
+import { PrivacyComponent } from './views/home/home-user-anonymous/privacy/privacy.component';
+import { UserNewsComponent } from './views/home/home-user-anonymous/user-news/user-news.component';
 import { HomeComponent } from './views/home/home.component';
+import { NewRoleDetailComponent } from './views/home/new-role/new-role-detail/new-role-detail.component';
+import { NewsDetailComponent } from './views/home/news/news-detail/news-detail.component';
 import { LayoutComponent } from './views/layout/layout/layout.component';
 import { LoginComponent } from './views/login/login.component';
 import { LineUserLoginComponent } from './views/mobile/lineUser-login/lineUser-login.component';
@@ -113,10 +119,38 @@ const routes: Routes = [
     }
   },
   {
-    path: 'userLine-login',
+    path: 'user-login',
     component: LineUserLoginComponent,
     data: {
       title: 'Login'
+    }
+  },
+  {
+    path: 'help-guid',
+    component: HelpGuidComponent,
+    data: {
+      title: 'Help Guid'
+    }
+  },
+  {
+    path: 'banner',
+    component: BannerComponent,
+    data: {
+      title: 'Banner'
+    }
+  },
+  {
+    path: 'user-new',
+    component: UserNewsComponent,
+    data: {
+      title: 'User New'
+    }
+  },
+  {
+    path: 'privacy',
+    component: PrivacyComponent,
+    data: {
+      title: 'Privacy'
     }
   },
   {
@@ -124,6 +158,20 @@ const routes: Routes = [
     component: HomeComponent,
     data: {
       title: 'Home'
+    }
+  },
+  {
+    path: 'home/news-detail/:id',
+    component: NewsDetailComponent,
+    data: {
+      title: 'New Detail'
+    }
+  },
+  {
+    path: 'home/news-role-detail/:id',
+    component: NewRoleDetailComponent,
+    data: {
+      title: 'New Role Detail'
     }
   },
   {

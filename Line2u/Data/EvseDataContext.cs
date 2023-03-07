@@ -59,9 +59,69 @@ namespace Line2u.Data
         public virtual DbSet<XAccountRole> XAccountRoles { get; set; }
         public virtual DbSet<XAccountSetting> XAccountSettings { get; set; }
         public virtual DbSet<User2Bank> User2Banks { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Chat>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("END_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Message).HasColumnType("ntext");
+
+                entity.Property(e => e.OfficialId)
+                    .HasColumnName("Official_ID")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.OfficialName)
+                    .HasColumnName("Official_Name")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Receive).HasMaxLength(100);
+
+                entity.Property(e => e.Sender).HasMaxLength(100);
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("START_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.ToTable("Bank");
@@ -1789,6 +1849,28 @@ namespace Line2u.Data
                 entity.HasIndex(e => e.Uid)
                     .HasName("NonClusteredIndex-Account_UID")
                     .IsUnique();
+
+                entity.Property(e => e.SiteId)
+                    .HasColumnName("SITE_ID")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.SiteName)
+                    .HasColumnName("SITE_NAME")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.SiteTel)
+                    .HasColumnName("SITE_TEL")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.LineOfficialId)
+                   .HasColumnName("Line_Official_ID")
+                   .HasMaxLength(100);
+
+
+
+                entity.Property(e => e.LineQrPath)
+                    .HasColumnName("Line_QR_Path")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.AccountId)
                     .HasColumnName("Account_ID")

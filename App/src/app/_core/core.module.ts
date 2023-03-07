@@ -9,6 +9,8 @@ import { languagesInitializer } from './_helper/languagesInitializer';
 import { lineLoginOrNotifyInitializer } from './_helper/lineLoginOrNotifyInitializer';
 import { LineLoginOrNotifyService } from './_service/evse/lineLoginOrNotify.service';
 import { Router } from '@angular/router';
+import { sysConfInitializer } from './_helper/sysConfInitializer';
+import { SystemConfigService } from './_service/systemconfig.service';
 
 
 @NgModule({
@@ -17,6 +19,12 @@ import { Router } from '@angular/router';
   ],
   imports: [CommonModule],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: sysConfInitializer,
+      multi: true,
+      deps: [SystemConfigService],
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializer,

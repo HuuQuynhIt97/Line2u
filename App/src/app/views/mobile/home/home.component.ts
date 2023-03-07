@@ -1,35 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UtilitiesService } from 'herr-core';
 import { CookieService } from 'ngx-cookie-service';
 import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
+import { XAccount } from 'src/app/_core/_model/xaccount';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { AuthLandlordService } from 'src/app/_core/_service/auth-landlord.service';
 import { AuthService } from 'src/app/_core/_service/auth.service';
+import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 import { environment } from 'src/environments/environment';
+import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 declare let $: any;
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-home-mobile',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   username: any;
-  user = JSON.parse(localStorage.getItem('user_landlord'))
+  model: XAccount = {} as XAccount;
+  user = JSON.parse(localStorage.getItem('user'))
+  noImage = ImagePathConstants.NO_IMAGE_QR;
+  apiHost = environment.apiUrl.replace('/api/', '');
   constructor(
     public router: Router,
     private cookieService: CookieService,
     private alertify: AlertifyService,
     private trans: TranslateService,
+    private utilityService: UtilitiesService,
+    private service: XAccountService,
     private authService: AuthLandlordService
     ) {
      }
   ngOnInit() {
+    this.loadDetail();
     this.username =
     JSON.parse(localStorage.getItem("user_landlord"))?.username || "Guest";
     this.configImage();
 
+  }
+  loadDetail() {
+    const guid = this.user.id;
+    if (guid) {
+      this.service.getById(guid).subscribe(x=> {
+        console.log(x)
+        this.model = x;
+        this.configImage();
+      })
+    }
+    
+  }
+  imagePath(path) {
+    if (path !== null && this.utilityService.checkValidImage(path)) {
+      if (this.utilityService.checkExistHost(path)) {
+        return path;
+      }
+      return this.apiHost + path;
+    }
+    return this.noImage;
   }
   backDesktop() {
     this.router.navigate(['/'])
@@ -80,7 +110,7 @@ export class HomeComponent implements OnInit {
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}Landlord/DeleteUploadFile`
+      deleteUrl: `${environment.apiUrl}xAccount/DeleteUploadFile`
     };
   
     $("#avatar-1").fileinput(option);;

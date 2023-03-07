@@ -14,6 +14,9 @@ export class SystemConfigService extends CURDService<SystemConfig> {
   {
     super(environment.apiUrl,http,"SystemConfig", utilitiesService);
   }
+  loadDataSystem() {
+    return this.http.get(`${this.base}SystemConfig/LoadDataSystem`, {});
+  }
   getCheckedData(inOutGuid) {
     return this.http.get<string[]>(`${this.base}SystemConfig/GetCheckedData?inOutGuid=${inOutGuid}`, {});
   }

@@ -61,7 +61,7 @@ export class LandlordProfileComponent implements OnInit {
       
     }
   ngOnInit(): void {
-    this.loadDetail();
+    // this.loadDetail();
     this.configImage();
   }
   sexChange(value) {

@@ -64,7 +64,7 @@ FarmParentComponent
     ReactiveFormsModule,
     NgxSpinnerModule,
     NgbModule,
-    CoreDirectivesModule,
+    // CoreDirectivesModule,
     SharedModule.forRoot(),
     PigfarmCoreModule.forRoot(environment.apiUrl),
     ...ROUTING_MODULE

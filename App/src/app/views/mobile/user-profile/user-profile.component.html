@@ -1,0 +1,137 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'User Profile' | translate}}</li>
+  </ol>
+</nav>
+<div class="row p-2">
+  <div class="col-12 text-center">
+    <div class="kv-avatar">
+      <div class="file-loading">
+        <input
+          id="avatar-1"
+          name="avatar-1"
+          (change)="onFileChangeLogo($event)"
+          type="file"
+          required
+        />
+      </div>
+    </div>
+    <div class="kv-avatar-hint">
+      <small>{{ "Select file < 5000 KB" | translate }}</small>
+    </div>
+  </div>
+ 
+  </div>
+  
+
+  <div class="row p-2">
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordNo">{{ "SITE_ID" | translate }}</label>
+        <span  style="color: red">(*)</span>
+        <!-- <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        > -->
+
+        <input
+          [(ngModel)]="model.siteId"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordName">{{ "SITE_NAME" | translate }}</label>
+        <span  style="color: red">(*)</span>
+        <!-- <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        > -->
+
+        <input
+          [(ngModel)]="model.siteName"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+    
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordSex">{{ "SITE_TEL" | translate }}</label>
+        <span  style="color: red">(*)</span>
+        <input
+          [(ngModel)]="model.siteTel"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+       
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordSex">{{ "LINE_OFFICIAL_ID" | translate }}</label>
+        <input
+          [(ngModel)]="model.lineOfficialId"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+       
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordSex">{{ "LINE_OFFICIAL_QRCODE" | translate }}</label>
+      </div>
+      <div class="col-12 text-center">
+        
+        <div class="kv-avatar2">
+          <div class="file-loading">
+            <input
+              id="avatar-2"
+              name="avatar-2"
+              (change)="onFileChangeLogoQR($event)"
+              type="file"
+              required
+            />
+          </div>
+        </div>
+        <div class="kv-avatar2-hint">
+          <small>{{ "Select file < 5000 KB" | translate }}</small>
+        </div>
+
+      </div>
+    </div>
+
+    
+  </div>
+
+  <div class="row p-2">
+    <div class="col-12">
+    <button
+      type="button"
+      class="btn btn-light ml-2 float-right"
+      (click)="cancel()"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.siteId && !model.siteName || !model.siteTel"
+      (click)="save()"
+      class="btn btn-primary float-right"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- <h1>Profile Page</h1> -->

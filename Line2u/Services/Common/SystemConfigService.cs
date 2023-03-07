@@ -26,6 +26,7 @@ namespace Line2u.Services
       
         Task<object> LoadData(DataManager data);
         Task<object> GetAudit(object id);
+        Task<object> LoadDataSystem();
     }
     public class SystemConfigService : ServiceBase<SystemConfig, SystemConfigDto>, ISystemConfigService
     {
@@ -62,12 +63,24 @@ _logger = logger;
             _httpContextAccessor = httpContextAccessor;
             _currentEnvironment = currentEnvironment;
         }
-       
+
         /// <summary>
         /// Add account sau do add SystemConfigGroupSystemConfig
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        /// 
+        public async Task<object> LoadDataSystem()
+        {
+            var data = (await _repo.FindAll(o => o.Status == 1).AsNoTracking().Select(x => new
+            {
+                x.No,
+                x.Value,
+            }).Select(t => new { t.No, t.Value }).ToListAsync()).DistinctBy(x => x.No);
+            var languages = data.ToDictionary(t => t.No, t => t.Value);
+            return languages;
+            //throw new NotImplementedException();
+        }
         public override async Task<OperationResult> AddAsync(SystemConfigDto model)
         {
             try

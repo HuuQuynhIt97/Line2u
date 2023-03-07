@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Line2u.DTO;
 using Line2u.DTO.Line;
 using Line2u.Helpers;
+using Line2u.Hubs;
 using Line2u.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using NetUtility;
 using Newtonsoft.Json;
@@ -39,6 +41,8 @@ namespace Line2u.Controllers
         private readonly IAuthService _authService;
         private readonly IXAccountGroupService _accountGroupService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IChatService _chatService;
+        private readonly IHubContext<Line2uHub> _hubContext;
         private readonly string _QRUrl;
         private HttpClient httpClient
         {
@@ -58,10 +62,14 @@ namespace Line2u.Controllers
             IXAccountService accountService, 
             IAuthService authService, 
             IXAccountGroupService accountGroupService,
-            IHttpContextAccessor httpContextAccessor
+            IHttpContextAccessor httpContextAccessor,
+            IChatService chatService,
+            IHubContext<Line2uHub> hubContext
             )
         {
             _config = config;
+            _hubContext = hubContext;
+            _chatService = chatService;
             _service = service;
             var lineConfig = _config.GetSection("LineNotifyConfig");
             _accountService = accountService;
@@ -203,6 +211,41 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllMessage(string officialID, string userLineID)
+        {
+            return Ok(await _chatService.GetAllMessage(officialID, userLineID));
+            // after create account -> login
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddMessage([FromBody]ChatDto chat)
+        {
+            var res = await _chatService.AddMessage(chat);
+            var result_content = getSignarlRefresh(res.SignarlData);
+            
+            return Ok(res);
+        }
+        private object getSignarlRefresh(SignarlLoadUseDto result)
+        {
+            var result_content = new object();
+            result_content = new
+            {
+                loadUserFrom = result.loadUserFrom,
+                loadUserTo = result.loadUserTo
+            };
+            return result_content;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetBotInfo()
+        {
+            //https://www.line2you.com/api/LineBotWebHook
+            string channelAccessTokenMessage = _config.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", channelAccessTokenMessage);
+            var response = await httpClient.GetAsync("https://api.line.me/v2/bot/info");
+            var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
+            return Ok(userProfile);
+            // after create account -> login
+        }
+        [HttpGet]
         public async Task<IActionResult> AddOfficialAccount(string userIds, string OfficialAccountLineUserId, string accessToken)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -244,6 +287,8 @@ namespace Line2u.Controllers
             return Ok(data);
             // after create account -> login
         }
+
+
         [HttpGet]
         public async Task<IActionResult> LoginWithlineAccountAgain(string accountID)
         {
@@ -262,7 +307,8 @@ namespace Line2u.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMessageFromGPT(string msg)
         {
-            string apiKey = "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";
+            string api_key = _config.GetSection("LineNotifyConfig").GetSection("chatGPTKey").Value;
+            string apiKey = api_key;
             string response = "";
             OpenAIAPI openai = new OpenAIAPI(apiKey);
             CompletionRequest completion = new CompletionRequest();
@@ -296,5 +342,7 @@ namespace Line2u.Controllers
             }
             return Ok(await _service.SendFormMessage(model));
         }
+
+
     }
 }

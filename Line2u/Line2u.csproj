@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <Folder Include="AppData\" />
+    <Folder Include="wwwroot\FileUploads\images\QR\" />
     <Folder Include="wwwroot\UploadedFiles\RecordSale\" />
     <Folder Include="wwwroot\UploadingFiles\" />
   </ItemGroup>

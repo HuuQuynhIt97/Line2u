@@ -1,29 +1,12 @@
 <div class="flex">
-    <div class="item" [style.background-color]="bg" >
-  
-        <form class="login_box"  (ngSubmit)="login()">
-            <img [src]="baseUrl + logo" alt="logo" style="padding-bottom: 10px;" />
-            <h3 style="color:#5D3422">{{titleName}}</h3>
-            <div class="account">
-              <label> {{'Username' | translate}} </label>
-              <input type="text"  [(ngModel)]="username"
-              name="username"  /><span></span>
-            </div>
-            <div class="account">
-              <label> {{'Password' | translate}} </label>
-              <input type="password" name='password' [(ngModel)]="password" />
-            </div>
-  
-            <input type="checkbox" id="remember" name="remember" (change)="onChangeRemember($event)" [(ngModel)]="remember" />
-            
-            <label> {{'Remember account' | translate}} </label>
-            <input type="hidden" value="xxx" />
-            <button class="btn-login" id='submit' [disabled]="!username || !password" [class.disabled]="!username || !password">
-  
-              <span *ngIf="loading == 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              {{'Login' | translate}}
-            </button>
-            <input type="hidden" value="xxx" />
+  <div class="item">
+      <form class="login_box" #form="ngForm">
+          <!-- <img src="../../../assets/images/logo.png" alt="logo" style="padding-bottom: 10px;" /> -->
+          <h3 style="color:#5D3422">{{'LINE2_U' | translate}}</h3>
+          <div class="account" style="color: transparent;">
+            <label style="color: transparent;" > {{'Username' | translate}} </label>
+          </div>
+          <input type="hidden" value="xxx" />
           <div class="container" style="text-align: center;">
             <a href="{{urlLineAuth}}" >
               <button type="button"  id="line-login-btn" class="btn" style="font-family: Helvetica; color: white; font-weight: bold;  margin-bottom: 10px;">
@@ -35,13 +18,7 @@
             </a>
             
           </div>
-          <input type="hidden" value="xxx" />
-            <div class="link_box">
-                <div class="l-item"><a href="/forgot-password">{{'Forgot password?' | translate}}</a></div>
-                <div class="l-item txt-r"><a href="/mobile/landlord-register">{{'Register_Landlord' | translate}}</a></div>
-            </div>
-            <a class="icn_home" [routerLink]="'/home'"><i class="fas fa-2x fa-home"></i></a>
-        </form>
-    </div>
+          
+      </form>
   </div>
-  
+</div>

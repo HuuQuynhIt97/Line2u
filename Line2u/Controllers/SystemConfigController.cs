@@ -17,8 +17,12 @@ namespace Line2u.Controllers
         {
             _service = service;
         }
-      
-       
+        [HttpGet]
+        public async Task<ActionResult> LoadDataSystem()
+        {
+            return Ok(await _service.LoadDataSystem());
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetAllAsync()
         {

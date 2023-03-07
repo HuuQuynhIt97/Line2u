@@ -149,6 +149,33 @@ ISPService spService)
             }
             return operationResult;
         }
+        public override async Task<WebNewsDto> GetByIDAsync(object id)
+        {
+            var item = await _repo.FindByIDAsync(id);
+            var author =  _repoXAccount.FindByID(item.CreateBy);
+            var result = new WebNewsDto()
+            {
+                Id = item.Id,
+                Body = item.Body,
+                CancelFlag = item.CancelFlag,
+                Comment = item.Comment,
+                CreateBy = item.CreateBy,
+                Author = author != null ? author.AccountName : "N/A",
+                CreateDate = item.CreateDate,
+                Guid = item.Guid,
+                Link = item.Link,
+                NewsDate = item.NewsDate,
+                PhotoPath = item.PhotoPath,
+                SortId = item.SortId,
+                StartDate = item.StartDate,
+                Status = item.Status,
+                Subject = item.Subject,
+                Type = item.Type,
+                UpdateBy = item.UpdateBy,
+                UpdateDate = item.UpdateDate,
+            };
+            return result;
+        }
         public override async Task<OperationResult> UpdateAsync(WebNewsDto model)
         {
             var item = _mapper.Map<WebNews>(model);

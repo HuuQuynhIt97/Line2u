@@ -22,6 +22,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using Dapper;
+using isRock.LineBot;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace Line2u.Services
 {
@@ -31,6 +33,7 @@ namespace Line2u.Services
         Task<XAccountDto> GetByUsername(string username);
         Task<object> GetXAccounts();
         Task<object> GetXAccountsToSendMessage();
+        Task<object> GetXAccountsToSendMessageWithKey(string keywork);
         Task<object> GetRejectsByRequisition(string farmGuid);
         Task<object> GetRejectsByRepair(string farmGuid);
         Task<object> GetRejectsByAcceptance(string farmGuid);
@@ -48,11 +51,14 @@ namespace Line2u.Services
 
         Task<OperationResult> AddFormAsync(XAccountDto model);
         Task<OperationResult> UpdateFormAsync(XAccountDto model);
+        Task<OperationResult> UpdateFormMobileAsync(XAccountDto model);
         Task<OperationResult> ChangePassword(XChangePasswordDto model);
         Task<object> DeleteUploadFile(decimal key);
         Task<object> UploadAvatar(decimal key);
         Task<object> ShowPassword(decimal key);
         Task<object> GetProfile(string key);
+        Task<object> GetByIDWithGuidAsync(string guid);
+        Task<object> GetProfileMobile(string key);
         Task<OperationResult> StoreProfile(StoreProfileDto request);
 
         Task<object> LoadData(DataManager data, string farmGuid, string lang);
@@ -82,8 +88,8 @@ namespace Line2u.Services
         private readonly IRepositoryBase<CodePermission> _repoCodePermission;
         private readonly IRepositoryBase<Employee> _repoEmployee;
         private readonly IRepositoryBase<XAccountGroup> _repoXAccountGroup;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ISequenceService _sequenceService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
         private readonly ILine2uLoggerService _logger;
@@ -99,29 +105,29 @@ namespace Line2u.Services
             IRepositoryBase<CodePermission> repoCodePermission,
             IRepositoryBase<Employee> repoEmployee,
             IRepositoryBase<XAccountGroup> repoXAccountGroup,
-            IUnitOfWork unitOfWork,
             ISequenceService sequenceService,
+            IUnitOfWork unitOfWork,
             IMapper mapper,
             MapperConfiguration configMapper,
-ILine2uLoggerService logger,
+            ILine2uLoggerService logger,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment currentEnvironment,
-        IConfiguration configuration
-,
-        ISPService repoSp
+            IConfiguration configuration
+    ,
+            ISPService repoSp
             )
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
-            _logger = logger;
             _repoCodeType = repoCodeType;
             _repoXAccountPermission = repoXAccountPermission;
             _repoXAccountGroupPermission = repoXAccountGroupPermission;
             _repoCodePermission = repoCodePermission;
             _repoEmployee = repoEmployee;
             _repoXAccountGroup = repoXAccountGroup;
-            _unitOfWork = unitOfWork;
             _sequenceService = sequenceService;
+            _logger = logger;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configMapper = configMapper;
             _httpContextAccessor = httpContextAccessor;
@@ -673,6 +679,9 @@ ILine2uLoggerService logger,
                 }
             }
 
+
+
+
             try
             {
                 
@@ -1218,6 +1227,158 @@ ILine2uLoggerService logger,
                         }).ToList();
 
             return query;
+        }
+
+        public async Task<object> GetXAccountsToSendMessageWithKey(string keyword)
+        {
+            var list_Account = await _repo.FindAll(x => x.Status == "1" && x.IsLineAccount == "1").ToListAsync();
+            //var list_AccountGroup = await _repoXAccountGroup.FindAll(x => x.Status == 1).ToListAsync();
+
+            var query = (
+                        from x in list_Account
+                        select new
+                        {
+                            x.AccountName,
+                            x.LineName,
+                            x.Guid,
+                            x.Uid
+                        }).ToList();
+            if (!keyword.IsNullOrEmpty())
+            {
+                query = query.Where(x => x.AccountName.ToLower().Contains(keyword.Trim().ToLower()) || x.LineName.ToLower().Contains(keyword.Trim().ToLower())).ToList();
+            }
+            return query;
+        }
+
+        public async Task<object> GetProfileMobile(string key)
+        {
+            var query = from x in _repo.FindAll(x => x.Status == "1" && x.Guid == key)
+                        select new
+                        {
+                            x.AccountId,
+                            AccountGuid = x.Guid,
+                            x.PhotoPath,
+                            x.SiteId,
+                            x.SiteName,
+                            x.SiteTel,
+                            x.LineQrPath,
+                            x.LineOfficialId
+                        };
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<OperationResult> UpdateFormMobileAsync(XAccountDto model)
+        {
+            FileExtension fileExtension = new FileExtension();
+            var itemModel = await _repo.FindAll(x => x.AccountId == model.AccountId).AsNoTracking().FirstOrDefaultAsync();
+            if (model.IsLineAccount != "1")
+            {
+
+                if (itemModel.Uid != model.Uid)
+                {
+                    var check = await CheckExistUsername(model.Uid);
+                    if (!check.Success) return check;
+                }
+
+                if (itemModel.AccountNo != model.AccountNo)
+                {
+                    var checkAccountNo = await CheckExistNo(model.AccountNo);
+                    if (!checkAccountNo.Success) return checkAccountNo;
+                }
+            }
+            else
+            {
+                itemModel = await _repo.FindAll(x => x.Uid == model.Uid).FirstOrDefaultAsync();
+            }
+            var item = _mapper.Map<XAccount>(itemModel);
+            if (model.IsLineAccount != "1")
+            {
+                if (itemModel.Upwd != model.Upwd)
+                {
+                    item.Upwd = model.Upwd.ToSha512();
+                }
+            }
+
+            // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
+            var avatarUniqueFileName = string.Empty;
+            var avatarFolderPath = "FileUploads\\images\\account\\avatar";
+            string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+
+            if (model.File != null)
+            {
+                IFormFile filesAvatar = model.File.FirstOrDefault();
+                if (!filesAvatar.IsNullOrEmpty())
+                {
+                    if (!item.PhotoPath.IsNullOrEmpty())
+                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
+                    avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+                    item.PhotoPath = $"/FileUploads/images/account/avatar/{avatarUniqueFileName}";
+                }
+            }
+
+
+            // Nếu có đổi ảnh QR thì xóa ảnh cũ và thêm ảnh mới
+            var avatarUniqueFileName_QR = string.Empty;
+            var avatarFolderPath_QR = "FileUploads\\images\\account\\QR";
+            string uploadAvatarFolder_QR = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath_QR);
+
+            if (model.FileQR != null)
+            {
+                IFormFile filesAvatar_QR = model.FileQR.FirstOrDefault();
+                if (!filesAvatar_QR.IsNullOrEmpty())
+                {
+                    if (!item.LineQrPath.IsNullOrEmpty())
+                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.LineQrPath.Replace("/", "\\").Replace("/", "\\")}");
+                    avatarUniqueFileName_QR = await fileExtension.WriteAsync(filesAvatar_QR, $"{uploadAvatarFolder_QR}\\{avatarUniqueFileName_QR}");
+                    item.LineQrPath = $"/FileUploads/images/account/QR/{avatarUniqueFileName_QR}";
+                }
+            }
+
+
+            try
+            {
+
+                item.LineID = model.LineID;
+                item.AccountNo = model.AccountNo;
+                item.AccountName = model.AccountName;
+                item.LineID = model.LineID;
+                item.LineName = model.LineName;
+                item.LinePicture = model.LinePicture;
+                item.IsLineAccount = model.IsLineAccount;
+                item.SiteId = model.SiteId;
+                item.SiteName = model.SiteName;
+                item.SiteTel = model.SiteTel;
+                item.LineOfficialId = model.LineOfficialId;
+                _repo.Update(item);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
+                if (!avatarUniqueFileName.IsNullOrEmpty())
+                    fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<object> GetByIDWithGuidAsync(string guid)
+        {
+            return _repo.FindAll(o => o.Guid == guid).FirstOrDefault();
         }
     }
 }

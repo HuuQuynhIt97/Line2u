@@ -26,9 +26,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   lang: string;
   languageData = [
     { id: "Tw", name: "Tw" },
-    { id: "Cn", name: "Cn" },
     { id: "En", name: "En" },
-    { id: "Vi", name: "Vi" },
+    // { id: "Cn", name: "Cn" },
+    // { id: "Vi", name: "Vi" },
   ];
   public onFiltering: any = (e: any) => {
     let query: Query = new Query();
@@ -145,7 +145,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.cookieService.delete('remember_landlord');
       this.cookieService.delete('key_temp_landlord');
 
-      this.router.navigate(["admin/login"], {
+      this.router.navigate(["login"], {
         queryParams: { uri },
         replaceUrl: true,
       });

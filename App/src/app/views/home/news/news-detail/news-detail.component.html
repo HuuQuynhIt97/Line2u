@@ -1,0 +1,107 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
+        <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navbarNavDropdown" class="navbar-collapse collapse">
+          <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
+          <ul class="navbar-nav">
+            <ng-container *ngFor="let item of menus">
+              <li class="nav-item dropdown" *ngIf="item.hasChildren">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
+                <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <ng-container *ngFor="let subItem of item.children">
+                    <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
+                  </ng-container>
+                   
+                  </div>
+            </li>
+            <li class="nav-item" *ngIf="!item.hasChildren">
+              <a class="nav-link"  (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
+             </li>
+            </ng-container>
+            
+            <div class="lang-select">
+              <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
+                <ng-template #itemTemplate="" let-data="">
+                  <div class="text-black">{{data.id | translate}}</div>
+              </ng-template>
+              <ng-template #valueTemplate="" let-data="">
+                <div class="text-black">{{data.id | translate}}</div>
+            </ng-template>
+              </ejs-dropdownlist>
+          </div>
+           
+              <li class="nav-item">
+                  <a class="nav-link" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
+              </li>
+          </ul>
+          <!-- <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="全站搜尋 (關鍵字)" aria-label="Search">
+          </form> -->
+       
+
+      </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <header>
+        <h1>{{news?.subject}}</h1>
+        <p>{{'DATE' | translate}}: {{news?.createDate | date: "yyyy-MM-dd"}}</p>
+        <img  style="  display: block;
+          width: 80%;
+          height: 50%;
+          object-fit: cover; margin-bottom: 25px;" [src]="baseUrl + news?.photoPath" [alt]="news?.subject" class="center" loading="lazy" />
+      </header>
+      
+      <input type="hidden" value="xxx" />
+      <main>
+        <article>
+          <ng-container *ngIf="news?.body !== null; else elseTemplate">
+            <div [innerHTML]="safeHtml(news?.body)"></div>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <p>{{'CONTENT_EMPTY' | translate}}</p>
+          </ng-template>
+          
+          
+        </article>
+      </main>
+      
+      <footer>
+        <p>{{'AUTHOR' | translate}}: {{news?.author}}</p>
+        <p>{{'CATEGORY' | translate}}: {{news?.type}}</p>
+      </footer>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="text-center" style="margin-bottom: 25px;">
+    <button type="button" [routerLink]="'/home'" class="btn btn-warning">{{'BACK_HOME' | translate}}</button>
+    <span style="color: transparent;"> | </span>
+    <button type="button" [routerLink]="'/user-login'" class="btn btn-success">{{'LOGIN' | translate}}</button>
+  </div>
+ 
+</div>
+
+
+<div class="footer" style="height: auto; background-color: #233b2e">
+
+  <div class="row">
+    <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
+      <a class="btn-mobile-login" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
+    </div>
+  </div>
+  <div class="container">
+
+      <!-- <p>服務時間：平日週一~週五 8:30 ~12:00, 13:30~17:30</p>
+      <p>Email：agrservice@mail.linkchain.tw 系統維運：07-9703898#3#2</p>
+      <p>Copyright©2020行政院農業委員會. All rights reserved. | <a class="text-info" href="javascript:void(0)">個人資料保護暨隱私權聲明</a> | <a class="text-info" href="javascript:void(0)">服務授權使用協議</a></p>
+      <p>瀏覽解析度 360 X 640 ~ 1280 X 768 以上 ，支援 Firefox、Google Chrome</p> -->
+  </div>
+</div>

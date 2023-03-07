@@ -67,15 +67,13 @@ export class LineLoginOrNotifyService extends CURDService<XuserLine> {
       );
   }
   getUrlQr(){
-    // return this.http
-    //   .get<any>(this.baseUrl + `Line/GetLineQrCodeLink`)
-    //   .pipe(
-    //     map(res => {
-    //       console.log(res)
-    //       return res;
-    //     })
-    //   );
     return this.http.get(`${this.baseUrl}Line/GetLineQrCodeLink`, {});
+  }
+  getBotInfor(){
+    return this.http.get(`${this.baseUrl}Line/GetBotInfo`, {});
+  }
+  getAllMessage(officialID , userLineID){
+    return this.http.get(`${this.baseUrl}Line/getAllMessage?officialID=${officialID}&userLineID=${userLineID}`, {});
   }
   loginLineAgain(accountID) {
     return this.http
@@ -115,7 +113,9 @@ export class LineLoginOrNotifyService extends CURDService<XuserLine> {
         })
       );
   }
-
+  addMessage(chat) {
+    return this.http.post(`${this.baseUrl}Line/AddMessage`, chat);
+  }
   setLocalStorage(data: ApplicationUser) {
     localStorage.setItem('user', JSON.stringify(data.user));
     localStorage.setItem('token', data.token);

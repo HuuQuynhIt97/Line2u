@@ -136,6 +136,7 @@
 
     <div class="row">
       <div class="col-6">
+        <p style="color: red;" *ngIf="model.id > 0">{{ "/home/news-detail/" + model.id }}</p>
         <div class="form-group">
           <label for="engineerSex">{{ "WebNews_Type" | translate }}</label>
           <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
@@ -149,6 +150,7 @@
       </div>
 
       <div class="col-md-6">
+        <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "WebNews_Subject" | translate }}</label>
         <div class="form-group">
           <label for="uid">{{ "WebNews_Subject" | translate }}</label>
           <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>

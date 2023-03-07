@@ -114,7 +114,7 @@ const IMG_PIPE = [
     NgxSpinnerModule,
     NgbModule,
     CountdownModule,
-    CoreDirectivesModule,
+    // CoreDirectivesModule,
     SystemRoutingModule,
     ColorPickerModule,
     SharedModule.forRoot(),

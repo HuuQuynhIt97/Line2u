@@ -22,6 +22,12 @@ namespace Line2u.Controllers
         {
             return Ok(await _service.GetXAccountsToSendMessage());
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetXAccountsToSendMessageWithKey(string keywork)
+        {
+            return Ok(await _service.GetXAccountsToSendMessageWithKey(keywork));
+        }
         [HttpGet]
         public async Task<ActionResult> GetAllAsync()
         {
@@ -58,6 +64,12 @@ namespace Line2u.Controllers
         }
 
         [HttpPut]
+        public async Task<ActionResult> UpdateFormMobileAsync([FromForm] XAccountDto model)
+        {
+            return Ok(await _service.UpdateFormMobileAsync(model));
+        }
+
+        [HttpPut]
         public async Task<ActionResult> LockAsync(decimal id)
         {
             return StatusCodeResult(await _service.LockAsync(id));
@@ -73,6 +85,12 @@ namespace Line2u.Controllers
         public async Task<ActionResult> GetByIDAsync(decimal id)
         {
             return Ok(await _service.GetByIDAsync(id));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetWithGuidAsync(string guid)
+        {
+            return Ok(await _service.GetByIDWithGuidAsync(guid));
         }
 
         [HttpGet]
@@ -127,6 +145,11 @@ namespace Line2u.Controllers
         public async Task<ActionResult> GetProfile(string key)
         {
             return Ok(await _service.GetProfile(key));
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetProfileMobile(string key)
+        {
+            return Ok(await _service.GetProfileMobile(key));
         }
         [HttpPut]
         public async Task<ActionResult> StoreProfile([FromBody] StoreProfileDto model)

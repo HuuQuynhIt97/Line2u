@@ -122,6 +122,13 @@ import { NavbarComponent } from './views/layout/navbar/navbar.component';
 import { NewsComponent } from './views/home/news/news.component';
 import { NewRoleComponent } from './views/home/new-role/new-role.component';
 import { SwiperModule } from 'swiper/angular';
+import { NewsDetailComponent } from './views/home/news/news-detail/news-detail.component';
+import { CoreDirectivesModule } from './_core/_directive/core.directives.module';
+import { HomeUserAnonymousComponent } from './views/home/home-user-anonymous/home-user-anonymous.component';
+import { BannerComponent } from './views/home/home-user-anonymous/banner/banner.component';
+import { UserNewsComponent } from './views/home/home-user-anonymous/user-news/user-news.component';
+import { PrivacyComponent } from './views/home/home-user-anonymous/privacy/privacy.component';
+import { HelpGuidComponent } from './views/home/home-user-anonymous/help-guid/help-guid.component';
 
 let lang = localStorage.getItem('lang');
 if (!lang) {
@@ -145,6 +152,12 @@ if (!lang) {
     NavbarComponent,
     NewsComponent,
     NewRoleComponent,
+    NewsDetailComponent,
+    HomeUserAnonymousComponent,
+    BannerComponent,
+    UserNewsComponent,
+    PrivacyComponent,
+    HelpGuidComponent
 
   ],
   imports: [
@@ -163,6 +176,7 @@ if (!lang) {
     NgbModule,
     ChartAllModule,
     GridAllModule,
+    // CoreDirectivesModule,
     AccumulationChartAllModule,
     SwiperModule,
     PigfarmCoreModule.forRoot(environment.apiUrl),
