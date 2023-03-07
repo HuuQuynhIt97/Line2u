@@ -186,6 +186,26 @@ export interface WebBanner {
     typeName: string;
     file: any;
 }
+export interface WebBannerUser {
+    id: number;
+    type: string;
+    sortId: number | null;
+    subject: string;
+    photoPath: string;
+    link: string;
+    comment: string;
+    cancelFlag: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    status: number | null;
+    startDate: string | null;
+    endDate: string | null;
+    guid: string;
+    typeName: string;
+    file: any;
+}
 export interface Contract {
     id: number;
     subject: string;
@@ -198,6 +218,28 @@ export interface Contract {
     guid: string;
 }
 export interface WebNews {
+    id: number;
+    type: string;
+    sortId: number | null;
+    newsDate: string | null;
+    subject: string;
+    body: string;
+    photoPath: string;
+    link: string;
+    comment: string;
+    cancelFlag: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    status: number | null;
+    startDate: string | null;
+    endDate: string | null;
+    guid: string;
+    typeName: string;
+    file: any;
+}
+export interface WebNewsUser {
     id: number;
     type: string;
     sortId: number | null;

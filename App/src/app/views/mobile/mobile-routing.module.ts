@@ -19,6 +19,8 @@ import { AlertScreenComponent } from './alert-screen/alert-screen.component';
 import { LineUserLoginComponent } from './lineUser-login/lineUser-login.component';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserBannerComponent } from './user-banner/user-banner.component';
+import { MobileUserNewsComponent } from './mobile-user-news/mobile-user-news.component';
 
 const routes: Routes = [
   {
@@ -40,6 +42,20 @@ const routes: Routes = [
         component: UserProfileComponent,
         data: {
           title: 'User Profile'
+        }
+      },
+      {
+        path: 'banner',
+        component: UserBannerComponent,
+        data: {
+          title: 'Mobile Banner'
+        }
+      },
+      {
+        path: 'news',
+        component: MobileUserNewsComponent,
+        data: {
+          title: 'Mobile News'
         }
       },
       {

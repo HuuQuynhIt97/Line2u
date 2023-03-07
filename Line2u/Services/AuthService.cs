@@ -558,9 +558,9 @@ namespace Line2u.Services
                 Token = tokenValue
             };
 
-            _repoRefreshToken.Add(refreshToken);
+            //_repoRefreshToken.Add(refreshToken);
+            //await _unitOfWork.SaveChangeAsync();
             user.LastLoginDate = DateTime.Now;
-            await _unitOfWork.SaveChangeAsync();
             var userResponse = _mapper.Map<UserForDetailDto>(user);
             var pageSizeSetting = await _repoCodeType.FindAll(x => x.CodeNo == user.PageSizeSetting && CodeTypeConst.PageSize_Setting == x.CodeType1 && x.Status == "Y").AsNoTracking().Select(x => x.CodeName).FirstOrDefaultAsync();
             if (pageSizeSetting != null)

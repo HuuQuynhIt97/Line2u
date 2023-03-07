@@ -41,8 +41,10 @@ namespace Line2u.Helpers.AutoMapper
             CreateMap<Bank, BankDto>();
             CreateMap<Chat, ChatDto>();
             CreateMap<WebBanner, WebBannerDto>();
+            CreateMap<WebBannerUser, WebBannerUserDto>();
             CreateMap<Contract, ContractDto>();
             CreateMap<WebNews, WebNewsDto>();
+            CreateMap<WebNewsUser, WebNewsUserDto>();
             CreateMap<User2MessageDto, User2Message>();
 
         }

@@ -1,0 +1,262 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'User Banner' | translate}}</li>
+  </ol>
+</nav>
+<div class="container">
+  <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+    <p class="loading">Loading data...</p>
+  </ngx-spinner>
+  <div class="row">
+  <div class="col-12">
+    <div class="card main-card">
+      <div class="card-body table-responsive p-0">
+        
+        <ejs-grid
+        #grid
+          id="grid"
+        [toolbar]="toolbarOptions"
+        [dataSource]='data'
+        [allowPaging]="true"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        [pageSettings]="pageSettings"
+        [height]="700 + 'px'"        >
+        <e-columns>
+            <e-column field='ContactName' headerText='' >
+              <ng-template #template let-data>
+                  <div class="card m-0 p-0">
+                    <div class="card-header bg-primary text-white">
+                      {{data.subject}}
+                      <span style="color: transparent;"> || </span>
+                      <span (click)="delete(data.id)" class="delete-grid">
+                        <i class="fa fa-trash"></i>
+                      </span>
+                      <span (click)="openModal(optionModal, data)" class="edit-grid">
+                        <i class="fa fa-edit"></i>
+                      </span>
+                    </div>
+                    <div
+                      class="card-body p-0"
+                      [style.background-color]="data.recordDate === null ? '#f5dada' : '#1576b61f' "
+                    >
+
+                    <div class="d-flex justify-content-start mt-2">
+                        <div style="width: 40%">
+                          <div class="d-flex justify-content-start">
+                            
+                            <img
+                            height="55px"
+                            width="100%"
+                            [src]="imagePath(data.photoPath)"
+                            class="avatar"
+                          />
+                          </div>
+                        </div>
+                        <div style="width: 50%">
+                          <div class="d-flex justify-content-start">
+                            <div style="width: 50%" >
+                              <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{data.createDate | date: "yyyy-MM-dd"}}</div>
+                              <!-- <div style=" word-wrap: break-word;" [innerHtml]="data.content"></div> -->
+                              <div style=" word-wrap: break-word;">&nbsp;&nbsp;&nbsp;&nbsp;{{data.subject}}</div>
+                              <div style=" word-wrap: break-word;">&nbsp;&nbsp;&nbsp;&nbsp;{{data.comment}}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </ng-template>
+            </e-column>
+
+        </e-columns>
+        </ejs-grid>
+        
+      </div>
+    </div>
+  </div>
+  
+  </div>
+  <ng-template #optionModal let-modal>
+    <div class="modal-header my-modal">
+      <h4 [ngbTooltip]="title" class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" id="option">
+  
+      <div class="row">
+  
+  
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="uid">{{ "WebBanner_Subject" | translate }}</label>
+            <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+            <input
+              [(ngModel)]="model.subject"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+  
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="uid">{{ "WebBanner_Link" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+            <input
+              [(ngModel)]="model.link"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+        
+        <div class="col-6">
+          <div class="form-group">
+            <label for="Start_Date">{{
+              "Start_Date" | translate
+            }}</label>
+            <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              [(ngModel)]="model.startDate"
+            ></ejs-datepicker>
+          </div>
+        </div>
+  
+        <div class="col-6">
+          <div class="form-group">
+            <label for="End_Date">{{
+              "End_Date" | translate
+            }}</label>
+            <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              [(ngModel)]="model.endDate"
+            ></ejs-datepicker>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="sortId">{{ "WebBanner_SortId" | translate }}</label>
+            <input
+              [(ngModel)]="model.sortId"
+              min="0"
+              type="number"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="status">{{ "WebBanner_Status" | translate }}</label>
+            <input
+              [(ngModel)]="model.status"
+              type="number"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+        <div class="col-12 text-center">
+          <div class="kv-avatar">
+            <div class="file-loading">
+              <input
+                id="avatar-1"
+                name="avatar-1"
+                (change)="onFileChangeLogo($event)"
+                type="file"
+                required
+              />
+            </div>
+          </div>
+          <div class="kv-avatar-hint">
+            <small>{{ "Select file < 5000 KB" | translate }}</small>
+          </div>
+        </div>
+  
+        <div class="col-12">
+          <label>{{ "WebBanner_COMMENT" | translate }}</label>
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              [(ngModel)]="model.comment"
+              cols="4"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+  
+     
+  </div>
+  
+    <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class="mr-2">
+            <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+            : {{ audit?.createBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Create date time" | translate
+            }}</span>
+            : {{ audit?.createDate }}</span
+          >
+        </p>
+        <p>
+          <span class="mr-2"
+            ><span class="my-font-weight-bold">{{
+              "Update by" | translate
+            }}</span>
+            : {{ audit?.updateBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Update date time" | translate
+            }}</span>
+            : {{ audit?.updateDate }}</span
+          >
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ "Note: (*) is a required field" | translate }}
+      </span>
+      <button
+        type="button"
+        class="btn btn-light"
+        ngbTooltip="CLOSE"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+      <button
+        type="submit"
+        [disabled]="!model.link"
+        (click)="save()"
+        ngbTooltip="SAVE"
+        class="btn btn-primary"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+  </ng-template>
+  
+</div>

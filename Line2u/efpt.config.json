@@ -15,7 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[xAccount]",
+         "Name": "[dbo].[WebBanner_User]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WebNews_User]",
          "ObjectType": 0
       }
    ],

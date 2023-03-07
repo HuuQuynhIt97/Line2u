@@ -21,7 +21,7 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  titleKey = 'EVSE 後台管理系統';
+  titleKey = 'LINE2U_TITLE';
   titleName: any;
   constructor(
     private versionCheckService: VersionCheckService,
@@ -33,9 +33,9 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
   
-    // this.translate.get(this.titleKey).subscribe(name=>{
-    //   this.title.setTitle(name);
-    // });
+    this.translate.get(this.titleKey).subscribe(name=>{
+      this.title.setTitle(name);
+    });
    this.loadTitleData();
     this.versionCheckService.initVersionCheck(environment.versionCheckURL);
 

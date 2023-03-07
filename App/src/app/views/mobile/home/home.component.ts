@@ -45,7 +45,6 @@ export class HomeComponent implements OnInit {
     const guid = this.user.id;
     if (guid) {
       this.service.getById(guid).subscribe(x=> {
-        console.log(x)
         this.model = x;
         this.configImage();
       })

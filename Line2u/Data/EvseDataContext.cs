@@ -60,6 +60,8 @@ namespace Line2u.Data
         public virtual DbSet<XAccountSetting> XAccountSettings { get; set; }
         public virtual DbSet<User2Bank> User2Banks { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<WebBannerUser> WebBannerUsers { get; set; }
+        public virtual DbSet<WebNewsUser> WebNewsUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -122,6 +124,145 @@ namespace Line2u.Data
                     .HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<WebBannerUser>(entity =>
+            {
+                entity.ToTable("WebBanner_User");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("END_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.SortId)
+                    .HasColumnName("SORT_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("START_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Subject).HasMaxLength(200);
+
+                entity.Property(e => e.Type)
+                    .HasColumnName("TYPE")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<WebNewsUser>(entity =>
+            {
+                entity.ToTable("WebNews_User");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Body).HasColumnType("ntext");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("END_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.NewsDate)
+                    .HasColumnName("News_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.SortId)
+                    .HasColumnName("SORT_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("START_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Subject).HasMaxLength(200);
+
+                entity.Property(e => e.Type)
+                    .HasColumnName("TYPE")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.ToTable("Bank");
@@ -2128,7 +2269,7 @@ namespace Line2u.Data
                     .HasMaxLength(100);
                 entity.Property(e => e.LinePicture)
                     .HasColumnName("Line_Picture")
-                    .HasMaxLength(100);
+                    .HasMaxLength(500);
                 entity.Property(e => e.LineEmail)
                     .HasColumnName("Line_Email")
                     .HasMaxLength(50);

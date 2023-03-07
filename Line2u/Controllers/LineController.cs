@@ -170,42 +170,50 @@ namespace Line2u.Controllers
         public async Task<IActionResult>  GetProfile(string accessToken,string userID)
         {
             //https://www.line2you.com/api/LineBotWebHook
-
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = await httpClient.GetAsync("https://api.line.me/v2/profile");
-            var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
-            // get group-code normal user
-            //var group_guid = _accountGroupService.getGuidLineGroupNormal();
-            //add new account 
-            if(accessToken != "undefined")
+            try
             {
-                var model = new XAccountDto();
-                model.Uid = userProfile.UserId;
-                //model.AccountId = accountId;
-                model.AccountNo = userProfile.DisplayName;
-                model.AccountName = userProfile.DisplayName;
-                model.LineID = userProfile.UserId;
-                model.LineName = userProfile.DisplayName;
-                model.LinePicture = userProfile.PictureUrl;
-                model.Upwd = "0000";
-                model.IsLineAccount = "1";
-                //model.AccountGroup = group_guid;
-                //check exist
-                var existAccount = await _accountService.CheckExistUsernameLine(userProfile.UserId);
-                if (!existAccount.Success)
+                //string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                //var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = await httpClient.GetAsync("https://api.line.me/v2/profile");
+                var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
+                // get group-code normal user
+                //var group_guid = _accountGroupService.getGuidLineGroupNormal();
+                //add new account 
+                if(accessToken != "undefined")
                 {
-                    await _accountService.AddFormAsync(model);
+                    var model = new XAccountDto();
+                    model.Uid = userProfile.UserId;
+                    //model.AccountId = accountId;
+                    model.AccountNo = userProfile.DisplayName;
+                    model.AccountName = userProfile.DisplayName;
+                    model.LineID = userProfile.UserId;
+                    model.LineName = userProfile.DisplayName;
+                    model.LinePicture = userProfile.PictureUrl;
+                    model.Upwd = "0000";
+                    model.IsLineAccount = "1";
+                    //model.AccountGroup = group_guid;
+                    //check exist
+                    var existAccount = await _accountService.CheckExistUsernameLine(userProfile.UserId);
+                    if (!existAccount.Success)
+                    {
+                        await _accountService.AddFormAsync(model);
+                    }else
+                    {
+                        await _accountService.UpdateFormAsync(model);
+                    }
+                    var result = await _authService.LoginWithlineAccountAsync(userProfile.UserId);
+                    return StatusCodeResult(result);
                 }else
                 {
-                    await _accountService.UpdateFormAsync(model);
+                    return Ok(userProfile);
                 }
-                var result = await _authService.LoginWithlineAccountAsync(userProfile.UserId);
-                return StatusCodeResult(result);
-            }else
+            }
+            catch (Exception ex)
             {
-                return Ok(userProfile);
+
+                return BadRequest(ex.Message);
+                //throw;
             }
             // after create account -> login
         }

@@ -64,6 +64,9 @@ import { LineUserLoginFailComponent } from './lineUser-login/lineUserLoginFail/l
 import { SendMessageComponent } from './send-message/send-message.component';
 import { ChatBoxDirective } from 'src/app/_core/_directive/chatBox.directive';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserBannerComponent } from './user-banner/user-banner.component';
+import { MobileUserNewsComponent } from './mobile-user-news/mobile-user-news.component';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -124,7 +127,9 @@ loadCldr(
     LineUserLoginComponent,
     LineUserLoginFailComponent,
     SendMessageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UserBannerComponent,
+    MobileUserNewsComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
@@ -137,6 +142,7 @@ loadCldr(
     MobileRoutingModule,
     NgbModule,
     DatePickerAllModule,
+    RichTextEditorModule,
     CoreDirectivesModule,
     SidebarModule,
     MenuAllModule,
