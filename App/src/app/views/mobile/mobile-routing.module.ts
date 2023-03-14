@@ -21,6 +21,11 @@ import { SendMessageComponent } from './send-message/send-message.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserBannerComponent } from './user-banner/user-banner.component';
 import { MobileUserNewsComponent } from './mobile-user-news/mobile-user-news.component';
+import { StoreProfileComponent } from './store-profile/store-profile.component';
+import { MenuCategoryComponent } from './menu-category/menu-category.component';
+import { MenuListComponent } from './menu-list/menu-list.component';
+import { UserHelpComponent } from './user-help/user-help.component';
+import { UserContactComponent } from './user-contact/user-contact.component';
 
 const routes: Routes = [
   {
@@ -35,6 +40,41 @@ const routes: Routes = [
         component: LandlordProfileComponent,
         data: {
           title: 'Landlord Profile'
+        }
+      },
+      {
+        path: 'store-profile',
+        component: StoreProfileComponent,
+        data: {
+          title: 'Store Profile'
+        }
+      },
+      {
+        path: 'menu-category',
+        component: MenuCategoryComponent,
+        data: {
+          title: 'Menu Category'
+        }
+      },
+      {
+        path: 'products-list',
+        component: MenuListComponent,
+        data: {
+          title: 'Products List'
+        }
+      },
+      {
+        path: 'user-help',
+        component: UserHelpComponent,
+        data: {
+          title: 'User Help'
+        }
+      },
+      {
+        path: 'user-contact',
+        component: UserContactComponent,
+        data: {
+          title: 'User Contact'
         }
       },
       {

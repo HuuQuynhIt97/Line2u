@@ -2,7 +2,7 @@
 <div *ngIf="!isMobileBrowser">
   <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
     <div class="container-fluid">
-        <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
+        <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; ">
           <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,17 @@
         </div>
     </div>
   </nav>
+  <!-- <div class="row my-4">
+    <div class="col-12">
+      
+    </div>
+  </div> -->
+  <app-home-store-list></app-home-store-list>
+  <div class="row my-4">
+    <div class="col-12">
+      
+    </div>
+  </div>
   <swiper
   [loop]="true"
   [navigation]="true"
@@ -133,7 +144,7 @@
   
       <div class="push"></div>
     </div>
-    <footer class="footer navbar-fixed-bottom">
+    <footer class="footer mobile">
       <div class="row no-gutters social-container">
         <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-facebook"></span><span>{{'HOME'| translate}}</span></a></div>
         <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-instagram"></span><span>{{'CONTACT'| translate}}</span></a></div>

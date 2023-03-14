@@ -22,11 +22,11 @@ export class XAccountService extends CURDService<XAccount> {
     params.append("key", key);
     return this.http.post<any>(`${this.base}XAccount/ShowPassword`, params).pipe(catchError(this.handleError));
   }
-  getXAccountsToSendMessage() {
-    return this.http.get<any>(`${this.base}XAccount/GetXAccountsToSendMessage`, {});
+  getXAccountsToSendMessage(uid) {
+    return this.http.get<any>(`${this.base}XAccount/GetXAccountsToSendMessage?uid=${uid}`, {});
   }
-  getXAccountsToSendMessageWithKeyWord(key) {
-    return this.http.get<any>(`${this.base}XAccount/GetXAccountsToSendMessageWithKey?keywork=${key}`, {});
+  getXAccountsToSendMessageWithKeyWord(key,uid) {
+    return this.http.get<any>(`${this.base}XAccount/GetXAccountsToSendMessageWithKey?keywork=${key}&uid=${uid}`, {});
   }
   GetWithGuid(key) {
     return this.http.get<any>(`${this.base}XAccount/GetWithGuid?guid=${key}`, {});

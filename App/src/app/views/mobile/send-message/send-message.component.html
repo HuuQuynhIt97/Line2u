@@ -30,7 +30,7 @@
       <ul>
         <li class="contact" *ngFor="let item of userLine" (click)="joinGroup(item)">
           <div class="wrap">
-            <img [src]="defaultImage()" alt />
+            <img [src]="item.photoPath"  alt />
             <div class="meta">
               <p class="name">{{item.accountName}}</p>
             </div>

@@ -20,7 +20,7 @@ export const environment = {
   hub: `http://${ip}:58/line2u-hub`,
   apiUrlImage: `http://${ip}:58`,
   versionCheckURL : '/assets/version.json',
-  redirectOfficialAccount: `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${lineConfig.client_id}&redirect_uri=${lineConfig.redirect_uri}&state=NO_STATE&bot_prompt=aggressive&scope=profile%20openid%20email
+  redirectOfficialAccount: `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${lineConfig.client_id}&redirect_uri=${lineConfig.redirect_uri}&state=NO_STATE&scope=profile%20openid%20email
   `,
   redirectLineAuthorize: `${lineConfig.authorizeUrl}?response_type=code&client_id=${lineConfig.client_id}&redirect_uri=${lineConfig.redirect_uri}&state=12345abcde&scope=profile%20openid%20email&nonce=09876xyz`,
   notifyRedirectLineAuthorize: `${lineConfig.notifyAuthorizeUrl}?response_type=code&client_id=${lineConfig.notifyClient_id}&redirect_uri=${lineConfig.notifyRedirect_uri}&scope=notify&state=NO_STATE`,

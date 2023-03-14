@@ -41,6 +41,9 @@ namespace Line2u.Helpers.AutoMapper
             CreateMap<User2Bank, User2BankDto>();
             CreateMap<User2Message, User2MessageDto>();
             CreateMap<ChatDto, Chat>();
+            CreateMap<StoreProfilesDto, StoreProfile>();
+            CreateMap<MainCategoryDto, MainCategory>();
+            CreateMap<ProductsDto, Product>();
 
 
         }

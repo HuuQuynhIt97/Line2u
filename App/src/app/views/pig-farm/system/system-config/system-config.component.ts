@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { FilteringEventArgs, highlightSearch } from '@syncfusion/ej2-angular-dropdowns';
 import { SystemConfig } from 'src/app/_core/_model/systemconfig';
 import { SystemConfigService } from 'src/app/_core/_service/systemconfig.service';
+import { ConfigTextLoginLineComponent } from './config-text-login-line/config-text-login-line.component';
 
 @Component({
   selector: 'app-system-config',
@@ -59,8 +60,8 @@ public commonFn: (args: { [key: string]: string }) => boolean = (args: { [key: s
 
   constructor(
     private service: SystemConfigService,
-    public modalService: NgbModal,
     private alertify: AlertifyService,
+    public modalService: NgbModal,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
      private config: NgbTooltipConfig,
@@ -101,7 +102,18 @@ public commonFn: (args: { [key: string]: string }) => boolean = (args: { [key: s
   headerCellInfo(args) {
  }
   onDoubleClick(args: any): void {
-    this.setFocus = args.column; // Get the column from Double click event
+    if(args.rowData.type === 'Line_Login_Config') {
+      console.log('aaaaa')
+      const modalRef = this.modalService.open(ConfigTextLoginLineComponent, {size: 'xxl',backdrop: 'static',keyboard: false});
+      modalRef.componentInstance.datas  = {...args.rowData};;
+      modalRef.result.then((result) => {
+        this.loadData();
+      }, (reason) => {
+        this.loadData();
+      });
+      args.cancel = true
+    }
+    this.setFocus = args.column; 
   }
   rowSelected(args) {
     this.systemMenuGuid.emit(args.data.guid);

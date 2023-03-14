@@ -26,6 +26,7 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
 
   isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
   data: DataManager;
+  public initialGridLoad = true;
   modalReference: NgbModalRef;
   active = "Detail"
   @ViewChild('grid') public grid: GridComponent;
@@ -76,6 +77,20 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
     this.loadData();
     this.loadLang()
   }
+  dataBound() {
+    if (this.initialGridLoad) {
+        this.initialGridLoad = false;
+        const pager = document.getElementsByClassName('e-gridpager');
+        let topElement;
+        if (this.grid.allowGrouping || this.grid.toolbar) {
+            topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
+                document.getElementsByClassName('e-toolbar');
+        } else {
+            topElement = document.getElementsByClassName('e-gridheader');
+        }
+        this.grid.element.insertBefore(pager[0], topElement[0]);
+    }
+}
   loadLang() {
     this.translate.get('WebBanner').subscribe( functionName => {
       this.functionName = functionName;

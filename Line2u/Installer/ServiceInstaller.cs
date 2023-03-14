@@ -31,6 +31,9 @@ namespace Line2u.Installer
             services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IWebBannerUserService, WebBannerUserService>();
             services.AddScoped<IWebNewsUserService, WebNewsUserService>();
+            services.AddScoped<IStoreProfileService, StoreProfileService>();
+            services.AddScoped<IMainCategoryService, MainCategoryService>();
+            services.AddScoped<IProductsService, ProductsService>();
 
         }
     }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ForgotPasswordComponent } from './views/forgot-password/forgot-password.component';
 import { ForgotUsernameComponent } from './views/forgot-username/forgot-username.component';
+import { HomeStoreComponent } from './views/home/home-store/home-store.component';
 import { BannerComponent } from './views/home/home-user-anonymous/banner/banner.component';
 import { HelpGuidComponent } from './views/home/home-user-anonymous/help-guid/help-guid.component';
 import { PrivacyComponent } from './views/home/home-user-anonymous/privacy/privacy.component';
@@ -165,6 +166,13 @@ const routes: Routes = [
     component: NewsDetailComponent,
     data: {
       title: 'New Detail'
+    }
+  },
+  {
+    path: 'home/store/:storeName/:id',
+    component: HomeStoreComponent,
+    data: {
+      title: 'Home Store'
     }
   },
   {

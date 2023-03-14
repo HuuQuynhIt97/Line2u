@@ -50,7 +50,7 @@ export class WebNewsComponent extends BaseComponent implements OnInit {
         'Formats', 'Alignments', 'NumberFormatList', 'BulletFormatList',
         'Outdent', 'Indent', '|', 'ClearFormat',
         'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
-};
+ };
   constructor(
     private service: WebNewsService,
     public modalService: NgbModal,

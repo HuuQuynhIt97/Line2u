@@ -47,6 +47,10 @@ namespace Line2u.Helpers.AutoMapper
             CreateMap<WebNewsUser, WebNewsUserDto>();
             CreateMap<User2MessageDto, User2Message>();
 
+            CreateMap<StoreProfile, StoreProfilesDto>();
+            CreateMap<Product, ProductsDto>();
+            CreateMap<MainCategory, MainCategoryDto>();
+
         }
 
     }

@@ -7,8 +7,8 @@
 
         <div id="myLinks">
           <a (click)="toggleSidebar()" routerLink="/mobile/user-profile">{{ 'MOBILE_MY_LINE_PROFILE' | translate }}</a>
-          <a (click)="toggleSidebar()" routerLink="/mobile/report">{{ 'MOBILE_SEND_MESSAGE' | translate }}</a>
-          <a (click)="toggleSidebar()" routerLink="/mobile/field">{{ 'MOBILE_MESSAGE_HISTORY' | translate }}</a>
+          <a (click)="toggleSidebar()" routerLink="/mobile/send-message">{{ 'MOBILE_SEND_MESSAGE' | translate }}</a>
+          <a (click)="toggleSidebar()" routerLink="/mobile/send-message">{{ 'MOBILE_MESSAGE_HISTORY' | translate }}</a>
           
         </div>
         <ul class="header-list">
@@ -74,6 +74,8 @@
       </div>
 
       <router-outlet></router-outlet>
+
+      <app-mobile-footer></app-mobile-footer>
     </div>
   </div>
 </div>

@@ -1,0 +1,49 @@
+<div class="modal-header my-modal">
+  <!-- <h4 [ngbTooltip]="title" class="modal-title">
+    <i class="fas fa-plus"></i> {{ title | translate }}
+  </h4> -->
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" id="option">
+
+  <div class="row">
+
+    <div class="col-12 mb-2">
+      <label for="body">{{ "CONTENT" | translate }}</label>
+
+      <ejs-richtexteditor  
+      [toolbarSettings]='tools'
+      saveInterval='1'
+      [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  
+      [(value)]='model.value'>
+      </ejs-richtexteditor>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  
+  <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="activeModal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  <button
+    type="submit"
+    (click)="save()"
+    ngbTooltip="SAVE"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+</div>

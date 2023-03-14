@@ -51,6 +51,8 @@ export interface XAccount {
   lineId: string;
   lineName: string;
   lineOfficialId: string;
+  lineBotId: string;
+  lineChannelAccessToken: string;
   lineQrPath: string;
   siteId: string;
   siteName: string;
@@ -75,4 +77,20 @@ export interface Profile {
   pageSizeSetting: string;
   pageSizeSettingValue: string;
   pageSizeSettingList: string;
+}
+
+export interface StoreProfile {
+  id: number;
+  storeName: string | null;
+  storeAddress: string;
+  storeOpenTime: string;
+  storeCloseTime: string;
+  storeLowPrice: string;
+  storeHightPrice: string | null;
+  body: string;
+  photoPath: string;
+  comment: string;
+  guid: string;
+  accountGuid: string;
+  file: any;
 }

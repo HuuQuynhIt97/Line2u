@@ -35,7 +35,7 @@ import { MobileRoutingModule } from './mobile-routing.module';
 import { NgbModule, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
+import { DatePickerAllModule, TimePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 
 import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.module';
 import { MenuAllModule, SidebarModule, TreeViewAllModule } from '@syncfusion/ej2-angular-navigations';
@@ -67,6 +67,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserBannerComponent } from './user-banner/user-banner.component';
 import { MobileUserNewsComponent } from './mobile-user-news/mobile-user-news.component';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { StoreProfileComponent } from './store-profile/store-profile.component';
+import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
+import { MenuCategoryComponent } from './menu-category/menu-category.component';
+import { MenuListComponent } from './menu-list/menu-list.component';
+import { UserContactComponent } from './user-contact/user-contact.component';
+import { UserHelpComponent } from './user-help/user-help.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -129,7 +135,13 @@ loadCldr(
     SendMessageComponent,
     UserProfileComponent,
     UserBannerComponent,
-    MobileUserNewsComponent
+    MobileUserNewsComponent,
+    StoreProfileComponent,
+    MobileFooterComponent,
+    MenuCategoryComponent,
+    MenuListComponent,
+    UserContactComponent,
+    UserHelpComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
@@ -146,6 +158,7 @@ loadCldr(
     CoreDirectivesModule,
     SidebarModule,
     MenuAllModule,
+    TimePickerAllModule,
     ScheduleModule,
     SharedModule.forRoot(),
     TranslateModule.forRoot({

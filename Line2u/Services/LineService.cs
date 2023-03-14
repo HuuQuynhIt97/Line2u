@@ -42,6 +42,7 @@ namespace Line2u.Services
         //Task<string> FetchToken(string code);
         Task<string> GetMessageFromGPT(string msg);
         Task<OperationResult> SendFormMessage(LineMessageDto model);
+        Task<Line2u.DTO.Line.Profile> GetLineQrCodeLink(decimal uid);
     }
     public class LineService : ILineService
     {
@@ -49,6 +50,7 @@ namespace Line2u.Services
         private readonly string _notifyUrl;
         private readonly string _tokenUrl;
         private HttpClient _client;
+        private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly string _redirectUri;
@@ -58,7 +60,7 @@ namespace Line2u.Services
         private readonly string _chatGPTKey;
         //private readonly LineUtility _line;
 
-        public LineService(IConfiguration config)
+        public LineService(IConfiguration config, IRepositoryBase<XAccount> repoXAccount)
         {
             _client = new HttpClient();
             _config = config;
@@ -73,6 +75,7 @@ namespace Line2u.Services
             _channelAccessTokenMessage = lineConfig.GetValue<string>("channelAccessTokenMessage");
             _chatGPTKey = lineConfig.GetValue<string>("chatGPTKey");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _channelAccessTokenMessage);
+            _repoXAccount = repoXAccount;
             //_line = new LineUtility(_notifyUrl, _tokenUrl, _redirectUri, _successUri);
             //_line.OnInit(_clientId, _clientSecret);
 
@@ -233,6 +236,17 @@ namespace Line2u.Services
                 Success = true
             };
             return operationResult;
+        }
+
+        public async Task<Line2u.DTO.Line.Profile> GetLineQrCodeLink(decimal uid)
+        {
+            var QR = _repoXAccount.FindByID(uid);
+            var data = new Line2u.DTO.Line.Profile
+            {
+                PictureUrl = QR.LineQrPath,
+                LineBotID = $"https://line.me/R/ti/p/" + QR.LineBotId
+            };
+            return data;
         }
     }
 }

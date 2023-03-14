@@ -64,6 +64,8 @@ import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 declare var require: any;
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
+import { ConfigTextLoginLineComponent } from './system-config/config-text-login-line/config-text-login-line.component';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 loadCldr(
   require('cldr-data/supplemental/numberingSystems.json'),
   require('cldr-data/main/en/ca-gregorian.json'),
@@ -114,6 +116,7 @@ const IMG_PIPE = [
     NgxSpinnerModule,
     NgbModule,
     CountdownModule,
+    RichTextEditorModule,
     // CoreDirectivesModule,
     SystemRoutingModule,
     ColorPickerModule,
@@ -139,6 +142,7 @@ const IMG_PIPE = [
     SettingDashboardNormalComponent,
     CreateDashboardComponent,
     CreateAreaComponent,
+    ConfigTextLoginLineComponent
   ]
 })
 export class SystemModule {

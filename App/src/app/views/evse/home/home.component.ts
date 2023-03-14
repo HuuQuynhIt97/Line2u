@@ -36,13 +36,13 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy{
     this.loadFuneralDirector()
   }
   loadFuneralDirector() {
-    this.serviceXaccount.getXAccountsToSendMessage().subscribe(res => {
-      this.userLineData = res
-      this.userLineData.unshift({
-        id: 0,
-        guid: '',
-        accountName: this.translate.instant('DESKTOP_NO_ITEM_DATA') });
-    })
+    // this.serviceXaccount.getXAccountsToSendMessage().subscribe(res => {
+    //   this.userLineData = res
+    //   this.userLineData.unshift({
+    //     id: 0,
+    //     guid: '',
+    //     accountName: this.translate.instant('DESKTOP_NO_ITEM_DATA') });
+    // })
   }
   validateAddOrEdit(model: XuserLine) {
     if (model.content === null || model.content === undefined || model.content === '') {

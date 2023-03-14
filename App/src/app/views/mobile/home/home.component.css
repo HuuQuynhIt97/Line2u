@@ -90,3 +90,13 @@
   right: -20px;
   cursor: pointer;
 }
+#main-text {
+  min-height: 100%;
+  margin-bottom: -50px;
+  overflow-y: auto;
+}
+.sidebar-content {
+  min-height: 100%;
+  margin-bottom: -50px;
+  overflow-y: auto;
+}

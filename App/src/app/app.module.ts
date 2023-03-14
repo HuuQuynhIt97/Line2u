@@ -129,6 +129,8 @@ import { BannerComponent } from './views/home/home-user-anonymous/banner/banner.
 import { UserNewsComponent } from './views/home/home-user-anonymous/user-news/user-news.component';
 import { PrivacyComponent } from './views/home/home-user-anonymous/privacy/privacy.component';
 import { HelpGuidComponent } from './views/home/home-user-anonymous/help-guid/help-guid.component';
+import { HomeStoreListComponent } from './views/home/home-store-list/home-store-list.component';
+import { HomeStoreComponent } from './views/home/home-store/home-store.component';
 
 let lang = localStorage.getItem('lang');
 if (!lang) {
@@ -157,7 +159,9 @@ if (!lang) {
     BannerComponent,
     UserNewsComponent,
     PrivacyComponent,
-    HelpGuidComponent
+    HelpGuidComponent,
+    HomeStoreListComponent,
+    HomeStoreComponent
 
   ],
   imports: [

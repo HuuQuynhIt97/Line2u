@@ -16,6 +16,7 @@ using Line2u.DTO.Line;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using Microsoft.AspNetCore.SignalR;
 using Line2u.Hubs;
+using Line2u.Models;
 
 namespace isRock.Template
 {
@@ -57,23 +58,28 @@ namespace isRock.Template
         [HttpPost]
         public async Task<IActionResult> POST()
         {
+            
             string channelAccessTokenMessage = _configuration.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
             //var AdminUserId = "Ua536016d141459cc41bdd2bacfaac5ae";
 
             try
             {
                 //設定ChannelAccessToken
-                this.ChannelAccessToken = channelAccessTokenMessage;
+                
+                
                 //配合Line Verify
-                var botProfile = await GetBotInfo();
+                
                 if (ReceivedMessage.events == null || ReceivedMessage.events.Count() <= 0 ||
                     ReceivedMessage.events.FirstOrDefault().replyToken == "00000000000000000000000000000000") return Ok();
                 //取得Line Event
                 var LineEvent = this.ReceivedMessage.events.FirstOrDefault();
+                var _accessToken = await FetAccessToken(ReceivedMessage.destination);
+                this.ChannelAccessToken = _accessToken.LineChannelAccessToken;
+                var botProfile = await GetBotInfo(_accessToken.LineChannelAccessToken);
                 //var events = await LineEvent.GetWebhookEventsAsync(LineEvent,channelSecret);
                 //var app = new LineBotApp(lineMessagingClient);
                 //await app.RunAsync(events);
-                var responseMsg = "";
+                var responseMsg = "Welcome To Channel";
                 var chat = new ChatDto();
                 //準備回覆訊息
                 if (LineEvent.type.ToLower() == "message" && LineEvent.message.type == "text")
@@ -92,7 +98,7 @@ namespace isRock.Template
                 }else if (LineEvent.type.ToLower() == "message")
                     responseMsg = $"receive event : {LineEvent.type} type: {LineEvent.message.type} ";
                 else if (LineEvent.type.ToLower() == "follow")
-                    await AddAccount(LineEvent.source.userId);
+                    await AddAccount(LineEvent.source.userId, _accessToken);
                 else
                     responseMsg = $"receive event : {LineEvent.type} ";
                 //回覆訊息
@@ -132,20 +138,20 @@ namespace isRock.Template
             };
             return result_content;
         }
-        private async Task<Profile> GetBotInfo()
+        private async Task<Profile> GetBotInfo(string _accessToken)
         {
             //https://www.line2you.com/api/LineBotWebHook
             string channelAccessTokenMessage = _configuration.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", channelAccessTokenMessage);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
             var response = await httpClient.GetAsync("https://api.line.me/v2/bot/info");
             var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
             return userProfile;
             // after create account -> login
         }
-        private async Task<bool> AddAccount(string uid)
+        private async Task<bool> AddAccount(string uid,XAccount _model)
         {
             string channelAccessTokenMessage = _configuration.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", channelAccessTokenMessage);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _model.LineChannelAccessToken);
             var response = await httpClient.GetAsync($"https://api.line.me/v2/bot/profile/{uid}");
             var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
             try
@@ -157,10 +163,11 @@ namespace isRock.Template
                 model.LineID = userProfile.UserId;
                 model.LineName = userProfile.DisplayName;
                 model.LinePicture = userProfile.PictureUrl;
+                model.LineParentId = _model.Uid;
                 model.Upwd = "0000";
                 model.IsLineAccount = "1";
                 //check exist
-                var existAccount = await _accountService.CheckExistUsernameLine(userProfile.UserId);
+                var existAccount = await _accountService.CheckExistUsernameLineCustomer(userProfile.UserId);
                 if (!existAccount.Success)
                 {
                     await _accountService.AddFormAsync(model);
@@ -177,6 +184,11 @@ namespace isRock.Template
                 //throw;
             }
             
+        }
+
+        private async Task<XAccount> FetAccessToken(string destination)
+        {
+            return await _accountService.getChannelAccess(destination);
         }
     }
 }

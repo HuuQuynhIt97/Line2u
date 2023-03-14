@@ -73,6 +73,13 @@ export class UserProfileComponent implements OnInit {
     // this.configImage();
     // this.configImageQR();
   }
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 47 && charCode < 58 || charCode === 46  || charCode === 45) {
+      return true;
+    }
+    return false;
+  }
   sexChange(value) {
     // this.model.landLordSex = value;
   }

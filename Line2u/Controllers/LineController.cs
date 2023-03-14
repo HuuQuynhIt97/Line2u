@@ -243,15 +243,21 @@ namespace Line2u.Controllers
             return result_content;
         }
         [HttpGet]
-        public async Task<IActionResult> GetBotInfo()
+        public async Task<IActionResult> GetBotInfo(decimal uid)
         {
             //https://www.line2you.com/api/LineBotWebHook
+            var official_ID = _accountService.GetByID(uid);
+            var _accessToken = FetAccessToken(official_ID.LineOfficialId);
             string channelAccessTokenMessage = _config.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", channelAccessTokenMessage);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
             var response = await httpClient.GetAsync("https://api.line.me/v2/bot/info");
             var userProfile = JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
             return Ok(userProfile);
             // after create account -> login
+        }
+        private string FetAccessToken(string uid)
+        {
+            return _accountService.getChannelAccessToken(uid);
         }
         [HttpGet]
         public async Task<IActionResult> AddOfficialAccount(string userIds, string OfficialAccountLineUserId, string accessToken)
@@ -285,14 +291,15 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetLineQrCodeLink()
+        public async Task<IActionResult> GetLineQrCodeLink(decimal uid)
         {
-            string url = $"{_QRUrl}";
+            //string url = $"{_QRUrl}";
             var data = new Profile
             {
                 PictureUrl = _QRUrl
             };
-            return Ok(data);
+            //return Ok(data);
+            return Ok(await _service.GetLineQrCodeLink(uid));
             // after create account -> login
         }
 

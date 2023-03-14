@@ -13,6 +13,7 @@ namespace Line2u.Models
         public string AccountNo { get; set; }
         public string AccountName { get; set; }
         public string AccountSex { get; set; }
+        public string LineParentId { get; set; }
         public DateTime? AccountBirthday { get; set; }
         public string AccountNickname { get; set; }
         public string AccountTel { get; set; }
@@ -69,6 +70,8 @@ namespace Line2u.Models
         public string IsLineAccount { get; set; }
 
         public string LineOfficialId { get; set; }
+        public string LineChannelAccessToken { get; set; }
+        public string LineBotId { get; set; }
         public string LineQrPath { get; set; }
         public string SiteId { get; set; }
         public string SiteName { get; set; }

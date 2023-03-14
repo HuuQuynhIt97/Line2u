@@ -5,6 +5,7 @@ import { CalendarsServiceService } from 'src/app/_core/_service/evse/calendarsSe
 import { LineLoginOrNotifyService } from 'src/app/_core/_service/evse/lineLoginOrNotify.service';
 import { SignarlService } from 'src/app/_core/_service/evse/signarl.service';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
+import { environment } from 'src/environments/environment';
 declare let $: any;
 @Component({
   selector: 'app-send-message',
@@ -18,12 +19,14 @@ export class SendMessageComponent implements AfterViewInit, OnInit {
   projectName: '';
   projects: any;
   userLine: any[];
+  user_infor = JSON.parse(localStorage.getItem('user'))
   keyword: '%20';
   botInfoData: LineBotInfor = {} as LineBotInfor;
   isActive: boolean;
   message: string = '';
   recieve: any = '';
   height: any;
+  baseUrl = environment.apiUrlImage;
   @ViewChild('getHeight') getHeight: ElementRef;
   constructor(
     private calendarsService: CalendarsServiceService,
@@ -75,12 +78,12 @@ export class SendMessageComponent implements AfterViewInit, OnInit {
     this.loadUserLineDataWithKey();
   }
   loadUserLineData() {
-    this.serviceXaccount.getXAccountsToSendMessage().subscribe(res => {
+    this.serviceXaccount.getXAccountsToSendMessage(this.user_infor.uid).subscribe(res => {
       this.userLine = res
     })
   }
   loadUserLineDataWithKey() {
-    this.serviceXaccount.getXAccountsToSendMessageWithKeyWord(this.keyword).subscribe(res => {
+    this.serviceXaccount.getXAccountsToSendMessageWithKeyWord(this.keyword,this.user_infor.id).subscribe(res => {
       this.userLine = res
     })
   }
@@ -111,6 +114,7 @@ export class SendMessageComponent implements AfterViewInit, OnInit {
       OfficialName: this.botInfoData.displayName,
       Sender: this.botInfoData.userId,
       Receive: this.recieve,
+      AccountUid: this.user_infor.uid,
       Message: this.message
     };
     this.lineNotify.addMessage(chat)
@@ -119,7 +123,7 @@ export class SendMessageComponent implements AfterViewInit, OnInit {
     });
   }
   getInforOfficial() {
-    this.lineNotify.getBotInfor().subscribe(res => {
+    this.lineNotify.getBotInfor(this.user_infor.id).subscribe(res => {
       this.botInfoData = res as LineBotInfor
     })
   }

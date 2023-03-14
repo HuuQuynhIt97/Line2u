@@ -18,15 +18,15 @@ namespace Line2u.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult> GetXAccountsToSendMessage()
+        public async Task<ActionResult> GetXAccountsToSendMessage(string uid)
         {
-            return Ok(await _service.GetXAccountsToSendMessage());
+            return Ok(await _service.GetXAccountsToSendMessage(uid));
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetXAccountsToSendMessageWithKey(string keywork)
+        public async Task<ActionResult> GetXAccountsToSendMessageWithKey(string keywork,decimal uid)
         {
-            return Ok(await _service.GetXAccountsToSendMessageWithKey(keywork));
+            return Ok(await _service.GetXAccountsToSendMessageWithKey(keywork,uid));
         }
         [HttpGet]
         public async Task<ActionResult> GetAllAsync()

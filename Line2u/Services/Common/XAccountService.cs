@@ -24,6 +24,9 @@ using Microsoft.Extensions.Configuration;
 using Dapper;
 using isRock.LineBot;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace Line2u.Services
 {
@@ -32,8 +35,8 @@ namespace Line2u.Services
         Task<OperationResult> LockAsync(decimal id);
         Task<XAccountDto> GetByUsername(string username);
         Task<object> GetXAccounts();
-        Task<object> GetXAccountsToSendMessage();
-        Task<object> GetXAccountsToSendMessageWithKey(string keywork);
+        Task<object> GetXAccountsToSendMessage(string uid);
+        Task<object> GetXAccountsToSendMessageWithKey(string keywork,decimal uid);
         Task<object> GetRejectsByRequisition(string farmGuid);
         Task<object> GetRejectsByRepair(string farmGuid);
         Task<object> GetRejectsByAcceptance(string farmGuid);
@@ -76,6 +79,9 @@ namespace Line2u.Services
         Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid);
 
         Task<OperationResult> CheckExistUsernameLine(string Uid);
+        Task<OperationResult> CheckExistUsernameLineCustomer(string Uid);
+        string getChannelAccessToken(string uid);
+        Task<XAccount> getChannelAccess(string uid);
 
     }
     public class XAccountService : ServiceBase<XAccount, XAccountDto>, IXAccountService
@@ -96,7 +102,17 @@ namespace Line2u.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _currentEnvironment;
         private readonly IConfiguration _configuration;
+        static private HttpClient _httpClient;
+        private HttpClient httpClient
+        {
+            get
+            {
+                if (_httpClient == null)
+                    _httpClient = new HttpClient();
 
+                return _httpClient;
+            }
+        }
         public XAccountService(
             IRepositoryBase<XAccount> repo,
             IRepositoryBase<CodeType> repoCodeType,
@@ -692,6 +708,7 @@ namespace Line2u.Services
                 item.LineName = model.LineName;
                 item.LinePicture = model.LinePicture;
                 item.IsLineAccount = model.IsLineAccount;
+                item.LineParentId = model.LineParentId;
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -1198,7 +1215,22 @@ namespace Line2u.Services
 
         public async Task<OperationResult> CheckExistUsernameLine(string Uid)
         {
-            var item = _repo.FindAll(x => x.Uid == Uid).Any();
+            var item = _repo.FindAll(x => x.Uid == Uid && string.IsNullOrEmpty(x.LineParentId)).Any();
+            if (item)
+            {
+                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The username already existed!", Success = true };
+            }
+            operationResult = new OperationResult
+            {
+                StatusCode = HttpStatusCode.OK,
+                Success = false,
+                Data = item
+            };
+            return operationResult;
+        }
+        public async Task<OperationResult> CheckExistUsernameLineCustomer(string Uid)
+        {
+            var item = _repo.FindAll(x => x.Uid == Uid && x.LineParentId == Uid).Any();
             if (item)
             {
                 return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The username already existed!", Success = true };
@@ -1212,9 +1244,9 @@ namespace Line2u.Services
             return operationResult;
         }
 
-        public async Task<object> GetXAccountsToSendMessage()
+        public async Task<object> GetXAccountsToSendMessage(string uid)
         {
-            var list_Account = await _repo.FindAll(x => x.Status == "1" && x.IsLineAccount == "1").ToListAsync();
+            var list_Account = await _repo.FindAll(x => x.Status == "1" && x.IsLineAccount == "1" && x.LineParentId == uid).ToListAsync();
             //var list_AccountGroup = await _repoXAccountGroup.FindAll(x => x.Status == 1).ToListAsync();
 
             var query = (
@@ -1223,15 +1255,17 @@ namespace Line2u.Services
                         {
                             x.AccountName,
                             x.Guid,
-                            x.Uid
+                            x.Uid,
+                            PhotoPath =  x.LinePicture
                         }).ToList();
 
             return query;
         }
 
-        public async Task<object> GetXAccountsToSendMessageWithKey(string keyword)
+        public async Task<object> GetXAccountsToSendMessageWithKey(string keyword , decimal uid)
         {
-            var list_Account = await _repo.FindAll(x => x.Status == "1" && x.IsLineAccount == "1").ToListAsync();
+            var parentLine_ID = _repo.FindByID(uid).Uid;
+            var list_Account = await _repo.FindAll(x => x.Status == "1" && x.IsLineAccount == "1" && x.LineParentId == parentLine_ID).ToListAsync();
             //var list_AccountGroup = await _repoXAccountGroup.FindAll(x => x.Status == 1).ToListAsync();
 
             var query = (
@@ -1240,6 +1274,7 @@ namespace Line2u.Services
                         {
                             x.AccountName,
                             x.LineName,
+                            PhotoPath = x.LinePicture,
                             x.Guid,
                             x.Uid
                         }).ToList();
@@ -1333,7 +1368,8 @@ namespace Line2u.Services
                     item.LineQrPath = $"/FileUploads/images/account/QR/{avatarUniqueFileName_QR}";
                 }
             }
-
+            // get Official_ID - destination
+            var official_ID = await GetBotInfo(model.LineChannelAccessToken);
 
             try
             {
@@ -1348,7 +1384,9 @@ namespace Line2u.Services
                 item.SiteId = model.SiteId;
                 item.SiteName = model.SiteName;
                 item.SiteTel = model.SiteTel;
-                item.LineOfficialId = model.LineOfficialId;
+                item.LineOfficialId = official_ID.UserId;
+                item.LineChannelAccessToken = model.LineChannelAccessToken;
+                item.LineBotId = model.LineBotId;
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -1379,6 +1417,30 @@ namespace Line2u.Services
         public async Task<object> GetByIDWithGuidAsync(string guid)
         {
             return _repo.FindAll(o => o.Guid == guid).FirstOrDefault();
+        }
+
+        public string getChannelAccessToken(string uid)
+        {
+            var ChannelAccessToken = _repo.FindAll(x => x.LineOfficialId == uid && string.IsNullOrEmpty( x.LineParentId)).FirstOrDefault().LineChannelAccessToken;
+            return ChannelAccessToken;
+        }
+
+        public async Task<XAccount> getChannelAccess(string uid)
+        {
+            var ChannelAccessToken = await _repo.FindAll(x => x.LineOfficialId == uid && string.IsNullOrEmpty(x.LineParentId)).FirstOrDefaultAsync();
+            return ChannelAccessToken;
+        }
+
+
+        private async Task<Line2u.DTO.Line.Profile> GetBotInfo(string _accessToken)
+        {
+            //https://www.line2you.com/api/LineBotWebHook
+            string channelAccessTokenMessage = _configuration.GetSection("LineNotifyConfig").GetSection("channelAccessTokenMessage").Value;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            var response = await httpClient.GetAsync("https://api.line.me/v2/bot/info");
+            var userProfile = JsonConvert.DeserializeObject<Line2u.DTO.Line.Profile>(await response.Content.ReadAsStringAsync());
+            return userProfile;
+            // after create account -> login
         }
     }
 }

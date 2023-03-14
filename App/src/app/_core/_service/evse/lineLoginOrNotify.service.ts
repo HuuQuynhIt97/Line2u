@@ -66,11 +66,11 @@ export class LineLoginOrNotifyService extends CURDService<XuserLine> {
         })
       );
   }
-  getUrlQr(){
-    return this.http.get(`${this.baseUrl}Line/GetLineQrCodeLink`, {});
+  getUrlQr(uid){
+    return this.http.get(`${this.baseUrl}Line/GetLineQrCodeLink?uid=${uid}`, {});
   }
-  getBotInfor(){
-    return this.http.get(`${this.baseUrl}Line/GetBotInfo`, {});
+  getBotInfor(uid){
+    return this.http.get(`${this.baseUrl}Line/GetBotInfo?uid=${uid}`, {});
   }
   getAllMessage(officialID , userLineID){
     return this.http.get(`${this.baseUrl}Line/getAllMessage?officialID=${officialID}&userLineID=${userLineID}`, {});

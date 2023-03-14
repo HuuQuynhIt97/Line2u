@@ -18,10 +18,12 @@
         [toolbar]="toolbarOptions"
         [dataSource]='data'
         [allowPaging]="true"
+        height="600px"
+        (dataBound)='dataBound()'
         [editSettings]="editSettings"
         (toolbarClick)="toolbarClick($event)"
         [pageSettings]="pageSettings"
-        [height]="700 + 'px'"        >
+          >
         <e-columns>
             <e-column field='ContactName' headerText='' >
               <ng-template #template let-data>
@@ -46,7 +48,6 @@
                           <div class="d-flex justify-content-start">
                             
                             <img
-                            height="55px"
                             width="100%"
                             [src]="imagePath(data.photoPath)"
                             class="avatar"

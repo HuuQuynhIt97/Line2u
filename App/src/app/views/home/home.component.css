@@ -20,7 +20,18 @@ html, body {
 .push {
   height: 50px;
 }
-.footer{background:#233b2e}
+.footer{
+  background: #233b2e;
+
+}
+.mobile{
+  background: #233b2e;
+  z-index: 99;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
 
 
 .social-inner {

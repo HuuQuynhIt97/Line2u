@@ -16,5 +16,9 @@ namespace Line2u.DTO.Line
         public string PictureUrl { get; set; }
         [JsonProperty("statusMessage")]
         public string StatusMessage { get; set; }
+
+        [JsonProperty("lineBotID")]
+        public string LineBotID { get; set; }
+
     }
 }

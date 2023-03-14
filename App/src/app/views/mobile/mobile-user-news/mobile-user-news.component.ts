@@ -26,6 +26,7 @@ declare let $: any;
 })
 export class MobileUserNewsComponent extends BaseComponent implements OnInit{
   user = JSON.parse(localStorage.getItem('user'))
+  public initialGridLoad = true;
   isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
   data: DataManager;
   modalReference: NgbModalRef;
@@ -380,5 +381,18 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     this.model = {...args.data};
     this.getAudit(this.model.id)
   }
-
+  dataBound() {
+    if (this.initialGridLoad) {
+        this.initialGridLoad = false;
+        const pager = document.getElementsByClassName('e-gridpager');
+        let topElement;
+        if (this.grid.allowGrouping || this.grid.toolbar) {
+            topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
+                document.getElementsByClassName('e-toolbar');
+        } else {
+            topElement = document.getElementsByClassName('e-gridheader');
+        }
+        this.grid.element.insertBefore(pager[0], topElement[0]);
+    }
+}
 }

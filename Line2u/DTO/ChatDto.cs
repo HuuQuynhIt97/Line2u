@@ -25,5 +25,6 @@ namespace Line2u.DTO
         public DateTime? EndDate { get; set; }
         public string Guid { get; set; }
         public string url { get; set; }
+        public string AccountUid { get; set; }
     }
 }

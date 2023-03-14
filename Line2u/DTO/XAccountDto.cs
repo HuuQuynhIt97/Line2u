@@ -14,6 +14,8 @@ namespace Line2u.DTO
         public decimal AccountId { get; set; }
         public string ClinicId { get; set; }
         public string Uid { get; set; }
+        public string LineBotId { get; set; }
+        public string LineParentId { get; set; }
         public string Upwd { get; set; }
         public string AccountNo { get; set; }
         public string AccountName { get; set; }
@@ -65,6 +67,7 @@ namespace Line2u.DTO
         public string AccountDomicileAddress { get; set; }
         public string AccessTokenLineNotify { get; set; }
         public string StatusName { get; set; }
+        public string LineChannelAccessToken { get; set; }
         public string IsLineAccount { get; set; }
 
         public string LineID { get; set; }

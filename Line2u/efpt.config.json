@@ -15,11 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[WebBanner_User]",
+         "Name": "[dbo].[Main_Category]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[WebNews_User]",
+         "Name": "[dbo].[Products]",
          "ObjectType": 0
       }
    ],

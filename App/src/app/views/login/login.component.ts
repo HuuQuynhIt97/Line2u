@@ -49,11 +49,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
     if(isLineAccount === "1") {
-      // let mobileUrl = '/mobile/home';
-      this.alertifyService.errorBackToLogin(this.title, this.btnText, () => {
-      this.router.navigateByUrl('/home');
-      });
-      // this.router.navigate(['404']);
+      this.removeLocalStore('user')
+      this.removeLocalStore('token')
+      this.router.navigateByUrl('/login');
     }else {
       let backUrl = '/line2u/home';
       this.uri = this.route.snapshot.queryParams.uri || backUrl;
@@ -64,17 +62,16 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   loadLang() {
-    this.trans.get("Access-denied").subscribe(res => {
-      this.title = res;
-    });
-    this.trans.get("OK").subscribe(res => {
-      this.btnText = res;
-    });
+    // this.trans.get("Access-denied").subscribe(res => {
+    //   this.title = res;
+    // });
+    // this.trans.get("OK").subscribe(res => {
+    //   this.btnText = res;
+    // });
   }
   ngOnInit(): void {
     this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
-    console.log(this.sysConf)
-    this.loadLang()
+    // this.loadLang()
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
     let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
@@ -85,18 +82,20 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (this.authService.loggedIn()) {
       if(isLineAccount === "1") {
-        // let mobileUrl = '/mobile/home';
-        // this.router.navigate([mobileUrl]);
-        this.router.navigateByUrl('/home');
-        // this.alertifyService.errorBackToLogin(this.title, this.btnText, () => {
-        // });
+        this.removeLocalStore('user')
+        this.removeLocalStore('token')
+        let backUrl = '/login';
+        const uri = decodeURI(this.uri) || backUrl;
+        this.router.navigate([uri]);
       }else {
-
         let backUrl = '/line2u/home';
         const uri = decodeURI(this.uri) || backUrl;
         this.router.navigate([uri]);
       }
     }
+  }
+  removeLocalStore(key: string) {
+    localStorage.removeItem(key);
   }
   onChangeRemember(args) {
     this.remember = args.target.checked;

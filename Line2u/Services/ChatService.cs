@@ -27,6 +27,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Line2u.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Cryptography;
 
 namespace Line2u.Services
 {
@@ -97,7 +98,7 @@ namespace Line2u.Services
             _redirectUri = lineConfig.GetValue<string>("notifyRedirect_uri");
             _channelAccessTokenMessage = lineConfig.GetValue<string>("channelAccessTokenMessage");
             _chatGPTKey = lineConfig.GetValue<string>("chatGPTKey");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _channelAccessTokenMessage);
+            
             _repo = repo;
             _repoxAccount = repoxAccount;
             _logger = logger;
@@ -220,6 +221,7 @@ namespace Line2u.Services
 
         public virtual async Task PushMessageWithJsonAsync(string to, params string[] messages)
         {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _channelAccessTokenMessage);
             var request = new HttpRequestMessage(HttpMethod.Post, _pushMessage);
             var json =
             $@"{{ 
@@ -231,8 +233,9 @@ namespace Line2u.Services
             var response = await _client.SendAsync(request).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
         }
-        public virtual async Task MultiCastMessageWithJsonAsync(IList<string> to, string messages)
+        public virtual async Task MultiCastMessageWithJsonAsync(IList<string> to, string messages,string ChannelAccessToken)
         {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ChannelAccessToken);
             //_client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _channelAccessTokenMessage);
             var request = new HttpRequestMessage(HttpMethod.Post, _pushMessageMulti);
             var json =
@@ -256,8 +259,8 @@ namespace Line2u.Services
             var list_token = model.ListUserLine.Select(o => o.ToString()).ToList();
             if (list_token.Count > 0)
             {
-
-                await MultiCastMessageWithJsonAsync(list_token, model.Content);
+                //var ChannelAccessToken = _repoxAccount.FindAll(x => x.Uid == model.AccountUid && string.IsNullOrEmpty(x.LineParentId)).FirstOrDefault().LineChannelAccessToken;
+                //await MultiCastMessageWithJsonAsync(list_token, model.Content);
                 //await SendPushMessage(list_token, model.Content);
                 //await SendPushMessage(new MessageParams { Message = model.Content, Token = list_token.First() });
             }
@@ -300,6 +303,7 @@ namespace Line2u.Services
         {
             try
             {
+                var ChannelAccessToken = _repoxAccount.FindAll(x => x.Uid == model.AccountUid && string.IsNullOrEmpty(x.LineParentId)).FirstOrDefault().LineChannelAccessToken;
                 var list_token = new List<string>();
                 list_token.Add(model.Receive);
                 var item = _mapper.Map<Chat>(model);
@@ -310,7 +314,7 @@ namespace Line2u.Services
                     loadUserFrom = model.Sender,
                     loadUserTo = model.Receive,
                 };
-                await MultiCastMessageWithJsonAsync(list_token, model.Message);
+                await MultiCastMessageWithJsonAsync(list_token, model.Message, ChannelAccessToken);
                 await _hubContext.Clients.All.SendAsync("ReceiveMessage", result_message, "reload");
                 // after send
                 operationResult = new OperationResult
