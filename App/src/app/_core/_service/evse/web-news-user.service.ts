@@ -53,6 +53,9 @@ export class WebNewsUserService  extends CURDService<WebNewsUser>{
   getByGuid(guid): Observable<any> {
     return this.http.get<any>(`${this.base}WebNewsUser/GetByGuid?guid=${guid}`, {});
   }
+  getByUserID(userID): Observable<any> {
+    return this.http.get<any>(`${this.base}WebNewsUser/GetByUserID?userID=${userID}`, {});
+  }
   getWebNews(): Observable<any> {
     return this.http.get<any>(`${this.base}WebNewsUser/GetWebNews`, {});
   }

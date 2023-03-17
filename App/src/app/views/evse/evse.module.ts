@@ -42,6 +42,7 @@ import { LandlordBankActionComponent } from './landlord/landlord-bank/landlord-b
 import { LandlordDetailComponent } from './landlord/landlord-detail/landlord-detail.component';
 import { LandlordDeviceComponent } from './landlord/landlord-device/landlord-device.component';
 import { LandlordDeviceActionComponent } from './landlord/landlord-device/landlord-device-action/landlord-device-action.component';
+import { Common2Module } from 'src/app/_core/commons/common2.module';
 interface Environment {
   production: boolean;
   apiUrl: string;

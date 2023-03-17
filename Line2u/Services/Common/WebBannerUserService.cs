@@ -23,9 +23,10 @@ namespace Line2u.Services
 {
     public interface IWebBannerUserService : IServiceBase<WebBannerUser, WebBannerUserDto>
     {
-        Task<object> LoadData(DataManager data, string lang);
+        Task<object> LoadData(DataManager data, string lang,int userID);
         Task<object> GetWebBanners();
         Task<object> GetByGuid(string guid);
+        Task<object> GetByUserID(int userID);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(WebBannerUserDto model);
@@ -72,9 +73,14 @@ ISPService spService)
             return await _repo.FindAll(x => x.Guid == guid)
               .FirstOrDefaultAsync();
         }
-        public async Task<object> LoadData(DataManager data, string lang)
+        public async Task<object> GetByUserID(int userID)
         {
-            var datasource = (from a in _repo.FindAll()
+            return await _repo.FindAll(x => x.CreateBy == userID)
+              .ToListAsync();
+        }
+        public async Task<object> LoadData(DataManager data, string lang, int userID)
+        {
+            var datasource = (from a in _repo.FindAll(x => x.CreateBy == userID)
                               join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.WebBanner_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
 
@@ -383,5 +389,7 @@ ISPService spService)
         {
            return await _spService.GetWebBanners();
         }
+
+        
     }
 }

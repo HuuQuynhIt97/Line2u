@@ -26,6 +26,8 @@ namespace Line2u.Services
         Task<object> LoadReportChartConfigMenuData(DataManager dm, string reportType);
         Task<object> GetMenus(string lang);
         Task<object> GetMenusByMenuType(string lang, string menuType);
+        Task<object> GetMenuTopMobile(string lang, string menuType);
+        Task<object> GetMenuBottomMobile(string lang, string menuType);
         Task<object> GetMenusByFarm(string farmGuid, string lang);
         Task<object> GetParents(string lang);
         Task<object> GetToolbarParents(string lang);
@@ -163,6 +165,168 @@ ILine2uLoggerService logger
           
 
             var query = await (from x in _repo.FindAll(x => x.Status == 1 && menuType == x.MenuType)
+                               select new
+                               {
+                                   UpperId = x.UpperId == 0 ? null : x.UpperId,
+                                   FunctionCode = x.Type,
+                                   MenuType = x.MenuType,
+                                   x.Id,
+                                   Url = x.MenuLink,
+                                   SortId = x.SortId ?? 0,
+                                   Icon = x.MenuIcon,
+                                   x.FarmGgp,
+                                   x.FarmGp,
+                                   x.FarmPmpf,
+                                   x.FarmGrower,
+                                   x.FarmNursery,
+                                   x.FarmSemen,
+                                   Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
+
+                               }).ToListAsync();
+            var queryTemp = query.Select(x => new
+            {
+
+                UpperId = x.UpperId,
+                FunctionCode = x.FunctionCode,
+                Id = x.Id,
+                Url = x.Url,
+                SortId = x.SortId,
+                Icon = x.Icon,
+                Name = x.Name,
+                Ggp = x.FarmGgp,
+                Gp = x.FarmGp,
+                Pmpf = x.FarmPmpf,
+                Semen = x.FarmSemen,
+                Nursery = x.FarmNursery,
+                Grower = x.FarmGrower,
+            });
+
+            return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
+            {
+                x.Entity.Url,
+                x.Entity.Icon,
+                x.Entity.Name,
+                x.Entity.FunctionCode,
+                x.Entity.SortId,
+                x.HasChildren,
+                Level = x.Depth,
+                Children = x.ChildNodes.Select(a => new
+                {
+                    a.Entity.Url,
+                    a.Entity.Icon,
+                    a.Entity.Name,
+                    a.Entity.FunctionCode,
+                    a.HasChildren,
+                    a.Entity.SortId,
+                    Level = a.Depth,
+                    Children = a.ChildNodes.Select(b => new
+                    {
+                        b.Entity.Url,
+                        b.Entity.Icon,
+                        b.Entity.Name,
+                        b.Entity.FunctionCode,
+                        HasChildren = false,
+                        b.Entity.SortId,
+                        Level = b.Depth,
+                        Children = new List<dynamic>()
+                    }).OrderBy(b => b.SortId)
+                }).OrderBy(a => a.SortId)
+            }).OrderBy(x => x.SortId);
+        }
+
+        public async Task<object> GetMenuTopMobile(string lang = "tw", string menuType = "MOBILE")
+        {
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+            if (menuType == "BE")
+            {
+                var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
+                if (account == null) return new List<dynamic> { };
+            }
+
+
+            var query = await (from x in _repo.FindAll(x => x.Status == 1 && menuType == x.MenuType && x.Type == "TOP")
+                               select new
+                               {
+                                   UpperId = x.UpperId == 0 ? null : x.UpperId,
+                                   FunctionCode = x.Type,
+                                   MenuType = x.MenuType,
+                                   x.Id,
+                                   Url = x.MenuLink,
+                                   SortId = x.SortId ?? 0,
+                                   Icon = x.MenuIcon,
+                                   x.FarmGgp,
+                                   x.FarmGp,
+                                   x.FarmPmpf,
+                                   x.FarmGrower,
+                                   x.FarmNursery,
+                                   x.FarmSemen,
+                                   Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
+
+                               }).ToListAsync();
+            var queryTemp = query.Select(x => new
+            {
+
+                UpperId = x.UpperId,
+                FunctionCode = x.FunctionCode,
+                Id = x.Id,
+                Url = x.Url,
+                SortId = x.SortId,
+                Icon = x.Icon,
+                Name = x.Name,
+                Ggp = x.FarmGgp,
+                Gp = x.FarmGp,
+                Pmpf = x.FarmPmpf,
+                Semen = x.FarmSemen,
+                Nursery = x.FarmNursery,
+                Grower = x.FarmGrower,
+            });
+
+            return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
+            {
+                x.Entity.Url,
+                x.Entity.Icon,
+                x.Entity.Name,
+                x.Entity.FunctionCode,
+                x.Entity.SortId,
+                x.HasChildren,
+                Level = x.Depth,
+                Children = x.ChildNodes.Select(a => new
+                {
+                    a.Entity.Url,
+                    a.Entity.Icon,
+                    a.Entity.Name,
+                    a.Entity.FunctionCode,
+                    a.HasChildren,
+                    a.Entity.SortId,
+                    Level = a.Depth,
+                    Children = a.ChildNodes.Select(b => new
+                    {
+                        b.Entity.Url,
+                        b.Entity.Icon,
+                        b.Entity.Name,
+                        b.Entity.FunctionCode,
+                        HasChildren = false,
+                        b.Entity.SortId,
+                        Level = b.Depth,
+                        Children = new List<dynamic>()
+                    }).OrderBy(b => b.SortId)
+                }).OrderBy(a => a.SortId)
+            }).OrderBy(x => x.SortId);
+        }
+
+        public async Task<object> GetMenuBottomMobile(string lang = "tw", string menuType = "MOBILE")
+        {
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+            if (menuType == "BE")
+            {
+                var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
+                if (account == null) return new List<dynamic> { };
+            }
+
+
+            var query = await (from x in _repo.FindAll(x => x.Status == 1 && menuType == x.MenuType && x.Type == "BOTTOM")
                                select new
                                {
                                    UpperId = x.UpperId == 0 ? null : x.UpperId,

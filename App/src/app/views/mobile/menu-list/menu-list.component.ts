@@ -116,7 +116,7 @@ public initialGridLoad = true;
     }
 }
   loadDataCategory() {
-    this.serviceMainCategory.getAll().subscribe(res => {
+    this.serviceMainCategory.getCategoryByUserID(this.user.uid).subscribe(res => {
       this.categoryData = res
       this.categoryData.unshift({
         id: 0,
@@ -332,6 +332,7 @@ public initialGridLoad = true;
     }
   }
   openModal(template, data = {} as Products) {
+    console.log(data)
     if (data?.id > 0) {
       this.model = {...data};
       this.getAudit(this.model.id);

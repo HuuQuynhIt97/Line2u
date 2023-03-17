@@ -1,201 +1,184 @@
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
-  <div class="container-fluid">
-      <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff">
-        <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div id="navbarNavDropdown" class="navbar-collapse collapse">
-          <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
-          <ul class="navbar-nav">
-            <ng-container *ngFor="let item of menus">
-              <li class="nav-item dropdown" *ngIf="item.hasChildren">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
-                <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <ng-container *ngFor="let subItem of item.children">
-                    <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
-                  </ng-container>
-                   
-                  </div>
-            </li>
-            <li class="nav-item" *ngIf="!item.hasChildren">
-              <a class="nav-link"  (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
-             </li>
-            </ng-container>
-            
-            <div class="lang-select">
-              <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
-                <ng-template #itemTemplate="" let-data="">
-                  <div class="text-black">{{data.id | translate}}</div>
-              </ng-template>
-              <ng-template #valueTemplate="" let-data="">
-                <div class="text-black">{{data.id | translate}}</div>
-            </ng-template>
-              </ejs-dropdownlist>
-          </div>
-           
-              <li class="nav-item">
-                  <a class="nav-link" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-              </li>
-          </ul>
-       
 
-      </div>
-  </div>
-</nav> -->
 <ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
 <div id="app">
   <div class="wrapper">
-      <header class="main-header">
-          <div class="container-header">
-              <div class="container">
-                  <div class="header-content navbar row  justify-content-between align-items-center">
-                      <div class="logo-now col-auto">
-                        <span>
-                          <a href="#"  style="padding: 8px 5px 5px 5px; ">
-                            <img [src]="baseUrl + logo" alt="Line2U" width="160px" height="60px" />
-                          </a>
-                        </span>
-                      </div>
-                      <div class="main-nav col" >
-                        <ng-container *ngFor="let item of menus">
-                          <a style="font-size: 17px; font-weight: 500;" (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" class="nav-item" >{{ item.name }}</a>
-                        </ng-container>
-                      </div>
-                      <div class="select-local col-auto">
-                          <ejs-dropdownlist   
-                          [(ngModel)]="lang" (change)="langValueChange($event)" 
-                          [fields]="fieldsLang" 
-                          [dataSource]="languageData"
-                          popupWidth="100px"
-                          >
-                            <ng-template #itemTemplate="" let-data="">
-                              <div class="text-black">{{data?.id | translate}}</div>
-                            </ng-template>
-                            <ng-template #valueTemplate="" let-data="">
-                              <div class="text-black">{{data?.id | translate}}</div>
-                            </ng-template>
-                        </ejs-dropdownlist>
-                      </div>
-                    
-                      <div class="user-acc col-auto">
-                        <a style="color: white; cursor: pointer;" class="nav-link" (click)="login()" >
-                          <i class="fas fa-user mr-2"></i>
-                          {{'Login' | translate}}</a>
-                      </div>
-                      <div class="user-acc col-auto">
-                        <a style="color: white;cursor: pointer;" class="nav-link" (click)="openCart(optionModal)">
-                          <i class="fas fa-shopping-cart mr-2"></i>
-                          <span class="mt-2" *ngIf="count > 0"> {{count}}</span>
+    <header class="main-header">
+        <div class="container-header">
+            <div class="container">
+                <div class="header-content navbar row  justify-content-between align-items-center">
+                    <div class="logo-now col-auto">
+                      <span>
+                        <a href="#"  style="padding: 8px 5px 5px 5px; ">
+                          <img [src]="baseUrl + logo" alt="Line2U" width="160px" height="60px" />
                         </a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          
-      </header>
-      <div class="now-detail-restaurant clearfix">
-          <div class="container">
-              <div class="detail-restaurant-img">
-                <img [src]="baseUrl + storeInfo.photoPath" 
-                 [alt]="storeInfo.storeName" class="">
-              </div>
-              <div class="detail-restaurant-info">
-                  <nav aria-label="breadcrumb">
-                      <ol class="breadcrumb">
-                          <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="#">{{'Home_Store' | translate}}</a></li>
-                          <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="#">{{storeInfo.storeName}}</a></li>
-                      </ol>
-                  </nav>
-                  <div class="kind-restaurant"><span> {{'Shop Online' | translate}}</span></div>
-                  <h1 class="name-restaurant">{{storeInfo.storeName}}</h1>
-                  <div class="address-restaurant">{{storeInfo.storeAddress}}</div>
-                  <!-- <div class="rating">
-                      <div class="stars"><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="half"><i class="fas fa-star-half-alt"></i></span></div>
-                      <span class="number-rating">100+</span>đánh giá trên ShopeeFood
-                  </div> -->
-                  <!-- <div class="view-more-rating">
-                    <a href="https://foody.vn/ho-chi-minh/bun-bo-dat-thanh-shop-online" rel="noopener noreferrer nofollow" target="_blank" class="number-review">Xem thêm lượt đánh giá từ Foody</a>
-                  </div> -->
-                  <div class="status-restaurant">
-                      <div class="opentime-status"><span class="stt online" title="{{'OPEN_TIME' | translate}}"></span></div>
-                      <div class="time"><i class="far fa-clock"></i>
-                        {{storeInfo.storeOpenTime}} - {{storeInfo.storeCloseTime !== null ? storeInfo.storeCloseTime : '23:59'}}
-                      </div>
-                  </div>
-                  <div class="cost-restaurant"><i class="fas fa-dollar-sign"></i>
-                    {{storeInfo.storeLowPrice}} - {{storeInfo.storeHightPrice}}
-                  </div>
-                  <div class="share-social clearfix">
-                    <div class="share-social-box">
-                      <div class="fb-like" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="true" data-colorscheme="light" data-kid-directed-site="false"></div>
+                      </span>
                     </div>
-                  </div>
-                  <!-- <div class="utility-restaurant clearfix">
-                      <div class="utility-item">
-                          <div class="utility-title">Phí dịch vụ</div>
-                          <div class="utility-content"><span class="txt-bold txt-red"> 0.0% Phí phục vụ </span></div>
-                          <span class="icon icon-partner-vi" data-toggle="modal" data-target="#modal-verify-merchant"></span>
-                      </div>
-                      <div class="utility-item">
-                          <div class="utility-title">Dịch vụ bởi</div>
-                          <div class="utility-content"><span class="txt-bold txt-red">ShopeeFood</span></div>
-                      </div>
-                  </div> -->
-              </div>
+                    <div class="main-nav col" >
+                      <ng-container *ngFor="let item of menus">
+                        <a style="font-size: 17px; font-weight: 500;" (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" class="nav-item" >{{ item.name }}</a>
+                      </ng-container>
+                    </div>
+                    <div class="select-local col-auto">
+                        <ejs-dropdownlist   
+                        [(ngModel)]="lang" (change)="langValueChange($event)" 
+                        [fields]="fieldsLang" 
+                        [dataSource]="languageData"
+                        popupWidth="100px"
+                        >
+                          <ng-template #itemTemplate="" let-data="">
+                            <div class="text-black">{{data?.id | translate}}</div>
+                          </ng-template>
+                          <ng-template #valueTemplate="" let-data="">
+                            <div class="text-black">{{data?.id | translate}}</div>
+                          </ng-template>
+                      </ejs-dropdownlist>
+                    </div>
+                  
+                    <div class="user-acc col-auto" >
+                      <a style="color: white; cursor: pointer;" (click)="loginUser()"  class="nav-link"  >
+                        <i class="fas fa-user mr-2"></i>
+                        {{'Login' | translate}}</a>
+                    </div>
+                    <div class="user-acc col-auto">
+                      <a style="color: white;cursor: pointer;" class="nav-link"  (click)="openCart(optionModal)">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        <span class="mt-2" *ngIf="count > 0"> {{count}}</span>
+                      </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </header>
+    <!-- start banner_user -->
+    <ngb-carousel >
+      <ng-container *ngFor="let item of banners; let i=index">
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img [src]="imagePath(item.photoPath)" [alt]="item.subject">
           </div>
-      </div>
+          <!-- <div class="carousel-caption">
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </div> -->
+        </ng-template>
+     
+      </ng-container>
+      
+    </ngb-carousel>
     
-      <div class="container relative clearfix">
-          <div class="now-menu-restaurant">
-              <div class="menu-restaurant-tab">
-                  <div class="item active">{{'CATEGORY_ORDER' | translate}}</div>
-              </div>
-              <div class="menu-restaurant-content-tab">
-                  <div class="menu-restaurant-container">
-                      <div class="menu-restaurant-category">
-                          <div class="list-category" id="scroll-spy">
-                              <div class="scrollbar-container ps">
+  <!-- end banner_user -->
+  <div class="row my-4">
+    <div class="col-12">
+      
+    </div>
+  </div>
+    <div class="now-detail-restaurant clearfix">
+        <div class="container">
+            <div class="detail-restaurant-img">
+              <img [src]="baseUrl + storeInfo.photoPath" 
+                [alt]="storeInfo.storeName" class="">
+            </div>
+            <div class="detail-restaurant-info">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="#">{{'Home_Store' | translate}}</a></li>
+                        <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="#">{{storeInfo.storeName}}</a></li>
+                    </ol>
+                </nav>
+                <div class="kind-restaurant"><span> {{'Shop Online' | translate}}</span></div>
+                <h1 class="name-restaurant">{{storeInfo.storeName}}</h1>
+                <div class="address-restaurant">{{storeInfo.storeAddress}}</div>
+                <!-- <div class="rating">
+                    <div class="stars"><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="half"><i class="fas fa-star-half-alt"></i></span></div>
+                    <span class="number-rating">100+</span>đánh giá trên ShopeeFood
+                </div> -->
+                <!-- <div class="view-more-rating">
+                  <a href="https://foody.vn/ho-chi-minh/bun-bo-dat-thanh-shop-online" rel="noopener noreferrer nofollow" target="_blank" class="number-review">Xem thêm lượt đánh giá từ Foody</a>
+                </div> -->
+                <div class="status-restaurant">
+                    <div class="opentime-status"><span class="stt online" title="{{'OPEN_TIME' | translate}}"></span></div>
+                    <div class="time"><i class="far fa-clock"></i>
+                      {{storeInfo.storeOpenTime}} - {{storeInfo.storeCloseTime !== null ? storeInfo.storeCloseTime : '23:59'}}
+                    </div>
+                </div>
+                <div class="cost-restaurant"><i class="fas fa-dollar-sign"></i>
+                  {{storeInfo.storeLowPrice}} - {{storeInfo.storeHightPrice}}
+                </div>
+                <div class="share-social clearfix">
+                  <div class="share-social-box">
+                    <div class="fb-like" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="true" data-colorscheme="light" data-kid-directed-site="false"></div>
+                  </div>
+                </div>
+                <!-- <div class="utility-restaurant clearfix">
+                    <div class="utility-item">
+                        <div class="utility-title">Phí dịch vụ</div>
+                        <div class="utility-content"><span class="txt-bold txt-red"> 0.0% Phí phục vụ </span></div>
+                        <span class="icon icon-partner-vi" data-toggle="modal" data-target="#modal-verify-merchant"></span>
+                    </div>
+                    <div class="utility-item">
+                        <div class="utility-title">Dịch vụ bởi</div>
+                        <div class="utility-content"><span class="txt-bold txt-red">ShopeeFood</span></div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+  
+    <div class="container relative clearfix">
+        <div class="now-menu-restaurant">
+            <div class="menu-restaurant-tab">
+                <div class="item active">{{'CATEGORY_ORDER' | translate}}</div>
+            </div>
+            <div class="menu-restaurant-content-tab">
+                <div class="menu-restaurant-container">
+                    <div class="menu-restaurant-category">
+                        <div class="list-category" id="scroll-spy">
+                            <div class="scrollbar-container ps">
+                              <ng-container *ngIf="mainCategory?.length > 0; else elseTemplate">
+                              <div class="item" *ngFor="let _category of mainCategory">
+                                <span (click)="loadProduct(_category)" [title]="_category?.categoryName" class="item-link ">
+                                  {{_category?.categoryName || null}}
+                                </span>
+                              </div>
+                              </ng-container>
+                              <ng-template #elseTemplate>
+                              <p>{{'CATEGORY_EMPTY' | translate}}</p>
+                              </ng-template>
                               
-                                <div class="item" *ngFor="let _category of mainCategory">
-                                  <span (click)="loadProduct(_category)" [title]="_category?.categoryName" class="item-link ">
-                                    {{_category?.categoryName || null}}
-                                  </span>
+                                <!-- <div class="item"><span id="-1" title="Món Đang Giảm" class="item-link active">Món Đang Giảm</span></div> -->
+                                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                                 </div>
-                                
-                                  <!-- <div class="item"><span id="-1" title="Món Đang Giảm" class="item-link active">Món Đang Giảm</span></div> -->
-                                  <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                      <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                  </div>
-                                  <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                      <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="menu-restaurant-detail">
-                          <div class="promotions-order">
-                              <div id="promotion-item" class="promotion-item">
-                                  <div>
-                                      <img src="https://images.foody.vn/icon/discount/s/shopeefood_voucher_14.png" alt="Thanh toán thẻ tín dụng Home Credit: Giảm 40K, đơn tối thiểu 100K vào tất cả các ngày trong tuần. Áp dụng cho lần đầu thanh toán bằng thẻ Home Credit trên ShopeeFood" class="icon-promotion">
-                                      <div class="content">{{'CONTENT_1' | translate}}</div>
-                                  </div>
-                                  <button class="code-copy" id="promotion-item-copy"><span class="promo_HOMECRE40K">{{'COPY_CODE' | translate}}</span><span class="fa fa-copy"></span></button>
-                              </div>
-                              <div class="promotion-item">
-                                  <img src="https://images.foody.vn/icon/discount/s/shopeefood_voucher_14.png" alt="Giảm giá một số món ăn trên menu" class="icon-promotion">
-                                  <div class="content">{{'CONTENT_2' | translate}}</div>
-                              </div>
-                          </div>
-                          <div class="menu-restaurant-list">
-                              <div class="search-items">
-                                  <p class="input-group"><i class="fas fa-search"></i><input type="search" name="searchKey" placeholder="{{'SEARCH_ITEM' | translate}}" value=""></p>
-                              </div>
-                              <div id="restaurant-item">
-                                  <div aria-label="grid" aria-readonly="true" class="ReactVirtualized__Grid ReactVirtualized__List" role="grid" tabindex="0" style="box-sizing: border-box; direction: ltr; height: auto; position: relative; width: 558px; will-change: transform; overflow: auto; outline: none;">
+                                <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-restaurant-detail">
+                        <div class="promotions-order">
+                            <div id="promotion-item" class="promotion-item">
+                                <div>
+                                    <img src="https://images.foody.vn/icon/discount/s/shopeefood_voucher_14.png" alt="Thanh toán thẻ tín dụng Home Credit: Giảm 40K, đơn tối thiểu 100K vào tất cả các ngày trong tuần. Áp dụng cho lần đầu thanh toán bằng thẻ Home Credit trên ShopeeFood" class="icon-promotion">
+                                    <div class="content">{{'CONTENT_1' | translate}}</div>
+                                </div>
+                                <button class="code-copy" id="promotion-item-copy"><span class="promo_HOMECRE40K">{{'COPY_CODE' | translate}}</span><span class="fa fa-copy"></span></button>
+                            </div>
+                            <div class="promotion-item">
+                                <img src="https://images.foody.vn/icon/discount/s/shopeefood_voucher_14.png" alt="Giảm giá một số món ăn trên menu" class="icon-promotion">
+                                <div class="content">{{'CONTENT_2' | translate}}</div>
+                            </div>
+                        </div>
+                        <div class="menu-restaurant-list">
+                            <div class="search-items">
+                                <p class="input-group"><i class="fas fa-search"></i><input type="search" name="searchKey" placeholder="{{'SEARCH_ITEM' | translate}}" value=""></p>
+                            </div>
+                            <div id="restaurant-item">
+                                <div aria-label="grid" aria-readonly="true" class="ReactVirtualized__Grid ReactVirtualized__List" role="grid" tabindex="0" style="box-sizing: border-box; direction: ltr; height: auto; position: relative; width: 558px; will-change: transform; overflow: auto; outline: none;">
+                                  <ng-container *ngIf="products?.length > 0; else elseTemplate2">
                                     <ng-container *ngFor="let _products of products">
                                       <div class="ReactVirtualized__Grid__innerScrollContainer" 
                                       role="rowgroup" *ngIf="_products?.list_product.length > 0"
@@ -229,105 +212,109 @@
                                                 </div>
                                             </div>
                                           </ng-container>
-                                          
                                       </div>
                                     </ng-container>
-                                    
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal fade modal-topping" id="modal-topping" tabindex="-1" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <div class="row align-items-center">
-                                  <div class="col-auto topping-dish-image"><img src=""></div>
-                                  <div class="col topping-summary">
-                                      <div class="topping-dish-name"></div>
-                                      <div class="topping-dish-price">Giá: </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="modal-body">
-                              <div class="topping-category"></div>
-                          </div>
-                          <div class="modal-footer">
-                              <div class="row align-items-center">
-                                  <div class="col">
-                                      <div class="topping-add-sub">
-                                          <div class="btn-sub">-</div>
-                                          <input type="text" disabled="" value="1">
-                                          <div class="btn-adding">+</div>
-                                      </div>
-                                  </div>
-                                  <div class="col-auto"><button type="button" class="btn btn-over"><span>Hết hàng</span></button></div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal fade modal-alert" id="modal-delivery-alert-MenuAlertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-                  <div class="modal-dialog modal-noti" role="document">
-                      <div class="modal-content">
-                          <span class="close" data-dismiss="modal">x</span>
-                          <div class="modal-header txt-bold font13"><span class="txt-red">ShopeeFood</span> Thông báo</div>
-                          <div class="modal-body">
-                              <div class="col col-12">
-                                  <p class="font15"><span></span></p>
-                              </div>
-                          </div>
-                          <div class="modal-footer content-right"><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button></div>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal fade modal-box-image" id="modal-box-image" tabindex="-1" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                      <div class="res-menu-carousel"></div>
-                  </div>
-              </div>
-              <div class="modal fade modal-alert" id="modal-delivery-confirm-MenuConfirmModal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="true">
-                  <div class="modal-dialog modal-lg" role="document">
-                      <div class="modal-content">
-                          <span class="close" data-dismiss="modal">x</span>
-                          <div class="modal-header txt-bold font13"><span class="txt-red">service_by_shopeefood</span> Thông báo</div>
-                          <div class="modal-body">
-                              <p class="font15 max-width-750"></p>
-                          </div>
-                          <div class="modal-footer content-right"><button type="button" class="btn btn-gray" data-dismiss="modal">Hủy</button><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="QRcode" id="QRcode">
-              <canvas height="283" width="283" style="height: 200px; width: 200px;"></canvas>
-          </div>
-      </div>
-      <div class="modal fade modal-alert" id="modal-payment-success" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-noti" role="document">
-              <div class="modal-content">
-                  <span class="close" data-dismiss="modal">x</span>
-                  <div class="modal-header txt-bold font13"><span class="txt-red">Now</span> Thông báo</div>
-                  <div class="modal-body">
-                      <div class="col col-12">
-                          <p class="font15"></p>
-                      </div>
-                  </div>
-                  <div class="modal-footer content-right">
-                      <div class="col"><sup class="txt-red txt-bold">* </sup>Xin vui lòng kiểm tra đơn hàng của bạn trước khi nhận.</div>
-                      <a href="/lich-su-dat-mon" class="btn btn-none-bg">Xem lịch sử đặt món</a><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div id="topcontrol" class="topcontrol">
-          <div class="fd-back-top">
-              <div class="control-link" id="btn-back-top"><i class="fas fa-angle-up"></i><label>Quay lại đầu trang</label></div>
-              <a class="control-link" href="/tuyen-dung" target="_blank"><i class="icon icon-parnership"></i><label>Đăng ký trở thành tài xế của ShopeeFood.vn ngay!</label></a><a class="control-link" href="https://itunes.apple.com/us/app/deliverynow/id1137866760" target="_blank" rel="noopener noreferrer"><i class="fab fa-apple"></i><label>Tải ứng dụng iOs</label></a><a class="control-link" href="https://play.google.com/store/apps/details?id=com.deliverynow" target="_blank" rel="noopener noreferrer"><i class="fab fa-android"></i><label>Tải ứng dụng android</label></a>
-          </div>
-      </div>
+                                  </ng-container>
+                                  <ng-template #elseTemplate2>
+                                    <p>{{'PRODUCT_EMPTY'| translate}}</p>
+                                  </ng-template>
+                                  
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade modal-topping" id="modal-topping" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row align-items-center">
+                                <div class="col-auto topping-dish-image"><img src=""></div>
+                                <div class="col topping-summary">
+                                    <div class="topping-dish-name"></div>
+                                    <div class="topping-dish-price">Giá: </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="topping-category"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div class="topping-add-sub">
+                                        <div class="btn-sub">-</div>
+                                        <input type="text" disabled="" value="1">
+                                        <div class="btn-adding">+</div>
+                                    </div>
+                                </div>
+                                <div class="col-auto"><button type="button" class="btn btn-over"><span>Hết hàng</span></button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade modal-alert" id="modal-delivery-alert-MenuAlertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-noti" role="document">
+                    <div class="modal-content">
+                        <span class="close" data-dismiss="modal">x</span>
+                        <div class="modal-header txt-bold font13"><span class="txt-red">ShopeeFood</span> Thông báo</div>
+                        <div class="modal-body">
+                            <div class="col col-12">
+                                <p class="font15"><span></span></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer content-right"><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade modal-box-image" id="modal-box-image" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="res-menu-carousel"></div>
+                </div>
+            </div>
+            <div class="modal fade modal-alert" id="modal-delivery-confirm-MenuConfirmModal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <span class="close" data-dismiss="modal">x</span>
+                        <div class="modal-header txt-bold font13"><span class="txt-red">service_by_shopeefood</span> Thông báo</div>
+                        <div class="modal-body">
+                            <p class="font15 max-width-750"></p>
+                        </div>
+                        <div class="modal-footer content-right"><button type="button" class="btn btn-gray" data-dismiss="modal">Hủy</button><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="QRcode" id="QRcode">
+            <canvas height="283" width="283" style="height: 200px; width: 200px;"></canvas>
+        </div>
+    </div>
+    <div class="modal fade modal-alert" id="modal-payment-success" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-noti" role="document">
+            <div class="modal-content">
+                <span class="close" data-dismiss="modal">x</span>
+                <div class="modal-header txt-bold font13"><span class="txt-red">Now</span> Thông báo</div>
+                <div class="modal-body">
+                    <div class="col col-12">
+                        <p class="font15"></p>
+                    </div>
+                </div>
+                <div class="modal-footer content-right">
+                    <div class="col"><sup class="txt-red txt-bold">* </sup>Xin vui lòng kiểm tra đơn hàng của bạn trước khi nhận.</div>
+                    <a href="/lich-su-dat-mon" class="btn btn-none-bg">Xem lịch sử đặt món</a><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="topcontrol" class="topcontrol">
+        <div class="fd-back-top">
+            <div class="control-link" id="btn-back-top"><i class="fas fa-angle-up"></i><label>Quay lại đầu trang</label></div>
+            <a class="control-link" href="/tuyen-dung" target="_blank"><i class="icon icon-parnership"></i><label>Đăng ký trở thành tài xế của ShopeeFood.vn ngay!</label></a><a class="control-link" href="https://itunes.apple.com/us/app/deliverynow/id1137866760" target="_blank" rel="noopener noreferrer"><i class="fab fa-apple"></i><label>Tải ứng dụng iOs</label></a><a class="control-link" href="https://play.google.com/store/apps/details?id=com.deliverynow" target="_blank" rel="noopener noreferrer"><i class="fab fa-android"></i><label>Tải ứng dụng android</label></a>
+        </div>
+    </div>
   </div>
   <footer class="main-footer" style="height: auto; background-color: #233b2e">
       <div class="container">
@@ -379,7 +366,31 @@
       </div>
       <div id="footer-bottom"></div>
   </footer>
-</div>
+  <div class="row my-4">
+    <div class="col-12">
+      
+    </div>
+  </div>
+    <ngb-carousel *ngIf="news?.length > 0">
+      <ng-template ngbSlide>
+        <div class="row">
+          <div style="cursor: pointer;" (click)="detailNew(item)" class="item card col-md-3" *ngFor="let item of news">
+            <img [src]="imagePath(item.photoPath)" class="card-img-top" [alt]="item.subject">
+            <div class="card-body">
+              <h5 class="card-title">{{item.subject}}</h5>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <a style="cursor: pointer;" (click)="detailNew(item)"   class="btn btn-primary">{{'Read' | translate}}</a>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+    <div class="row my-4">
+      <div class="col-12">
+        
+      </div>
+    </div>
+  </div>
 <ng-template #optionModal let-modal>
   <div class="modal-header my-modal">
     <h4 [ngbTooltip]="title" class="modal-title">

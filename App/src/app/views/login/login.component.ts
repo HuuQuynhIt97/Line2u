@@ -52,9 +52,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       this.removeLocalStore('user')
       this.removeLocalStore('token')
       this.router.navigateByUrl('/login');
+      let backUrl = '/line2u/home';
+      this.uri = backUrl
     }else {
       let backUrl = '/line2u/home';
-      this.uri = this.route.snapshot.queryParams.uri || backUrl;
+      this.uri = this.route.snapshot.queryParams.uri !== undefined ? this.route.snapshot.queryParams.uri : backUrl  || backUrl;
     }
   }
   role: number;

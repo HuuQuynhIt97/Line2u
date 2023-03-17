@@ -21,6 +21,7 @@ import { SystemConfigComponent } from './system/system-config/system-config.comp
 import { environment } from '../../../environments/environment'
 import { PigfarmCoreModule } from 'herr-core';
 import { ProfileComponent } from './profile/profile.component';
+import { Common2Module } from 'src/app/_core/commons/common2.module';
 interface Environment {
   production: boolean;
   apiUrl: string;

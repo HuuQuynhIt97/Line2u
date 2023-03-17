@@ -182,9 +182,18 @@
             />
           </div>
         </div>
-  
-  
         <div class="col-md-6">
+          <div class="form-group">
+            <label for="allfarm">{{
+              "PRODUCT_STATUS" | translate
+            }}</label>
+            &nbsp;
+            <app-my-checkbox [(checked)]="model.status"></app-my-checkbox>
+            <!-- <ejs-checkbox [(ngModel)]="model.status"></ejs-checkbox> -->
+          </div>
+        </div>
+  
+        <!-- <div class="col-md-6">
           <div class="form-group">
             <label for="status">{{ "PRODUCT_STATUS" | translate }}</label>
             <input
@@ -193,7 +202,7 @@
               class="form-control"
             />
           </div>
-        </div>
+        </div> -->
   
         <div class="col-12 mb-2">
           <label for="body">{{ "PRODUCT_DESCRIPTION" | translate }}</label>

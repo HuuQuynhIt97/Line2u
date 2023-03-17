@@ -1,9 +1,13 @@
 <footer class="footer navbar-fixed-bottom">
   <div class="row no-gutters social-container">
-    <div class="col"><a class="social-inner" routerLink="/mobile/home"><span class="icon mdi mdi-facebook"></span><span>{{'HOME'| translate}}</span></a></div>
-    <div class="col"><a class="social-inner" routerLink="/mobile/user-contact"><span class="icon mdi mdi-instagram"></span><span>{{'CONTACT'| translate}}</span></a></div>
-    <div class="col"><a class="social-inner" routerLink="/mobile/send-message"><span class="icon mdi mdi-twitter"></span><span>{{'MESSAGE'| translate}}</span></a></div>
-    <div class="col"><a class="social-inner" routerLink="/mobile/user-help"><span class="icon mdi mdi-youtube-play"></span><span>{{'HELP'| translate}}</span></a></div>
-    <div class="col"><a class="social-inner" routerLink="/mobile/user-profile"><span class="icon mdi mdi-youtube-play"></span><span>{{'PROFILE'| translate}}</span></a></div>
+    <ng-container *ngFor="let item of menus; let i=index">
+      <div class="col">
+        <a class="social-inner" [routerLink]="item.url">
+          <span class="icon mdi mdi-facebook"></span>
+          <span>{{item.name}}</span>
+        </a>
+      </div>
+    </ng-container>
+    
   </div>
 </footer>

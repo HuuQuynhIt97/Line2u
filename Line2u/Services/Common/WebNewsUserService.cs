@@ -23,14 +23,14 @@ namespace Line2u.Services
 {
     public interface IWebNewsUserService : IServiceBase<WebNewsUser, WebNewsUserDto>
     {
-        Task<object> LoadData(DataManager data, string lang);
+        Task<object> LoadData(DataManager data, string lang, int userID);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(WebNewsUserDto model);
         Task<OperationResult> UpdateFormAsync(WebNewsUserDto model);
-
-           Task<object> GetWebNews();
+        Task<object> GetByUserID(int userID);
+        Task<object> GetWebNews();
         Task<object> GetWebPages();
         
     }
@@ -75,9 +75,9 @@ ISPService spService)
             return await _repo.FindAll(x => x.Guid == guid)
               .FirstOrDefaultAsync();
         }
-        public async Task<object> LoadData(DataManager data, string lang)
+        public async Task<object> LoadData(DataManager data, string lang, int userID)
         {
-            var datasource = (from a in _repo.FindAll()
+            var datasource = (from a in _repo.FindAll(x => x.CreateBy == userID)
                               join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.WebNews_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
 
@@ -419,6 +419,12 @@ ISPService spService)
         public async Task<object> GetWebPages()
         {
            return await _spService.GetWebPages();
+        }
+
+        public async Task<object> GetByUserID(int userID)
+        {
+            return await _repo.FindAll(x => x.CreateBy == userID)
+             .ToListAsync();
         }
     }
 }

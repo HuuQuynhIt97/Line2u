@@ -224,6 +224,7 @@ namespace Line2u.Controllers
             return Ok(await _chatService.GetAllMessage(officialID, userLineID));
             // after create account -> login
         }
+
         [HttpPost]
         public async Task<IActionResult> AddMessage([FromBody]ChatDto chat)
         {
@@ -242,6 +243,7 @@ namespace Line2u.Controllers
             };
             return result_content;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetBotInfo(decimal uid)
         {

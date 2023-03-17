@@ -22,6 +22,16 @@ namespace Line2u.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetMenuTopMobile(string lang, string menuType)
+        {
+            return Ok(await _service.GetMenuTopMobile(lang, menuType));
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetMenuBottomMobile(string lang, string menuType)
+        {
+            return Ok(await _service.GetMenuBottomMobile(lang, menuType));
+        }
         [HttpPost]
         public async Task<ActionResult> AddAsync([FromBody] SysMenuDto model)
         {

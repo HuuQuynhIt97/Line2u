@@ -6,9 +6,11 @@ import {
   UrlAdaptor,
   Predicate,
 } from "@syncfusion/ej2-data";
+import { UtilitiesService } from "herr-core";
 import { StoreProfileService } from "src/app/_core/_service/evse/store-profile.service";
 import { WebNewsService } from "src/app/_core/_service/evse/web-news.service";
 import { environment } from "src/environments/environment";
+import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 
 @Component({
   selector: 'app-home-store-list',
@@ -18,20 +20,33 @@ import { environment } from "src/environments/environment";
 export class HomeStoreListComponent implements OnInit {
 
   news = [];
+  noImage = ImagePathConstants.NO_IMAGE_QR;
+  apiHost = environment.apiUrl.replace('/api/', '');
   baseUrl = environment.apiUrlImage;
+  sysConf: any;
 
   constructor(
     private service: StoreProfileService,
+    private utilityService: UtilitiesService,
     private router: Router
     ) {}
 
   ngOnInit(): void {
     this.loadStoreData();
+    this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
+    console.log(this.sysConf)
   }
-
+  imagePath(path) {
+    if (path !== null && this.utilityService.checkValidImage(path)) {
+      if (this.utilityService.checkExistHost(path)) {
+        return path;
+      }
+      return this.apiHost + path;
+    }
+    return this.noImage;
+  }
   loadStoreData() {
     this.service.getAll().subscribe(x=> {
-      console.log(x)
       this.news = x;
     })
     

@@ -589,6 +589,7 @@ namespace Line2u.Services
                 userResponse.UID = user.Uid;
                 userResponse.IsLineAccount = user.IsLineAccount;
                 userResponse.SubscribeLine = subscribeLine;
+                userResponse.IsCustomer = string.IsNullOrEmpty(user.LineOfficialId) ? true : false;
             }
             if (xaccountGroup != null)
             {
@@ -860,7 +861,7 @@ namespace Line2u.Services
 
         public async Task<OperationResult> LoginWithlineAccountAsync(string UID)
         {
-            var account = await _repo.FindAll(x => x.Uid == UID && x.Status == "1").FirstOrDefaultAsync();
+            var account = await _repo.FindAll(x => x.Uid == UID && x.Status == "1" && string.IsNullOrEmpty(x.LineParentId)).FirstOrDefaultAsync();
             return await GenerateOperationResultForUserAsync(account, "");
         }
 

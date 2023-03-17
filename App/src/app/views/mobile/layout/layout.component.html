@@ -6,9 +6,10 @@
       <div class="main-header" id="header-section">
 
         <div id="myLinks">
-          <a (click)="toggleSidebar()" routerLink="/mobile/user-profile">{{ 'MOBILE_MY_LINE_PROFILE' | translate }}</a>
-          <a (click)="toggleSidebar()" routerLink="/mobile/send-message">{{ 'MOBILE_SEND_MESSAGE' | translate }}</a>
-          <a (click)="toggleSidebar()" routerLink="/mobile/send-message">{{ 'MOBILE_MESSAGE_HISTORY' | translate }}</a>
+          <ng-container *ngFor="let item of menus; let i=index">
+          
+            <a (click)="toggleSidebar()" [routerLink]="item.url">{{ item.name }}</a>
+          </ng-container>
           
         </div>
         <ul class="header-list">

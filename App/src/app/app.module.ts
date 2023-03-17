@@ -115,7 +115,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CustomLoader } from './_core/_helper/custom-loader';
 import { AccumulationChartAllModule, CategoryService, ChartAllModule, ChartModule, ColumnSeriesService, LegendService } from '@syncfusion/ej2-angular-charts';
 import { DashboardService } from './_core/_service/dashboard.service';
-import { PigfarmCoreModule } from 'herr-core';
+import { MyCheckboxComponent, PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 import { AutoLogoutService } from './_core/_service/apply-orders/auto-log-off.service';
 import { NavbarComponent } from './views/layout/navbar/navbar.component';
@@ -131,7 +131,9 @@ import { PrivacyComponent } from './views/home/home-user-anonymous/privacy/priva
 import { HelpGuidComponent } from './views/home/home-user-anonymous/help-guid/help-guid.component';
 import { HomeStoreListComponent } from './views/home/home-store-list/home-store-list.component';
 import { HomeStoreComponent } from './views/home/home-store/home-store.component';
-
+import { Common2Module } from './_core/commons/common2.module';
+import { CheckBoxAllModule } from '@syncfusion/ej2-angular-buttons';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -161,13 +163,15 @@ if (!lang) {
     PrivacyComponent,
     HelpGuidComponent,
     HomeStoreListComponent,
-    HomeStoreComponent
+    HomeStoreComponent,
 
   ],
   imports: [
     BrowserModule,
+    Common2Module,
     BrowserAnimationsModule,
     AppRoutingModule,
+    NgbCarouselModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
@@ -180,6 +184,7 @@ if (!lang) {
     NgbModule,
     ChartAllModule,
     GridAllModule,
+    CheckBoxAllModule,
     // CoreDirectivesModule,
     AccumulationChartAllModule,
     SwiperModule,

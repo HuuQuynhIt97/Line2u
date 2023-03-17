@@ -1984,7 +1984,7 @@ namespace Line2u.Data
                     .HasMaxLength(20);
                 entity.Property(e => e.MenuType)
                     .HasColumnName("MenuType")
-                    .HasMaxLength(2);
+                    .HasMaxLength(50);
                 entity.Property(e => e.UpdateBy)
                     .HasColumnName("UPDATE_BY")
                     .HasColumnType("numeric(18, 0)");

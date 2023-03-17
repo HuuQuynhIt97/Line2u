@@ -16,6 +16,7 @@ import { QRCodeLink } from 'src/app/_core/_model/evse/QRCodeLink';
 import { environment } from 'src/environments/environment';
 import { UtilitiesService } from 'herr-core';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
+import { SysMenuService } from 'src/app/_core/_service/sys-menu.service';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -44,12 +45,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentRouter: string = ''
   subscription: Subscription = new Subscription();
   count: any = 0;
+  menus: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   qrCodeLink: QRCodeLink = {} as QRCodeLink;
   constructor(
     private router: Router,
     private location: Location,
     private trans: TranslateService,
+    private sysMenu: SysMenuService,
     private authService: AuthService,
     private cookieService: CookieService,
     private alertify: AlertifyService,
@@ -103,12 +106,20 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getQrcodeLink();
+    this.getMenuTopMobile();
    this.subscription.add(this.user2MessageService.currentUser2Message.subscribe(check => {
       if (check) {
         this.countAlert();
       }
     }))
     this.countAlert();
+  }
+
+  getMenuTopMobile() {
+    this.sysMenu.getMenuTopMobile(this.lang,"MOBILE").subscribe(res => {
+      console.log(res)
+      this.menus = res
+    })
   }
   getQrcodeLink(){
     this.lineService.getUrlQr(this.user_infor.id).subscribe((res: any) => {

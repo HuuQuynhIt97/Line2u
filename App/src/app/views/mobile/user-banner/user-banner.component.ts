@@ -126,7 +126,7 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
-      url: `${this.baseUrl}WebBannerUser/LoadData?lang=${lang}`,
+      url: `${this.baseUrl}WebBannerUser/LoadData?lang=${lang}&userID=${this.user.id}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });

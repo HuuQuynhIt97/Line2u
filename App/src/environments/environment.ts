@@ -3,7 +3,7 @@ let host = 'localhost';
 if (ip === '10.4.4.224') {
   host = ip;
 }
-const lineConfig = {
+export const lineConfig = {
   authorizeUrl: 'https://access.line.me/oauth2/v2.1/authorize',
   client_id: '1654240194',
   client_secret: 'a347ba7169bfaa6b2d09e385ef2bec4a',

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService } from 'herr-core';
+import { AlertifyService, UtilitiesService } from 'herr-core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { DashboardService } from 'src/app/_core/_service/dashboard.service';
@@ -20,7 +20,12 @@ import { Products } from 'src/app/_core/_model/evse/products';
 import { ProductsService } from 'src/app/_core/_service/evse/products.service';
 import { DataService } from 'src/app/_core/_service/data.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-
+import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
+import { WebBannerService } from 'src/app/_core/_service/evse/web-banner.service';
+// import { CarouselButtonVisibility } from '@syncfusion/ej2-angular-navigations';
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
+import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
@@ -59,74 +64,134 @@ export class HomeStoreComponent implements OnInit {
   modalReference: NgbModalRef;
   cartDetail: Products[] = [];
   totalPrice: number;
+  isLineAccount: string = JSON.parse(localStorage.getItem('user'))?.isLineAccount
+  isCustomer: boolean = JSON.parse(localStorage.getItem('user'))?.isCustomer
+  noImage = ImagePathConstants.NO_IMAGE_QR;
+  apiHost = environment.apiUrl.replace('/api/', '');
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+  // public buttonsVisibility: CarouselButtonVisibility = "Visible";
+  user = JSON.parse(localStorage.getItem('user'))
+  responsiveOptions;
   constructor(
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
-    private webNewsService: WebNewsService,
+    private webNewsService: WebNewsUserService,
     private service: StoreProfileService,
     private serviceMainCategory: MainCategoryService,
     private serviceProducts: ProductsService,
     private translate: TranslateService,
     private dataService: DataService,
+    private webBannerService: WebBannerUserService,
+    private utilityService: UtilitiesService,
     private route: ActivatedRoute,
     private alertify: AlertifyService,
     public sanitizer: DomSanitizer,
     private router: Router,
     public modalService: NgbModal
 
-  ) { }
+  ) { 
+    this.responsiveOptions = [{
+      breakpoint: '1024px',
+      numVisible: 1,
+      numScroll: 3
+  }];
+  }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    // this.removeLocalStore('isLogin_Cus')
   }
   
   ngOnInit() {
+    this.getStoreInfor(storeId) 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
+   
     var storeName = this.route.snapshot.paramMap.get('storeName') 
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor(storeId) 
     // this.dataService.pushCart('load cart')
     const cartDetail = this.getLocalStore("cart_detail");
     this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    this.loadBannerData()
+    this.loadNewData()
+  }
+  loadBannerData() {
+    this.webBannerService.getByUserID(this.storeInfo.createBy).subscribe((x: any)=> {
+      this.banners = x;
+    })
+  }
+  loadNewData() {
+    this.webNewsService.getByUserID(this.storeInfo.createBy).subscribe((x: any)=> {
+      this.news = x;
+      console.log(x)
+    })
+  }
+  loginUser() {
+    console.log('aaaa')
+    const uri = this.router.url;
+    localStorage.setItem('isLogin_Cus',uri)
+    this.router.navigate(["user-login"], {
+      queryParams: { uri },
+      replaceUrl: true,
+    });
+    // return this.router.navigate[('user-login')]
+  }
+  imagePath(path) {
+    if (path !== null && this.utilityService.checkValidImage(path)) {
+      if (this.utilityService.checkExistHost(path)) {
+        return path;
+      }
+      return this.apiHost + path;
+    }
+    return this.noImage;
+  }
+  detailNew(item) {
+    this.dataService.changeLang('Store_Click')
+    this.router.navigate([`home/news-detail/${item.id}`])
   }
   addToCart(item: Products) {
-    let cart: Products[] = [];
-    cart = this.getLocalStore("cart_detail");
-    if(cart.length === 0) {
-      item.quantity = 1
-      item.price = parseFloat(item.productPrice)
-      cart.push(item)
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    console.log(isLogin_Cus)
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
     }else {
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].id == item.id ) {
-          cart[i].quantity = cart[i].quantity + 1;
-          cart[i].price = cart[i].price  + parseFloat(item.productPrice);
-          break;
-        }else {
-          const exsit = cart.filter(x => x.id === item.id );
-          console.log(exsit)
-          if(exsit.length === 0) {
-            item.quantity = 1
-            item.price = parseFloat(item.productPrice)
-            cart.push(item)
+      let cart: Products[] = [];
+      cart = this.getLocalStore("cart_detail");
+      if(cart.length === 0) {
+        item.quantity = 1
+        item.price = parseFloat(item.productPrice)
+        cart.push(item)
+      }else {
+        for (let i = 0; i < cart.length; i++) {
+          if (cart[i].id == item.id ) {
+            cart[i].quantity = cart[i].quantity + 1;
+            cart[i].price = cart[i].price  + parseFloat(item.productPrice);
+            break;
           }else {
-            for (let z = 0; z < cart.length; z++) {
-              if (cart[z].id == item.id ) {
-                cart[z].quantity = cart[z].quantity + 1;
-                cart[z].price = cart[z].price  + parseFloat(item.productPrice);
-                break;
+            const exsit = cart.filter(x => x.id === item.id );
+            console.log(exsit)
+            if(exsit.length === 0) {
+              item.quantity = 1
+              item.price = parseFloat(item.productPrice)
+              cart.push(item)
+            }else {
+              for (let z = 0; z < cart.length; z++) {
+                if (cart[z].id == item.id ) {
+                  cart[z].quantity = cart[z].quantity + 1;
+                  cart[z].price = cart[z].price  + parseFloat(item.productPrice);
+                  break;
+                }
               }
             }
+            break;
           }
-          break;
         }
       }
+      this.setLocalStore("cart_detail", cart);
+      const cartDetail = this.getLocalStore("cart_detail");
+      this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+      this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
     }
-    this.setLocalStore("cart_detail", cart);
-    const cartDetail = this.getLocalStore("cart_detail");
-    this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
   }
   minusItem(item) {
     let cart: Products[] = [];
@@ -200,6 +265,7 @@ export class HomeStoreComponent implements OnInit {
     }else {
       this.removeLocalStore('cart')
       this.removeLocalStore('cart_detail')
+      this.count = 0
       this.alertify.success(this.translate.instant('Order_Success'))
       this.modalReference.close();
     }
@@ -258,11 +324,7 @@ export class HomeStoreComponent implements OnInit {
       this.news = res
     })
   }
-  login() {
-    
-    return this.router.navigate[('/login')]
-
-  }
+ 
   ngAfterViewInit(): void {
     
     $(function () {

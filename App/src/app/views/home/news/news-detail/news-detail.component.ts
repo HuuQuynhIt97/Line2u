@@ -12,6 +12,8 @@ declare let window: any;
 import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
 import { WebNewsService } from 'src/app/_core/_service/evse/web-news.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DataService } from 'src/app/_core/_service/data.service';
+import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
 
 @Component({
   selector: 'app-news-detail',
@@ -44,19 +46,31 @@ export class NewsDetailComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
     private webNewsService: WebNewsService,
+    private webNewsUserService: WebNewsUserService,
     private translate: TranslateService,
+    private dataService: DataService,
     private route: ActivatedRoute,
     private alertify: AlertifyService,
     public sanitizer: DomSanitizer,
     private router: Router,
 
-  ) { }
+  ) { 
+    var newId = this.route.snapshot.paramMap.get('id') || 0
+    this.subscription = this.dataService.SourceLang.subscribe(res => {
+      console.log(res)
+      if(res === 'Store_Click') {
+        this.getDetailNewUser(newId)
+      }else {
+        this.getDetailNew(newId)
+      }
+    })
+  }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
-    var newId = this.route.snapshot.paramMap.get('id') || 0
-    this.getDetailNew(newId)
+    
+    
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
@@ -67,6 +81,12 @@ export class NewsDetailComponent implements OnInit {
   }
   getDetailNew(newId) {
     this.webNewsService.getById(newId).subscribe(res => {
+      console.log(res)
+      this.news = res
+    })
+  }
+  getDetailNewUser(newId) {
+    this.webNewsUserService.getById(newId).subscribe(res => {
       console.log(res)
       this.news = res
     })

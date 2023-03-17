@@ -11,6 +11,7 @@ namespace Line2u.DTO.auth
         public string Guid { get; set; }
         public string UID { get; set; }
         public string IsLineAccount { get; set; }
+        public bool IsCustomer { get; set; }
         public bool SubscribeLine { get; set; }
         public decimal? MobileMode { get; set; }
         public string Username { get; set; }

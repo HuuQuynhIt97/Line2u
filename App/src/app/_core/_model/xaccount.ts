@@ -81,6 +81,7 @@ export interface Profile {
 
 export interface StoreProfile {
   id: number;
+  createBy: number;
   storeName: string | null;
   storeAddress: string;
   storeOpenTime: string;

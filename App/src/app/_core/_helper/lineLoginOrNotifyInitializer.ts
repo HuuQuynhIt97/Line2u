@@ -14,11 +14,18 @@ export function lineLoginOrNotifyInitializer(
         let userID = JSON.parse(localStorage.getItem('user'))?.uid || 0
         lineService.getProfile(token,userID).subscribe(data => {
           let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
+          let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+          let isCustomer = JSON.parse(localStorage.getItem('user'))?.isCustomer
           let backUrl = '/home';
           // let uri = this.route.snapshot.queryParams.uri || backUrl;
-          
-          if(isLineAccount === "1") {
+          // if(isLogin_Cus.length > 0) {
+          //   router.navigate([isLogin_Cus]);
+          // }
+          if(isLineAccount === "1" && !isCustomer) {
             router.navigate(['/mobile/home']);
+          }else if (isLineAccount === "1" && isCustomer) {
+            router.navigate([isLogin_Cus_url]);
+            
           }else {
             router.navigate([backUrl]);
           }

@@ -1,5 +1,5 @@
 const ip = window.location.hostname;
-const lineConfig = {
+export const lineConfig = {
   authorizeUrl: 'https://access.line.me/oauth2/v2.1/authorize',
   client_id: '1657897673',
   client_secret: 'c06f049a22f18ca26bc503e722f3a1ab',
