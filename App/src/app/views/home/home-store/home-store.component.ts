@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, UtilitiesService } from 'herr-core';
@@ -26,14 +26,15 @@ import { WebBannerService } from 'src/app/_core/_service/evse/web-banner.service
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
+import { AuthService } from 'src/app/_core/_service/auth.service';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
   styleUrls: [
     './home-store.component.scss',
-    '../../../../assets/css/store.css'
+    '../../../../assets/css/foodpanda.css'
   ],
-  encapsulation: ViewEncapsulation.ShadowDom
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeStoreComponent implements OnInit {
 
@@ -70,8 +71,19 @@ export class HomeStoreComponent implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   // public buttonsVisibility: CarouselButtonVisibility = "Visible";
+  username: ''
   user = JSON.parse(localStorage.getItem('user'))
   responsiveOptions;
+  selectedIndex = -1;
+  isLogin: boolean = false
+  @HostListener("window:scroll", [])onWindowScroll() {
+    //.scrollTop
+    if(window.pageYOffset > 500) {
+      this.selectedIndex = 2
+    }else {
+      this.selectedIndex =  -1
+    }
+ }
   constructor(
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
@@ -87,6 +99,7 @@ export class HomeStoreComponent implements OnInit {
     private alertify: AlertifyService,
     public sanitizer: DomSanitizer,
     private router: Router,
+    private authService: AuthService,
     public modalService: NgbModal
 
   ) { 
@@ -102,32 +115,36 @@ export class HomeStoreComponent implements OnInit {
   }
   
   ngOnInit() {
+    if (this.authService.loggedIn()) {
+      this.isLogin = true
+      this.username = this.user.accountName
+    }else {
+      this.isLogin = false
+    }
+    var storeId = this.route.snapshot.paramMap.get('id')
     this.getStoreInfor(storeId) 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
-   
-    var storeName = this.route.snapshot.paramMap.get('storeName') 
-    var storeId = this.route.snapshot.paramMap.get('id')
     // this.dataService.pushCart('load cart')
     const cartDetail = this.getLocalStore("cart_detail");
     this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.loadBannerData()
-    this.loadNewData()
+    this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+   
   }
   loadBannerData() {
-    this.webBannerService.getByUserID(this.storeInfo.createBy).subscribe((x: any)=> {
+    let id = this.storeInfo.createBy !== null ? this.storeInfo.createBy : 0
+    this.webBannerService.getByUserID(id).subscribe((x: any)=> {
       this.banners = x;
     })
   }
   loadNewData() {
-    this.webNewsService.getByUserID(this.storeInfo.createBy).subscribe((x: any)=> {
+    let id = this.storeInfo.createBy !== null ? this.storeInfo.createBy : 0
+    this.webNewsService.getByUserID(id).subscribe((x: any)=> {
       this.news = x;
-      console.log(x)
     })
   }
   loginUser() {
-    console.log('aaaa')
     const uri = this.router.url;
     localStorage.setItem('isLogin_Cus',uri)
     this.router.navigate(["user-login"], {
@@ -135,6 +152,15 @@ export class HomeStoreComponent implements OnInit {
       replaceUrl: true,
     });
     // return this.router.navigate[('user-login')]
+  }
+  logOutUser() {
+    const uri = this.router.url;
+    localStorage.setItem('lang','tw')
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    // this.router.navigate(['/mobile/landlord-login']);
+    this.alertify.message(this.translate.instant('Logged out'));
+    location.reload();
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {
@@ -151,7 +177,6 @@ export class HomeStoreComponent implements OnInit {
   }
   addToCart(item: Products) {
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")
-    console.log(isLogin_Cus)
     if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
       this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
     }else {
@@ -169,7 +194,6 @@ export class HomeStoreComponent implements OnInit {
             break;
           }else {
             const exsit = cart.filter(x => x.id === item.id );
-            console.log(exsit)
             if(exsit.length === 0) {
               item.quantity = 1
               item.price = parseFloat(item.productPrice)
@@ -189,8 +213,9 @@ export class HomeStoreComponent implements OnInit {
       }
       this.setLocalStore("cart_detail", cart);
       const cartDetail = this.getLocalStore("cart_detail");
-      this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
       this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+      this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+      this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     }
   }
   minusItem(item) {
@@ -203,7 +228,6 @@ export class HomeStoreComponent implements OnInit {
         break;
       }else {
         const exsit = cart.filter(x => x.id === item.id );
-          console.log(exsit)
           if(exsit.length === 0) {
             item.quantity = 1
             item.price = parseFloat(item.productPrice)
@@ -259,7 +283,6 @@ export class HomeStoreComponent implements OnInit {
   }
   saveOrder(){
     const cart_detail = this.getLocalStore("cart_detail");
-    console.log(cart_detail)
     if(cart_detail.length === 0) {
       return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
@@ -298,10 +321,11 @@ export class HomeStoreComponent implements OnInit {
   }
   getStoreInfor(storeId) {
     this.service.getById(storeId).subscribe(res => {
-      console.log('Store Infor', res)
       this.storeInfo = res;
       this.getCategoryOfStore(this.storeInfo.accountGuid)
       this.getProducts(this.storeInfo.accountGuid)
+      this.loadBannerData()
+      this.loadNewData()
     })
   }
   getCategoryOfStore(guid){
@@ -312,7 +336,6 @@ export class HomeStoreComponent implements OnInit {
   getProducts(guid){
     this.serviceMainCategory.getProducts(guid).subscribe(res => {
       this.products = res
-      console.log(res)
     })
   }
   safeHtml(html) {
@@ -320,7 +343,6 @@ export class HomeStoreComponent implements OnInit {
   }
   getDetailNew(newId) {
     this.webNewsService.getById(newId).subscribe(res => {
-      console.log(res)
       this.news = res
     })
   }

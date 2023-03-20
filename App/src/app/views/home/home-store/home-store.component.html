@@ -2,7 +2,7 @@
 <ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
-<div id="app">
+<!-- <div id="app">
   <div class="wrapper">
     <header class="main-header">
         <div class="container-header">
@@ -52,24 +52,19 @@
         </div>
         
     </header>
-    <!-- start banner_user -->
     <ngb-carousel >
       <ng-container *ngFor="let item of banners; let i=index">
         <ng-template ngbSlide>
           <div class="picsum-img-wrapper">
             <img [src]="imagePath(item.photoPath)" [alt]="item.subject">
           </div>
-          <!-- <div class="carousel-caption">
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </div> -->
+       
         </ng-template>
      
       </ng-container>
       
     </ngb-carousel>
     
-  <!-- end banner_user -->
   <div class="row my-4">
     <div class="col-12">
       
@@ -78,7 +73,7 @@
     <div class="now-detail-restaurant clearfix">
         <div class="container">
             <div class="detail-restaurant-img">
-              <img [src]="baseUrl + storeInfo.photoPath" 
+              <img  [src]="imagePath(storeInfo.photoPath) " 
                 [alt]="storeInfo.storeName" class="">
             </div>
             <div class="detail-restaurant-info">
@@ -91,13 +86,7 @@
                 <div class="kind-restaurant"><span> {{'Shop Online' | translate}}</span></div>
                 <h1 class="name-restaurant">{{storeInfo.storeName}}</h1>
                 <div class="address-restaurant">{{storeInfo.storeAddress}}</div>
-                <!-- <div class="rating">
-                    <div class="stars"><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="full"><i class="fas fa-star"></i></span><span class="half"><i class="fas fa-star-half-alt"></i></span></div>
-                    <span class="number-rating">100+</span>đánh giá trên ShopeeFood
-                </div> -->
-                <!-- <div class="view-more-rating">
-                  <a href="https://foody.vn/ho-chi-minh/bun-bo-dat-thanh-shop-online" rel="noopener noreferrer nofollow" target="_blank" class="number-review">Xem thêm lượt đánh giá từ Foody</a>
-                </div> -->
+           
                 <div class="status-restaurant">
                     <div class="opentime-status"><span class="stt online" title="{{'OPEN_TIME' | translate}}"></span></div>
                     <div class="time"><i class="far fa-clock"></i>
@@ -112,17 +101,6 @@
                     <div class="fb-like" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="true" data-colorscheme="light" data-kid-directed-site="false"></div>
                   </div>
                 </div>
-                <!-- <div class="utility-restaurant clearfix">
-                    <div class="utility-item">
-                        <div class="utility-title">Phí dịch vụ</div>
-                        <div class="utility-content"><span class="txt-bold txt-red"> 0.0% Phí phục vụ </span></div>
-                        <span class="icon icon-partner-vi" data-toggle="modal" data-target="#modal-verify-merchant"></span>
-                    </div>
-                    <div class="utility-item">
-                        <div class="utility-title">Dịch vụ bởi</div>
-                        <div class="utility-content"><span class="txt-bold txt-red">ShopeeFood</span></div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
@@ -148,7 +126,6 @@
                               <p>{{'CATEGORY_EMPTY' | translate}}</p>
                               </ng-template>
                               
-                                <!-- <div class="item"><span id="-1" title="Món Đang Giảm" class="item-link active">Món Đang Giảm</span></div> -->
                                 <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
                                     <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                                 </div>
@@ -192,7 +169,7 @@
                                                     <div class="col-auto item-restaurant-img">
                                                       <button class="inline">
                                                         <img 
-                                                        [src]="baseUrl + item.photoPath" 
+                                                        [src]="imagePath(item.photoPath)" 
                                                         [alt]="item.productName" width="60" height="60">
                                                       </button></div>
                                                     <div class="col item-restaurant-info">
@@ -226,89 +203,13 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade modal-topping" id="modal-topping" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="row align-items-center">
-                                <div class="col-auto topping-dish-image"><img src=""></div>
-                                <div class="col topping-summary">
-                                    <div class="topping-dish-name"></div>
-                                    <div class="topping-dish-price">Giá: </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-body">
-                            <div class="topping-category"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="topping-add-sub">
-                                        <div class="btn-sub">-</div>
-                                        <input type="text" disabled="" value="1">
-                                        <div class="btn-adding">+</div>
-                                    </div>
-                                </div>
-                                <div class="col-auto"><button type="button" class="btn btn-over"><span>Hết hàng</span></button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade modal-alert" id="modal-delivery-alert-MenuAlertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-                <div class="modal-dialog modal-noti" role="document">
-                    <div class="modal-content">
-                        <span class="close" data-dismiss="modal">x</span>
-                        <div class="modal-header txt-bold font13"><span class="txt-red">ShopeeFood</span> Thông báo</div>
-                        <div class="modal-body">
-                            <div class="col col-12">
-                                <p class="font15"><span></span></p>
-                            </div>
-                        </div>
-                        <div class="modal-footer content-right"><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade modal-box-image" id="modal-box-image" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="res-menu-carousel"></div>
-                </div>
-            </div>
-            <div class="modal fade modal-alert" id="modal-delivery-confirm-MenuConfirmModal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <span class="close" data-dismiss="modal">x</span>
-                        <div class="modal-header txt-bold font13"><span class="txt-red">service_by_shopeefood</span> Thông báo</div>
-                        <div class="modal-body">
-                            <p class="font15 max-width-750"></p>
-                        </div>
-                        <div class="modal-footer content-right"><button type="button" class="btn btn-gray" data-dismiss="modal">Hủy</button><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button></div>
-                    </div>
-                </div>
-            </div>
+           
         </div>
         <div class="QRcode" id="QRcode">
             <canvas height="283" width="283" style="height: 200px; width: 200px;"></canvas>
         </div>
     </div>
-    <div class="modal fade modal-alert" id="modal-payment-success" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-noti" role="document">
-            <div class="modal-content">
-                <span class="close" data-dismiss="modal">x</span>
-                <div class="modal-header txt-bold font13"><span class="txt-red">Now</span> Thông báo</div>
-                <div class="modal-body">
-                    <div class="col col-12">
-                        <p class="font15"></p>
-                    </div>
-                </div>
-                <div class="modal-footer content-right">
-                    <div class="col"><sup class="txt-red txt-bold">* </sup>Xin vui lòng kiểm tra đơn hàng của bạn trước khi nhận.</div>
-                    <a href="/lich-su-dat-mon" class="btn btn-none-bg">Xem lịch sử đặt món</a><button type="button" class="btn btn-red" data-dismiss="modal">Ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <div id="topcontrol" class="topcontrol">
         <div class="fd-back-top">
             <div class="control-link" id="btn-back-top"><i class="fas fa-angle-up"></i><label>Quay lại đầu trang</label></div>
@@ -319,49 +220,7 @@
   <footer class="main-footer" style="height: auto; background-color: #233b2e">
       <div class="container">
           <div class="container-inner">
-              <!-- <div class="block-footer">
-                  <p class="title-block">Công ty</p>
-                  <ul class="menu-footer">
-                      <li class="menu-item"><a href="/gioi-thieu">Giới thiệu</a></li>
-                      <li class="menu-item"><a href="https://help.shopeefood.vn/" target="_blank" rel="noopener noreferrer">Trung tâm Trợ giúp</a></li>
-                      <li class="menu-item"><a href="/regulation-web">Quy chế</a></li>
-                      <li class="menu-item"><a href="/terms-of-service">Điều khoản sử dụng</a></li>
-                      <li class="menu-item"><a href="/security-policy">Bảo mật thông tin</a></li>
-                      <li class="menu-item"><a href="/adjustment-of-claims">Giải quyết khiếu nại</a></li>
-                      <li class="menu-item"><a href="/lien-he">Liên hệ</a></li>
-                      <li class="menu-item"><a href="/tuyen-dung">Hợp tác nhân viên giao nhận</a></li>
-                      <li class="menu-item"><a href="/merchant-register">Đăng ký quán</a></li>
-                      <li class="menu-item"><a href="https://merchant.shopeefood.vn/edu/">ShopeeFood Uni</a></li>
-                      <li class="menu-item"><a href="https://shopee.vn/blog/" target="_blank" rel="noopener noreferrer">Shopee Blog</a></li>
-                  </ul>
-              </div>
-              <div class="block-footer">
-                  <p class="title-block">Ứng dụng ShopeeFood</p>
-                  <a class="apps" target="_blank" rel="noopener noreferrer nofollow" href="https://itunes.apple.com/us/app/deliverynow/id1137866760" title="Down app iOS"><span class="apps__app-store-vi" title="Down app iOS"></span></a><a class="apps" target="_blank" rel="noopener noreferrer nofollow" href="https://play.google.com/store/apps/details?id=com.deliverynow" title="Down app Android"><span class="apps__play-store-vi" title="Down app Android"></span></a><a class="apps" target="_blank" rel="noopener noreferrer nofollow" href="https://appgallery.huawei.com/#/app/C102401853" title="Down app Huawei Gallery"><span class="apps__huawei-gallery-vi" title="Down app Huawei"></span></a>
-              </div>
-              <div class="block-footer txt-center">
-                  <div class="logo-footer"><a class="link" href="/"><img id="delivery-footer-logo" src="/app/assets/img/Logo-ShopeefoodVN.png?a233b36c37415f85f46c25a6cd0963aa" alt="Đặt món trực tuyến giao hàng tận nơi" title="Đặt món trực tuyến giao hàng tận nơi" width="100"></a></div>
-                  <p class="font12">© 2023  ShopeeFood</p>
-                  <ul class="social-ico">
-                      <li><a target="_blank" rel="noopener noreferrer nofollow" href="https://www.facebook.com/shopeefoodvn" title="Facebook"><span class="facebook ico"><i class="fab fa-facebook-f"></i></span></a></li>
-                      <li><a target="_blank" rel="noopener noreferrer nofollow" href="https://www.instagram.com/shopeefood_vn/" title="Instagram"><span class="instagram ico"><i class="fab fa-instagram"></i></span></a></li>
-                  </ul>
-              </div>
-              <div class="block-last">
-                  <p class="title-block">Địa chỉ công ty</p>
-                  <span>
-                      <p>Công Ty Cổ Phần Foody</p>
-                      <p>Lầu G, Tòa nhà Jabes 1,</p>
-                      <p>số 244 đường Cống Quỳnh, phường Phạm Ngũ Lão, Quận 1, TPHCM</p>
-                      <p>Giấy CN ĐKDN số: 0311828036</p>
-                      <p>do Sở Kế hoạch và Đầu tư TP.HCM cấp ngày 11/6/2012,</p>
-                      <p>sửa đổi lần thứ 23, ngày 10/12/2020</p>
-                      <p>Chịu trách nhiệm quản lý nội dung: Nguyễn Hồ Quảng Giang</p>
-                      <p>Điện thoại liên hệ: 028 71096879</p>
-                      <p>Email: <a href="mailto:support@shopeefood.vn">support@shopeefood.vn</a></p>
-                  </span>
-                  <span class="registered"><a target="_blank" rel="noopener noreferrer nofollow" href="http://online.gov.vn/HomePage/WebsiteDisplay.aspx?DocId=22747" title="ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG"><img alt="ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG" src="/app/assets/img/gov_seals1.jpg?4534b28245a7aad9805fbddc90f873d8"></a></span>
-              </div> -->
+              
           </div>
       </div>
       <div id="footer-bottom"></div>
@@ -378,7 +237,6 @@
             <img [src]="imagePath(item.photoPath)" class="card-img-top" [alt]="item.subject">
             <div class="card-body">
               <h5 class="card-title">{{item.subject}}</h5>
-              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
               <a style="cursor: pointer;" (click)="detailNew(item)"   class="btn btn-primary">{{'Read' | translate}}</a>
             </div>
           </div>
@@ -390,6 +248,756 @@
         
       </div>
     </div>
+</div> -->
+  <div>
+    <body>
+      <div id="reactRoot">
+          <div id="vendor-details-root">
+              <div class="rdp-header" id="rdp-header">
+                <section id="global-header">
+                    <header class="header overlay-header">
+                        <div data-testid="brand-logo-wrapper" class="logo-wrapper">
+                            <div class="logo">
+                                <a class="logo-header-link" href="/" data-testid="logo-header-link">
+                                    <span class="svg-logo-wrapper">
+                                        <span aria-label="foodpanda">
+                                            <svg version="1.1" height="26" class="logo-icon" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 198.2 200.3" xml:space="preserve" aria-hidden="true" focusable="false">
+                                                <style type="text/css">.st0{fill:#D70F64;}</style>
+                                                <g>
+                                                    <g>
+                                                        <path class="st0" d="M99,148c13.5,0,24.4-9.6,24.4-21.4H74.7C74.7,138.4,85.5,148,99,148z"></path>
+                                                        <g>
+                                                            <path class="st0" d="M181.3,46c5.5-4.8,9.1-11.8,9.1-19.8c0-14.4-11.7-26.1-26.2-26.1c-9.3,0-17.4,4.8-22,12
+                                                                c-13-6.3-27.6-9.9-43-9.9s-30,3.5-43,9.8c-4.7-7.2-12.7-12-22-12C19.8,0,8,11.7,8,26.1c0,7.9,3.5,15,9,19.7
+                                                                C6.3,61.6,0,80.7,0,101.2c0,54.7,44.5,99.1,99.1,99.1s99.1-44.4,99.1-99.1C198.3,80.9,192,61.8,181.3,46z M99.2,192.8
+                                                                c-50.4,0-91.4-41-91.4-91.4c0-19,5.8-36.6,15.7-51.2c9-13.2,21.4-24,35.8-31c12-5.9,25.5-9.2,39.8-9.2s27.8,3.3,39.9,9.2
+                                                                c14.5,7,26.8,17.8,35.8,31c9.9,14.6,15.7,32.2,15.7,51.2C190.6,151.8,149.6,192.8,99.2,192.8z"></path>
+                                                            <path class="st0" d="M99,120.5c1.5,0.4,17.2-4.9,17.2-12.3c0-4.1-12.7-4.9-17.2-4.9c-4.4,0-17.2,0.8-17.2,4.9
+                                                                C81.8,115.6,97.5,120.9,99,120.5z"></path>
+                                                            <path class="st0" d="M156.6,58.5c-8.6-5.7-27.7-9.1-35.1,0.8c0,0-9.4,10.1-0.2,20.6c9.3,10.5,16.4,20.3,18.5,28.8
+                                                                s5.5,12,12.4,12.1c6.9,0,20.1-10.5,21.8-27.4C175.7,76.5,165.2,64.1,156.6,58.5z M136.9,80.1c-2.9,0-5.2-2.3-5.2-5.2
+                                                                s2.4-5.2,5.2-5.2c2.9,0,5.2,2.3,5.2,5.2C142,77.7,139.7,80.1,136.9,80.1z"></path>
+                                                            <path class="st0" d="M76.5,59.2c-7.5-9.8-26.6-6.5-35.1-0.8c-8.6,5.7-19.1,18-17.4,34.9c1.6,16.9,14.9,27.4,21.8,27.4
+                                                                s10.3-3.5,12.4-12.1c2.1-8.5,9.3-18.3,18.5-28.8S76.5,59.2,76.5,59.2z M62.7,80.1c-2.9,0-5.2-2.3-5.2-5.2s2.3-5.2,5.2-5.2
+                                                                c2.9,0,5.2,2.3,5.2,5.2C67.8,77.7,65.5,80.1,62.7,80.1z"></path>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            &nbsp;
+                                            <a href="#"  style="padding: 8px 5px 5px 5px; ">
+                                              <img [src]="baseUrl + logo" alt="Line2U" width="160px" height="60px" />
+                                            </a>
+                                        </span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="language-wrapper">
+                            <div class="language-switch" data-testid="language-switch"><a href="/restaurant/otko/fei-xiang-yu-zhou-fu-he-shi-can-yin" hreflang="zh" lang="zh" aria-label="访问我们的中文网站。"><span class="sr-only">中文 </span>中文</a></div>
+                        </div>
+                        <div class="user-wrapper">
+                            <div class="account" data-testid="header-account">
+                              <ng-container *ngIf="!isLogin; else elseTemplate3">
+                                <a  class="account-link" (click)="loginUser()" style="cursor: pointer;" data-testid="account-link-login">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-stroke-container">
+                                      <g fill="none" fill-rule="evenodd">
+                                          <circle cx="12" cy="12" r="12" fill="#D70F64" fill-rule="nonzero"></circle>
+                                          <path fill="#FFF" fill-rule="nonzero" d="M13.1818252 12.6666667C15.366281 12.6666667 17.1649879 14.3335701 17.3176726 16.4681904L17.3252836 16.6080555 17.3333337 17.0416667C17.3333337 17.1848516 17.2285728 17.3039382 17.0904223 17.3286342L17.0371901 17.3333333 6.96281056 17.3333333C6.81742783 17.3333333 6.69651331 17.2301562 6.67143827 17.0940941L6.666667 17.0416667 6.666667 16.75C6.666667 14.5418198 8.44636147 12.7430258 10.670143 12.6690344L10.8126768 12.6666667 13.1818252 12.6666667zM12.0000003 6C13.6568546 6 15.0000003 7.34314575 15.0000003 9 15.0000003 10.6568543 13.6568546 12 12.0000003 12 10.3431461 12 9.00000033 10.6568543 9.00000033 9 9.00000033 7.34314575 10.3431461 6 12.0000003 6z"></path>
+                                      </g>
+                                  </svg>
+                                  
+                                  <span class="login-label">{{'Login' | translate}}</span>
+                                </a>
+                              </ng-container>
+                              <ng-template #elseTemplate3>
+                                <a  class="account-link" (click)="logOutUser()" style="cursor: pointer;" data-testid="account-link-login">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-stroke-container">
+                                      <g fill="none" fill-rule="evenodd">
+                                          <circle cx="12" cy="12" r="12" fill="#D70F64" fill-rule="nonzero"></circle>
+                                          <path fill="#FFF" fill-rule="nonzero" d="M13.1818252 12.6666667C15.366281 12.6666667 17.1649879 14.3335701 17.3176726 16.4681904L17.3252836 16.6080555 17.3333337 17.0416667C17.3333337 17.1848516 17.2285728 17.3039382 17.0904223 17.3286342L17.0371901 17.3333333 6.96281056 17.3333333C6.81742783 17.3333333 6.69651331 17.2301562 6.67143827 17.0940941L6.666667 17.0416667 6.666667 16.75C6.666667 14.5418198 8.44636147 12.7430258 10.670143 12.6690344L10.8126768 12.6666667 13.1818252 12.6666667zM12.0000003 6C13.6568546 6 15.0000003 7.34314575 15.0000003 9 15.0000003 10.6568543 13.6568546 12 12.0000003 12 10.3431461 12 9.00000033 10.6568543 9.00000033 9 9.00000033 7.34314575 10.3431461 6 12.0000003 6z"></path>
+                                      </g>
+                                  </svg>
+                                  <span class="login-label">{{username}}</span>
+                                  <!-- <span class="login-label">{{'Login' | translate}}</span> -->
+                                </a>
+                              </ng-template>
+                              
+                                
+                            </div>
+                        </div>
+                        <!-- <div data-testid="order-components" class="order-components has-when-component">
+                            <div class="where-wrapper" data-testid="where-wrapper">
+                                <button class="button-text status--default location-search-button header-order-button" data-testid="location-search-button" aria-haspopup="true" aria-expanded="false" aria-live="polite">
+                                    <div class="header-order-button-title expedition-type-text f-title-medium-secondary-font-size fw-title-medium-secondary-font-weight lh-title-medium-secondary-line-height" data-testid="header-order-button-title"> Delivering to </div>
+                                    <span class="box-flex address-label-icon" data-testid="address-label-icon">
+                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.3224 2C16.9186 2 20.6445 5.72596 20.6445 10.3222C20.6445 11.8203 20.2486 13.226 19.5558 14.4404L18.4714 15.8911C17.8725 16.5162 16.6837 17.706 14.9052 19.4602L13.0212 21.313C12.6322 21.6947 12.0091 21.6946 11.6203 21.3128L7.91827 17.6571L6.59642 16.3282C6.28454 16.0104 5.7815 15.3801 5.08728 14.4375C4.39544 13.2238 4.00018 11.8192 4.00018 10.3222C4.00018 5.72596 7.72614 2 12.3224 2ZM12.3224 3.5C8.55457 3.5 5.50018 6.55439 5.50018 10.3222C5.50018 11.4141 5.75598 12.466 6.2388 13.4136L6.37235 13.66L6.9635 14.5436L7.1819 14.7804L7.77122 15.385C8.23365 15.8535 8.88141 16.5011 9.70233 17.3151C10.6865 18.2861 11.4246 19.0143 11.9167 19.4998C11.9576 19.5401 11.9985 19.5805 12.0394 19.6209C12.1952 19.7745 12.4455 19.7745 12.6013 19.6209L12.6754 19.5478L15.3017 16.9571L17.2046 15.0461C17.3404 14.9068 17.4503 14.7925 17.5337 14.7039L17.6874 14.534L18.2724 13.659L18.4048 13.4158C18.84 12.5624 19.091 11.6245 19.1369 10.6487L19.1445 10.3222C19.1445 6.55439 16.0901 3.5 12.3224 3.5ZM12.3224 6.75C14.3934 6.75 16.0724 8.42893 16.0724 10.5C16.0724 12.5711 14.3934 14.25 12.3224 14.25C10.2513 14.25 8.57235 12.5711 8.57235 10.5C8.57235 8.42893 10.2513 6.75 12.3224 6.75ZM12.3224 8.25C11.0797 8.25 10.0724 9.25736 10.0724 10.5C10.0724 11.7426 11.0797 12.75 12.3224 12.75C13.565 12.75 14.5724 11.7426 14.5724 10.5C14.5724 9.25736 13.565 8.25 12.3224 8.25Z"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="header-order-button-content address-text f-title-small-font-size fw-title-small-font-weight lh-title-small-line-height"><span class="address-label-highlighted-header label-text cl-interaction-primary f-title-small-font-size fw-title-small-font-weight lh-title-small-line-height" data-testid="address-label-highlighted-header">New Address</span>Quan Tan Binh Thanh Pho Ho Chi Minh Jing Jian 5th Rd. Tao Yuan Shi 328</span>
+                                    <span class="header-order-button-arrow">
+                                        <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="svg-stroke-container" stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" fill="none" d="m3.5,1.5l5,5.5l-5,5.5"></path>
+                                        </svg>
+                                    </span>
+                                </button>
+                                <div class="location-search-component fade react">
+                                    <div class="box-flex where-component-search-form w-100 fd-column">
+                                        <div class="box-flex search-form fd-row">
+                                            <div class="address-search-container" id="address-search-container" data-testid="address-search-container">
+                                                <div class="validation-wrapper input-box js-input-box sr input-box js-input-box">
+                                                    <input type="text" class="restaurants-search-form__input restaurants__location__input" id="delivery-information-postal-index" name="" placeholder=" " autocomplete="off" data-placeid="" data-testid="restaurants-search-form__input" role="combobox" aria-autocomplete="list" value=""><strong class="invalid-error-message"></strong><label for="delivery-information-postal-index" class="msg-title">Enter your street and house number</label>
+                                                    <button class="button status--default map-closed locate-me locate-me-btn" data-testid="locate-me" aria-live="polite">
+                                                        <span class="sr-only">Locate me</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="ic-locate-me-round" width="24" height="24">
+                                                            <defs>
+                                                                <path id="a" d="M11.5 18a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM12 4v2.019A6.501 6.501 0 0 1 17.981 12H20v1h-2.019a6.501 6.501 0 0 1-5.98 5.981L12 21h-1v-2.019a6.501 6.501 0 0 1-5.981-5.98L3 13v-1h2.019A6.501 6.501 0 0 1 11 6.02V4h1zm-.5 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0-2.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                                                            </defs>
+                                                            <use fill="#858585" xlink:href="#a"></use>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div id="map-view-modal"></div>
+                                            </div>
+                                            <button class="button status--default location-search-go-icon button js-ripple ml-xs" data-testid="location-search-go-icon" aria-label="SEARCH" aria-live="polite">
+                                                <svg aria-hidden="true" focusable="false" class="fl-white" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.6032 4.39702L12.6874 4.46963L19.8828 11.6639C20.0386 11.8197 20.0391 12.0722 19.8839 12.2286L12.6382 19.5284C12.3464 19.8223 11.8716 19.8241 11.5776 19.5323C11.3103 19.267 11.2846 18.8505 11.5013 18.556L11.5736 18.4716L17.0818 12.9204C17.1207 12.8812 17.1205 12.8179 17.0813 12.779C17.0625 12.7604 17.0372 12.75 17.0108 12.75L4.75 12.75C4.33579 12.75 4 12.4142 4 12C4 11.5858 4.33579 11.25 4.75 11.25L17.1055 11.25C17.1607 11.25 17.2055 11.2052 17.2055 11.15C17.2055 11.1235 17.195 11.098 17.1762 11.0793L11.6268 5.53037C11.3605 5.26413 11.3363 4.84747 11.5541 4.55384L11.6267 4.46971C11.8929 4.20343 12.3096 4.17918 12.6032 4.39702Z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="when-component-wrapper">
+                                <button class="when-wrapper header-order-button" aria-haspopup="true" data-testid="time-picker-header-button">
+                                    <p class="header-order-button-label f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height">When<span class="header-order-button-label-colon f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height">&nbsp;:&nbsp;</span></p>
+                                    <div class="box-flex no-overflow ai-center   fd-row">
+                                        <p class="header-order-button-content f-label-small-font-size fw-label-small-font-weight lh-label-small-line-height" data-testid="time-picker-header-button-value">ASAP</p>
+                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-testid="time-picker-toggle-icon-open">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.5303 8.44352C18.7966 8.70977 18.8208 9.12643 18.603 9.42006L18.5304 9.50418L12.3286 15.7069C12.1728 15.8628 11.9204 15.8632 11.764 15.708L5.47165 9.46235C5.17767 9.17055 5.1759 8.69568 5.4677 8.4017C5.73298 8.13445 6.14955 8.10869 6.44397 8.32545L6.52835 8.39775L11.7602 13.5894C11.9165 13.7446 12.169 13.7441 12.3248 13.5883L17.4696 8.44361C17.7359 8.17732 18.1525 8.15308 18.4462 8.37091L18.5303 8.44352Z"></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </div>
+                        </div> -->
+                        <div class="cart-icon-wrapper" data-testid="cart-icon-wrapper">
+                            <div class="cart-icon">
+                                <button (click)="openCart(optionModal)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke-container" width="24" height="24" aria-hidden="true" focusable="false">
+                                        <path fill="#707070" d="M12 2.75a4.75 4.75 0 014.744 4.5h3.103a1 1 0 01.99 1.141l-1.714 12a1 1 0 01-.99.859H5.867a1 1 0 01-.99-.859l-1.714-12a1 1 0 01.99-1.141h3.103A4.75 4.75 0 0112 2.75zm5.559 14.75H6.44a.4.4 0 00-.396.457l.208 1.45a.4.4 0 00.396.343H17.35a.4.4 0 00.396-.343l.208-1.45a.4.4 0 00-.396-.457zm1.25-8.75H5.19a.4.4 0 00-.396.457l.922 6.45a.4.4 0 00.396.343h11.775a.4.4 0 00.396-.343l.922-6.45a.4.4 0 00-.396-.457zM12 4.25a3.251 3.251 0 00-3.193 2.638.305.305 0 00.3.362h5.796a.297.297 0 00.292-.35A3.251 3.251 0 0012 4.25z"></path>
+                                    </svg>
+                                    <span class="sr-only"></span>
+                                    <span class="products-count" *ngIf="count > 0" aria-hidden="true">{{count}}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pick-up"></div>
+                    </header>
+                </section>
+              </div>
+              <main>
+                <ngb-carousel >
+                  <ng-container *ngFor="let item of banners; let i=index">
+                    <ng-template ngbSlide>
+                      <div class="picsum-img-wrapper">
+                        <img [src]="imagePath(item.photoPath)" [alt]="item.subject">
+                      </div>
+                   
+                    </ng-template>
+                 
+                  </ng-container>
+                  
+                </ngb-carousel>
+                <div class="box-flex fd-row">
+                    <div class="vendor-section">
+                        <section class="rdp-banner-container" style="top: 64px; margin-bottom: 0px;"></section>
+                        <section class="box-flex vendor-info-section">
+                            <div class="box-flex vendor-responsive-banner bottom-shadow"><img data-testid="hero-banner-image" class="vendor-responsive-banner__image" srcset="https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=400&amp;height=100&amp;quality=45 400w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=600&amp;height=150&amp;quality=45 600w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=800&amp;height=200&amp;quality=45 800w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=1000&amp;height=250&amp;quality=45 1000w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=1200&amp;height=300&amp;quality=45 1200w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=1600&amp;height=400&amp;quality=45 1600w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=2000&amp;height=500&amp;quality=45 2000w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=2500&amp;height=625&amp;quality=45 2500w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=3000&amp;height=750&amp;quality=45 3000w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=3500&amp;height=875&amp;quality=45 3500w, https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg?width=4000&amp;height=1000&amp;quality=45 4000w, " src="https://images.deliveryhero.io/image/fd-tw/LH/otko-hero.jpg" sizes="(min-width:960px) calc(100vw - 352px),100vw" [alt]="storeInfo.storeName"></div>
+                            <div class="box-flex vendor-info-main section-container ai-start  fw-wrap">
+                                <button class="box-flex w-100">
+                                    <div class="box-flex w-100 ai-start   fd-row">
+                                        <div class="box-flex vendor-info-main-details" aria-label="霏翔宇宙複合式餐飲 - Reviews &amp; info" data-testid="vendor-main-info-section-button">
+                                            <h1 class="sm:f-title-medium-font-size md:f-title-medium-font-size lg:f-title-medium-font-size f-title-large-font-size sm:fw-title-medium-font-weight md:fw-title-medium-font-weight lg:fw-title-medium-font-weight fw-title-large-font-weight sm:mb-sm mb-md">{{storeInfo.storeName}}</h1>
+                                        </div>
+                                        <div class="box-flex vendor-info-main-info-button ai-center jc-end fw-nowrap fd-row" aria-hidden="true">
+                                            <div class="box-flex" aria-label="霏翔宇宙複合式餐飲 - Reviews &amp; info">
+                                                <span class="vendor-info-link cl-interaction-primary f-paragraph-medium-font-size fw-paragraph-medium-font-weight lh-paragraph-medium-line-height" data-testid="vendor-info-side-text">Reviews &amp; info</span>
+                                                <!-- <div class="box-flex vendor-info-icon">
+                                                    <svg aria-hidden="true" focusable="false" class="fl-brand-primary" width="37" height="37" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                        <defs>
+                                                            <path d="M12 5a7 7 0 110 14 7 7 0 010-14zm0 1a6 6 0 100 12 6 6 0 000-12zm.5 4.5v3.8h1v1h-3v-1h1v-2.8h-1v-1h2zM12.05 8a.75.75 0 110 1.5.75.75 0 010-1.5z" id="sIcInfoSm"></path>
+                                                        </defs>
+                                                        <use xlink:href="#sIcInfoSm" fill-rule="evenodd"></use>
+                                                    </svg>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="box-flex info-section-data-container ai-center  fw-wrap fd-row p-relative mb-xs" data-testid="vendor-info-section-crd-container">
+                                        <div id="vendor-tag-0" class="bds-c-tag bds-c-tag--size-standard bds-c-tag--variant-primary mr-xs" data-testid="vendor-tag-0"><span class="bds-c-tag__label">滿$200打9折 </span></div>
+                                        <div class="box-flex box-flex pr-xs" data-testid="vendor-info-ratings">
+                                            <div class="box-flex rating ai-center  fw-nowrap fd-row" id="vendor-rating" data-testid="vendor-rating">
+                                                <svg aria-hidden="true" focusable="false" class="fl-none" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.88486 12.1954L4.88943 13.7787C4.64763 13.9065 4.34857 13.813 4.22145 13.5699C4.17083 13.4731 4.15336 13.3622 4.17175 13.2544L4.74383 9.90101C4.75759 9.82035 4.73099 9.73805 4.6727 9.68092L2.24935 7.30602C2.05373 7.11431 2.04973 6.79947 2.24041 6.6028C2.31634 6.52448 2.41583 6.47352 2.52348 6.45779L5.87247 5.96853C5.95302 5.95676 6.02265 5.9059 6.05868 5.83251L7.55639 2.78147C7.67729 2.53518 7.97388 2.43406 8.21885 2.55561C8.3164 2.60402 8.39535 2.6834 8.4435 2.78147L9.94121 5.83251C9.97723 5.9059 10.0469 5.95676 10.1274 5.96853L13.4764 6.45779C13.7467 6.49728 13.9341 6.74963 13.8948 7.02142C13.8791 7.12965 13.8284 7.22968 13.7505 7.30602L11.3272 9.68092C11.2689 9.73805 11.2423 9.82035 11.2561 9.90101L11.8281 13.2544C11.8743 13.5251 11.6935 13.7822 11.4242 13.8286C11.317 13.8471 11.2067 13.8296 11.1105 13.7787L8.11503 12.1954C8.04298 12.1573 7.95691 12.1573 7.88486 12.1954Z"></path>
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.3294 12.4109L7.41756 11.3071C7.78198 11.1145 8.21791 11.1145 8.58233 11.3071L10.6705 12.4109L10.2703 10.065C10.2016 9.66218 10.3341 9.24989 10.6273 8.96256L12.3274 7.2964L9.98286 6.95388C9.57451 6.89422 9.22406 6.63679 9.04353 6.26902L7.99994 4.14309L6.95635 6.26902C6.77582 6.63679 6.42538 6.89422 6.01702 6.95388L3.67247 7.2964L5.37263 8.96256C5.66581 9.24989 5.79831 9.66218 5.72958 10.065L5.3294 12.4109ZM4.88943 13.7745L7.88486 12.1912C7.95691 12.1532 8.04298 12.1532 8.11503 12.1912L11.1105 13.7745C11.2067 13.8254 11.317 13.843 11.4242 13.8245C11.6935 13.7781 11.8743 13.521 11.8281 13.2503L11.2561 9.89686C11.2423 9.8162 11.2689 9.7339 11.3272 9.67677L13.7505 7.30187C13.8284 7.22553 13.8791 7.1255 13.8948 7.01727C13.9341 6.74548 13.7467 6.49313 13.4764 6.45364L10.1274 5.96438C10.0469 5.95261 9.97723 5.90175 9.94121 5.82836L8.4435 2.77732C8.39535 2.67925 8.3164 2.59986 8.21885 2.55146C7.97388 2.42991 7.67729 2.53103 7.55639 2.77732L6.05868 5.82836C6.02265 5.90175 5.95302 5.95261 5.87247 5.96438L2.52348 6.45364C2.41583 6.46937 2.31634 6.52033 2.24041 6.59865C2.04973 6.79532 2.05373 7.11016 2.24935 7.30187L4.6727 9.67677C4.73099 9.7339 4.75759 9.8162 4.74383 9.89686L4.17175 13.2503C4.15336 13.3581 4.17083 13.469 4.22145 13.5658C4.34857 13.8089 4.64763 13.9023 4.88943 13.7745Z"></path>
+                                                </svg>
+                                                <span class="rating--label-primary cl-rating-tag-text f-label-small-font-size fw-label-small-font-weight lh-label-small-line-height">4.6/5</span><span class="rating--label-secondary cl-neutral-secondary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height">(100+)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="box-flex vendor-info-main-details-cuisines ai-center jc-start fw-wrap fd-row">
+                                        <li class="characteristic-list-item">
+                                            <span class="cl-rating f-label-medium-font-size fw-label-medium-font-weight lh-label-medium-line-height" data-testid="vendor-buget-symbol-highlighted">$</span><span class="cl-rating f-label-medium-font-size fw-label-medium-font-weight lh-label-medium-line-height" data-testid="vendor-buget-symbol-highlighted">$</span><span class="cl-rating f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height" data-testid="vendor-buget-symbol-normal">$</span>
+                                            <div class="box-flex info-items-dot-separator"></div>
+                                        </li>
+                                        <li class="characteristic-list-item" data-testid="vendor-characteristic-list-item">
+                                            <span class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height">Snacks</span>
+                                            <div class="box-flex info-items-dot-separator"></div>
+                                        </li>
+                                        <li class="characteristic-list-item" data-testid="vendor-characteristic-list-item">
+                                            <span class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height">Non Mark-Up </span>
+                                            <div class="box-flex info-items-dot-separator"></div>
+                                        </li>
+                                    </ul> -->
+                                </button>
+                            </div>
+                        </section>
+                        <!-- <section data-testid="offers-carousel-section" class="section-container offers-carousel-section">
+                            <div class="box-flex py-sm">
+                                <div class="offers-carousel-title f-label-small-font-size fw-label-small-font-weight lh-label-small-line-height pt-xs pb-sm" data-testid="offers-carousel-title">Offers</div>
+                                <div class="lane-component">
+                                    <div class="lane-wrapper">
+                                        <ul data-testid="offers-carousel-lane" class="offers-carousel-lane">
+                                            <li class="box-flex p-relative mr-sm" data-testid="offer-tile">
+                                                <button class="box-flex bg-information-highlight jc-center px-sm br-xxs" data-testid="offer-tile-content" style="height: 80px; text-align: left; min-width: 320px; z-index: 2;">
+                                                    <div class="box-flex fd-row pb-xxs" data-testid="offer-tile-title">
+                                                        <svg width="30" height="18" viewBox="0 0 24 16" fill="neutral-secondary" xmlns="http://www.w3.org/2000/svg" class="fl-neutral-secondary" data-testid="subscription-pro-icon">
+                                                            <path d="M24 2L22.4155 14L3.495 13.999L4.22621 10.4152H4.2499C4.39071 10.7203 4.62585 10.9615 4.9542 11.1386C5.28254 11.3155 5.64994 11.4045 6.05571 11.4045C6.49351 11.4045 6.90258 11.3259 7.28203 11.1695C7.66171 11.0128 7.99949 10.7966 8.29516 10.5201C8.59126 10.2442 8.83912 9.9188 9.03893 9.54369C9.23853 9.16835 9.37759 8.76258 9.45611 8.32548C9.52652 7.89723 9.52608 7.49532 9.45502 7.12021C9.38417 6.7451 9.24774 6.41744 9.04639 6.13701C8.84482 5.85681 8.57942 5.63837 8.25019 5.4817C7.92118 5.32525 7.53756 5.24691 7.09976 5.24691C6.71746 5.24691 6.3323 5.33365 5.94451 5.50645C5.62098 5.65083 5.34011 5.84361 5.10201 6.0852L4.96428 6.23601H4.94016L5.07615 5.39541H4.00117L2.42 13.999L0 14L1.59591 2H24ZM18.267 5.24678C17.845 5.24678 17.4381 5.32738 17.0468 5.48792C16.6548 5.64868 16.2993 5.86939 15.9793 6.14936C15.6593 6.42979 15.3895 6.7554 15.1699 7.12643C14.9501 7.49746 14.8056 7.89709 14.7352 8.32557C14.6571 8.75427 14.6654 9.15618 14.7604 9.53129C14.8552 9.9064 15.0133 10.232 15.2351 10.5077C15.4566 10.7842 15.7378 11.0025 16.0786 11.1634C16.4197 11.324 16.8009 11.4046 17.2231 11.4046C17.6452 11.4046 18.052 11.324 18.4438 11.1634C18.8351 11.0025 19.1911 10.7842 19.5108 10.5077C19.8309 10.232 20.0985 9.9064 20.3141 9.53129C20.5297 9.15618 20.6766 8.75427 20.7549 8.32557C20.8251 7.89709 20.8144 7.49746 20.7238 7.12643C20.6325 6.7554 20.4744 6.42979 20.2491 6.14936C20.0237 5.86939 19.7425 5.64868 19.4053 5.48792C19.0684 5.32738 18.689 5.24678 18.267 5.24678ZM14.1224 5.24693C13.7641 5.24693 13.4105 5.34389 13.0615 5.53735C12.7128 5.73127 12.4414 5.98467 12.2475 6.29802H12.2239L12.3737 5.39544H11.2989L10.313 11.256H11.3877L11.881 8.31347C11.9903 7.67041 12.2094 7.19653 12.5382 6.89135C12.8667 6.5864 13.2942 6.43381 13.8195 6.43381C13.9073 6.43381 13.9926 6.44221 14.0755 6.45879C14.1586 6.47536 14.2435 6.4958 14.3302 6.52032L14.5857 5.32119C14.4519 5.27168 14.2975 5.24693 14.1224 5.24693ZM6.78984 6.28551C7.07651 6.28551 7.32546 6.33728 7.53712 6.44015C7.74878 6.54323 7.92118 6.68333 8.05454 6.86045C8.18768 7.03778 8.27585 7.25191 8.3195 7.5035C8.36271 7.75509 8.35942 8.02893 8.30963 8.32548C8.25962 8.62248 8.16882 8.89655 8.03721 9.14768C7.90495 9.3995 7.74462 9.61362 7.55533 9.79074C7.36626 9.9683 7.14867 10.1084 6.90236 10.211C6.65604 10.3144 6.38954 10.3659 6.10287 10.3659C5.81641 10.3659 5.56505 10.3144 5.34966 10.211C5.13405 10.1084 4.96165 9.9683 4.83224 9.79074C4.70283 9.61362 4.61663 9.3995 4.57364 9.14768C4.52999 8.89655 4.53328 8.62248 4.58307 8.32548C4.63308 8.02893 4.72192 7.75509 4.84979 7.5035C4.97766 7.25191 5.13822 7.03778 5.33146 6.86045C5.52426 6.68333 5.74403 6.54323 5.99035 6.44015C6.23689 6.33728 6.50316 6.28551 6.78984 6.28551ZM18.0887 6.2856C18.3753 6.2856 18.6243 6.33715 18.8359 6.44001C19.0476 6.5431 19.22 6.68342 19.3531 6.86054C19.4865 7.03787 19.5749 7.25177 19.6183 7.50359C19.6613 7.75495 19.6582 8.02879 19.6082 8.32557C19.5584 8.62257 19.4676 8.89664 19.3358 9.14777C19.204 9.39936 19.0432 9.61372 18.8544 9.7906C18.6649 9.96817 18.4473 10.1085 18.201 10.2111C17.9546 10.3144 17.6884 10.3658 17.4017 10.3658C17.115 10.3658 16.8641 10.3144 16.6485 10.2111C16.4329 10.1085 16.2605 9.96817 16.1311 9.7906C16.0017 9.61372 15.9152 9.39936 15.8722 9.14777C15.8288 8.89664 15.8319 8.62257 15.8819 8.32557C15.9319 8.02879 16.0207 7.75495 16.1484 7.50359C16.2765 7.25177 16.4368 7.03787 16.6301 6.86054C16.8231 6.68342 17.0429 6.5431 17.2892 6.44001C17.5355 6.33715 17.802 6.2856 18.0887 6.2856Z"></path>
+                                                        </svg>
+                                                        <div class="cl-neutral-secondary f-label-medium-font-size fw-label-medium-font-weight lh-label-medium-line-height pl-xxs">15% off</div>
+                                                    </div>
+                                                    <div class="box-flex">
+                                                        <div class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height" data-testid="offer-tile-description">and special savings for pandapro members</div>
+                                                    </div>
+                                                </button>
+                                            </li>
+                                            <li class="box-flex p-relative mr-sm" data-testid="offer-tile">
+                                                <button class="box-flex bg-interaction-primary-feedback jc-center px-sm br-xxs" data-testid="offer-tile-content" style="height: 80px; text-align: left; min-width: 320px; z-index: 2;">
+                                                    <div class="box-flex fd-row pb-xxs" data-testid="offer-tile-title">
+                                                        <div class="cl-interaction-primary f-label-medium-font-size fw-label-medium-font-weight lh-label-medium-line-height pl-zero">10% off</div>
+                                                    </div>
+                                                    <div class="box-flex">
+                                                        <div class="cl-neutral-primary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height" data-testid="offer-tile-description">on minimum orders of $ 200</div>
+                                                    </div>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section> -->
+                        <section
+                        [ngClass]="selectedIndex == 2 ? 'box-flex vendor-details-navigation dish-menu-category-list fixed' : 'box-flex vendor-details-navigation dish-menu-category-list'"
+                          data-testid="vendor-details-navigation-container" style="top: 64px;">
+                            <div class="box-flex section-container ai-center   fd-row">
+                                <div class="dish-control-holder" data-testid="swimlane-container">
+                                    <div class="nav-holder" id="nav-holder">
+                                        <ul>
+                                            <li id="category-id-0"><a href="#menu__category-id-0" title="Popular" class="" data-testid="category-swimlane-item">{{'CATEGORY' | translate}}</a></li>
+                                            <ng-container *ngFor="let _category of mainCategory">
+                                              <li id="category-id-1925538">
+                                                <a (click)="loadProduct(_category)" [title]="_category?.categoryName" class="" data-testid="category-swimlane-item">
+                                                  {{_category?.categoryName || null}}
+                                                </a>
+                                              </li>
+                                            </ng-container>
+                                            
+                                            <!-- <li id="category-id-3346153"><a href="#menu__category-id-3346153" title="飯類" class="" data-testid="category-swimlane-item">飯類</a></li>
+                                            <li id="category-id-3346251"><a href="#menu__category-id-3346251" title="麵類" class="" data-testid="category-swimlane-item">麵類</a></li>
+                                            <li id="category-id-1925542"><a href="#menu__category-id-1925542" title="吐司厚片類" class="" data-testid="category-swimlane-item">吐司厚片類</a></li>
+                                            <li id="category-id-3526032"><a href="#menu__category-id-3526032" title="美式漢堡" class="" data-testid="category-swimlane-item">美式漢堡</a></li>
+                                            <li id="category-id-3346241"><a href="#menu__category-id-3346241" title="其它單點" class="" data-testid="category-swimlane-item">其它單點</a></li>
+                                            <li id="category-id-1925537"><a href="#menu__category-id-1925537" title="※注意事項" class="" data-testid="category-swimlane-item">※注意事項</a></li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="menu__items-wrapper menu" id="menu">
+                          <ng-container *ngIf="products?.length > 0; else elseTemplate2">
+                            <ng-container *ngFor="let _products of products">
+                              <div *ngIf="_products?.list_product.length > 0" class="box-flex dish-category-section bg-white mt-sm" data-testid="menu-popular-category-section" data-id="0">
+                                <div tabindex="-1" class="dish-category-section__inner-wrapper section-container" id="menu__category-id-0">
+                                  <div class="box-flex ai-center   fd-row">
+                                    <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="24" height="24">
+                                      <path d="M10.346 5.598c-1.012-.89-1.42-1.944-1.222-3.16l.03-.168a.333.333 0 00-.545-.318l-.336.298c-.8.717-1.297 1.24-1.491 1.57l-.07.129c-.363.709-.707 2.156.621 3.602.972.84.667 2.1-.551 2.1-.525 0-.912-1.055-1.162-3.166l-.047-.436a.333.333 0 00-.564-.206C2.96 7.82 2.524 9.92 3.702 12.141a4.942 4.942 0 006.752 1.809c2.364-1.365 3.327-4.14 2.213-5.95l-.231-.304c-.584-.758-.73-.902-2.09-2.098z"></path>
+                                    </svg>
+                                    <h2 class="dish-category-title cl-neutral-primary f-title-large-font-size fw-title-large-font-weight lh-title-large-line-height">{{_products.category}}</h2>
+                                  </div>
+                                  <ul class="box-flex jc-space-between fw-wrap fd-row">
+                                    <ng-container *ngFor="let item of _products?.list_product">
+                                      <li class="box-flex dish-card bg-white jc-space-between p-relative mt-sm sm:pl-zero md:pl-md lg:pl-md pl-sm sm:pr-zero md:pr-md lg:pr-md pr-sm sm:pt-zero md:pt-md lg:pt-md pt-sm sm:pb-sm md:pb-md lg:pb-md pb-sm br-xxs bs-1" data-testid="menu-product">
+                                          <button (click)="addToCart(item)" data-testid="menu-product-button-overlay-id" class="product-button-overlay" aria-label="煎餃,  $ 36 - Add to cart"></button>
+                                          <div class="box-flex ai-start jc-space-between  fd-row" aria-hidden="true">
+                                              <div class="box-flex reduce-width-for-image w-100 pr-sm">
+                                                  <h3 class="truncate cl-neutral-primary sm:f-label-medium-font-size f-title-small-font-size sm:fw-label-medium-font-weight fw-title-small-font-weight"><span class="vertical-align-middle" data-testid="menu-product-name">{{item.productName}}</span></h3>
+                                                  <p class="dish-description truncate cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height mt-xxs" data-testid="menu-product-description">{{item.productDescription}}</p>
+                                              </div>
+                                              <picture class="dish-card-image" data-testid="menu-product-image" 
+                                              [style.background-image]="'url(' + imagePath(item.photoPath) + ')'"
+                                              >
+                                                  <div></div>
+                                              </picture>
+                                          </div>
+                                          <div   class="box-flex ai-start jc-space-between  fd-row">
+                                              <div class="box-flex grow reduce-width-for-image ai-start jc-space-between  fd-row pr-sm" data-testid="product-action-bar-container">
+                                                  <div class="box-flex ai-center  fw-wrap fd-row">
+                                                      <p class="cl-neutral-primary sm:f-ribbon-base-font-size f-label-large-font-size sm:fw-ribbon-base-font-weight fw-label-large-font-weight mr-xs mt-xxs" data-testid="menu-product-price">from $ {{item.productPrice}}<span class="strike-through cl-neutral-secondary sm:f-14 f-paragraph-medium-font-size sm:fw-light fw-paragraph-medium-font-weight ml-xxs" data-testid="menu-product-price-before-discount">$ {{item.productPriceDiscount}}</span></p>
+                                                      <div class="box-flex fw-wrap fd-row pr-xs"></div>
+                                                  </div>
+                                              </div>
+                                              <!-- <div  class="btn-adding">+</div> -->
+                                              <div  class="box-flex button add-to-cart-button ai-center jc-center  fd-row ml-sm  mt-xxs" data-testid="menu-product-add-to-cart-button">
+                                                  <svg  aria-hidden="true" focusable="false" class="fl-white" width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                      <defs>
+                                                          <path d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" id="sIcPlus"></path>
+                                                      </defs>
+                                                      <use  xlink:href="#sIcPlus" fill-rule="evenodd"></use>
+                                                  </svg>
+                                              </div>
+                                          </div>
+                                      </li>
+                                    </ng-container>
+                                    
+                                  </ul>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #elseTemplate2>
+                            <p>{{'PRODUCT_EMPTY'| translate}}</p>
+                          </ng-template>
+                          
+                          
+                          
+                          
+                        </section>
+                        <section class="section-container"></section>
+                    </div>
+                    <aside class="box-flex cart-column bs-3">
+                        <div class="box-flex" id="cart" data-testid="cart-section" style="top: 64px;">
+                            <div id="cart-log" aria-live="polite" aria-atomic="true" data-testid="cart-log"><span>Total $ 152</span></div>
+                            <div class="cart-summary cart-summary-container cart-summary-sticky">
+                                <!-- <div class="expedition-container">
+                                    <div class="cart__delivery-toggle" data-testid="cart-delivery-toggle">Delivery <label data-testid="cartlib-delivery-toggle" class="delivery-type toggle"><input class="delivery" type="checkbox" name="delivery-type"><span class="track"></span></label> <span class="pickup-option-container">Pick-Up<span class="tooltip-pickup" title="Get your favorite meals to go with our new pick up feature! Hungry?"></span></span></div>
+                                    <div class="cart__delivery-time">
+                                        <i class="icon-delivery"></i>
+                                        <p class="f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height" tabindex="0" aria-roledescription="Delivery time">35 min</p>
+                                    </div>
+                                </div> -->
+                                <div class="cart-summary-header">
+                                    <h2 class="cart-summary-header-title">{{'Your order from' | translate}} <span>{{storeInfo.storeName}}</span></h2>
+                                </div>
+                                <div class="cart-summary-items--wrapper" style="max-height: 115px;">
+                                    <div class="cart-summary-group-item" data-testid="cart-summary-group-item">
+                                        <div class="cart-summary-items" data-testid="cart-summary-items">
+                                            <ul class="box-flex cart-summary-item-list cart-summary-item-list--expanded cart-summary-item-list--nonborder" data-testid="cart-list-items">
+                                                <li class="box-flex">
+                                                    <div class="product-row" data-testid="row-card">
+                                                        <section class="product-card" data-testid="cart-product-card">
+                                                            <div class="product-card-attributes">
+                                                                <button class="button-text status--default product-name-prices" data-testid="cart-product-button" aria-label="咖哩炸雞飯,  $ 99 - Double-tap to add special instructions for your dish" tabindex="0" aria-live="polite">
+                                                                    <span class="product-card-name">咖哩炸雞飯</span>
+                                                                    <div class="product-card-prices">
+                                                                        <p class="product-card-price">$ 99</p>
+                                                                    </div>
+                                                                </button>
+                                                                <div class="product-card-description">
+                                                                    <div class="product-card-variations">
+                                                                        <h4 class="cl-neutral-primary f-label-small-font-size fw-label-small-font-weight lh-label-small-line-height"></h4>
+                                                                        <div class="box-flex product-toppings" data-testid="card-product-toppings"></div>
+                                                                    </div>
+                                                                    <div class="instant-cart-manager-container">
+                                                                        <div class="instant-cart-manager instant-cart-manager-variant-small" data-quantity="1">
+                                                                            <button aria-label="Delete" class="decrease-product-count" data-testid="cartlib-remove-icon">
+                                                                                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                                    <g id="ic-trash-sm" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                                        <g id="Group-4" transform="translate(7.000000, 6.000000)" fill="#D70F64">
+                                                                                            <path d="M3.961,10.0159912 L3.961,5.01245117 L4.966,5.01245117 L4.966,10.0159912 L3.961,10.0159912 Z M5.971,10.0159912 L5.971,5.01245117 L6.976,5.01245117 L6.976,10.0159912 L5.971,10.0159912 Z M3.0024,0.0003 L8.0024,0.0003 L8.0024,2.0003 L10.9994,2.0003 L10.9994,3.0003 L9.9004,3.0003 L8.9994,13.0003 L2.0004,13.0003 L1.0994,3.0003 L0.0004,3.0003 L0.0004,2.0003 L3.0024,2.0003 L3.0024,0.0003 Z M4.0024,2.0003 L7.0024,2.0003 L7.0024,0.9993 L4.0024,0.9993 L4.0024,2.0003 Z M2.1054,3.0003 L2.9054,12.0003 L8.0954,12.0003 L8.8944,3.0003 L2.1054,3.0003 Z" id="Combined-Shape"></path>
+                                                                                        </g>
+                                                                                    </g>
+                                                                                </svg>
+                                                                            </button>
+                                                                            <span data-testid="instant-cart-quantity" class="instant-cart-manager-quantity">1</span>
+                                                                            <button aria-label="Add" class="increase-product-count" data-testid="cartlib-plus-icon">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                                                    <path fill="#7D7D7D" id="ic-plus-sm-path" d="M12 12V7h1v5h5v1h-5v5h-1v-5H7v-1h5z"></path>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="box-flex rs-cross-sell-cart bg-white" data-testid="cross-sell-cart">
+                                        <div class="box-flex px-sm    pt-sm">
+                                            <h3 class="cl-neutral-primary f-title-small-font-size fw-title-small-font-weight lh-title-small-line-height" data-testid="cross-sell-cart-headline">Popular with your order</h3>
+                                        </div>
+                                        <div class="box-flex px-sm">
+                                            <h4 class="cl-neutral-primary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height">Other customers also bought these</h4>
+                                        </div>
+                                        <div class="box-flex fd-row">
+                                            <div class="box-flex cross-sell-abstract-carousel" data-testid="cross-sell-abstract-carousel">
+                                                <div class="box-flex cross-sell-abstract-carousel--inner  p-relative">
+                                                    <div class="box-flex cross-sell-abstract-carousel-elements rs-cross-sell-cart__products fd-row pt-sm pb-sm" data-testid="cross-sell-abstract-carousel-elements">
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/45676053.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 36</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 40</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">煎餃</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/47957948.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 39</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 43</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">雞塊</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/45684893.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 36</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 40</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">薯條</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/50270589.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 68</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 75</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">咔啦雞腿堡【辣】</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/50271007.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 36</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 40</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">洋蔥圈</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/45676052.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 68</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 75</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">茄汁肉醬鐵板麵</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/45684892.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 63</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 70</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">原味咖哩飯</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/50270537.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 27</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 30</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">奶酥吐司</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/50270620.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 68</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 75</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">咔啦雞腿堡【不辣】</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-flex cross-sell-abstract-carousel-element rs-cross-sell-cart__product bg-neutral-surface fd-row mr-st pa-zero bs-2" data-testid="abstract-carousel-item--wrapper">
+                                                            <div class="rs-cross-sell-image-oriented-tile" data-testid="cross-sell-image-oriented-tile">
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__image-container p-relative mb-xs br-xs">
+                                                                    <img src="https://images.deliveryhero.io/image/fd-tw/Products/50271002.jpg?width=120&amp;height=120" alt="placeholder" data-testid="cross-sell-image-oriented-tile__image">
+                                                                    <button class="rs-cross-sell-image-oriented-tile__add-to-cart-button" aria-label="Add cross-sell item" data-testid="cross-sell-image-oriented-tile__add-to-cart-button">
+                                                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                                            <defs>
+                                                                                <path d="M13 7v5h5v1h-5v5h-1v-5H7v-1h5V7h1z" id="sIcPlusSm"></path>
+                                                                            </defs>
+                                                                            <use xlink:href="#sIcPlusSm" fill-rule="evenodd"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="box-flex rs-cross-sell-image-oriented-tile__product-info jc-space-between  fd-column">
+                                                                    <div class="box-flex rs-cross-sell-image-oriented-tile__product-price fd-row">
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__price cl-neutral-primary f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height" data-testid="cross-sell-image-oriented-tile__product__price">$ 36</p>
+                                                                        <p class="rs-cross-sell-image-oriented-tile__product-price__discount-price cl-neutral-secondary f-paragraph-xsmall-secondary-font-size fw-paragraph-xsmall-secondary-font-weight lh-paragraph-xsmall-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__discount-price">$ 40</p>
+                                                                    </div>
+                                                                    <h4 class="rs-cross-sell-image-oriented-tile__product-name cl-neutral-primary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height" data-testid="cross-sell-image-oriented-tile__product__name">薯餅</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="box-flex bg-white p-absolute    r-xs pa-xxs br-full bs-1" aria-label="Go to next product" data-testid="abstract-carousel-right-arrow" style="top: 35%; z-index: 999;">
+                                                        <svg aria-hidden="true" focusable="false" class="fl-none" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.44365 5.46971C8.70989 5.20343 9.12655 5.17918 9.42018 5.39702L9.5043 5.46963L15.7071 11.6714C15.8629 11.8272 15.8634 12.0796 15.7081 12.236L9.46248 18.5284C9.17067 18.8223 8.6958 18.8241 8.40182 18.5323C8.13457 18.267 8.10881 17.8505 8.32557 17.556L8.39788 17.4716L13.5895 12.2398C13.7447 12.0835 13.7442 11.831 13.5884 11.6752L8.44373 6.53037C8.17744 6.26413 8.1532 5.84747 8.37103 5.55384L8.44365 5.46971Z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cart-add-drinks-button cart-upsell-drinks-button hide">
+                                    <svg class="svg-stroke-container" width="23px" height="20px" viewBox="0 0 23 20" version="1.1">
+                                        <g id="mWeb" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <g transform="translate(-136.000000, -598.000000)" fill="#D70F64">
+                                                <g transform="translate(16.000000, 230.000000)">
+                                                    <g transform="translate(0.000000, 188.000000)">
+                                                        <g transform="translate(0.000000, 170.000000)">
+                                                            <g transform="translate(120.000000, 9.000000)">
+                                                                <g>
+                                                                    <path d="M19.858,15.30525 C19.766,15.41225 18.982,16.13425 15.658,15.02525 C13.695,14.37025 12.223,14.36325 11.278,15.00125 C11.212,15.04525 11.171,15.09925 11.115,15.14725 L10.089,8.99925 L20.91,8.99925 L19.858,15.30525 Z M19.076,19.99925 L11.923,19.99925 L11.349,16.55825 C11.365,16.45425 11.446,16.08525 11.854,15.81925 C12.322,15.51425 13.304,15.29425 15.341,15.97425 C17.547,16.70925 18.866,16.72925 19.656,16.52225 L19.076,19.99925 Z M22.5,7.99925 C22.776,7.99925 23,8.22325 23,8.49925 C23,8.77625 22.776,8.99925 22.5,8.99925 L21.923,8.99925 L19.993,20.58125 C19.953,20.82325 19.744,20.99925 19.5,20.99925 L11.5,20.99925 C11.255,20.99925 11.046,20.82325 11.006,20.58125 L9.076,8.99925 L8.5,8.99925 C8.223,8.99925 8,8.77625 8,8.49925 C8,8.22325 8.223,7.99925 8.5,7.99925 L15,7.99925 L15,4.29225 L18.146,1.14625 C18.341,0.95125 18.658,0.95125 18.853,1.14625 C19.048,1.34125 19.048,1.65825 18.853,1.85325 L16,4.70625 L16,7.99925 L22.5,7.99925 Z M6.5,14 C6.776,14 7,14.224 7,14.5 C7,14.776 6.776,15 6.5,15 L4,15 L4,17.5 C4,17.776 3.776,18 3.5,18 C3.224,18 3,17.776 3,17.5 L3,15 L0.5,15 C0.224,15 0,14.776 0,14.5 C0,14.224 0.224,14 0.5,14 L3,14 L3,11.5 C3,11.224 3.224,11 3.5,11 C3.776,11 4,11.224 4,11.5 L4,14 L6.5,14 Z"></path>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    Add a drink
+                                </div>
+                                <div class="cart-summary-footer">
+                                    <hr class="cart__delivery--cutlery__horizontal--line">
+                                    <div class="cart-summary-amounts-wrapper" data-testid="cartlib-summary-amounts">
+                                        <dl class="cart-summary-amounts-list cart-summary-amounts-minimum-subtotal">
+                                            <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-subtotal">Subtotal</dt>
+                                            <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-subtotal">$ 99</dd>
+                                        </dl>
+                                        <dl class="cart-summary-amounts-list cart-summary-amounts-delivery-fee">
+                                            <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-deliveryfee">Delivery Fee</dt>
+                                            <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-deliveryfee"><span class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height ml-xs">$ 49</span></dd>
+                                        </dl>
+                                        <dl class="cart-summary-amounts-list cart-summary-amounts-service-fee">
+                                            <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-servicefee">
+                                                + Service fee
+                                                <span>
+                                                    ﻿
+                                                    <span data-testid="variable-price-tooltip" class="tooltip-trigger-wrapper variable-price-tooltip" role="button" tabindex="0">
+                                                        <div class="box-flex p-relative">
+                                                            <div data-testid="icon-fallback-content" style="height: 24px; width: 24px;"></div>
+                                                            <div class="box-flex tooltip-con invisible top align-left p-absolute br-xs bs-1" id="tooltip" style="--tooltipClippingOffset:4px; --tooltipMaxWidth:220px;">
+                                                                <div class="box-flex tooltip-arrow bg-information bs-1"></div>
+                                                                <div class="box-flex tooltip-inner bg-information cl-white pa-sm br-xs"><span class="tooltip-inner-text f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height">This fee goes into providing you better customer care and app experience</span></div>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </span>
+                                            </dt>
+                                            <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-servicefee">$ 3</dd>
+                                        </dl>
+                                        <dl class="cart-summary-amounts-list cart-summary-amounts-container-charge">
+                                            <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-container-fee">+ Container fee</dt>
+                                            <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-container-fee">$ 1</dd>
+                                        </dl>
+                                    </div>
+                                    <dl class="cart-summary-amounts-list cart-summary-amounts-total">
+                                        <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-total-price">Total&nbsp;<em>(incl. VAT)</em></dt>
+                                        <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-total-price">$ 152</dd>
+                                    </dl>
+                                    <div>
+                                        <div class="cart-summary-checkout-button"><button class="button status--default full" data-testid="cart-summary-checkout-button" data-vendor-code="otko" aria-live="polite">Go to checkout</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="react-cart-modal">
+                            <div class="modaled modaled-middle">
+                                <div class="modal-cart-button cart-button-container">
+                                    <div class="cart-button" data-testid="sticky-cart-button">
+                                        <button class="button status--default sticky-cart-button" aria-live="polite">
+                                            <span class="cart-icon" aria-hidden="true">
+                                                <a class="vendor-cart-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke-container" width="24" height="24" aria-hidden="true" focusable="false">
+                                                        <path fill="#707070" d="M12 2.75a4.75 4.75 0 014.744 4.5h3.103a1 1 0 01.99 1.141l-1.714 12a1 1 0 01-.99.859H5.867a1 1 0 01-.99-.859l-1.714-12a1 1 0 01.99-1.141h3.103A4.75 4.75 0 0112 2.75zm5.559 14.75H6.44a.4.4 0 00-.396.457l.208 1.45a.4.4 0 00.396.343H17.35a.4.4 0 00.396-.343l.208-1.45a.4.4 0 00-.396-.457zm1.25-8.75H5.19a.4.4 0 00-.396.457l.922 6.45a.4.4 0 00.396.343h11.775a.4.4 0 00.396-.343l.922-6.45a.4.4 0 00-.396-.457zM12 4.25a3.251 3.251 0 00-3.193 2.638.305.305 0 00.3.362h5.796a.297.297 0 00.292-.35A3.251 3.251 0 0012 4.25z"></path>
+                                                    </svg>
+                                                    <span class="products-count" *ngIf="count > 0">{{count}}</span>
+                                                </a>
+                                            </span>
+                                            <span class="" (click)="openCart(optionModal)">{{'View Cart' | translate}}</span>
+                                            <span class="products-value" >$ {{totalPrice}}</span>
+                                            <div data-testid="loading-dots" class="calcul-animation"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+              </main>
+              <footer class="footer">
+                  
+                  
+              </footer>
+
+              <ngb-carousel *ngIf="news?.length > 0">
+                <ng-template ngbSlide>
+                  <div class="row">
+                    <div style="cursor: pointer;" (click)="detailNew(item)" class="item card col-md-3" *ngFor="let item of news">
+                      <img [src]="imagePath(item.photoPath)" class="card-img-top" [alt]="item.subject">
+                      <div class="card-body">
+                        <h5 class="card-title">{{item.subject}}</h5>
+                        <a style="cursor: pointer;" (click)="detailNew(item)"   class="btn btn-primary">{{'Read' | translate}}</a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-carousel>
+          </div>
+       
+      </div>
+      
+    </body>
   </div>
 <ng-template #optionModal let-modal>
   <div class="modal-header my-modal">
@@ -469,15 +1077,4 @@
   </div>
 </ng-template>
 
-<!-- <div class="footer" style="height: auto; background-color: #233b2e">
 
-  <div class="row">
-    <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
-      <a class="btn-mobile-login" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-    </div>
-  </div>
-  <div class="container">
-
-    
-  </div>
-</div> -->

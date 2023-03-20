@@ -169,6 +169,7 @@ export class StoreProfileComponent  implements OnInit {
        this.alert.createTitle,
        this.alert.createMessage,
        () => {
+        this.model.createBy = this.user.id;
         this.model.accountGuid = this.user.uid
         this.model.storeOpenTime = this.start_times
         this.model.storeCloseTime = this.end_times
@@ -204,6 +205,7 @@ export class StoreProfileComponent  implements OnInit {
        this.alert.updateTitle,
        this.alert.updateMessage,
        () => {
+        this.model.createBy = this.user.id;
          this.model.file = this.file || [];
          this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
            (res) => {

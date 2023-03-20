@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   key: string;
   sysConf: any;
   public urlLineAuth = environment.redirectOfficialAccount;
+ 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
