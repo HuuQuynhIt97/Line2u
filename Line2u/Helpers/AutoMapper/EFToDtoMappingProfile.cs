@@ -50,6 +50,8 @@ namespace Line2u.Helpers.AutoMapper
             CreateMap<StoreProfile, StoreProfilesDto>();
             CreateMap<Product, ProductsDto>();
             CreateMap<MainCategory, MainCategoryDto>();
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDetail, OrderDetailDto>();
 
         }
 

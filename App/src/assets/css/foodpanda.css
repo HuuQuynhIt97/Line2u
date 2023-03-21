@@ -420,3 +420,18 @@
     position: fixed ;
     z-index: 99;
   }
+
+  .account .svg-stroke-container circle {
+    fill: #6c757d !important;
+}
+.sticky-cart-button {
+    background-color: #233b2e !important;
+    width: 100%;
+}
+.cart-icon .svg-stroke-container path {
+    fill: #ffffff !important;
+    transition: stroke .15s cubic-bezier(.25,.46,.45,.94);
+}
+.cart-icon .products-count {
+    color: #fff !important;
+}

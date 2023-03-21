@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, UtilitiesService } from 'herr-core';
@@ -76,6 +76,7 @@ export class HomeStoreComponent implements OnInit {
   responsiveOptions;
   selectedIndex = -1;
   isLogin: boolean = false
+  isOpenDropdown: boolean = false
   @HostListener("window:scroll", [])onWindowScroll() {
     //.scrollTop
     if(window.pageYOffset > 500) {
@@ -84,8 +85,12 @@ export class HomeStoreComponent implements OnInit {
       this.selectedIndex =  -1
     }
  }
+ @ViewChild('toggleButton') toggleButton: ElementRef;
+ @ViewChild('menu') menu: ElementRef;
   constructor(
     private spinner: NgxSpinnerService,
+    private renderer: Renderer2,
+    private eRef: ElementRef,
     private sysMenuService: SysMenuService,
     private webNewsService: WebNewsUserService,
     private service: StoreProfileService,
@@ -108,6 +113,9 @@ export class HomeStoreComponent implements OnInit {
       numVisible: 1,
       numScroll: 3
   }];
+  this.renderer.listen('window', 'click',(e:Event)=>{
+    // this.isOpenDropdown = !this.isOpenDropdown;
+    } );
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -131,6 +139,9 @@ export class HomeStoreComponent implements OnInit {
     this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
    
+  }
+  OpenDropdown() {
+    this.isOpenDropdown = !this.isOpenDropdown
   }
   loadBannerData() {
     let id = this.storeInfo.createBy !== null ? this.storeInfo.createBy : 0
@@ -176,6 +187,7 @@ export class HomeStoreComponent implements OnInit {
     this.router.navigate([`home/news-detail/${item.id}`])
   }
   addToCart(item: Products) {
+    this.isOpenDropdown = false
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")
     if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
       this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
@@ -286,6 +298,7 @@ export class HomeStoreComponent implements OnInit {
     if(cart_detail.length === 0) {
       return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
+      console.log(cart_detail)
       this.removeLocalStore('cart')
       this.removeLocalStore('cart_detail')
       this.count = 0

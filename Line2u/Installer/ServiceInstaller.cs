@@ -34,6 +34,8 @@ namespace Line2u.Installer
             services.AddScoped<IStoreProfileService, StoreProfileService>();
             services.AddScoped<IMainCategoryService, MainCategoryService>();
             services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
 
         }
     }
