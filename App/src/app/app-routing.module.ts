@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ForgotPasswordComponent } from './views/forgot-password/forgot-password.component';
 import { ForgotUsernameComponent } from './views/forgot-username/forgot-username.component';
+import { CheckOutComponent } from './views/home/home-store/check-out/check-out.component';
 import { HomeStoreComponent } from './views/home/home-store/home-store.component';
+import { OrderTrackingComponent } from './views/home/home-store/order-tracking/order-tracking.component';
+import { ShopCartComponent } from './views/home/home-store/shop-cart/shop-cart.component';
 import { BannerComponent } from './views/home/home-user-anonymous/banner/banner.component';
 import { HelpGuidComponent } from './views/home/home-user-anonymous/help-guid/help-guid.component';
 import { PrivacyComponent } from './views/home/home-user-anonymous/privacy/privacy.component';
@@ -173,6 +176,27 @@ const routes: Routes = [
     component: HomeStoreComponent,
     data: {
       title: 'Home Store'
+    }
+  },
+  {
+    path: 'home/store/:storeName/:id/shop-cart',
+    component: ShopCartComponent,
+    data: {
+      title: 'Shop Cart'
+    }
+  },
+  {
+    path: 'home/store/:storeName/:id/shop-cart/check-out',
+    component: CheckOutComponent,
+    data: {
+      title: 'Check out'
+    }
+  },
+  {
+    path: 'home/store/:storeName/:id/order-tracking',
+    component: OrderTrackingComponent,
+    data: {
+      title: 'Order Tracking'
     }
   },
   {

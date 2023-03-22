@@ -117,12 +117,25 @@
             <label for="uid">{{ "WebBanner_Link" | translate }}</label>
             <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
             <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
-            <input
+
+            <ejs-dropdownlist
+              style="width: 200px"
+              [fields]="categoryFields"
+              [allowFiltering]="true"
+              id="toolbar_dropdown"
+              #toolbar_dropdown
+              [(ngModel)]="model.link"
+              (open)="onOpenPopUpMainDropdown($event)"
+              placeholder="{{'Select News' | translate}}"
+              [dataSource]="categoryData"
+            >
+            </ejs-dropdownlist>
+            <!-- <input
               [(ngModel)]="model.link"
               maxlength="200"
               type="text"
               class="form-control"
-            />
+            /> -->
           </div>
         </div>
   

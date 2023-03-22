@@ -133,6 +133,26 @@ namespace Line2u.Data
                 entity.Property(e => e.AccountId)
                     .HasColumnName("ACCOUNT_ID")
                     .HasMaxLength(40);
+                entity.Property(e => e.CustomerAdress).HasColumnName("Customer_Adress");
+
+                entity.Property(e => e.CustomerEmail).HasColumnName("Customer_Email");
+
+                entity.Property(e => e.CustomerName).HasColumnName("Customer_Name");
+
+                entity.Property(e => e.CustomerPhone)
+                    .HasColumnName("Customer_Phone")
+                    .HasMaxLength(50);
+                entity.Property(e => e.PaymentType)
+                    .HasColumnName("Payment_Type")
+                    .HasMaxLength(50);
+                entity.Property(e => e.IsPayment)
+                    .HasColumnName("IsPayment")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Delivery)
+                   .HasColumnName("Delivery")
+                   .HasMaxLength(50);
+
 
                 entity.Property(e => e.CreateBy)
                     .HasColumnName("CREATE_BY")

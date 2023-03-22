@@ -12,6 +12,7 @@ namespace Line2u.Models
         public string FullName { get; set; }
         public bool ByingStatus { get; set; }
         public bool CompleteStatus { get; set; }
+        public string PaymentType { get; set; }
         public bool PendingStatus { get; set; }
         public decimal Id { get; set; }
         public DateTime? CreateDate { get; set; }
@@ -24,5 +25,11 @@ namespace Line2u.Models
         public string AccountId { get; set; }
         public string ProductGuid { get; set; }
         public string StoreGuid { get; set; }
+        public string CustomerAdress { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerPhone { get; set; }
+        public string IsPayment { get; set; }
+        public string Delivery { get; set; }
+        public string CustomerEmail { get; set; }
     }
 }

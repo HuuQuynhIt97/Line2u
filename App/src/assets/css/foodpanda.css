@@ -1,6 +1,6 @@
 @charset "UTF-8";
 @import "food1.css"; 
-@import "food2.css";
+@import "food2.css";        
 @import "food3.css";
 @import "food4.css";
 :root{
@@ -435,3 +435,11 @@
 .cart-icon .products-count {
     color: #fff !important;
 }
+
+.h-64px, .size-64px {
+    height: 64px;
+}
+
+/*cart css*/
+
+

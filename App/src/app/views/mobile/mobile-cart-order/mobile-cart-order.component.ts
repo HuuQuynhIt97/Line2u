@@ -7,31 +7,36 @@ import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
 import { BaseComponent, UtilitiesService } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
-import { WebBanner, WebBannerUser } from 'src/app/_core/_model/evse/model';
-import { WebBannerService } from 'src/app/_core/_service/evse/web-banner.service';
-import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
-import { Browser } from '@syncfusion/ej2-base';
-import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
+import { WebNews } from 'src/app/_core/_model/evse/model';
+import { WebNewsService } from 'src/app/_core/_service/evse/web-news.service';
+import { ToolbarService, LinkService, ImageService, TableService, HtmlEditorService, ToolbarType } from '@syncfusion/ej2-angular-richtexteditor';
+import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
+import { MainCategoryService } from 'src/app/_core/_service/evse/main-category.service';
+import { MainCategory } from 'src/app/_core/_model/evse/mainCategory';
+import { OrderService } from 'src/app/_core/_service/evse/order.service';
+import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
+import { StoreProfile } from 'src/app/_core/_model/xaccount';
+import { Order } from 'src/app/_core/_model/evse/order';
 declare let window:any;
 declare let $: any;
 
 @Component({
-  selector: 'app-user-banner',
-  templateUrl: './user-banner.component.html',
-  styleUrls: ['./user-banner.component.scss']
+  selector: 'app-mobile-cart-order',
+  templateUrl: './mobile-cart-order.component.html',
+  styleUrls: ['./mobile-cart-order.component.css'],
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, DatePipe]
 })
-export class UserBannerComponent extends BaseComponent implements OnInit {
+export class MobileCartOrderComponent extends BaseComponent implements OnInit {
 
   isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
-  data: DataManager;
-  public initialGridLoad = true;
+  data: any;
   modalReference: NgbModalRef;
   active = "Detail"
   @ViewChild('grid') public grid: GridComponent;
-  model: WebBannerUser = {} as WebBannerUser;
+  model: Order = {} as Order;
   locale = localStorage.getItem('lang');
   editSettings = { showDeleteConfirmDialog: false, allowEditing: false, allowAdding: true, allowDeleting: false, mode: 'Normal' };
   title: any;
@@ -39,22 +44,33 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
   selectionOptions = { checkboxMode: 'ResetOnRowClick'};
   baseUrl = environment.apiUrl;
   fields: object = { text: 'name', value: 'guid' };
-  webBannerData: any = [];
-  categoryData: any
+  webNewsData: any = [];
   @ViewChild('odsTemplate', {static:true}) public odsTemplate: any;
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   user = JSON.parse(localStorage.getItem('user'))
-  categoryFields: object = { text: 'subject', value: 'id' };
+  public tools: ToolbarModule = {
+    type: ToolbarType.Expand,
+    enableFloating :false,
+    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+        'Formats', 'Alignments', 'NumberFormatList', 'BulletFormatList',
+        'Outdent', 'Indent', '|', 'ClearFormat',
+        'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+ };
+ public initialGridLoad = true;
+ storeInfo: StoreProfile = {} as StoreProfile;
   constructor(
-    private service: WebBannerUserService,
+    private service: MainCategoryService,
     public modalService: NgbModal,
     private alertify: AlertifyService,
+    private orderService: OrderService,
+    private serviceStore: StoreProfileService,
     private datePipe: DatePipe,
      private config: NgbTooltipConfig,
     public translate: TranslateService,
-    public serviceNewUser: WebNewsUserService,
+    private router: Router,
     private utilityService: UtilitiesService,
 
   ) {
@@ -66,7 +82,7 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
     }
 
   ngOnInit() {
-  this.toolbarOptions = ['Add', 'Search'];
+  this.toolbarOptions = [ 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -78,39 +94,22 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
       }
     };
     L10n.load(load);
-    this.loadData();
-    this.loadNewData()
+    this.getStoreInfor()
     this.loadLang()
   }
-  public onOpenPopUpMainDropdown(event) {
-    setTimeout(() => {
-      if (Browser.isDevice) {
-        event.popup.position = { X: 'left', Y: 'bottom' };
-        event.popup.width = document.getElementById('toolbar_dropdown').offsetWidth;
-        event.popup.dataBind();
-        event.popup.element.classList.remove('e-ddl-device', 'e-popup-full-page'
-        );
-        event.popup.element.style.top = parseInt(event.popup.element.style.top) + 'px';
-        event.popup.element.style.bottom = 'auto';
-        event.popup.element.style.maxHeight = 300;
-        event.popup.element.querySelector('.e-content').style.maxHeight = 300 + 'px';
-        event.popup.element.querySelector('.e-content').style.height = 'initial';
-      }
-    });
+  tranformss(date) {
+
   }
-  CategoryFilter(args) {
-    if(args.isInteracted) {
-      // this.spinner.show()
-      if(args.value === '' || args.value === null)
-        this.loadData()
-      // this.loadDataProductWithCategory(args.value)
-    }
-  }
-  loadNewData() {
-    this.serviceNewUser.getByUserID(this.user.id).subscribe(res => {
+  getStoreInfor() {
+    this.serviceStore.GetWithGuid(this.user.uid).subscribe(res => {
+      this.storeInfo = res;
       console.log(res)
-      this.categoryData = res
+      this.loadData()
     })
+  }
+  detail(item) {
+    console.log(item)
+    this.router.navigate([`mobile/cart-order-detail/${item.guid}`]);
   }
   dataBound() {
     if (this.initialGridLoad) {
@@ -127,7 +126,7 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
     }
 }
   loadLang() {
-    this.translate.get('WebBanner').subscribe( functionName => {
+    this.translate.get('WebNews').subscribe( functionName => {
       this.functionName = functionName;
     });
      this.translate.get('Print by').subscribe(printBy => {
@@ -137,7 +136,43 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
  
   // life cycle ejs-grid
   toolbarClick(args) {
+    const functionName = this.functionName;
+    const printBy = this.printBy;
       switch (args.item.id) {
+        case 'grid_excelexport':
+          const accountName = JSON.parse(localStorage.getItem('user'))?.accountName || 'N/A';
+          const header = {
+            headerRows: 3,
+            rows: [
+              {
+                cells: [{
+                    colSpan: 5, value: `* ${functionName}`,
+                    style: { fontColor: '#fd7e14', fontSize: 18, hAlign: 'Left', bold: true, }
+                }]
+            },
+            {
+              cells: [{
+                  colSpan: 5, value: `* ${this.datePipe.transform(new Date(), 'yyyyMMdd_HHmmss')}`,
+                  style: { fontColor: '#fd7e14', fontSize: 18, hAlign: 'Left', bold: true, }
+              }]
+          },
+          {
+            cells: [{
+                colSpan: 5, value: `* ${printBy} ${accountName}`,
+                style: { fontColor: '#fd7e14', fontSize: 18, hAlign: 'Left', bold: true, }
+            }]
+        },
+            ]
+          } as any;
+
+          const fileName = `${functionName}_${this.datePipe.transform(new Date(), 'yyyyMMdd_HHmmss')}.xlsx`
+          const excelExportProperties: ExcelExportProperties = {
+            hierarchyExportMode: 'All',
+            fileName: fileName,
+            header: header
+        };
+          this.grid.excelExport(excelExportProperties);
+          break;
         case 'grid_add':
           args.cancel = true;
           this.model = {} as any;
@@ -160,11 +195,15 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
   loadData() {
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
-    this.data = new DataManager({
-      url: `${this.baseUrl}WebBannerUser/LoadData?lang=${lang}&userID=${this.user.id}`,
-      adaptor: new UrlAdaptor,
-      headers: [{ authorization: `Bearer ${accessToken}` }]
-    });
+    this.orderService.getTrackingOrderForStore(this.storeInfo.guid).subscribe(res => {
+      this.data = res
+    })
+    // this.data = new DataManager({
+    //   url: `${this.baseUrl}MainCategory/LoadData?lang=${lang}&uid=${this.user.uid}`,
+    //   adaptor: new UrlAdaptor,
+    //   headers: [{ authorization: `Bearer ${accessToken}` }]
+    // });
+    // this.order
   }
   delete(id) {
     this.alertify.confirm4(
@@ -192,36 +231,37 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
 
   }
   create() {
-   this.alertify.confirm4(
-      this.alert.yes_message,
-      this.alert.no_message,
-      this.alert.createTitle,
-      this.alert.createMessage,
-      () => {
-        this.model.createBy = this.user.id;
-        this.model.file = this.file || [];
-        delete this.model['column'];
-        delete this.model['index'];
-        this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
-          (res) => {
-            if (res.success === true) {
-              this.alertify.success(this.alert.created_ok_msg);
-              this.loadData();
-              this.modalReference.dismiss();
+  //  this.alertify.confirm4(
+  //     this.alert.yes_message,
+  //     this.alert.no_message,
+  //     this.alert.createTitle,
+  //     this.alert.createMessage,
+  //     () => {
+  //       this.model.accountUid = this.user.uid
+  //       this.model.createBy = this.user.id;
+  //       this.model.file = this.file || [];
+  //       delete this.model['column'];
+  //       delete this.model['index'];
+  //       this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
+  //         (res) => {
+  //           if (res.success === true) {
+  //             this.alertify.success(this.alert.created_ok_msg);
+  //             this.loadData();
+  //             this.modalReference.dismiss();
 
-            } else {
-              this.alertify.warning(this.alert.system_error_msg);
-            }
+  //           } else {
+  //             this.alertify.warning(this.alert.system_error_msg);
+  //           }
 
-          },
-          (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
-          }
-        );
-      }, () => {
-        this.alertify.error(this.alert.cancelMessage);
-      }
-    );
+  //         },
+  //         (error) => {
+  //           this.alertify.warning(this.alert.system_error_msg);
+  //         }
+  //       );
+  //     }, () => {
+  //       this.alertify.error(this.alert.cancelMessage);
+  //     }
+  //   );
 
   }
   update() {
@@ -231,11 +271,10 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
       this.alert.updateTitle,
       this.alert.updateMessage,
       () => {
-        this.model.updateBy = this.user.id;
-        this.model.file = this.file || [];
         delete this.model['column'];
         delete this.model['index'];
-        this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
+        console.log(this.model)
+        this.orderService.update(this.model).subscribe(
           (res) => {
             if (res.success === true) {
               this.alertify.success(this.alert.updated_ok_msg);
@@ -283,65 +322,65 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
       this.create();
     }
   }
-  openModal(template, data = {} as WebBanner) {
+  openModal(template, data = {} as Order) {
     if (data?.id > 0) {
       this.model = {...data};
       this.getAudit(this.model.id);
-      this.title = 'WebBanner_Edit_Model';
+      this.title = 'MainCategory_Edit_Model';
     } else {
       this.model.id = 0;
       this.model.status = 1;
-      this.title = 'WebBanner_Add_Model';
+      this.title = 'MainCategory_Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
    this.configImage();
   }
   configImage(id="avatar-1") {
-    const option = {
-      overwriteInitial: true,
-      maxFileSize: 1500,
-      showClose: false,
-      showCaption: false,
-      browseLabel: '',
-      removeLabel: '',
-      browseIcon: '<i class="bi-folder2-open"></i>',
-      removeIcon: '<i class="bi-x-lg"></i>',
-      removeTitle: 'Cancel or reset changes',
-      elErrorContainer: '#kv-avatar-errors-1',
-      msgErrorClass: 'alert alert-block alert-danger',
-      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
-      layoutTemplates: { main2: '{preview} ' + ' {browse}' },
-      allowedFileExtensions: ["jpg", "png", "gif"],
-      initialPreview: [],
-      initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}WebBanner/DeleteUploadFile`
-    };
-    if (this.model.photoPath) {
-      this.model.photoPath = this.imagePath(this.model.photoPath);
-      const img = `<img src='${this.model.photoPath}' class='file-preview-image' alt='Desert' title='Desert'>`;
-      option.initialPreview = [img]
+    // const option = {
+    //   overwriteInitial: true,
+    //   maxFileSize: 1500,
+    //   showClose: false,
+    //   showCaption: false,
+    //   browseLabel: '',
+    //   removeLabel: '',
+    //   browseIcon: '<i class="bi-folder2-open"></i>',
+    //   removeIcon: '<i class="bi-x-lg"></i>',
+    //   removeTitle: 'Cancel or reset changes',
+    //   elErrorContainer: '#kv-avatar-errors-1',
+    //   msgErrorClass: 'alert alert-block alert-danger',
+    //   defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
+    //   layoutTemplates: { main2: '{preview} ' + ' {browse}' },
+    //   allowedFileExtensions: ["jpg", "png", "gif"],
+    //   initialPreview: [],
+    //   initialPreviewConfig: [],
+    //   deleteUrl: `${environment.apiUrl}MainCategory/DeleteUploadFile`
+    // };
+    // if (this.model.photoPath) {
+    //   this.model.photoPath = this.imagePath(this.model.photoPath);
+    //   const img = `<img src='${this.model.photoPath}' class='file-preview-image' alt='Desert' title='Desert'>`;
+    //   option.initialPreview = [img]
 
-      const a = {
-        caption: '',
-        width: '',
-        url: `${environment.apiUrl}WebBanner/DeleteUploadFile`, // server delete action
-        key: this.model.id,
-        extra: { id: this.model.id }
-      }
-      option.initialPreviewConfig = [a];
-    }
-    $("#avatar-1").fileinput(option);;
-    let that = this;
-    $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
-      console.log('Key = ' + key);
-      that.file = null;
-      that.model.file = null;
-      that.model.photoPath = null;
-      option.initialPreview = [];
-      option.initialPreviewConfig = [];
-      $(this).fileinput(option);
+    //   const a = {
+    //     caption: '',
+    //     width: '',
+    //     url: `${environment.apiUrl}MainCategory/DeleteUploadFile`, // server delete action
+    //     key: this.model.id,
+    //     extra: { id: this.model.id }
+    //   }
+    //   option.initialPreviewConfig = [a];
+    // }
+    // $("#avatar-1").fileinput(option);;
+    // let that = this;
+    // $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
+    //   console.log('Key = ' + key);
+    //   that.file = null;
+    //   that.model.file = null;
+    //   that.model.photoPath = null;
+    //   option.initialPreview = [];
+    //   option.initialPreviewConfig = [];
+    //   $(this).fileinput(option);
 
-    });
+    // });
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {
@@ -412,7 +451,7 @@ export class UserBannerComponent extends BaseComponent implements OnInit {
   }
   cancel() {
     this.audit = {}
-    this.model = {} as WebBanner;
+    this.model = {} as Order;
   }
   rowSelected(args) {
     this.model = {...args.data};

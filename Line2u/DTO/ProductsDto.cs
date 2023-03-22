@@ -17,12 +17,14 @@ namespace Line2u.DTO
         public string PhotoPath { get; set; }
         public string Body { get; set; }
         public string Comment { get; set; }
+        public int? Quantity { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
-        public decimal? Status { get; set; }
+        public bool Status { get; set; }
         public string Guid { get; set; }
+        public string Delivery { get; set; }
         public string accountUid { get; set; }
         public List<IFormFile> File { get; set; }
     }

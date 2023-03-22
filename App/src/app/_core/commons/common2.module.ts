@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MyCheckboxComponent } from '../_component/my-checkbox/my-checkbox.component';
 import { CheckBoxAllModule } from '@syncfusion/ej2-angular-buttons';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
+import { MyCodeTypeDropdownlistComponent } from '../_component/my-checkbox/my-code-type-dropdownlist/my-code-type-dropdownlist.component';
 
 
 @NgModule({
@@ -22,10 +23,11 @@ import { GridAllModule } from '@syncfusion/ej2-angular-grids';
   ],
   declarations: [
     MyCheckboxComponent,
+    MyCodeTypeDropdownlistComponent
 
   ],
   exports: [
-
+    MyCodeTypeDropdownlistComponent,
     MyCheckboxComponent,
 
   ]

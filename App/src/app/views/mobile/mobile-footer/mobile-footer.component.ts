@@ -18,7 +18,6 @@ export class MobileFooterComponent implements OnInit {
   }
   getMenuBottomMobile() {
     this.sysMenu.getMenuBottomMobile(this.lang,"MOBILE").subscribe(res => {
-      console.log(res)
       this.menus = res
     })
   }

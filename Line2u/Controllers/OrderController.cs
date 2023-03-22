@@ -26,6 +26,24 @@ namespace Line2u.Controllers
         {
             return Ok(await _service.GetProducts(id));
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTrackingOrderUser(int id)
+        {
+            return Ok(await _service.GetTrackingOrderUser(id));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTrackingOrderForStore(string id)
+        {
+            return Ok(await _service.GetTrackingOrderForStore(id));
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetDetailOrder(string id)
+        {
+            return Ok(await _service.GetDetailOrder(id));
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetWebPages()
         {
@@ -56,6 +74,8 @@ namespace Line2u.Controllers
         [HttpPost]
         public async Task<ActionResult> AddFormAsync([FromForm] OrderDto model)
         {
+            //var products = Request.Form["Products"];
+            //model.Products.AddRange(products);
             return Ok(await _service.AddFormAsync(model));
         }
 

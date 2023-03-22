@@ -14,7 +14,7 @@ import { WebNewsService } from 'src/app/_core/_service/evse/web-news.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 import { MainCategoryService } from 'src/app/_core/_service/evse/main-category.service';
-import { StoreProfile } from 'src/app/_core/_model/xaccount';
+import { StoreProfile, XAccount } from 'src/app/_core/_model/xaccount';
 import { MainCategory } from 'src/app/_core/_model/evse/mainCategory';
 import { Products } from 'src/app/_core/_model/evse/products';
 import { ProductsService } from 'src/app/_core/_service/evse/products.service';
@@ -27,16 +27,17 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
 import { AuthService } from 'src/app/_core/_service/auth.service';
+import { XAccountService } from 'src/app/_core/_service/xaccount.service';
+import { Order } from 'src/app/_core/_model/evse/order';
+import { OrderService } from 'src/app/_core/_service/evse/order.service';
+
 @Component({
-  selector: 'app-home-store',
-  templateUrl: './home-store.component.html',
-  styleUrls: [
-    './home-store.component.scss',
-    '../../../../assets/css/foodpanda.css'
-  ],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-order-tracking',
+  templateUrl: './order-tracking.component.html',
+  styleUrls: ['./order-tracking.component.css'],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
-export class HomeStoreComponent implements OnInit {
+export class OrderTrackingComponent implements OnInit {
 
   fieldsLang: object = { text: "name", value: "id" };
   menus: any;
@@ -47,12 +48,16 @@ export class HomeStoreComponent implements OnInit {
   parentActive = false;
   childActive = false;
   subActive = false;
+  isDelevery: boolean = true
   subscription: Subscription = new Subscription();
   languageData = [
     { id: "Tw", name: "Tw" },
     { id: "En", name: "En" },
-    // { id: "Cn", name: "Cn" },
-    // { id: "Vi", name: "Vi" },
+  ];
+  paymentData = [
+    { id: 1, name: "Payment on delivery" },
+    { id: 2, name: "Visa" },
+    { id: 3, name: "MasterCard" },
   ];
   baseUrl = environment.apiUrlImage;
   banners= [];
@@ -76,7 +81,11 @@ export class HomeStoreComponent implements OnInit {
   responsiveOptions;
   selectedIndex = -1;
   isLogin: boolean = false
+  modelAccount: XAccount = {} as XAccount;
+  orderModel: Order = {} as Order;
   isOpenDropdown: boolean = false
+  paymentType: any = '1';
+  trackingData: any;
   @HostListener("window:scroll", [])onWindowScroll() {
     //.scrollTop
     if(window.pageYOffset > 500) {
@@ -101,10 +110,12 @@ export class HomeStoreComponent implements OnInit {
     private webBannerService: WebBannerUserService,
     private utilityService: UtilitiesService,
     private route: ActivatedRoute,
+    private serviceAccount: XAccountService,
     private alertify: AlertifyService,
     public sanitizer: DomSanitizer,
     private router: Router,
     private authService: AuthService,
+    private orderService: OrderService,
     public modalService: NgbModal
 
   ) { 
@@ -132,16 +143,40 @@ export class HomeStoreComponent implements OnInit {
     var storeId = this.route.snapshot.paramMap.get('id')
     this.getStoreInfor(storeId) 
     this.lang = this.capitalize(localStorage.getItem("lang"));
-    this.getMenu();
+    // this.getMenu();
     this.loadLogoData();
+    this.getUserCheckoutInfo();
+    this.getTrackingOrderUser()
     // this.dataService.pushCart('load cart')
     const cartDetail = this.getLocalStore("cart_detail");
     this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
-   
+    this.cartDetail = this.getLocalStore("cart_detail");
   }
-  navigateMenu() {
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/order-tracking`])
+  getTrackingOrderUser() {
+    this.orderService.getTrackingOrderUser(this.user.id).subscribe(res => {
+      console.log(res)
+      this.trackingData = res
+    })
+  }
+  changeMethod(args) {
+    if(args.target.value === '2' || args.target.value === '3') {
+      this.isDelevery = false
+    }else {
+      this.isDelevery = true
+    }
+    this.paymentType = args.target.value
+  }
+  getUserCheckoutInfo(){
+    this.serviceAccount.getById(this.user.id).subscribe(res => {
+      this.modelAccount = res
+    })
+  }
+  checkOut(){
+    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart/check-out`])
+  }
+  backToShop() {
+    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
   }
   OpenDropdown() {
     this.isOpenDropdown = !this.isOpenDropdown
@@ -188,10 +223,6 @@ export class HomeStoreComponent implements OnInit {
   detailNew(item) {
     this.dataService.changeLang('Store_Click')
     this.router.navigate([`home/news-detail/${item.id}`])
-  }
-  detailNewBanner(item) {
-    this.dataService.changeLang('Store_Click')
-    this.router.navigate([`home/news-detail/${item.link}`])
   }
   addToCart(item: Products) {
     this.isOpenDropdown = false
@@ -295,7 +326,7 @@ export class HomeStoreComponent implements OnInit {
     this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
-  openCart(template){
+  openCart(){
     // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
     this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
     // this.router.navigate([`home/news-detail/${item.id}`])
@@ -307,13 +338,52 @@ export class HomeStoreComponent implements OnInit {
     if(cart_detail.length === 0) {
       return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
-      console.log(cart_detail)
-      this.removeLocalStore('cart')
-      this.removeLocalStore('cart_detail')
-      this.count = 0
-      this.alertify.success(this.translate.instant('Order_Success'))
-      this.modalReference.close();
+      if (this.validate(this.modelAccount) == false) return;
+      this.orderModel.totalPrice = this.totalPrice
+      this.orderModel.createBy = this.user.id
+      this.orderModel.customerName = this.modelAccount.accountName
+      this.orderModel.customerAddress = this.modelAccount.accountAddress
+      this.orderModel.customerEmail = this.modelAccount.accountEmail
+      this.orderModel.customerPhone = this.modelAccount.accountTel
+      this.orderModel.accountId = this.modelAccount.accountId
+      this.orderModel.storeGuid = this.storeInfo.guid
+      this.orderModel.products = cart_detail
+      this.orderModel.paymentType = this.paymentType
+      this.orderService.add(this.orderModel).subscribe(res => {
+        this.alertify.success(this.translate.instant('Order_Success'))
+        this.removeLocalStore('cart')
+        this.removeLocalStore('cart_detail')
+        this.count = 0
+        this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
+      })
+      // 
+      // this.modalReference.close();
     }
+  }
+  validate(model: XAccount) {
+    if (model.accountName === null || model.accountName === undefined || model.accountName === '') {
+      this.alertify.warning(this.translate.instant('Name do not empty'),true);
+      return false;
+    }
+
+    if (model.accountAddress === null || model.accountAddress === undefined || model.accountAddress === '') {
+      this.alertify.warning(this.translate.instant('Address do not empty'),true);
+      return false;
+    }
+
+    if (model.accountTel === null || model.accountTel === undefined || model.accountTel === '') {
+      this.alertify.warning(this.translate.instant('Phone Number do not empty'),true);
+      return false;
+    }
+
+    if (model.accountEmail === null || model.accountEmail === undefined || model.accountEmail === '') {
+      this.alertify.warning(this.translate.instant('Email do not empty'),true);
+      return false;
+    }
+
+    
+
+    return true;
   }
   removeLocalStore(key: string) {
     localStorage.removeItem(key);

@@ -18,6 +18,8 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
+using Org.BouncyCastle.Crypto;
+using static Line2u.Constants.SP;
 
 namespace Line2u.Services
 {
@@ -32,12 +34,17 @@ namespace Line2u.Services
 
         Task<object> GetWebNews();
         Task<object> GetProducts(string id);
+        Task<object> GetTrackingOrderForStore(string id);
+        Task<object> GetTrackingOrderUser(int id);
+        Task<object> GetDetailOrder(string id);
         Task<object> GetWebPages();
         
     }
     public class OrderService : ServiceBase<Order, OrderDto>, IOrderService, IScopeService
     {
         private readonly IRepositoryBase<Order> _repo;
+        private readonly IRepositoryBase<Product> _repoProduct;
+        private readonly IRepositoryBase<OrderDetail> _repoOrderDetail;
         private readonly IRepositoryBase<MainCategory> _repoMainCategory;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
@@ -50,6 +57,8 @@ private readonly ILine2uLoggerService _logger;
 
         public OrderService(
             IRepositoryBase<Order> repo,
+            IRepositoryBase<Product> repoProduct,
+            IRepositoryBase<OrderDetail> repoOrderDetail,
             IRepositoryBase<MainCategory> repoMainCategory,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
@@ -64,6 +73,8 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoProduct = repoProduct;
+            _repoOrderDetail = repoOrderDetail;
             _repoMainCategory = repoMainCategory;
             _repoCodeType = repoCodeType;
             _logger = logger;
@@ -108,7 +119,24 @@ ISPService spService)
             try
             {
                 await _unitOfWork.SaveChangeAsync();
-
+                // order detail
+                var list_order_detail = new List<OrderDetail>();
+                foreach (var item_products in model.Products)
+                {
+                    var item_add = new OrderDetail()
+                    {
+                        OrderGuid = item.Guid,
+                        Price = item_products.ProductPrice.ToDecimal(),
+                        Quantity = item_products.Quantity,
+                        ProductGuid = item_products.Guid,
+                        PendingStatus  = true,
+                        AccountId = model.AccountId,
+                        StoreGuid = model.StoreGuid,
+                    };
+                    list_order_detail.Add(item_add);
+                }
+                _repoOrderDetail.AddRange(list_order_detail);
+                await _unitOfWork.SaveChangeAsync();
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -399,6 +427,60 @@ ISPService spService)
                               category = x.CategoryName,
                               list_product = y
                           }).ToList();
+            return result;
+        }
+
+        public async Task<object> GetTrackingOrderForStore(string storeGuid)
+        {
+            var result = await _repo.FindAll(o => o.StoreGuid == storeGuid).ToListAsync();
+            return result;
+        }
+
+
+        public async Task<object> GetTrackingOrderUser(int accountId)
+        {
+            var order = await _repo.FindAll(o => o.AccountId == accountId.ToString()).ToListAsync();
+            var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
+            var products = await _repoProduct.FindAll().ToListAsync();
+            var result = (from x in order
+                          join y in order_detail on x.Guid equals y.OrderGuid
+                          let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
+                          select new
+                          {
+                              orderID = x.Guid,
+                              product_total_price = y.Quantity * y.Price,
+                              list_product = z.Select(o => new {
+                                o.ProductName,
+                                o.PhotoPath,
+                                price = y.Quantity * y.Price
+                              })
+                          }).ToList();
+
+
+            return result;
+        }
+
+        public async Task<object> GetDetailOrder(string id)
+        {
+            var order = await _repo.FindAll(o => o.Guid == id).ToListAsync();
+            var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
+            var products = await _repoProduct.FindAll().ToListAsync();
+            var result = (from x in order
+                          join y in order_detail on x.Guid equals y.OrderGuid
+                          let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
+                          select new
+                          {
+                              orderID = x.Guid,
+                              product_total_price = y.Quantity * y.Price,
+                              list_product = z.Select(o => new {
+                                  o.ProductName,
+                                  o.PhotoPath,
+                                  qty = y.Quantity,
+                                  price = y.Quantity * y.Price
+                              })
+                          }).ToList();
+
+
             return result;
         }
     }

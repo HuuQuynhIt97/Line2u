@@ -27,16 +27,17 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
 import { AuthService } from 'src/app/_core/_service/auth.service';
+
 @Component({
-  selector: 'app-home-store',
-  templateUrl: './home-store.component.html',
+  selector: 'app-shop-cart',
+  templateUrl: './shop-cart.component.html',
   styleUrls: [
-    './home-store.component.scss',
-    '../../../../assets/css/foodpanda.css'
+    './shop-cart.component.css',
+    '../../../../../assets/css/foodpanda.css'
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeStoreComponent implements OnInit {
+export class ShopCartComponent implements OnInit {
 
   fieldsLang: object = { text: "name", value: "id" };
   menus: any;
@@ -138,10 +139,13 @@ export class HomeStoreComponent implements OnInit {
     const cartDetail = this.getLocalStore("cart_detail");
     this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
-   
+    this.cartDetail = this.getLocalStore("cart_detail");
   }
-  navigateMenu() {
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/order-tracking`])
+  checkOut(){
+    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart/check-out`])
+  }
+  backToShop() {
+    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
   }
   OpenDropdown() {
     this.isOpenDropdown = !this.isOpenDropdown
@@ -188,10 +192,6 @@ export class HomeStoreComponent implements OnInit {
   detailNew(item) {
     this.dataService.changeLang('Store_Click')
     this.router.navigate([`home/news-detail/${item.id}`])
-  }
-  detailNewBanner(item) {
-    this.dataService.changeLang('Store_Click')
-    this.router.navigate([`home/news-detail/${item.link}`])
   }
   addToCart(item: Products) {
     this.isOpenDropdown = false
@@ -296,9 +296,7 @@ export class HomeStoreComponent implements OnInit {
     this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   openCart(template){
-    // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
-    // this.router.navigate([`home/news-detail/${item.id}`])
+    this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
     this.cartDetail = this.getLocalStore("cart_detail");
     this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }

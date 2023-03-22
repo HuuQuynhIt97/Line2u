@@ -27,7 +27,9 @@
     <div class="flex-container-bio">
       <div routerLink="/mobile/store-profile">{{ 'MOBILE_STORE_PROFILE' | translate }}</div>
     </div>
-
+    <div class="flex-container-bio mr-mobile">
+      <div routerLink="/mobile/cart-order">{{ 'MOBILE_CART_ORDER' | translate }}</div>
+    </div>
     <div class="line"></div>
     <div class="flex-container-bio">
       <div routerLink="/mobile/menu-category">{{ 'MOBILE_MENU_CATEGORY' | translate }}</div>
@@ -62,6 +64,8 @@
     <div class="flex-container-bio mr-mobile">
       <div routerLink="/mobile/send-message">{{ 'MOBILE_MESSAGE_HISTORY' | translate }}</div>
     </div>
+
+    
 
     <div  class="flex-container-bio-desktop">
       <div (click)="logout()">{{ 'SIGN_OUT' | translate }}</div>

@@ -134,6 +134,9 @@ import { HomeStoreComponent } from './views/home/home-store/home-store.component
 import { Common2Module } from './_core/commons/common2.module';
 import { CheckBoxAllModule } from '@syncfusion/ej2-angular-buttons';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { ShopCartComponent } from './views/home/home-store/shop-cart/shop-cart.component';
+import { CheckOutComponent } from './views/home/home-store/check-out/check-out.component';
+import { OrderTrackingComponent } from './views/home/home-store/order-tracking/order-tracking.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -164,6 +167,9 @@ if (!lang) {
     HelpGuidComponent,
     HomeStoreListComponent,
     HomeStoreComponent,
+    ShopCartComponent,
+    CheckOutComponent,
+    OrderTrackingComponent
 
   ],
   imports: [

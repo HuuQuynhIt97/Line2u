@@ -140,7 +140,7 @@ ISPService spService)
                 CreateDate = item.CreateDate,
                 Guid = item.Guid,
                 PhotoPath = item.PhotoPath,
-                Status = item.Status,
+                Status = item.Status.ToBool(),
                 UpdateBy = item.UpdateBy,
                 UpdateDate = item.UpdateDate,
             };

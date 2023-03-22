@@ -26,6 +26,8 @@ import { MenuCategoryComponent } from './menu-category/menu-category.component';
 import { MenuListComponent } from './menu-list/menu-list.component';
 import { UserHelpComponent } from './user-help/user-help.component';
 import { UserContactComponent } from './user-contact/user-contact.component';
+import { MobileCartOrderComponent } from './mobile-cart-order/mobile-cart-order.component';
+import { CartOrderDetailComponent } from './mobile-cart-order/cart-order-detail/cart-order-detail.component';
 
 const routes: Routes = [
   {
@@ -61,6 +63,20 @@ const routes: Routes = [
         component: MenuListComponent,
         data: {
           title: 'Products List'
+        }
+      },
+      {
+        path: 'cart-order',
+        component: MobileCartOrderComponent,
+        data: {
+          title: 'Cart Order'
+        }
+      },
+      {
+        path: 'cart-order-detail/:id',
+        component: CartOrderDetailComponent,
+        data: {
+          title: 'Cart Order Detail'
         }
       },
       {

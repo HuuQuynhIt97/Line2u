@@ -117,13 +117,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   getMenuTopMobile() {
     this.sysMenu.getMenuTopMobile(this.lang,"MOBILE").subscribe(res => {
-      console.log(res)
       this.menus = res
     })
   }
   getQrcodeLink(){
     this.lineService.getUrlQr(this.user_infor.id).subscribe((res: any) => {
-      console.log(res)
       this.qrCodeLink = res
     })
    }

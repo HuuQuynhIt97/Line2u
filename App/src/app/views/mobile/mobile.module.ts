@@ -73,6 +73,9 @@ import { MenuCategoryComponent } from './menu-category/menu-category.component';
 import { MenuListComponent } from './menu-list/menu-list.component';
 import { UserContactComponent } from './user-contact/user-contact.component';
 import { UserHelpComponent } from './user-help/user-help.component';
+import { MobileCartOrderComponent } from './mobile-cart-order/mobile-cart-order.component';
+import { CartOrderDetailComponent } from './mobile-cart-order/cart-order-detail/cart-order-detail.component';
+import { Common2Module } from 'src/app/_core/commons/common2.module';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -141,7 +144,9 @@ loadCldr(
     MenuCategoryComponent,
     MenuListComponent,
     UserContactComponent,
-    UserHelpComponent
+    UserHelpComponent,
+    MobileCartOrderComponent,
+    CartOrderDetailComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
@@ -160,6 +165,7 @@ loadCldr(
     MenuAllModule,
     TimePickerAllModule,
     ScheduleModule,
+    Common2Module.forRoot(),
     SharedModule.forRoot(),
     TranslateModule.forRoot({
       loader: {provide: TranslateLoader, useClass: CustomLoader},
