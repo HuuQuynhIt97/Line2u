@@ -188,7 +188,7 @@
               "PRODUCT_STATUS" | translate
             }}</label>
             &nbsp;
-            <app-my-checkbox [(checked)]="model.status"></app-my-checkbox>
+            <app-leo-checkbox [(checked)]="model.status"></app-leo-checkbox>
             <!-- <ejs-checkbox [(ngModel)]="model.status"></ejs-checkbox> -->
           </div>
         </div>
@@ -291,7 +291,12 @@
       </button>
       <button
         type="submit"
-        [disabled]="!model.productName"
+        [disabled]="!model.productName 
+        || !model.categoryGuid
+        || !model.productPrice
+        || !model.productPriceDiscount
+        
+        "
         (click)="save()"
         ngbTooltip="SAVE"
         class="btn btn-primary"

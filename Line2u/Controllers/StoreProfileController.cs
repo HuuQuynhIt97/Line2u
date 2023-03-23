@@ -74,6 +74,7 @@ namespace Line2u.Controllers
             return Ok(await _service.GetByIDWithGuidAsync(guid));
         }
 
+       
         [HttpGet]
         public async Task<ActionResult> GetInforByStoreName(string name)
         {

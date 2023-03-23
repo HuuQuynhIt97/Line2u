@@ -21,4 +21,5 @@ export interface Products {
     quantity: number;
     total: number;
     price: number
+    storeGuid: string
 }

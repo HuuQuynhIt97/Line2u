@@ -3,6 +3,7 @@
     public class StatusConstants
     {
         public const  int Default = 1;
+        public const  int Default_2 = 0;
         public const int Agree = 2;
         public const int Execure = 3;
         public const int Close = 4;

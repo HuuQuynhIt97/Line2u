@@ -30,6 +30,8 @@ import { AuthService } from 'src/app/_core/_service/auth.service';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 import { Order } from 'src/app/_core/_model/evse/order';
 import { OrderService } from 'src/app/_core/_service/evse/order.service';
+import { CartService } from 'src/app/_core/_service/evse/cart.service';
+import { Cart } from 'src/app/_core/_model/evse/cart';
 
 @Component({
   selector: 'app-check-out',
@@ -71,7 +73,7 @@ export class CheckOutComponent implements OnInit {
   products: any 
   count: any = 0;
   modalReference: NgbModalRef;
-  cartDetail: Products[] = [];
+  cartDetail: Cart[] = [];
   totalPrice: number;
   isLineAccount: string = JSON.parse(localStorage.getItem('user'))?.isLineAccount
   isCustomer: boolean = JSON.parse(localStorage.getItem('user'))?.isCustomer
@@ -118,7 +120,8 @@ export class CheckOutComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private orderService: OrderService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    private serviceCart: CartService
 
   ) { 
     this.responsiveOptions = [{
@@ -143,16 +146,35 @@ export class CheckOutComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor(storeId) 
+    this.getStoreInfor() 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     // this.getMenu();
     this.loadLogoData();
     this.getUserCheckoutInfo();
-    // this.dataService.pushCart('load cart')
-    const cartDetail = this.getLocalStore("cart_detail");
-    this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
-    this.cartDetail = this.getLocalStore("cart_detail");
+    this.getProductsInCart()
+    this.cartAmountTotal()
+    this.cartCountTotal()
+    // // this.dataService.pushCart('load cart')
+    // const cartDetail = this.getLocalStore("cart_detail");
+    // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // this.cartDetail = this.getLocalStore("cart_detail");
+  }
+  cartCountTotal() {
+    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+      this.count = res
+    })
+  }
+  cartAmountTotal() {
+    this.serviceCart.cartAmountTotal(this.user.uid).subscribe(res => {
+      this.totalPrice = res
+    })
+  }
+  getProductsInCart() {
+    this.serviceCart.getProductsInCart(this.user.uid).subscribe(res => {
+      console.log(res)
+      this.cartDetail = res
+    })
   }
   changeMethod(args) {
     if(args.target.value === '2' || args.target.value === '3') {
@@ -266,77 +288,76 @@ export class CheckOutComponent implements OnInit {
     }
   }
   minusItem(item) {
-    let cart: Products[] = [];
-    cart = this.getLocalStore("cart_detail");
-    for (let i = 0; i < cart.length; i++) {
-      if (cart[i].id == item.id && cart[i].quantity > 1 ) {
-        cart[i].quantity = cart[i].quantity - 1;
-        cart[i].price = cart[i].price  - parseFloat(item.productPrice);
-        break;
-      }else {
-        const exsit = cart.filter(x => x.id === item.id );
-          if(exsit.length === 0) {
-            item.quantity = 1
-            item.price = parseFloat(item.productPrice)
-            cart.push(item)
-          }else {
-            for (let z = 0; z < cart.length; z++) {
-              if (cart[z].id == item.id ) {
-                if(cart[z].quantity === 1) {
-                  cart.splice(z, 1);
-                  break;
-                }
-                cart[z].quantity = cart[z].quantity - 1;
-                cart[z].price = cart[z].price  - parseFloat(item.productPrice);
-                break;
-              }
-              // else {
-              //   cart.splice(z, 1);
-              //   break;
-              // }
-            }
-          }
-          break;
-        // if (cart[i].id == item.id && cart[i].quantity === 1 ) {
-        //   cart.splice(i, 1);
-        //   break;
-        // }
-      }
-    }
-    this.setLocalStore("cart_detail", cart);
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // let cart: Products[] = [];
+    // cart = this.getLocalStore("cart_detail");
+    // for (let i = 0; i < cart.length; i++) {
+    //   if (cart[i].id == item.id && cart[i].quantity > 1 ) {
+    //     cart[i].quantity = cart[i].quantity - 1;
+    //     cart[i].price = cart[i].price  - parseFloat(item.productPrice);
+    //     break;
+    //   }else {
+    //     const exsit = cart.filter(x => x.id === item.id );
+    //       if(exsit.length === 0) {
+    //         item.quantity = 1
+    //         item.price = parseFloat(item.productPrice)
+    //         cart.push(item)
+    //       }else {
+    //         for (let z = 0; z < cart.length; z++) {
+    //           if (cart[z].id == item.id ) {
+    //             if(cart[z].quantity === 1) {
+    //               cart.splice(z, 1);
+    //               break;
+    //             }
+    //             cart[z].quantity = cart[z].quantity - 1;
+    //             cart[z].price = cart[z].price  - parseFloat(item.productPrice);
+    //             break;
+    //           }
+    //           // else {
+    //           //   cart.splice(z, 1);
+    //           //   break;
+    //           // }
+    //         }
+    //       }
+    //       break;
+    //     // if (cart[i].id == item.id && cart[i].quantity === 1 ) {
+    //     //   cart.splice(i, 1);
+    //     //   break;
+    //     // }
+    //   }
+    // }
+    // this.setLocalStore("cart_detail", cart);
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   plusItem(item) {
-    let cart: Products[] = [];
-    cart = this.getLocalStore("cart_detail");
-    for (let i = 0; i < cart.length; i++) {
-      if (cart[i].id == item.id ) {
-        cart[i].quantity = cart[i].quantity + 1;
-        cart[i].price = cart[i].price  + parseFloat(item.productPrice);
-        break;
-      }
-    }
-    this.setLocalStore("cart_detail", cart);
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // let cart: Products[] = [];
+    // cart = this.getLocalStore("cart_detail");
+    // for (let i = 0; i < cart.length; i++) {
+    //   if (cart[i].id == item.id ) {
+    //     cart[i].quantity = cart[i].quantity + 1;
+    //     cart[i].price = cart[i].price  + parseFloat(item.productPrice);
+    //     break;
+    //   }
+    // }
+    // this.setLocalStore("cart_detail", cart);
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   openCart(){
-    // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
-    // this.router.navigate([`home/news-detail/${item.id}`])
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
+    // this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
+    // // this.router.navigate([`home/news-detail/${item.id}`])
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   saveOrder(){
-    const cart_detail = this.getLocalStore("cart_detail");
-    if(cart_detail.length === 0) {
+    if(this.cartDetail.length === 0) {
       return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
       if (this.validate(this.modelAccount) == false) return;
-      console.log(cart_detail)
+      console.log(this.cartDetail)
       this.orderModel.totalPrice = this.totalPrice
       this.orderModel.createBy = this.user.id
       this.orderModel.customerName = this.modelAccount.accountName
@@ -345,18 +366,18 @@ export class CheckOutComponent implements OnInit {
       this.orderModel.customerPhone = this.modelAccount.accountTel
       this.orderModel.accountId = this.modelAccount.accountId
       this.orderModel.storeGuid = this.storeInfo.guid
-      this.orderModel.products = cart_detail
+      this.orderModel.products = this.cartDetail
       this.orderModel.paymentType = this.paymentType
       this.orderModel.isPayment = 'Unpaid'
       this.orderModel.delivery = 'Pending'
       console.log(this.orderModel)
       this.orderService.add(this.orderModel).subscribe(res => {
-        console.log(res)
         this.alertify.success(this.translate.instant('Order_Success'))
-        this.removeLocalStore('cart')
-        this.removeLocalStore('cart_detail')
-        this.count = 0
-        this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
+        // this.removeLocalStore('cart')
+        // this.removeLocalStore('cart_detail')
+        this.dataService.changeMessage('load cart')
+        // this.count = 0
+        this.router.navigate([`home/store/order-tracking`])
       })
       // 
       // this.modalReference.close();
@@ -413,8 +434,8 @@ export class CheckOutComponent implements OnInit {
       this.spinner.hide()
     })
   }
-  getStoreInfor(storeId) {
-    this.service.getById(storeId).subscribe(res => {
+  getStoreInfor() {
+    this.service.GetWithGuid(this.user.uid).subscribe(res => {
       this.storeInfo = res;
       this.getCategoryOfStore(this.storeInfo.accountGuid)
       this.getProducts(this.storeInfo.accountGuid)

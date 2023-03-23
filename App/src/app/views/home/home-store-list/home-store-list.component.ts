@@ -34,7 +34,6 @@ export class HomeStoreListComponent implements OnInit {
   ngOnInit(): void {
     this.loadStoreData();
     this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
-    console.log(this.sysConf)
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {

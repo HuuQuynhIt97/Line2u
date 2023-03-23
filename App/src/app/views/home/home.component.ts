@@ -112,12 +112,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }else {
       this.isLogin = false
     }
+    this.removeLocalStore('cart')
+    this.removeLocalStore('cart_detail')
     this.ctx = document.getElementById('share') as HTMLElement
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
     this.loadBannerData();
    
+  }
+  removeLocalStore(key: string) {
+    localStorage.removeItem(key);
   }
   loginUser() {
     const uri = this.router.url;

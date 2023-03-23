@@ -8,6 +8,7 @@ import { MyCheckboxComponent } from '../_component/my-checkbox/my-checkbox.compo
 import { CheckBoxAllModule } from '@syncfusion/ej2-angular-buttons';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { MyCodeTypeDropdownlistComponent } from '../_component/my-checkbox/my-code-type-dropdownlist/my-code-type-dropdownlist.component';
+import { LeoCheckboxComponent } from '../_component/my-checkbox/leo-checkbox/leo-checkbox.component';
 
 
 @NgModule({
@@ -23,13 +24,14 @@ import { MyCodeTypeDropdownlistComponent } from '../_component/my-checkbox/my-co
   ],
   declarations: [
     MyCheckboxComponent,
-    MyCodeTypeDropdownlistComponent
+    MyCodeTypeDropdownlistComponent,
+    LeoCheckboxComponent
 
   ],
   exports: [
     MyCodeTypeDropdownlistComponent,
     MyCheckboxComponent,
-
+    LeoCheckboxComponent
   ]
 })
 export class Common2Module {

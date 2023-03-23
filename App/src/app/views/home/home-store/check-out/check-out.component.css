@@ -317,3 +317,7 @@ hr{
         overflow-x: hidden;
     }
 }*/
+
+.panel.panel-info {
+    padding-top: 10vh !important;
+}

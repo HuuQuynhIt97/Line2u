@@ -179,21 +179,21 @@ const routes: Routes = [
     }
   },
   {
-    path: 'home/store/:storeName/:id/shop-cart',
+    path: 'home/store/shop-cart',
     component: ShopCartComponent,
     data: {
       title: 'Shop Cart'
     }
   },
   {
-    path: 'home/store/:storeName/:id/shop-cart/check-out',
+    path: 'home/store/shop-cart/check-out/payment',
     component: CheckOutComponent,
     data: {
       title: 'Check out'
     }
   },
   {
-    path: 'home/store/:storeName/:id/order-tracking',
+    path: 'home/store/order-tracking',
     component: OrderTrackingComponent,
     data: {
       title: 'Order Tracking'

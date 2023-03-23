@@ -24,8 +24,10 @@ namespace Line2u.DTO
         public decimal? UpdateBy { get; set; }
         public bool Status { get; set; }
         public string Guid { get; set; }
+        public string ProductGuid { get; set; }
         public string Delivery { get; set; }
         public string accountUid { get; set; }
+        public string storeGuid { get; set; }
         public List<IFormFile> File { get; set; }
     }
 }

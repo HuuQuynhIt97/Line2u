@@ -27,6 +27,8 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
 import { AuthService } from 'src/app/_core/_service/auth.service';
+import { CartService } from 'src/app/_core/_service/evse/cart.service';
+import { Cart } from 'src/app/_core/_model/evse/cart';
 
 @Component({
   selector: 'app-shop-cart',
@@ -60,11 +62,12 @@ export class ShopCartComponent implements OnInit {
   news: any;
   logo: any;
   storeInfo: StoreProfile = {} as StoreProfile;
+  cartUpdate: Cart = {} as Cart;
   mainCategory: any 
   products: any 
   count: any = 0;
   modalReference: NgbModalRef;
-  cartDetail: Products[] = [];
+  cartDetail: Cart[] = [];
   totalPrice: number;
   isLineAccount: string = JSON.parse(localStorage.getItem('user'))?.isLineAccount
   isCustomer: boolean = JSON.parse(localStorage.getItem('user'))?.isCustomer
@@ -97,6 +100,7 @@ export class ShopCartComponent implements OnInit {
     private service: StoreProfileService,
     private serviceMainCategory: MainCategoryService,
     private serviceProducts: ProductsService,
+    private serviceCart: CartService,
     private translate: TranslateService,
     private dataService: DataService,
     private webBannerService: WebBannerUserService,
@@ -131,21 +135,49 @@ export class ShopCartComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor(storeId) 
+    this.getStoreInfor() 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
+    this.cartAmountTotal()
+    this.cartCountTotal()
+    this.getProductsInCart()
     // this.dataService.pushCart('load cart')
-    const cartDetail = this.getLocalStore("cart_detail");
-    this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
-    this.cartDetail = this.getLocalStore("cart_detail");
+    // const cartDetail = this.getLocalStore("cart_detail");
+    // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // this.cartDetail = this.getLocalStore("cart_detail");
+  }
+  cartCountTotal() {
+    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+      this.count = res
+    })
+  }
+  cartAmountTotal() {
+    this.serviceCart.cartAmountTotal(this.user.uid).subscribe(res => {
+      this.totalPrice = res
+    })
   }
   checkOut(){
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart/check-out`])
+    if (this.authService.loggedIn() ) {
+      if(this.cartDetail.length > 0) {
+        this.router.navigate([`home/store/shop-cart/check-out/payment`])
+      }else {
+        this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
+      }
+    }else {
+      this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
+    }
   }
   backToShop() {
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
+    let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+    this.router.navigate([isLogin_Cus_url]);
+    // this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
+  }
+  getProductsInCart() {
+    this.serviceCart.getProductsInCart(this.user.uid).subscribe(res => {
+      this.cartDetail = res
+    })
   }
   OpenDropdown() {
     this.isOpenDropdown = !this.isOpenDropdown
@@ -238,74 +270,104 @@ export class ShopCartComponent implements OnInit {
     }
   }
   minusItem(item) {
-    let cart: Products[] = [];
-    cart = this.getLocalStore("cart_detail");
-    for (let i = 0; i < cart.length; i++) {
-      if (cart[i].id == item.id && cart[i].quantity > 1 ) {
-        cart[i].quantity = cart[i].quantity - 1;
-        cart[i].price = cart[i].price  - parseFloat(item.productPrice);
-        break;
-      }else {
-        const exsit = cart.filter(x => x.id === item.id );
-          if(exsit.length === 0) {
-            item.quantity = 1
-            item.price = parseFloat(item.productPrice)
-            cart.push(item)
-          }else {
-            for (let z = 0; z < cart.length; z++) {
-              if (cart[z].id == item.id ) {
-                if(cart[z].quantity === 1) {
-                  cart.splice(z, 1);
-                  break;
-                }
-                cart[z].quantity = cart[z].quantity - 1;
-                cart[z].price = cart[z].price  - parseFloat(item.productPrice);
-                break;
-              }
-              // else {
-              //   cart.splice(z, 1);
-              //   break;
-              // }
-            }
-          }
-          break;
-        // if (cart[i].id == item.id && cart[i].quantity === 1 ) {
-        //   cart.splice(i, 1);
-        //   break;
-        // }
-      }
+    this.spinner.show()
+    this.cartUpdate = {...item};
+    this.cartUpdate.quantity = this.cartUpdate.quantity - 1
+    if(this.cartUpdate.quantity === 0) {
+      this.serviceCart.delete(this.cartUpdate.id).subscribe(res => {
+        this.getProductsInCart()
+        this.cartAmountTotal();
+        this.dataService.changeMessage('load cart')
+        this.cartCountTotal();
+        this.spinner.hide()
+      })
+    }else {
+      this.serviceCart.update(this.cartUpdate).subscribe(res => {
+        this.getProductsInCart()
+        this.dataService.changeMessage('load cart')
+        this.cartAmountTotal();
+        this.cartCountTotal();
+        this.spinner.hide()
+      })
     }
-    this.setLocalStore("cart_detail", cart);
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // let cart: Cart[] = [];
+    // cart = this.getLocalStore("cart_detail");
+    // for (let i = 0; i < cart.length; i++) {
+    //   if (cart[i].id == item.id && cart[i].quantity > 1 ) {
+    //     cart[i].quantity = cart[i].quantity - 1;
+    //     cart[i].price = cart[i].price  - parseFloat(item.productPrice);
+    //     break;
+    //   }else {
+    //     const exsit = cart.filter(x => x.id === item.id );
+    //       if(exsit.length === 0) {
+    //         item.quantity = 1
+    //         item.price = parseFloat(item.productPrice)
+    //         cart.push(item)
+    //       }else {
+    //         for (let z = 0; z < cart.length; z++) {
+    //           if (cart[z].id == item.id ) {
+    //             if(cart[z].quantity === 1) {
+    //               cart.splice(z, 1);
+    //               break;
+    //             }
+    //             cart[z].quantity = cart[z].quantity - 1;
+    //             cart[z].price = cart[z].price  - parseFloat(item.productPrice);
+    //             break;
+    //           }
+    //           // else {
+    //           //   cart.splice(z, 1);
+    //           //   break;
+    //           // }
+    //         }
+    //       }
+    //       break;
+    //     // if (cart[i].id == item.id && cart[i].quantity === 1 ) {
+    //     //   cart.splice(i, 1);
+    //     //   break;
+    //     // }
+    //   }
+    // }
+    // this.setLocalStore("cart_detail", cart);
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   plusItem(item) {
-    let cart: Products[] = [];
-    cart = this.getLocalStore("cart_detail");
-    for (let i = 0; i < cart.length; i++) {
-      if (cart[i].id == item.id ) {
-        cart[i].quantity = cart[i].quantity + 1;
-        cart[i].price = cart[i].price  + parseFloat(item.productPrice);
-        break;
-      }
-    }
-    this.setLocalStore("cart_detail", cart);
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    this.spinner.show()
+    this.cartUpdate = {...item};
+    this.cartUpdate.quantity = this.cartUpdate.quantity + 1
+    this.serviceCart.update(this.cartUpdate).subscribe(res => {
+      this.getProductsInCart()
+      this.cartAmountTotal();
+      this.dataService.changeMessage('load cart')
+      this.cartCountTotal();
+      this.spinner.hide()
+    })
+    // let cart: Products[] = [];
+    // cart = this.getLocalStore("cart_detail");
+    // for (let i = 0; i < cart.length; i++) {
+    //   if (cart[i].id == item.id ) {
+    //     cart[i].quantity = cart[i].quantity + 1;
+    //     cart[i].price = cart[i].price  + parseFloat(item.productPrice);
+    //     break;
+    //   }
+    // }
+    // this.setLocalStore("cart_detail", cart);
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
+  
   openCart(template){
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
     this.cartDetail = this.getLocalStore("cart_detail");
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   saveOrder(){
     const cart_detail = this.getLocalStore("cart_detail");
     if(cart_detail.length === 0) {
       return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
-      console.log(cart_detail)
       this.removeLocalStore('cart')
       this.removeLocalStore('cart_detail')
       this.count = 0
@@ -339,13 +401,18 @@ export class ShopCartComponent implements OnInit {
       this.spinner.hide()
     })
   }
-  getStoreInfor(storeId) {
-    this.service.getById(storeId).subscribe(res => {
+  // getStoreInfor(storeId) {
+  //   this.service.getById(storeId).subscribe(res => {
+  //     this.storeInfo = res;
+  //     this.getCategoryOfStore(this.storeInfo.accountGuid)
+  //     this.getProducts(this.storeInfo.accountGuid)
+  //     this.loadBannerData()
+  //     this.loadNewData()
+  //   })
+  // }
+  getStoreInfor() {
+    this.service.GetWithGuid(this.user.uid).subscribe(res => {
       this.storeInfo = res;
-      this.getCategoryOfStore(this.storeInfo.accountGuid)
-      this.getProducts(this.storeInfo.accountGuid)
-      this.loadBannerData()
-      this.loadNewData()
     })
   }
   getCategoryOfStore(guid){

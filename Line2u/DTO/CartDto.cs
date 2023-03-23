@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Line2u.Models
+namespace Line2u.DTO
 {
-    public partial class Cart
+    public partial class CartDto
     {
         public decimal Id { get; set; }
         public DateTime? CreateDate { get; set; }
@@ -14,11 +14,11 @@ namespace Line2u.Models
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }
+        public string ProductPrice { get; set; }
+        public decimal? ProductId { get; set; }
         public string Guid { get; set; }
         public string AccountUid { get; set; }
         public string ProductGuid { get; set; }
-        public string ProductPrice { get; set; }
-        public decimal? ProductId { get; set; }
         public string StoreGuid { get; set; }
         public decimal? IsCheckout { get; set; }
     }

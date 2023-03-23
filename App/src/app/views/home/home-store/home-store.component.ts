@@ -27,6 +27,8 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { WebBannerUserService } from 'src/app/_core/_service/evse/web-banner-user.service';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
 import { AuthService } from 'src/app/_core/_service/auth.service';
+import { CartService } from 'src/app/_core/_service/evse/cart.service';
+import { Cart } from 'src/app/_core/_model/evse/cart';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
@@ -57,6 +59,7 @@ export class HomeStoreComponent implements OnInit {
   news: any;
   logo: any;
   storeInfo: StoreProfile = {} as StoreProfile;
+  cartModel: Cart = {} as Cart;
   mainCategory: any 
   products: any 
   count: any = 0;
@@ -92,6 +95,7 @@ export class HomeStoreComponent implements OnInit {
     private sysMenuService: SysMenuService,
     private webNewsService: WebNewsUserService,
     private service: StoreProfileService,
+    private serviceCart: CartService,
     private serviceMainCategory: MainCategoryService,
     private serviceProducts: ProductsService,
     private translate: TranslateService,
@@ -133,9 +137,11 @@ export class HomeStoreComponent implements OnInit {
     this.getMenu();
     this.loadLogoData();
     // this.dataService.pushCart('load cart')
-    const cartDetail = this.getLocalStore("cart_detail");
-    this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // const cartDetail = this.getLocalStore("cart_detail");
+    // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    this.cartAmountTotal()
+    this.cartCountTotal();
    
   }
   navigateMenu() {
@@ -191,48 +197,72 @@ export class HomeStoreComponent implements OnInit {
     this.dataService.changeLang('Store_Click')
     this.router.navigate([`home/news-detail/${item.link}`])
   }
+  cartCountTotal() {
+    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+      this.count = res
+    })
+  }
+  cartAmountTotal() {
+    this.serviceCart.cartAmountTotal(this.user.uid).subscribe(res => {
+      this.totalPrice = res
+    })
+  }
   addToCart(item: Products) {
     this.isOpenDropdown = false
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")
     if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
       this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
     }else {
-      let cart: Products[] = [];
-      cart = this.getLocalStore("cart_detail");
-      if(cart.length === 0) {
-        item.quantity = 1
-        item.price = parseFloat(item.productPrice)
-        cart.push(item)
-      }else {
-        for (let i = 0; i < cart.length; i++) {
-          if (cart[i].id == item.id ) {
-            cart[i].quantity = cart[i].quantity + 1;
-            cart[i].price = cart[i].price  + parseFloat(item.productPrice);
-            break;
-          }else {
-            const exsit = cart.filter(x => x.id === item.id );
-            if(exsit.length === 0) {
-              item.quantity = 1
-              item.price = parseFloat(item.productPrice)
-              cart.push(item)
-            }else {
-              for (let z = 0; z < cart.length; z++) {
-                if (cart[z].id == item.id ) {
-                  cart[z].quantity = cart[z].quantity + 1;
-                  cart[z].price = cart[z].price  + parseFloat(item.productPrice);
-                  break;
-                }
-              }
-            }
-            break;
-          }
-        }
-      }
-      this.setLocalStore("cart_detail", cart);
-      const cartDetail = this.getLocalStore("cart_detail");
-      this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
-      this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-      this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+      this.cartModel.accountUid = this.user.uid
+      this.cartModel.createBy = this.user.id
+      this.cartModel.quantity = 1
+      this.cartModel.productGuid = item.guid
+      this.cartModel.storeGuid = item.storeGuid
+      this.cartModel.productId = item.id
+      this.cartModel.productPrice = item.productPrice
+      this.serviceCart.add(this.cartModel).subscribe(res => {
+        console.log(res)
+        this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+        this.cartCountTotal()
+        this.dataService.changeMessage('load cart')
+        this.cartAmountTotal();
+      })
+      // let cart: Products[] = [];
+      // cart = this.getLocalStore("cart_detail");
+      // if(cart.length === 0) {
+      //   item.quantity = 1
+      //   item.price = parseFloat(item.productPrice)
+      //   cart.push(item)
+      // }else {
+      //   for (let i = 0; i < cart.length; i++) {
+      //     if (cart[i].id == item.id ) {
+      //       cart[i].quantity = cart[i].quantity + 1;
+      //       cart[i].price = cart[i].price  + parseFloat(item.productPrice);
+      //       break;
+      //     }else {
+      //       const exsit = cart.filter(x => x.id === item.id );
+      //       if(exsit.length === 0) {
+      //         item.quantity = 1
+      //         item.price = parseFloat(item.productPrice)
+      //         cart.push(item)
+      //       }else {
+      //         for (let z = 0; z < cart.length; z++) {
+      //           if (cart[z].id == item.id ) {
+      //             cart[z].quantity = cart[z].quantity + 1;
+      //             cart[z].price = cart[z].price  + parseFloat(item.productPrice);
+      //             break;
+      //           }
+      //         }
+      //       }
+      //       break;
+      //     }
+      //   }
+      // }
+      // this.setLocalStore("cart_detail", cart);
+      // const cartDetail = this.getLocalStore("cart_detail");
+      // this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+      // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+      // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     }
   }
   minusItem(item) {
@@ -294,11 +324,16 @@ export class HomeStoreComponent implements OnInit {
     this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   openCart(){
+    if(this.count === 0) {
+      return this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
+    }else {
+
+      this.router.navigate([`home/store/shop-cart`])
+    }
     // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
-    // this.router.navigate([`home/news-detail/${item.id}`])
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    // // this.router.navigate([`home/news-detail/${item.id}`])
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   saveOrder(){
     const cart_detail = this.getLocalStore("cart_detail");

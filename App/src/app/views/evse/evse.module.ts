@@ -69,6 +69,7 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     ChartModule,
     RichTextEditorModule,
     SharedModule.forRoot(),
+    // Common2Module.forRoot(),
     PigfarmCoreModule.forRoot(environment.apiUrl),
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyAi9VYgdZUeOo2Wngl_5ho1H4_5clWGFTU"

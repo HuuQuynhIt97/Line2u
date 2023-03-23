@@ -110,9 +110,20 @@ namespace Line2u.Data
                     .HasColumnName("STATUS")
                     .HasColumnType("numeric(18, 0)");
 
+                entity.Property(e => e.IsCheckout)
+                   .HasColumnName("Is_Checkout")
+                   .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.ProductId)
+                   .HasColumnName("PRODUCT_ID")
+                   .HasColumnType("numeric(18, 0)");
+
                 entity.Property(e => e.StoreGuid)
                     .HasColumnName("STORE_GUID")
                     .HasMaxLength(40);
+                entity.Property(e => e.ProductPrice)
+                    .HasColumnName("PRODUCT_PRICE")
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.UpdateBy)
                     .HasColumnName("UPDATE_BY")

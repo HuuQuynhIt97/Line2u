@@ -39,6 +39,7 @@ namespace Line2u.Services
     public class MainCategoryService : ServiceBase<MainCategory, MainCategoryDto>, IMainCategoryService, IScopeService
     {
         private readonly IRepositoryBase<MainCategory> _repo;
+        private readonly IRepositoryBase<StoreProfile> _repoStoreProfile;
         private readonly IRepositoryBase<Product> _repoProduct;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
@@ -51,6 +52,7 @@ private readonly ILine2uLoggerService _logger;
 
         public MainCategoryService(
             IRepositoryBase<MainCategory> repo,
+            IRepositoryBase<StoreProfile> repoStoreProfile,
             IRepositoryBase<Product> repoProduct,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
@@ -65,6 +67,7 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoStoreProfile = repoStoreProfile;
             _repoProduct = repoProduct;
             _repoCodeType = repoCodeType;
             _logger = logger;
@@ -402,13 +405,33 @@ ISPService spService)
         public async Task<object> GetProducts(string store_account_Guid)
         {
             var category = await _repo.FindAll(o => o.AccountUid == store_account_Guid).ToListAsync();
+            var storeGuid = _repoStoreProfile.FindAll(o => o.AccountGuid == store_account_Guid).FirstOrDefault().Guid;
             var products = await _repoProduct.FindAll().ToListAsync();
             var result = (from x in category
                          let y = products.Where(o => o.CategoryGuid == x.Guid).ToList()
                          select new
                          {
                              category = x.CategoryName,
-                             list_product = y
+                             list_product = y.Select(o => new
+                             {
+                                 o.Id,
+                                 o.AccountUid,
+                                 o.CategoryGuid,
+                                 o.Body,
+                                 o.CreateBy,
+                                 o.Comment,
+                                 o.CreateDate,
+                                 o.Guid,
+                                 o.PhotoPath,
+                                 o.ProductDescription, 
+                                 o.ProductName,
+                                 o.ProductPrice,
+                                 o.ProductPriceDiscount,
+                                 o.Status,
+                                 o.UpdateBy, 
+                                 o.UpdateDate,
+                                 storeGuid = storeGuid
+                             })
                          }).ToList();
             return result;
         }

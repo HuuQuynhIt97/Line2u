@@ -141,7 +141,7 @@ export class OrderTrackingComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor(storeId) 
+    this.getStoreInfor() 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     // this.getMenu();
     this.loadLogoData();
@@ -411,8 +411,8 @@ export class OrderTrackingComponent implements OnInit {
       this.spinner.hide()
     })
   }
-  getStoreInfor(storeId) {
-    this.service.getById(storeId).subscribe(res => {
+  getStoreInfor() {
+    this.service.GetWithGuid(this.user.uid).subscribe(res => {
       this.storeInfo = res;
       this.getCategoryOfStore(this.storeInfo.accountGuid)
       this.getProducts(this.storeInfo.accountGuid)

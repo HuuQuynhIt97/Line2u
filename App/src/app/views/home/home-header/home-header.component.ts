@@ -9,6 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { StoreProfile } from 'src/app/_core/_model/xaccount';
 import { Products } from 'src/app/_core/_model/evse/products';
+import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
+import { CartService } from 'src/app/_core/_service/evse/cart.service';
+import { DataService } from 'src/app/_core/_service/data.service';
 @Component({
   selector: 'app-home-header',
   templateUrl: './home-header.component.html',
@@ -39,10 +42,19 @@ export class HomeHeaderComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private authService: AuthService,
     private sysMenuService: SysMenuService,
+    private dataService: DataService,
     private alertify: AlertifyService,
     private translate: TranslateService,
+    private serviceStore: StoreProfileService,
+    private serviceCart: CartService,
     private router: Router
-  ) { }
+  ) { 
+    this.dataService.currentMessage.subscribe((res: any) => {
+      if(res === 'load cart') {
+        this.cartCountTotal()
+      }
+    })
+  }
 
   ngOnInit() {
     if (this.authService.loggedIn()) {
@@ -53,8 +65,15 @@ export class HomeHeaderComponent implements OnInit {
     }
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.loadLogoData();
-    const cartDetail = this.getLocalStore("cart_detail");
-    this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    this.getStoreInfor();
+    // const cartDetail = this.getLocalStore("cart_detail");
+    // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+    this.cartCountTotal()
+  }
+  cartCountTotal() {
+    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+      this.count = res
+    })
   }
   langValueChange(args) {
     const lang = args.itemData.id.toLowerCase();
@@ -86,7 +105,9 @@ export class HomeHeaderComponent implements OnInit {
   }
   openCart(){
     // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
+    const uri = this.router.url;
+    localStorage.setItem('isLogin_Cus',uri)
+    this.router.navigate([`home/store/shop-cart`])
     // this.router.navigate([`home/news-detail/${item.id}`])
     this.cartDetail = this.getLocalStore("cart_detail");
     this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
@@ -113,6 +134,13 @@ export class HomeHeaderComponent implements OnInit {
         this.logo = data.length > 0 ? data[0].photoPath : "../../../assets/images/logo.png";
       })
       .catch((err) => {});
+  }
+
+  getStoreInfor() {
+    this.serviceStore.GetWithGuid(this.user.uid).subscribe(res => {
+      console.log(res)
+      this.storeInfo = res;
+    })
   }
 
 }

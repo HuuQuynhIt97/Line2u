@@ -20,31 +20,36 @@ using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
 using Org.BouncyCastle.Crypto;
 using static Line2u.Constants.SP;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Line2u.Services
 {
-    public interface IOrderService : IServiceBase<Order, OrderDto>
+    public interface ICartService : IServiceBase<Cart, CartDto>
     {
         Task<object> LoadData(DataManager data, string lang,string uid);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
-        Task<OperationResult> AddFormAsync(OrderDto model);
-        Task<OperationResult> UpdateFormAsync(OrderDto model);
+        Task<OperationResult> AddFormAsync(CartDto model);
+        Task<OperationResult> UpdateFormAsync(CartDto model);
 
         Task<object> GetWebNews();
         Task<object> GetProducts(string id);
         Task<object> GetTrackingOrderForStore(string id);
         Task<object> GetTrackingOrderUser(int id);
         Task<object> GetDetailOrder(string id);
+        Task<object> GetProductsInCart(string accountGuid);
+
+        Task<double> CartAmountTotal(string accountGuid);
+        Task<object> CartAmountTotal2(string accountGuid);
+        Task<int> CartCountTotal(string accountGuid);
         Task<object> GetWebPages();
         
     }
-    public class OrderService : ServiceBase<Order, OrderDto>, IOrderService, IScopeService
+    public class CartService : ServiceBase<Cart, CartDto>, ICartService, IScopeService
     {
-        private readonly IRepositoryBase<Order> _repo;
+        private readonly IRepositoryBase<Cart> _repo;
         private readonly IRepositoryBase<Product> _repoProduct;
-        private readonly IRepositoryBase<Cart> _repoCart;
         private readonly IRepositoryBase<OrderDetail> _repoOrderDetail;
         private readonly IRepositoryBase<MainCategory> _repoMainCategory;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
@@ -56,9 +61,8 @@ namespace Line2u.Services
 private readonly ILine2uLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
 
-        public OrderService(
-            IRepositoryBase<Order> repo,
-            IRepositoryBase<Cart> repoCart,
+        public CartService(
+            IRepositoryBase<Cart> repo,
             IRepositoryBase<Product> repoProduct,
             IRepositoryBase<OrderDetail> repoOrderDetail,
             IRepositoryBase<MainCategory> repoMainCategory,
@@ -75,7 +79,6 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
-            _repoCart = repoCart;
             _repoProduct = repoProduct;
             _repoOrderDetail = repoOrderDetail;
             _repoMainCategory = repoMainCategory;
@@ -114,45 +117,35 @@ ISPService spService)
                 Count = count
             };
         }
-        public override async Task<OperationResult> AddAsync(OrderDto model)
+        public override async Task<OperationResult> AddAsync(CartDto model)
         {
-            var item = _mapper.Map<Order>(model);
-            item.Status = StatusConstants.Default;
-            _repo.Add(item);
+            var check_item = _repo.FindAll(o => o.ProductId == model.ProductId 
+            && o.StoreGuid == model.StoreGuid 
+            && o.AccountUid == model.AccountUid
+            && o.Status == 1
+            && o.IsCheckout == 0
+            ).FirstOrDefault();
+            if (check_item != null)
+            {
+                check_item.Quantity = check_item.Quantity + 1;
+                _repo.Update(check_item);
+            }
+            else
+            {
+                var item = _mapper.Map<Cart>(model);
+                item.Status = StatusConstants.Default;
+                item.IsCheckout = StatusConstants.Default_2;
+                _repo.Add(item);
+            }
             try
             {
                 await _unitOfWork.SaveChangeAsync();
-                // order detail
-                var list_order_detail = new List<OrderDetail>();
-                foreach (var item_products in model.Products)
-                {
-                    var item_add = new OrderDetail()
-                    {
-                        OrderGuid = item.Guid,
-                        Price = item_products.ProductPrice.ToDecimal(),
-                        Quantity = item_products.Quantity,
-                        ProductGuid = item_products.ProductGuid,
-                        PendingStatus  = true,
-                        AccountId = model.AccountId,
-                        StoreGuid = item_products.storeGuid,
-                    };
-                    var item_cart = _repoCart.FindByID(item_products.Id);
-                    item_cart.IsCheckout = 1;
-                    _repoCart.Update(item_cart);
-                    list_order_detail.Add(item_add);
-                }
-                _repoOrderDetail.AddRange(list_order_detail);
-                ///update lai cart
-                ///
-
-
-                await _unitOfWork.SaveChangeAsync();
+               
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = MessageReponse.AddSuccess,
-                    Success = true,
-                    Data = item
+                    Success = true
                 };
             }
             catch (Exception ex)
@@ -165,11 +158,11 @@ ISPService spService)
             }
             return operationResult;
         }
-        public override async Task<OrderDto> GetByIDAsync(object id)
+        public override async Task<CartDto> GetByIDAsync(object id)
         {
             var item = await _repo.FindByIDAsync(id);
             var author =  _repoXAccount.FindByID(item.CreateBy);
-            var result = new OrderDto()
+            var result = new CartDto()
             {
                 Id = item.Id,
                 CreateBy = item.CreateBy,
@@ -181,9 +174,9 @@ ISPService spService)
             };
             return result;
         }
-        public override async Task<OperationResult> UpdateAsync(OrderDto model)
+        public override async Task<OperationResult> UpdateAsync(CartDto model)
         {
-            var item = _mapper.Map<Order>(model);
+            var item = _mapper.Map<Cart>(model);
             _repo.Update(item);
             try
             {
@@ -206,18 +199,20 @@ ISPService spService)
             }
             return operationResult;
         }
-        public override async Task<List<OrderDto>> GetAllAsync()
+        public override async Task<List<CartDto>> GetAllAsync()
         {
-            var query = _repo.FindAll(x=> x.Status == StatusConstants.Default).ProjectTo<OrderDto>(_configMapper);
+            var query = _repo.FindAll(x=> x.Status == StatusConstants.Default).ProjectTo<CartDto>(_configMapper);
 
             var data = await query.OrderByDescending(x=>x.Id).ToListAsync();
             return data;
 
         }
+
         public override async Task<OperationResult> DeleteAsync(object id)
         {
             var item = _repo.FindByID(id.ToDecimal());
             item.Status = StatusConstants.Delete3;
+            item.Quantity = 0;
             _repo.Update(item);
             try
             {
@@ -277,7 +272,7 @@ ISPService spService)
             };
         }
 
-        public async Task<OperationResult> AddFormAsync(OrderDto model)
+        public async Task<OperationResult> AddFormAsync(CartDto model)
         {
           
             FileExtension fileExtension = new FileExtension();
@@ -295,7 +290,7 @@ ISPService spService)
             //}
             try
             {
-                var item = _mapper.Map<Order>(model);
+                var item = _mapper.Map<Cart>(model);
                 // item.Status = StatusConstants.Default;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
@@ -324,12 +319,12 @@ ISPService spService)
         }
 
     
-        public async Task<OperationResult> UpdateFormAsync(OrderDto model)
+        public async Task<OperationResult> UpdateFormAsync(CartDto model)
         {
 
             FileExtension fileExtension = new FileExtension();
            
-            var item = _mapper.Map<Order>(model);
+            var item = _mapper.Map<Cart>(model);
 
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
@@ -443,7 +438,7 @@ ISPService spService)
         public async Task<object> GetTrackingOrderForStore(string storeGuid)
         {
             var result = _repoOrderDetail.FindAll(o => o.StoreGuid == storeGuid).DistinctBy(o => o.OrderGuid).ToList();
-            var list_data = new List<Order>();
+            var list_data = new List<Cart>();
 
             foreach (var item in result)
             {
@@ -457,7 +452,7 @@ ISPService spService)
 
         public async Task<object> GetTrackingOrderUser(int accountId)
         {
-            var order = await _repo.FindAll(o => o.AccountId == accountId.ToString()).ToListAsync();
+            var order = await _repo.FindAll(o => o.AccountUid == accountId.ToString()).ToListAsync();
             var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
             var products = await _repoProduct.FindAll().ToListAsync();
             var result = (from x in order
@@ -500,6 +495,64 @@ ISPService spService)
 
 
             return result;
+        }
+
+        public async Task<object> GetProductsInCart(string accountGuid)
+        {
+            var temp_1 = await _repo.FindAll(x => x.AccountUid == accountGuid && x.IsCheckout == 0 && x.Status == 1).ToListAsync();
+            var temp_2 = await _repoProduct.FindAll().ToListAsync();
+            var result = (from x in temp_1
+                         join y in temp_2 on x.ProductGuid equals y.Guid
+                         select new
+                         {
+                             x.Id,
+                             x.CreateDate,
+                             x.CreateBy,
+                             x.Quantity,
+                             x.UpdateBy,
+                             x.UpdateDate,
+                             x.Status,
+                             x.ProductId,
+                             x.ProductGuid,
+                             x.Guid,
+                             x.AccountUid,
+                             x.StoreGuid,
+                             x.IsCheckout,
+                             x.ProductPrice,
+                             y.PhotoPath,
+                             y.ProductName,
+                             ProductPrices = y.ProductPrice,
+                             y.ProductPriceDiscount,
+                             y.ProductDescription
+                         }).ToList();
+            return result;
+        }
+
+        public async Task<double> CartAmountTotal(string accountGuid)
+        {
+            
+            var item = await _repo.FindAll(x => 
+            x.AccountUid == accountGuid 
+            && x.IsCheckout == 0
+            && x.Status == 1
+            ).SumAsync(o => Convert.ToDouble(o.ProductPrice) * o.Quantity);
+            return item ?? 0;
+        }
+
+        public async Task<object> CartAmountTotal2(string accountGuid)
+        {
+            var item_tamp = _repo.FindAll(x => x.AccountUid == accountGuid && x.IsCheckout == 0).Select(o => new
+            {
+                total = Convert.ToInt32(o.ProductPrice) * o.Quantity
+            });
+            //var item = item_tamp.Sum(x => x.total);
+            return item_tamp;
+        }
+
+        public async Task<int> CartCountTotal(string accountGuid)
+        {
+            var item = await _repo.FindAll(x => x.AccountUid == accountGuid && x.IsCheckout == 0 && x.Status == 1 ).SumAsync(x => x.Quantity);
+            return item ?? 0;
         }
     }
 }

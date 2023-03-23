@@ -52,6 +52,7 @@ namespace Line2u.Helpers.AutoMapper
             CreateMap<MainCategory, MainCategoryDto>();
             CreateMap<Order, OrderDto>();
             CreateMap<OrderDetail, OrderDetailDto>();
+            CreateMap<Cart, CartDto>();
 
         }
 
