@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService } from 'herr-core';
@@ -24,6 +24,9 @@ import SwiperCore , {
 } from 'swiper';
 import { WebBannerService } from 'src/app/_core/_service/evse/web-banner.service';
 import { eventClick } from '@syncfusion/ej2-angular-schedule';
+import { StoreProfile } from 'src/app/_core/_model/xaccount';
+import { Products } from 'src/app/_core/_model/evse/products';
+import { AuthService } from 'src/app/_core/_service/auth.service';
 
 SwiperCore.use([
   Navigation,
@@ -40,7 +43,11 @@ SwiperCore.use([
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: [
+    './home.component.css',
+    '../../../assets/css/foodpanda.css'
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   
@@ -53,6 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   parentActive = false;
   childActive = false;
   subActive = false;
+  count: any = 0;
   subscription: Subscription = new Subscription();
   languageData = [
     { id: "Tw", name: "Tw" },
@@ -71,9 +79,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   onWindowAfterPrint(event) {
     console.log('... afterprint', event);
   }
+  isOpenDropdown: boolean = false
+  username: ''
+  storeInfo: StoreProfile = {} as StoreProfile;
+  cartDetail: Products[] = [];
+  totalPrice: number;
+  isLogin: boolean = false
+  user = JSON.parse(localStorage.getItem('user'))
   constructor(
     private spinner: NgxSpinnerService,
     private webBannerService: WebBannerService,
+    private authService: AuthService,
     private sysMenuService: SysMenuService,
     private alertify: AlertifyService,
     private translate: TranslateService,
@@ -90,12 +106,50 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
+    if (this.authService.loggedIn()) {
+      this.isLogin = true
+      this.username = this.user.accountName
+    }else {
+      this.isLogin = false
+    }
     this.ctx = document.getElementById('share') as HTMLElement
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
-    this.loadBannerData();
     this.loadLogoData();
+    this.loadBannerData();
    
+  }
+  loginUser() {
+    const uri = this.router.url;
+    localStorage.setItem('isLogin_Cus',uri)
+    this.router.navigate(["user-login"], {
+      queryParams: { uri },
+      replaceUrl: true,
+    });
+    // return this.router.navigate[('user-login')]
+  }
+  logOutUser() {
+    const uri = this.router.url;
+    localStorage.setItem('lang','tw')
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    // this.router.navigate(['/mobile/landlord-login']);
+    this.alertify.message(this.translate.instant('Logged out'));
+    location.reload();
+  }
+  openCart(){
+    // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
+    this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
+    // this.router.navigate([`home/news-detail/${item.id}`])
+    this.cartDetail = this.getLocalStore("cart_detail");
+    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+  }
+  getLocalStore(key: string) {
+    const data = JSON.parse(localStorage.getItem(key)) || [];
+    return data;
+  }
+  OpenDropdown() {
+    this.isOpenDropdown = !this.isOpenDropdown
   }
   loadBannerData() {
     this.webBannerService.getWebBanners().subscribe(x=> {

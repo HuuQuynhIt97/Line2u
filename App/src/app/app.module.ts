@@ -137,6 +137,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShopCartComponent } from './views/home/home-store/shop-cart/shop-cart.component';
 import { CheckOutComponent } from './views/home/home-store/check-out/check-out.component';
 import { OrderTrackingComponent } from './views/home/home-store/order-tracking/order-tracking.component';
+import { HomeHeaderComponent } from './views/home/home-header/home-header.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -169,7 +170,8 @@ if (!lang) {
     HomeStoreComponent,
     ShopCartComponent,
     CheckOutComponent,
-    OrderTrackingComponent
+    OrderTrackingComponent,
+    HomeHeaderComponent
 
   ],
   imports: [

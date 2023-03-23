@@ -21,14 +21,14 @@ export function lineLoginOrNotifyInitializer(
           // if(isLogin_Cus.length > 0) {
           //   router.navigate([isLogin_Cus]);
           // }
-          if(isLineAccount === "1" && !isCustomer) {
-            router.navigate(['/mobile/home']);
-          }else if (isLineAccount === "1" && isCustomer) {
-            router.navigate([isLogin_Cus_url]);
+          router.navigate([isLogin_Cus_url]);
+          // if(isLineAccount === "1" && !isCustomer) {
+          //   router.navigate(['/mobile/home']);
+          // }else if (isLineAccount === "1" && isCustomer) {
             
-          }else {
-            router.navigate([backUrl]);
-          }
+          // }else {
+          //   router.navigate([backUrl]);
+          // }
         }).add(resolve);
       }else {
         lineService.getProfileFake('').subscribe(data => {}).add(resolve);

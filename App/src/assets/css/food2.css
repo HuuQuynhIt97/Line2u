@@ -1,4 +1,4 @@
-a,
+/* a,
 abbr,
 acronym,
 address,
@@ -98,7 +98,7 @@ menu,
 nav,
 section {
   display: block;
-}
+} */
 body {
   line-height: 1;
 }
@@ -415,17 +415,17 @@ html {
 body {
   color: var(--colorNeutralPrimary);
   font-family: Open Sans, Arial, sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 300;
   line-height: 1.6;
 }
-.link,
+/* .link,
 a {
   color: var(--colorInteractionPrimary);
   cursor: pointer;
   transition: color 0.1s linear;
-}
-.link:focus,
+} */
+/* .link:focus,
 .link:hover,
 a:focus,
 a:hover {
@@ -435,7 +435,7 @@ a:hover {
 .link:focus,
 a:focus {
   outline: none;
-}
+} */
 .account {
   align-items: center;
   display: flex;
@@ -7570,7 +7570,7 @@ textarea {
   top: 0;
   width: 100%;
 }
-.footer {
+/* .footer {
   clear: both;
   font-size: 1.4rem;
   line-height: 1.5;
@@ -7825,7 +7825,7 @@ textarea {
   .footer .footer__language-switch {
     display: none;
   }
-}
+} */
 /* .modal,
 .modal-open {
   overflow: hidden;
@@ -8653,7 +8653,7 @@ textarea {
     right: unset;
   }
 }
-#groceries-landing-react-root .footer [class*=" icon-"]:before,
+/* #groceries-landing-react-root .footer [class*=" icon-"]:before,
 #groceries-landing-react-root .footer [class^="icon-"]:before,
 #groceries-menu-react-root .footer [class*=" icon-"]:before,
 #groceries-menu-react-root .footer [class^="icon-"]:before,
@@ -9056,7 +9056,7 @@ textarea {
   #vendor-details-root .footer__popular {
     grid-template-columns: repeat(4, 1fr);
   }
-}
+} */
 #groceries-landing-react-root .home-cuisines__list,
 #groceries-menu-react-root .home-cuisines__list,
 #seo-area-listing-root .home-cuisines__list,
@@ -9298,7 +9298,7 @@ textarea {
     white-space: nowrap;
   }
 }
-.footer a {
+/* .footer a {
   color: var(--colorNeutralPrimary);
   text-decoration: none;
 }
@@ -9361,7 +9361,7 @@ textarea {
   grid-auto-rows: minmax(min-content, max-content);
   grid-template-columns: 1fr;
   row-gap: 8px;
-}
+} */
 .etbis_qr {
   align-items: center;
   display: flex;

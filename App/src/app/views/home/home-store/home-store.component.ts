@@ -50,9 +50,7 @@ export class HomeStoreComponent implements OnInit {
   subscription: Subscription = new Subscription();
   languageData = [
     { id: "Tw", name: "Tw" },
-    { id: "En", name: "En" },
-    // { id: "Cn", name: "Cn" },
-    // { id: "Vi", name: "Vi" },
+    { id: "En", name: "En" }
   ];
   baseUrl = environment.apiUrlImage;
   banners= [];
@@ -295,7 +293,7 @@ export class HomeStoreComponent implements OnInit {
     this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
-  openCart(template){
+  openCart(){
     // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
     this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart`])
     // this.router.navigate([`home/news-detail/${item.id}`])
