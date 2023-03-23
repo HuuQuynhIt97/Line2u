@@ -97,16 +97,17 @@
                       <li><a class="header-account-menu-link"  data-testid="account-menu-profile">{{'PROFILE' | translate}}</a></li>
                       <hr class="header-account-menu-divider">
                       <li><a class="header-account-menu-link" [href]="'mobile/home'"  data-testid="account-menu-order-history">{{'label.manager.store' | translate}}</a></li>
-                      <hr class="header-account-menu-divider">
-                      <li><a class="header-account-menu-link" [href]="'home/store/' + storeInfo.storeName + '/' + storeInfo.id "  data-testid="account-menu-order-history">{{'label.my.store' | translate}}</a></li>
-                      <hr class="header-account-menu-divider">
+                      <li><a class="header-account-menu-link" [href]="'home/store/' + storeInfo?.storeName + '/' + storeInfo?.id "  data-testid="account-menu-order-history">{{'label.my.store' | translate}}</a></li>
                       <li><a class="header-account-menu-link" [href]="'home'"  data-testid="account-menu-order-history">{{'label.shopping' | translate}}</a></li>
-                      <hr class="header-account-menu-divider">
                       <li><a class="header-account-menu-link" [href]="'home/store/order-tracking'"  data-testid="account-menu-order-history">{{'label.your.order-tracking' | translate}}</a></li>
+                      <li><a class="header-account-menu-link" (click)="logOutUser()" data-testid="account-link-logout">{{'SIGN_OUT' | translate}}</a></li>
+                      
+                      <!-- <li><a class="header-account-menu-link" [href]="'home/store/' + storeInfo.storeName + '/' + storeInfo.id ">{{'label.my.store' | translate}}</a></li>
+                      <li><a class="header-account-menu-link" [href]="'home'"  >{{'label.shopping' | translate}}</a></li>
+                      <li><a class="header-account-menu-link" [href]="'home/store/order-tracking'" >{{'label.your.order-tracking' | translate}}</a></li>
                       <hr class="header-account-menu-divider">
                       
-                      <!-- <li><a class="header-account-menu-link" href="/help-center" data-testid="account-menu-help-center">Help center</a></li> -->
-                      <li><a class="header-account-menu-link" (click)="logOutUser()" data-testid="account-link-logout">{{'SIGN_OUT' | translate}}</a></li>
+                      <li><a class="header-account-menu-link" (click)="logOutUser()" data-testid="account-link-logout">{{'SIGN_OUT' | translate}}</a></li> -->
                   </ul>
               </div>
           </ng-template>
