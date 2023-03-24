@@ -71,7 +71,7 @@ export class HomeHeaderComponent implements OnInit {
     this.cartCountTotal()
   }
   cartCountTotal() {
-    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+    this.serviceCart.cartCountTotal(this.user?.uid || '').subscribe(res => {
       this.count = res
     })
   }
@@ -137,8 +137,8 @@ export class HomeHeaderComponent implements OnInit {
   }
 
   getStoreInfor() {
-    this.serviceStore.GetWithGuid(this.user.uid).subscribe(res => {
-      console.log(res)
+    let uid = this.user?.uid || ''
+    this.serviceStore.GetWithGuid(uid).subscribe(res => {
       this.storeInfo = res;
     })
   }

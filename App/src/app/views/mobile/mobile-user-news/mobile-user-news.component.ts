@@ -124,7 +124,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
-      url: `${this.baseUrl}WebNewsUser/LoadData?lang=${lang}`,
+      url: `${this.baseUrl}WebNewsUser/LoadData?lang=${lang}&userID=${this.user.id}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });

@@ -224,6 +224,7 @@ export class HomeStoreComponent implements OnInit {
         console.log(res)
         this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
         this.cartCountTotal()
+        this.getProducts(this.storeInfo.accountGuid)
         this.dataService.changeMessage('load cart')
         this.cartAmountTotal();
       })
@@ -370,6 +371,7 @@ export class HomeStoreComponent implements OnInit {
   loadProduct(_category) {
     this.spinner.show()
     this.serviceProducts.getProducts(_category.guid).subscribe(res => {
+      console.log(res)
       this.products = res
       this.spinner.hide()
     })

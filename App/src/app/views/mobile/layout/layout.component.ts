@@ -17,6 +17,8 @@ import { environment } from 'src/environments/environment';
 import { UtilitiesService } from 'herr-core';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { SysMenuService } from 'src/app/_core/_service/sys-menu.service';
+import { StoreProfile } from 'src/app/_core/_model/xaccount';
+import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -46,6 +48,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   count: any = 0;
   menus: any;
+  storeInfo: StoreProfile = {} as StoreProfile;
   apiHost = environment.apiUrl.replace('/api/', '');
   qrCodeLink: QRCodeLink = {} as QRCodeLink;
   constructor(
@@ -59,6 +62,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private serviceDash: DashboardService,
     private utilityService: UtilitiesService,
     private lineService: LineLoginOrNotifyService,
+    private serviceStore: StoreProfileService,
     private user2MessageService: User2MessageService,
 
   ) {
@@ -106,6 +110,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getQrcodeLink();
+    this.getStoreInfor()
     this.getMenuTopMobile();
    this.subscription.add(this.user2MessageService.currentUser2Message.subscribe(check => {
       if (check) {
@@ -114,7 +119,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }))
     this.countAlert();
   }
-
+  getStoreInfor() {
+    let uid = this.user_infor?.uid || ''
+    this.serviceStore.GetWithGuid(uid).subscribe(res => {
+      console.log(res)
+      this.storeInfo = res;
+    })
+  }
   getMenuTopMobile() {
     this.sysMenu.getMenuTopMobile(this.lang,"MOBILE").subscribe(res => {
       this.menus = res
@@ -172,15 +183,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.logOut().subscribe(() => {
+    this.authService.logOutLandlord().subscribe(() => {
       const uri = this.router.url;
-      this.cookieService.deleteAll("/");
-
-      this.router.navigate(["/mobile/landlord-login"], {
-        queryParams: { uri },
-        replaceUrl: true,
-      });
-      this.alertify.message(this.trans.instant("Logged out"));
+      this.cookieService.delete('remember_landlord');
+      this.cookieService.delete('key_temp_landlord');
+      localStorage.setItem('lang','tw')
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      // this.router.navigate(['/mobile/landlord-login']);
+      this.router.navigate(['/home']);
+      this.alertify.message(this.trans.instant('Logged out'));
     });
   }
   onNodeClicked(e) {

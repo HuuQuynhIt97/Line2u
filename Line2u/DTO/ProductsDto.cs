@@ -22,7 +22,7 @@ namespace Line2u.DTO
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
-        public bool Status { get; set; }
+        public decimal? Status { get; set; }
         public string Guid { get; set; }
         public string ProductGuid { get; set; }
         public string Delivery { get; set; }

@@ -40,6 +40,8 @@ namespace Line2u.Services
         private readonly IRepositoryBase<Product> _repo;
         private readonly IRepositoryBase<MainCategory> _repoMainCategory;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
+        private readonly IRepositoryBase<Cart> _repoCart;
+        private readonly IRepositoryBase<StoreProfile> _repoStoreProfile;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -51,6 +53,8 @@ private readonly ILine2uLoggerService _logger;
         public ProductsService(
             IRepositoryBase<Product> repo,
             IRepositoryBase<MainCategory> repoMainCategory,
+             IRepositoryBase<Cart> repoCart,
+            IRepositoryBase<StoreProfile> repoStoreProfile,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
             IUnitOfWork unitOfWork,
@@ -64,6 +68,8 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoCart = repoCart;
+            _repoStoreProfile = repoStoreProfile;
             _repoMainCategory = repoMainCategory;
             _repoCodeType = repoCodeType;
             _logger = logger;
@@ -140,7 +146,7 @@ ISPService spService)
                 CreateDate = item.CreateDate,
                 Guid = item.Guid,
                 PhotoPath = item.PhotoPath,
-                Status = item.Status.ToBool(),
+                Status = item.Status.ToDecimal(),
                 UpdateBy = item.UpdateBy,
                 UpdateDate = item.UpdateDate,
             };
@@ -394,13 +400,44 @@ ISPService spService)
         public async Task<object> GetProducts(string category_guid)
         {
             var category = await _repoMainCategory.FindAll(o => o.Guid == category_guid).ToListAsync();
+            var store_account_Guid = _repoMainCategory.FindAll(o => o.Guid == category_guid).FirstOrDefault() != null
+                ? _repoMainCategory.FindAll(o => o.Guid == category_guid).FirstOrDefault().AccountUid : "" ;
+            var storeGuid = _repoStoreProfile.FindAll(o => o.AccountGuid == store_account_Guid).FirstOrDefault().Guid;
             var products = await _repo.FindAll().ToListAsync();
             var result = (from x in category
                           let y = products.Where(o => o.CategoryGuid == x.Guid).ToList()
                           select new
                           {
                               category = x.CategoryName,
-                              list_product = y
+                              list_product = y.Select(o => new
+                              {
+                                  o.Id,
+                                  o.AccountUid,
+                                  o.CategoryGuid,
+                                  o.Body,
+                                  o.CreateBy,
+                                  o.Comment,
+                                  o.CreateDate,
+                                  o.Guid,
+                                  o.PhotoPath,
+                                  o.ProductDescription,
+                                  o.ProductName,
+                                  o.ProductPrice,
+                                  o.ProductPriceDiscount,
+                                  o.Status,
+                                  o.UpdateBy,
+                                  o.UpdateDate,
+                                  totalOrder = _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.AccountUid == store_account_Guid
+                                  && z.Status == 1
+                                  && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.Status == 1
+                                  && z.AccountUid == store_account_Guid
+                                  && z.IsCheckout == 0).FirstOrDefault().Quantity : 0,
+                                  storeGuid = storeGuid
+                              })
                           }).ToList();
             return result;
         }

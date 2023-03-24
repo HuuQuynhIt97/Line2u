@@ -132,14 +132,20 @@
                 <main>
                     <div class="box-flex fd-row">
                         <div class="vendor-section">
-                            <section class="rdp-banner-container" style="top: 64px; margin-bottom: 0px;"></section>
+                            <section class="rdp-banner-container" style="top: 64px; margin-bottom: 0px;">
+                            
+                            </section>
                             <section class="box-flex vendor-info-section">
                                 <ng-container *ngIf="banners.length > 0; else elseTemplate4">
-                                    <ngb-carousel style="height: 50% !important;">
+                                    <ngb-carousel >
                                         <ng-container *ngFor="let item of banners; let i=index">
                                             <ng-template ngbSlide>
                                                 <div class="picsum-img-wrapper" (click)="detailNewBanner(item)">
-                                                    <img [src]="imagePath(item.photoPath)" [alt]="item.subject">
+                                                    <img 
+                                                    class="reponsive"
+                                                    width="100% !important"
+                                                    [src]="imagePath(item.photoPath)" 
+                                                    [alt]="item.subject">
                                                 </div>
                                             
                                             </ng-template>
@@ -231,17 +237,12 @@
                                                     </li>
                                                 </ng-container>
                                                 
-                                                <!-- <li id="category-id-3346153"><a href="#menu__category-id-3346153" title="飯類" class="" data-testid="category-swimlane-item">飯類</a></li>
-                                                <li id="category-id-3346251"><a href="#menu__category-id-3346251" title="麵類" class="" data-testid="category-swimlane-item">麵類</a></li>
-                                                <li id="category-id-1925542"><a href="#menu__category-id-1925542" title="吐司厚片類" class="" data-testid="category-swimlane-item">吐司厚片類</a></li>
-                                                <li id="category-id-3526032"><a href="#menu__category-id-3526032" title="美式漢堡" class="" data-testid="category-swimlane-item">美式漢堡</a></li>
-                                                <li id="category-id-3346241"><a href="#menu__category-id-3346241" title="其它單點" class="" data-testid="category-swimlane-item">其它單點</a></li>
-                                                <li id="category-id-1925537"><a href="#menu__category-id-1925537" title="※注意事項" class="" data-testid="category-swimlane-item">※注意事項</a></li> -->
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </section>
+                            
                             <section class="menu__items-wrapper menu" id="menu">
                                 <ng-container *ngIf="products?.length > 0; else elseTemplate2">
                                 <ng-container *ngFor="let _products of products">
@@ -253,13 +254,17 @@
                                         </svg>
                                         <h2 class="dish-category-title cl-neutral-primary f-title-large-font-size fw-title-large-font-weight lh-title-large-line-height">{{_products.category}}</h2>
                                         </div>
-                                        <ul class="box-flex jc-space-between fw-wrap fd-row">
+                                        <ul class="box-flex jc-space-between fw-wrap fd-row" style="padding-left: 0px;">
                                         <ng-container *ngFor="let item of _products?.list_product">
                                             <li class="box-flex dish-card bg-white jc-space-between p-relative mt-sm sm:pl-zero md:pl-md lg:pl-md pl-sm sm:pr-zero md:pr-md lg:pr-md pr-sm sm:pt-zero md:pt-md lg:pt-md pt-sm sm:pb-sm md:pb-md lg:pb-md pb-sm br-xxs bs-1" data-testid="menu-product">
                                                 <button (click)="addToCart(item)" data-testid="menu-product-button-overlay-id" class="product-button-overlay" aria-label="煎餃,  $ 36 - Add to cart"></button>
                                                 <div class="box-flex ai-start jc-space-between  fd-row" aria-hidden="true">
                                                     <div class="box-flex reduce-width-for-image w-100 pr-sm">
-                                                        <h3 class="truncate cl-neutral-primary sm:f-label-medium-font-size f-title-small-font-size sm:fw-label-medium-font-weight fw-title-small-font-weight"><span class="vertical-align-middle" data-testid="menu-product-name">{{item.productName}}</span></h3>
+
+                                                        <h3 class="truncate cl-neutral-primary sm:f-label-medium-font-size f-title-small-font-size sm:fw-label-medium-font-weight fw-title-small-font-weight">
+                                                            <span *ngIf="item.totalOrder > 0" class="dish-item-counter vertical-align-middle bg-interaction-primary cl-white f-mini-base-font-size fw-mini-base-font-weight lh-mini-base-line-height mr-xxs pl-xxs pr-xxs" data-testid="menu-product-quantity">{{item.totalOrder}} x</span>
+                                                            <span class="vertical-align-middle" data-testid="menu-product-name">{{item.productName}}</span>
+                                                        </h3>
                                                         <p class="dish-description truncate cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height mt-xxs" data-testid="menu-product-description">{{item.productDescription}}</p>
                                                     </div>
                                                     <picture class="dish-card-image" data-testid="menu-product-image" 
@@ -301,6 +306,7 @@
                                 
                                 
                             </section>
+
                             <section class="section-container"></section>
                         </div>
                         <aside class="box-flex cart-column bs-3">
@@ -447,6 +453,7 @@
                         </aside>
                     </div>
                 </main>
+                <section class="section-container"></section>
                 <ngb-carousel *ngIf="news?.length > 0">
                     <ng-template ngbSlide>
                         <div class="row">

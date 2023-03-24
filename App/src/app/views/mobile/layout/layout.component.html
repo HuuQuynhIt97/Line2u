@@ -6,11 +6,11 @@
       <div class="main-header" id="header-section">
 
         <div id="myLinks">
+          <a class="header-account-menu-link" [href]="'home/store/' + storeInfo?.storeName + '/' + storeInfo?.id "  data-testid="account-menu-order-history">{{'label.my.store' | translate}}</a>
           <ng-container *ngFor="let item of menus; let i=index">
-          
             <a (click)="toggleSidebar()" [routerLink]="item.url">{{ item.name }}</a>
           </ng-container>
-          
+          <a class="header-account-menu-link" (click)="logout()"  >{{ 'SIGN_OUT' | translate }}</a>
         </div>
         <ul class="header-list">
           <li  class="float-right" *ngIf="count > 0">
@@ -19,29 +19,6 @@
                <div class = "number">{{count}}</div>
                  <!-- <div class="number2">10</div> -->
                 <i class="fas fa-bell"></i>
-                <!-- <div class="box">
-                  <div class="display">
-                    <div class="nothing">
-                      <i class="fas fa-child stick"></i>
-                      <div class="cent">Looks Like your all caught up!</div>
-                    </div>
-                    <div class="cont">
-                      <div class="sec new">
-                        <a href="https://codepen.io/Golez/">
-                          <div class="profCont">
-                            <img
-                              class="profile"
-                              src="https://c1.staticflickr.com/5/4007/4626436851_5629a97f30_b.jpg"
-                            />
-                          </div>
-                          <div class="txt">James liked your post: "Pure css notification box"</div>
-                          <div class="txt sub">11/7 - 2:30 pm</div>
-                        </a>
-                      </div>
-                     
-                    </div>
-                  </div>
-                </div> -->
               </div>
             </div>
             

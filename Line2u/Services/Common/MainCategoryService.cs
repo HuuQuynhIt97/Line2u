@@ -39,6 +39,7 @@ namespace Line2u.Services
     public class MainCategoryService : ServiceBase<MainCategory, MainCategoryDto>, IMainCategoryService, IScopeService
     {
         private readonly IRepositoryBase<MainCategory> _repo;
+        private readonly IRepositoryBase<Cart> _repoCart;
         private readonly IRepositoryBase<StoreProfile> _repoStoreProfile;
         private readonly IRepositoryBase<Product> _repoProduct;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
@@ -52,6 +53,7 @@ private readonly ILine2uLoggerService _logger;
 
         public MainCategoryService(
             IRepositoryBase<MainCategory> repo,
+            IRepositoryBase<Cart> repoCart,
             IRepositoryBase<StoreProfile> repoStoreProfile,
             IRepositoryBase<Product> repoProduct,
             IRepositoryBase<CodeType> repoCodeType,
@@ -67,6 +69,7 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoCart = repoCart;
             _repoStoreProfile = repoStoreProfile;
             _repoProduct = repoProduct;
             _repoCodeType = repoCodeType;
@@ -430,6 +433,15 @@ ISPService spService)
                                  o.Status,
                                  o.UpdateBy, 
                                  o.UpdateDate,
+                                 totalOrder = _repoCart.FindAll(z => 
+                                 z.ProductGuid == o.Guid 
+                                 && z.AccountUid == store_account_Guid 
+                                 && z.Status  == 1
+                                 && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.Status == 1
+                                 && z.AccountUid == store_account_Guid
+                                 && z.IsCheckout == 0).FirstOrDefault().Quantity : 0,
                                  storeGuid = storeGuid
                              })
                          }).ToList();

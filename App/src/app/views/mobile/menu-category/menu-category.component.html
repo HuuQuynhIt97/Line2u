@@ -119,7 +119,7 @@
         <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "CATEGORY_NAME" | translate }}</label>
         <div class="form-group">
           <label for="uid">{{ "CATEGORY_NAME" | translate }}</label>
-          <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
           <input
             [(ngModel)]="model.categoryName"
             maxlength="200"
