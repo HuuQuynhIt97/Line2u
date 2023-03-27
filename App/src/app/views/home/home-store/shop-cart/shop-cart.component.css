@@ -120,6 +120,14 @@ input:focus::-webkit-input-placeholder
 }
 
 button.btn.btn-primary{
+    background-color: #311cf1;
+    color: white;
+    width: 100%;
+    margin-top: 4vh;
+    padding: 1vh;
+    border-radius: 0;
+}
+button.btn.btn-success{
     background-color: #17c03f;
     color: white;
     width: 100%;
@@ -151,4 +159,25 @@ a:hover{
     background-repeat: no-repeat;
     background-position-x: 95%;
     background-position-y: center;
+}
+
+.footer,
+.push {
+  height: 50px;
+}
+.footer{
+  background: #233b2e;
+
+}
+.mobile{
+  background: #233b2e;
+  z-index: 99;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+a.social-inner {
+    color: white;
 }

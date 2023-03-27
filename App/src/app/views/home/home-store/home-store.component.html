@@ -319,7 +319,7 @@
                                 <div class="modaled modaled-middle">
                                     <div class="modal-cart-button cart-button-container">
                                         <div class="cart-button" data-testid="sticky-cart-button">
-                                            <button class="button status--default sticky-cart-button" aria-live="polite">
+                                            <button (click)="openCart()" class="button status--default sticky-cart-button" aria-live="polite">
                                                 <span class="cart-icon" aria-hidden="true">
                                                     <a class="vendor-cart-icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke-container" width="24" height="24" aria-hidden="true" focusable="false">
@@ -328,7 +328,7 @@
                                                         <span class="products-count" *ngIf="count > 0">{{count}}</span>
                                                     </a>
                                                 </span>
-                                                <span class="" (click)="openCart()">{{'View Cart' | translate}}</span>
+                                                <span class="" >{{'View Cart' | translate}}</span>
                                                 <span class="products-value" >$ {{totalPrice}}</span>
                                                 <div data-testid="loading-dots" class="calcul-animation"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
                                             </button>

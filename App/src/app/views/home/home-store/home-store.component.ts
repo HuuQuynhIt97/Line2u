@@ -334,7 +334,8 @@ export class HomeStoreComponent implements OnInit {
     if(this.count === 0) {
       return this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
     }else {
-
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
       this.router.navigate([`home/store/shop-cart`])
     }
     // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});

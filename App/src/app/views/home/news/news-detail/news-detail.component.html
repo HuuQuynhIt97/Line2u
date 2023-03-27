@@ -1,53 +1,47 @@
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
-  <div class="container-fluid">
-      <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
-        <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div id="navbarNavDropdown" class="navbar-collapse collapse">
-          <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
-          <ul class="navbar-nav">
-            <ng-container *ngFor="let item of menus">
-              <li class="nav-item dropdown" *ngIf="item.hasChildren">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
-                <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <ng-container *ngFor="let subItem of item.children">
-                    <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
-                  </ng-container>
-                   
-                  </div>
-            </li>
-            <li class="nav-item" *ngIf="!item.hasChildren">
-              <a class="nav-link"  (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
-             </li>
-            </ng-container>
-            
-            <div class="lang-select">
-              <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
-                <ng-template #itemTemplate="" let-data="">
-                  <div class="text-black">{{data.id | translate}}</div>
-              </ng-template>
-              <ng-template #valueTemplate="" let-data="">
-                <div class="text-black">{{data.id | translate}}</div>
-            </ng-template>
-              </ejs-dropdownlist>
-          </div>
-           
-              <li class="nav-item">
-                  <a class="nav-link" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-              </li>
-          </ul>
-         
-       
 
+<app-home-header></app-home-header>
+<div class="wrapper">
+  <div class="container pb50">
+      <div class="row">
+          <div class="col-md-9 mb40">
+              <article>
+                  <img 
+                  [src]="baseUrl + news?.photoPath" 
+                  alt="" class="img-fluid mb30">
+                  <div class="post-content">
+                      <h3>{{news?.subject}}</h3>
+                      <ul class="post-meta list-inline">
+                        <li class="list-inline-item">
+                          <i class="fa fa-calendar-o"></i> <a href="#">{{news?.createDate | date: "yyyy-MM-dd"}}</a>
+                        </li>
+                          <!-- <li class="list-inline-item">
+                              <i class="fa fa-user-circle-o"></i> <a href="#">John Doe</a>
+                          </li>
+                          
+                          <li class="list-inline-item">
+                              <i class="fa fa-tags"></i> <a href="#">Bootstrap4</a>
+                          </li> -->
+                      </ul>
+                      <ng-container *ngIf="news?.body !== null; else elseTemplate">
+                        <p [innerHTML]="safeHtml(news?.body)"></p>
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <p>{{'CONTENT_EMPTY' | translate}}</p>
+                      </ng-template>
+                      
+                      <hr class="mb40">
+                      
+                  </div>
+              </article>
+
+          </div>
+         
       </div>
   </div>
-</nav> -->
-<app-home-header></app-home-header>
+</div>
 
-<div class="container">
+
+<!-- <div class="container">
   <div class="row">
     <div class="col-md-9">
       <header>
@@ -73,10 +67,6 @@
         </article>
       </main>
       
-      <!-- <footer>
-        <p>{{'AUTHOR' | translate}}: {{news?.author}}</p>
-        <p>{{'CATEGORY' | translate}}: {{news?.type}}</p>
-      </footer> -->
     </div>
     <div class="col-md-3"></div>
   </div>
@@ -86,7 +76,7 @@
     <button type="button" [routerLink]="'/user-login'" class="btn btn-success">{{'LOGIN' | translate}}</button>
   </div>
  
-</div>
+</div> -->
 
 <footer class="footer mobile">
   <div class="row no-gutters social-container">
@@ -97,14 +87,3 @@
     <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'PROFILE'| translate}}</span></a></div>
   </div>
 </footer>
-<!-- <div class="footer" style="height: auto; background-color: #233b2e">
-
-  <div class="row">
-    <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
-      <a class="btn-mobile-login" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-    </div>
-  </div>
-  <div class="container">
-
-  </div>
-</div> -->

@@ -161,8 +161,8 @@ export class ShopCartComponent implements OnInit {
   checkOut(){
     if (this.authService.loggedIn() ) {
       if(this.cartDetail.length > 0) {
-        const uri = this.router.url;
-        localStorage.setItem('isLogin_Cus',uri)
+        // const uri = this.router.url;
+        // localStorage.setItem('isLogin_Cus',uri)
         this.router.navigate([`home/store/shop-cart/check-out/payment`])
       }else {
         this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
@@ -178,8 +178,13 @@ export class ShopCartComponent implements OnInit {
     }
   }
   backToShop() {
+    const uri = this.router.url;
     let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
-    this.router.navigate([isLogin_Cus_url]);
+    if(uri === isLogin_Cus_url) {
+      this.router.navigate(['home']);
+    }else {
+      this.router.navigate([isLogin_Cus_url]);
+    }
     // this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
   }
   getProductsInCart() {
