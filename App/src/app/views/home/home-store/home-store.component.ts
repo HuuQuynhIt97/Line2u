@@ -198,12 +198,12 @@ export class HomeStoreComponent implements OnInit {
     this.router.navigate([`home/news-detail/${item.link}`])
   }
   cartCountTotal() {
-    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+    this.serviceCart.cartCountTotal(this.user?.uid || '').subscribe(res => {
       this.count = res
     })
   }
   cartAmountTotal() {
-    this.serviceCart.cartAmountTotal(this.user.uid).subscribe(res => {
+    this.serviceCart.cartAmountTotal(this.user?.uid || '').subscribe(res => {
       this.totalPrice = res
     })
   }
@@ -211,7 +211,13 @@ export class HomeStoreComponent implements OnInit {
     this.isOpenDropdown = false
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")
     if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
-      this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+      // this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
     }else {
       this.cartModel.accountUid = this.user.uid
       this.cartModel.createBy = this.user.id

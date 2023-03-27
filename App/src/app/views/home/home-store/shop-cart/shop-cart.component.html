@@ -145,8 +145,12 @@
                           <img class="img-fluid" [src]="imagePath(item.photoPath) " >
                         </div>
                         <div class="col">
-                          <div class="row text-muted">{{item.productName}}</div>
-                          <div class="row">{{item.productDescription}}</div>
+                          <div class="row text-muted" style="font-weight: bold;">{{item.productName}}</div>
+                          <div 
+                          [innerHTML]="safeHtml(item.productDescription)"
+                          class="row">
+                            <!-- {{item.productDescription}} -->
+                          </div>
                         </div>
                         <div class="col">
                           <a style="cursor: pointer;" (click)="minusItem(item)" >-</a>

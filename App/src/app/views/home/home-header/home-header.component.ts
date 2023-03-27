@@ -105,12 +105,17 @@ export class HomeHeaderComponent implements OnInit {
   }
   openCart(){
     // this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-    const uri = this.router.url;
-    localStorage.setItem('isLogin_Cus',uri)
-    this.router.navigate([`home/store/shop-cart`])
-    // this.router.navigate([`home/news-detail/${item.id}`])
-    this.cartDetail = this.getLocalStore("cart_detail");
-    this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+    if(this.count === 0) {
+      return this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
+    }else {
+
+      this.router.navigate([`home/store/shop-cart`])
+    }
+    // const uri = this.router.url;
+    // localStorage.setItem('isLogin_Cus',uri)
+    // this.router.navigate([`home/store/shop-cart`])
+    // this.cartDetail = this.getLocalStore("cart_detail");
+    // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
   getLocalStore(key: string) {
     const data = JSON.parse(localStorage.getItem(key)) || [];

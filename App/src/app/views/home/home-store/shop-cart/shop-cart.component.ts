@@ -161,12 +161,20 @@ export class ShopCartComponent implements OnInit {
   checkOut(){
     if (this.authService.loggedIn() ) {
       if(this.cartDetail.length > 0) {
+        const uri = this.router.url;
+        localStorage.setItem('isLogin_Cus',uri)
         this.router.navigate([`home/store/shop-cart/check-out/payment`])
       }else {
         this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
       }
     }else {
-      this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+      // this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
     }
   }
   backToShop() {
@@ -411,10 +419,15 @@ export class ShopCartComponent implements OnInit {
   //   })
   // }
   getStoreInfor() {
-    this.service.GetWithGuid(this.user.uid).subscribe(res => {
+    this.service.GetWithGuid(this.user?.uid || '').subscribe(res => {
       this.storeInfo = res;
     })
   }
+  // getStoreInfor() {
+  //   this.service.GetWithGuid(this.user.uid).subscribe(res => {
+  //     this.storeInfo = res;
+  //   })
+  // }
   getCategoryOfStore(guid){
     this.serviceMainCategory.getCategoryByUserID(guid).subscribe(res => {
       this.mainCategory = res

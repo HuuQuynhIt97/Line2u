@@ -139,6 +139,7 @@ export class CheckOutComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.spinner.show()
     if (this.authService.loggedIn()) {
       this.isLogin = true
       this.username = this.user.accountName
@@ -174,6 +175,7 @@ export class CheckOutComponent implements OnInit {
     this.serviceCart.getProductsInCart(this.user.uid).subscribe(res => {
       console.log(res)
       this.cartDetail = res
+      this.spinner.hide()
     })
   }
   changeMethod(args) {
@@ -190,6 +192,9 @@ export class CheckOutComponent implements OnInit {
       this.modelAccount = res
       console.log(this.modelAccount)
     })
+  }
+  backEditCart() {
+    this.router.navigate([`home/store/shop-cart`])
   }
   checkOut(){
     this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/shop-cart/check-out`])
