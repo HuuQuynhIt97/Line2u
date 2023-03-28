@@ -63,8 +63,8 @@ export class ProductsService extends CURDService<Products> {
   getWebPages(): Observable<any> {
     return this.http.get<any>(`${this.base}Products/GetWebPages`, {});
   }
-  getProducts(guid): Observable<any> {
-    return this.http.get<any>(`${this.base}Products/getProducts?id=${guid}`, {});
+  getProducts(_categoryGuid,cusGuid): Observable<any> {
+    return this.http.get<any>(`${this.base}Products/getProducts?id=${_categoryGuid}&cusGuid=${cusGuid}`, {});
   }
 
 }

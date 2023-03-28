@@ -595,3 +595,25 @@
 .card-body .card-title .btn {
     background-color: #07b064 !important;
 }
+
+.dish-card .dish-card-image {
+    background-size: 85px 80px !important;
+}
+.dish-card .add-to-cart-button {
+    height: 35px !important;
+    width: 40px !important;
+}
+.menu__items-wrapper {
+    margin-bottom: calc(100% - 300px) !important;
+}
+
+.dish-card .remove-cart-button {
+    display: flex;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.dish-card .remove-cart-button {
+    height: 35px !important;
+    width: 40px !important;
+}

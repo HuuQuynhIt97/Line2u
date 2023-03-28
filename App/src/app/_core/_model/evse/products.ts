@@ -21,5 +21,8 @@ export interface Products {
     quantity: number;
     total: number;
     price: number
+    cartCreateBy: number
+    cartId: number
+    totalOrder: number
     storeGuid: string
 }

@@ -91,12 +91,12 @@
   cursor: pointer;
 }
 #main-text {
-  min-height: 100%;
-  margin-bottom: -50px;
-  overflow-y: auto;
+  /* min-height: 100%; */
+  margin-bottom: calc(100% - 10rem);
+  /* overflow-y: auto; */
 }
 .sidebar-content {
   min-height: 100%;
-  margin-bottom: -100px;
+  margin-bottom: -150px;
   overflow-y: auto;
 }

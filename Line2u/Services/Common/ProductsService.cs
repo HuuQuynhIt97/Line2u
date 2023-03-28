@@ -31,7 +31,7 @@ namespace Line2u.Services
         Task<OperationResult> UpdateFormAsync(ProductsDto model);
 
            Task<object> GetWebNews();
-        Task<object> GetProducts(string id);
+        Task<object> GetProducts(string id, string cusGuid);
         Task<object> GetWebPages();
         
     }
@@ -397,7 +397,7 @@ ISPService spService)
            return await _spService.GetWebPages();
         }
 
-        public async Task<object> GetProducts(string category_guid)
+        public async Task<object> GetProducts(string category_guid, string cusGuid)
         {
             var category = await _repoMainCategory.FindAll(o => o.Guid == category_guid).ToListAsync();
             var store_account_Guid = _repoMainCategory.FindAll(o => o.Guid == category_guid).FirstOrDefault() != null
@@ -429,14 +429,32 @@ ISPService spService)
                                   o.UpdateDate,
                                   totalOrder = _repoCart.FindAll(z =>
                                   z.ProductGuid == o.Guid
-                                  && z.AccountUid == store_account_Guid
+                                  && z.AccountUid == cusGuid
                                   && z.Status == 1
                                   && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
                                   z.ProductGuid == o.Guid
                                   && z.Status == 1
-                                  && z.AccountUid == store_account_Guid
+                                  && z.AccountUid == cusGuid
                                   && z.IsCheckout == 0).FirstOrDefault().Quantity : 0,
-                                  storeGuid = storeGuid
+                                  storeGuid = storeGuid,
+                                  cartCreateBy = _repoCart.FindAll(z =>
+                                    z.ProductGuid == o.Guid
+                                    && z.AccountUid == cusGuid
+                                    && z.Status == 1
+                                    && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                    z.ProductGuid == o.Guid
+                                    && z.Status == 1
+                                    && z.AccountUid == cusGuid
+                                    && z.IsCheckout == 0).FirstOrDefault().CreateBy : 0,
+                                  cartId = _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.AccountUid == cusGuid
+                                  && z.Status == 1
+                                  && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.Status == 1
+                                  && z.AccountUid == cusGuid
+                                  && z.IsCheckout == 0).FirstOrDefault().Id : 0,
                               })
                           }).ToList();
             return result;

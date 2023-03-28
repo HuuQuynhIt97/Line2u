@@ -282,6 +282,7 @@ export class ShopCartComponent implements OnInit {
       this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     }
   }
+  
   minusItem(item) {
     this.spinner.show()
     this.cartUpdate = {...item};
@@ -409,7 +410,7 @@ export class ShopCartComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -439,7 +440,7 @@ export class ShopCartComponent implements OnInit {
     })
   }
   getProducts(guid){
-    this.serviceMainCategory.getProducts(guid).subscribe(res => {
+    this.serviceMainCategory.getProducts(guid,this.user?.uid).subscribe(res => {
       this.products = res
     })
   }

@@ -79,9 +79,9 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetProducts(string id)
+        public async Task<ActionResult> GetProducts(string id,string cusGuid)
         {
-            return Ok(await _service.GetProducts(id));
+            return Ok(await _service.GetProducts(id, cusGuid));
         }
 
         [HttpGet]

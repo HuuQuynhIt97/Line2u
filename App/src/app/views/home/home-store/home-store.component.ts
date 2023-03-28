@@ -207,7 +207,49 @@ export class HomeStoreComponent implements OnInit {
       this.totalPrice = res
     })
   }
+  removeCart(item: Products) {
+    this.spinner.show()
+    this.isOpenDropdown = false
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.cartModel.id = item.cartId
+      this.cartModel.updateBy = this.user.id
+      this.cartModel.quantity = item.totalOrder - 1
+      if(item.cartId > 0) {
+        if(this.cartModel.quantity === 0) {
+          this.serviceCart.delete(this.cartModel.id).subscribe(res => {
+            this.cartCountTotal()
+            this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+            this.dataService.changeMessage('load cart')
+            this.cartAmountTotal();
+            this.spinner.hide()
+          })
+        }
+        else {
+          this.serviceCart.update(this.cartModel).subscribe(res => {
+            console.log('update',res)
+            // this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+            this.cartCountTotal()
+            this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+            this.dataService.changeMessage('load cart')
+            this.cartAmountTotal();
+            this.spinner.hide()
+          })
+        }
+      }else {
+        this.spinner.hide()
+      }
+    }
+  }
   addToCart(item: Products) {
+    this.spinner.show()
     this.isOpenDropdown = false
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")
     if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
@@ -230,9 +272,10 @@ export class HomeStoreComponent implements OnInit {
         console.log(res)
         this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
         this.cartCountTotal()
-        this.getProducts(this.storeInfo.accountGuid)
+        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
         this.dataService.changeMessage('load cart')
         this.cartAmountTotal();
+        this.spinner.hide()
       })
       // let cart: Products[] = [];
       // cart = this.getLocalStore("cart_detail");
@@ -377,7 +420,7 @@ export class HomeStoreComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
       console.log(res)
       this.products = res
       this.spinner.hide()
@@ -387,7 +430,7 @@ export class HomeStoreComponent implements OnInit {
     this.service.getById(storeId).subscribe(res => {
       this.storeInfo = res;
       this.getCategoryOfStore(this.storeInfo.accountGuid)
-      this.getProducts(this.storeInfo.accountGuid)
+      this.getProducts(this.storeInfo.accountGuid , this.user?.uid)
       this.loadBannerData()
       this.loadNewData()
     })
@@ -397,8 +440,9 @@ export class HomeStoreComponent implements OnInit {
       this.mainCategory = res
     })
   }
-  getProducts(guid){
-    this.serviceMainCategory.getProducts(guid).subscribe(res => {
+  getProducts(store_guid, cus_guid){
+    this.serviceMainCategory.getProducts(store_guid,cus_guid).subscribe(res => {
+      console.log('all product', res)
       this.products = res
     })
   }

@@ -106,7 +106,7 @@
                                     <div class="dish-control-holder" data-testid="swimlane-container">
                                         <div class="nav-holder" id="nav-holder">
                                             <ul>
-                                                <li id="category-id-0"><a href="#menu__category-id-0" title="Popular" class="" data-testid="category-swimlane-item">{{'CATEGORY' | translate}}</a></li>
+                                                <!-- <li id="category-id-0"><a href="#menu__category-id-0" title="Popular" class="" data-testid="category-swimlane-item">{{'CATEGORY' | translate}}</a></li> -->
                                                 <ng-container *ngFor="let _category of mainCategory">
                                                     <li id="category-id-1925538">
                                                     <a (click)="loadProduct(_category)" [title]="_category?.categoryName" class="" data-testid="category-swimlane-item">
@@ -122,79 +122,94 @@
                             </section>
                             
                             <section class="menu__items-wrapper menu" id="menu">
-                                <ng-container *ngIf="products?.length > 0; else elseTemplate2">
+                               
                                 <ng-container *ngFor="let _products of products">
-                                    <div *ngIf="_products?.list_product.length > 0" class="box-flex dish-category-section bg-white mt-sm" data-testid="menu-popular-category-section" data-id="0">
-                                    <div tabindex="-1" class="dish-category-section__inner-wrapper section-container" id="menu__category-id-0">
-                                        <div class="box-flex ai-center   fd-row">
-                                        <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="24" height="24">
-                                            <path d="M10.346 5.598c-1.012-.89-1.42-1.944-1.222-3.16l.03-.168a.333.333 0 00-.545-.318l-.336.298c-.8.717-1.297 1.24-1.491 1.57l-.07.129c-.363.709-.707 2.156.621 3.602.972.84.667 2.1-.551 2.1-.525 0-.912-1.055-1.162-3.166l-.047-.436a.333.333 0 00-.564-.206C2.96 7.82 2.524 9.92 3.702 12.141a4.942 4.942 0 006.752 1.809c2.364-1.365 3.327-4.14 2.213-5.95l-.231-.304c-.584-.758-.73-.902-2.09-2.098z"></path>
-                                        </svg>
-                                        <h2 class="dish-category-title cl-neutral-primary f-title-large-font-size fw-title-large-font-weight lh-title-large-line-height">{{_products.category}}</h2>
-                                        </div>
-                                        <ul class="box-flex jc-space-between fw-wrap fd-row" style="padding-left: 0px;">
-                                        <ng-container *ngFor="let item of _products?.list_product">
-                                            <li class="box-flex dish-card bg-white jc-space-between p-relative mt-sm sm:pl-zero md:pl-md lg:pl-md pl-sm sm:pr-zero md:pr-md lg:pr-md pr-sm sm:pt-zero md:pt-md lg:pt-md pt-sm sm:pb-sm md:pb-md lg:pb-md pb-sm br-xxs bs-1" data-testid="menu-product">
-                                                <button (click)="addToCart(item)" data-testid="menu-product-button-overlay-id" class="product-button-overlay" aria-label="煎餃,  $ 36 - Add to cart"></button>
-                                                <div class="box-flex ai-start jc-space-between  fd-row" aria-hidden="true">
-                                                    <div class="box-flex reduce-width-for-image w-100 pr-sm">
+                                    <ng-container *ngIf="_products?.list_product.length > 0; else elseTemplate2">
+                                        <div  class="box-flex dish-category-section bg-white mt-sm" data-testid="menu-popular-category-section" data-id="0">
+                                            <div tabindex="-1" class="dish-category-section__inner-wrapper section-container" id="menu__category-id-0">
+                                                <div class="box-flex ai-center   fd-row">
+                                                <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="24" height="24">
+                                                    <path d="M10.346 5.598c-1.012-.89-1.42-1.944-1.222-3.16l.03-.168a.333.333 0 00-.545-.318l-.336.298c-.8.717-1.297 1.24-1.491 1.57l-.07.129c-.363.709-.707 2.156.621 3.602.972.84.667 2.1-.551 2.1-.525 0-.912-1.055-1.162-3.166l-.047-.436a.333.333 0 00-.564-.206C2.96 7.82 2.524 9.92 3.702 12.141a4.942 4.942 0 006.752 1.809c2.364-1.365 3.327-4.14 2.213-5.95l-.231-.304c-.584-.758-.73-.902-2.09-2.098z"></path>
+                                                </svg>
+                                                <h2 class="dish-category-title cl-neutral-primary f-title-large-font-size fw-title-large-font-weight lh-title-large-line-height">{{_products.category}}</h2>
+                                                </div>
+                                                <ul class="box-flex jc-space-between fw-wrap fd-row" style="padding-left: 0px;">
+                                                <ng-container *ngFor="let item of _products?.list_product">
+                                                    <li class="box-flex dish-card bg-white jc-space-between p-relative mt-sm sm:pl-zero md:pl-md lg:pl-md pl-sm sm:pr-zero md:pr-md lg:pr-md pr-sm sm:pt-zero md:pt-md lg:pt-md pt-sm sm:pb-sm md:pb-md lg:pb-md pb-sm br-xxs bs-1" data-testid="menu-product">
+                                                        <!-- <button  data-testid="menu-product-button-overlay-id" class="product-button-overlay" aria-label="煎餃,  $ 36 - Add to cart"></button> -->
+                                                        <div class="box-flex ai-start jc-space-between  fd-row" aria-hidden="true">
+                                                            <div class="box-flex reduce-width-for-image w-100 pr-sm">
 
-                                                        <h3 class="truncate cl-neutral-primary sm:f-label-medium-font-size f-title-small-font-size sm:fw-label-medium-font-weight fw-title-small-font-weight">
-                                                            <span *ngIf="item.totalOrder > 0" class="dish-item-counter vertical-align-middle bg-interaction-primary cl-white f-mini-base-font-size fw-mini-base-font-weight lh-mini-base-line-height mr-xxs pl-xxs pr-xxs" data-testid="menu-product-quantity">
-                                                                {{item.totalOrder}} x
-                                                            </span>
-                                                            <span class="vertical-align-middle" data-testid="menu-product-name">
-                                                                {{item.productName}}
-                                                            </span>
-                                                        </h3>
-                                                        <p 
-                                                        [innerHTML]="safeHtml(item.productDescription)"
-                                                        class="dish-description truncate cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height mt-xxs" 
-                                                        data-testid="menu-product-description">
-                                                        </p>
-                                                    </div>
-                                                    <picture class="dish-card-image" data-testid="menu-product-image" 
-                                                    [style.background-image]="'url(' + imagePath(item.photoPath) + ')'"
-                                                    >
-                                                        <div></div>
-                                                    </picture>
-                                                </div>
-                                                <div   class="box-flex ai-start jc-space-between  fd-row">
-                                                    <div class="box-flex grow reduce-width-for-image ai-start jc-space-between  fd-row pr-sm" data-testid="product-action-bar-container">
-                                                        <div class="box-flex ai-center  fw-wrap fd-row">
-                                                            <p class="cl-neutral-primary sm:f-ribbon-base-font-size f-label-large-font-size sm:fw-ribbon-base-font-weight fw-label-large-font-weight mr-xs mt-xxs" data-testid="menu-product-price">from $ {{item.productPrice}}<span class="strike-through cl-neutral-secondary sm:f-14 f-paragraph-medium-font-size sm:fw-light fw-paragraph-medium-font-weight ml-xxs" data-testid="menu-product-price-before-discount">$ {{item.productPriceDiscount}}</span></p>
-                                                            <div class="box-flex fw-wrap fd-row pr-xs"></div>
+                                                                <h3 class="truncate cl-neutral-primary sm:f-label-medium-font-size f-title-small-font-size sm:fw-label-medium-font-weight fw-title-small-font-weight">
+                                                                    <span *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id" class="dish-item-counter vertical-align-middle bg-interaction-primary cl-white f-mini-base-font-size fw-mini-base-font-weight lh-mini-base-line-height mr-xxs pl-xxs pr-xxs" data-testid="menu-product-quantity">
+                                                                        {{item.totalOrder}} x
+                                                                    </span>
+                                                                    <span class="vertical-align-middle" data-testid="menu-product-name">
+                                                                        {{item.productName}}
+                                                                    </span>
+                                                                </h3>
+                                                                <p 
+                                                                [innerHTML]="safeHtml(item.productDescription)"
+                                                                class="dish-description truncate cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height mt-xxs" 
+                                                                data-testid="menu-product-description">
+                                                                </p>
+                                                            </div>
+                                                            <picture class="dish-card-image" data-testid="menu-product-image" 
+                                                            [style.background-image]="'url(' + imagePath(item.photoPath) + ')'"
+                                                            >
+                                                                <div></div>
+                                                            </picture>
                                                         </div>
-                                                    </div>
-                                                    <!-- <div  class="btn-adding">+</div> -->
-                                                    <div  class="box-flex button add-to-cart-button ai-center jc-center  fd-row ml-sm  mt-xxs" data-testid="menu-product-add-to-cart-button">
-                                                        <svg  aria-hidden="true" focusable="false" class="fl-white" width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
-                                                            <defs>
-                                                                <path d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" id="sIcPlus"></path>
-                                                            </defs>
-                                                            <use  xlink:href="#sIcPlus" fill-rule="evenodd"></use>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ng-container>
-                                        
-                                        </ul>
-                                    </div>
-                                    </div>
+                                                        <div   class="box-flex ai-start jc-space-between  fd-row">
+                                                            <div class="box-flex grow reduce-width-for-image ai-start jc-space-between  fd-row pr-sm" data-testid="product-action-bar-container">
+                                                                <div class="box-flex ai-center  fw-wrap fd-row">
+                                                                    <p class="cl-neutral-primary sm:f-ribbon-base-font-size f-label-large-font-size sm:fw-ribbon-base-font-weight fw-label-large-font-weight mr-xs mt-xxs" data-testid="menu-product-price">from $ {{item.productPrice}}<span class="strike-through cl-neutral-secondary sm:f-14 f-paragraph-medium-font-size sm:fw-light fw-paragraph-medium-font-weight ml-xxs" data-testid="menu-product-price-before-discount">$ {{item.productPriceDiscount}}</span></p>
+                                                                    <div class="box-flex fw-wrap fd-row pr-xs"></div>
+                                                                </div>
+                                                            </div>
+                                                            <button (click)="removeCart(item)">
+                                                                <div  class="box-flex button remove-cart-button ai-center jc-center  fd-row ml-sm  mt-xxs" >
+                                                                    <svg width="200" height="200" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
+                                                                </div>
+                                                            </button>
+                                                            <button (click)="addToCart(item)">
+                                                                <div  class="box-flex button add-to-cart-button ai-center jc-center  fd-row ml-sm  mt-xxs" >
+                                                                    <svg  
+                                                                    aria-hidden="true" 
+                                                                    focusable="false" class="fl-white" 
+                                                                    width="16" height="16" 
+                                                                    xmlns="http://www.w3.org/2000/svg" 
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                                                    viewBox="0 0 24 24">
+                                                                        <defs>
+                                                                            <path d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" id="sIcPlus"></path>
+                                                                        </defs>
+                                                                        <use  xlink:href="#sIcPlus" fill-rule="evenodd"></use>
+                                                                    </svg>
+                                                                </div>
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                </ng-container>
+                                                
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #elseTemplate2>
+                                        <p>{{'PRODUCT_EMPTY'| translate}}</p>
+                                    </ng-template>
+                                    
                                 </ng-container>
-                                </ng-container>
-                                <ng-template #elseTemplate2>
-                                <p>{{'PRODUCT_EMPTY'| translate}}</p>
-                                </ng-template>
-                                
-                                
                                 
                                 
                             </section>
 
-                            <section class="section-container"></section>
+                            <section class="section-container">
+
+                            </section>
                         </div>
+                        <div class="clearfix"></div>
                         <aside class="box-flex cart-column bs-3">
                             <div class="box-flex" id="cart" data-testid="cart-section" style="top: 64px;">
                                 <div id="cart-log" aria-live="polite" aria-atomic="true" data-testid="cart-log"><span>Total $ 152</span></div>
@@ -271,7 +286,7 @@
                                         </svg>
                                         Add a drink
                                     </div>
-                                    <div class="cart-summary-footer">
+                                    <!-- <div class="cart-summary-footer">
                                         <hr class="cart__delivery--cutlery__horizontal--line">
                                         <div class="cart-summary-amounts-wrapper" data-testid="cartlib-summary-amounts">
                                             <dl class="cart-summary-amounts-list cart-summary-amounts-minimum-subtotal">
@@ -312,7 +327,7 @@
                                         <div>
                                             <div class="cart-summary-checkout-button"><button class="button status--default full" data-testid="cart-summary-checkout-button" data-vendor-code="otko" aria-live="polite">Go to checkout</button></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div id="react-cart-modal">
@@ -340,7 +355,7 @@
                     </div>
                 </main>
                 <section class="section-container"></section>
-                <ngb-carousel *ngIf="news?.length > 0">
+                <!-- <ngb-carousel *ngIf="news?.length > 0">
                     <ng-template ngbSlide>
                         <div class="row">
                         <div style="cursor: pointer;" (click)="detailNew(item)" class="item card col-md-3" *ngFor="let item of news">
@@ -352,10 +367,10 @@
                         </div>
                         </div>
                     </ng-template>
-                </ngb-carousel>
-                <footer class="footer">
+                </ngb-carousel> -->
+                <!-- <footer class="footer">
                     
-                </footer>
+                </footer> -->
 
                 
             </div>

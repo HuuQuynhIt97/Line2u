@@ -176,7 +176,9 @@ ISPService spService)
         }
         public override async Task<OperationResult> UpdateAsync(CartDto model)
         {
-            var item = _mapper.Map<Cart>(model);
+            var check = _repo.FindByID(model.Id);
+            check.Quantity= model.Quantity;
+            var item = _mapper.Map<Cart>(check);
             _repo.Update(item);
             try
             {

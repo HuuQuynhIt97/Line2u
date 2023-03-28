@@ -434,7 +434,7 @@ export class CheckOutComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -454,7 +454,7 @@ export class CheckOutComponent implements OnInit {
     })
   }
   getProducts(guid){
-    this.serviceMainCategory.getProducts(guid).subscribe(res => {
+    this.serviceMainCategory.getProducts(guid,this.user?.uid).subscribe(res => {
       this.products = res
     })
   }
