@@ -405,6 +405,7 @@ namespace Line2u.Services
                 item.StoreCloseTime= model.StoreCloseTime;
                 item.StoreLowPrice = model.StoreLowPrice;
                 item.StoreHightPrice = model.StoreHightPrice;
+                item.Body = model.Body;
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
 

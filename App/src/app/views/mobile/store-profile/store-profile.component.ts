@@ -2,6 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
+import { ToolbarType } from '@syncfusion/ej2-richtexteditor';
 import { AlertifyService, UtilitiesService } from 'herr-core';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { Landlord } from 'src/app/_core/_model/evse/model';
@@ -27,6 +29,15 @@ export class StoreProfileComponent  implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   user = JSON.parse(localStorage.getItem('user'))
+  public tools: ToolbarModule = {
+    type: ToolbarType.Expand,
+    enableFloating :false,
+    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+        'Formats', 'Alignments', 'NumberFormatList', 'BulletFormatList',
+        'Outdent', 'Indent', '|', 'ClearFormat',
+        'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+};
   alert = {
     updateMessage: this.translate.instant(MessageConstants.UPDATE_MESSAGE),
     updateTitle: this.translate.instant(MessageConstants.UPDATE_TITLE),

@@ -60,6 +60,14 @@
             />
           </div>
         </div>
+
+        <div class="col-12">
+          <label for="body" style="font-weight: bold;">{{ "STORE_DESCRIPTION" | translate }}</label>
+  
+          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
+          
+            </ejs-richtexteditor>
+        </div>
         
         <div class="col-12">
           <div class="form-group">
