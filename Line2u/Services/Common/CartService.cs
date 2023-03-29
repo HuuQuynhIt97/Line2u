@@ -133,6 +133,7 @@ ISPService spService)
             else
             {
                 var item = _mapper.Map<Cart>(model);
+                item.Id = 0;
                 item.Status = StatusConstants.Default;
                 item.IsCheckout = StatusConstants.Default_2;
                 _repo.Add(item);

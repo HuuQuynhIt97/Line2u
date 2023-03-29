@@ -49,7 +49,7 @@
                                                     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.06);
                                                     height: 64px;
                                                     ">
-                                                <img class="h-64px  mx-auto lazyloaded" 
+                                                <img style="height: 69px !important;width: 65px !important;" class="h-64px  mx-auto lazyloaded" 
                                                 [src]="imagePath(storeInfo.photoPath) " 
                                                 >
                                             </a>
@@ -353,8 +353,10 @@
                         </aside>
                     </div>
                 </main>
+                
                 <section class="section-container"></section>
-                <!-- <ngb-carousel *ngIf="news?.length > 0">
+
+                <ngb-carousel *ngIf="news?.length > 0">
                     <ng-template ngbSlide>
                         <div class="row">
                         <div style="cursor: pointer;" (click)="detailNew(item)" class="item card col-md-3" *ngFor="let item of news">
@@ -366,7 +368,7 @@
                         </div>
                         </div>
                     </ng-template>
-                </ngb-carousel> -->
+                </ngb-carousel>
                 <!-- <footer class="footer">
                     
                 </footer> -->
