@@ -1,0 +1,30 @@
+
+<div class="main-content" id="main-text">
+  <div class="sidebar-content">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div class="heading">{{'Pig List' | translate}}</div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<ejs-grid [dataSource]='data'
+[enableInfiniteScrolling]="true"
+[allowPaging]="false"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[height]="700 + 'px'"
+>
+<e-columns>
+    <e-column [allowSearching]="false" field='pigTypeName' textAlign="Center" headerText='' > </e-column>
+    <e-column [autoFit]="true" field='idno' textAlign="Center" headerText='' > </e-column>
+    <e-column field='earNo' textAlign="Center" headerText='' > </e-column>
+    <e-column [allowSearching]="false" textAlign="Center" field='option' headerText='' >
+      <ng-template #template let-data>
+        <button [routerLink]="'/mobile/pigdata/piglist-detail/'+ type + '/' + makeOrderGuid + '/' + data.id" type="button" class="btn btn-warning" style="font-size: 11px;">{{ 'Pig Detail' }}</button>
+      </ng-template>
+    </e-column>
+</e-columns>
+</ejs-grid>

@@ -1,0 +1,209 @@
+<ng-template #actionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+    <span aria-hidden="true">&times;</span>
+
+  </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="type">{{ "Site_Type" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <app-code-type-dropdownlist
+                id="Site_Type"
+                [codeType]="'Site_Type'"
+                [(selectedValue)]="model.type"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Site_NO" | translate }} </label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 100 )</span
+            >
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <div class="form-group">
+              <input
+                maxlength="100"
+                type="text"
+                [(ngModel)]="model.siteNo"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <label>{{ "Site_Name" | translate }} </label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 200 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="200"
+                type="text"
+                [(ngModel)]="model.siteName"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Site_Principal" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 40 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="40"
+                type="text"
+                [(ngModel)]="model.sitePrincipal"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Site_Tel" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 40 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="40"
+                type="text"
+                [(ngModel)]="model.siteTel"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+        
+
+          <div class="col-6">
+            <div class="form-group">
+              <label for="Site_Location">{{ "Site_Location" | translate }}</label>
+              <app-code-type-dropdownlist
+                id="Site_Location"
+                [codeType]="'Site_Location'"
+                [(selectedValue)]="model.siteLocation"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+          <div class="col-12">
+            <label>{{ "Site_Address" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 100 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="100"
+                type="text"
+                [(ngModel)]="model.siteAddress"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="Landlord_Guid">{{ "Landlord_Guid" | translate }}</label>
+              <app-landlord-dropdownlist
+                id="Landlord_Guid"
+                [(selectedValue)]="model.landlordGuid"
+              >
+              </app-landlord-dropdownlist>
+            </div>
+          </div>
+          <div class="w-100"></div>
+
+          <div class="col-6">
+            <label>{{ "Latitude" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.latitude"
+                class="form-control"
+              />
+            </div>
+          </div>
+          
+          <div class="col-6">
+            <label>{{ "Longitude" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.longitude"
+                class="form-control"
+              />
+            </div>
+          </div>
+         
+
+          <div class="col-md-12 text-center">
+            <div class="kv-avatar">
+              <div class="file-loading">
+                <input
+                  id="avatar-1"
+                  name="avatar-1"
+                  (change)="onFileChangeLogo($event)"
+                  type="file"
+                  required
+                />
+              </div>
+            </div>
+            <div class="kv-avatar-hint">
+              <small>{{ 'Select file < 5000 KB' | translate }}</small>
+            </div>
+          </div>
+
+        <div class="col-12">
+          <label>{{ "AREA_COMMENT" | translate }} </label>
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              [(ngModel)]="model.comment"
+              cols="4"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+        </div>
+      </div>
+  <div class="modal-footer">
+
+    <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  
+    <button
+    [disabled]="!model.siteName || !model.siteNo || !model.type"
+    (click)="save()"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+  </div>
+</ng-template>

@@ -17,7 +17,6 @@ import { DataService } from 'src/app/_core/_service/data.service';
   templateUrl: './home-header.component.html',
   styleUrls: [
     './home-header.component.scss',
-    '../../../../assets/css/foodpanda.css'
   ],
   encapsulation: ViewEncapsulation.None
 })

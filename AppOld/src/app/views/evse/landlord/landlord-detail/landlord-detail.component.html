@@ -1,0 +1,252 @@
+
+<div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
+        <app-site-dropdownlist
+          id="Site_GUID"
+          [enabledLoad]="true"
+          [(selectedValue)]="model.siteGuid"
+        >
+        </app-site-dropdownlist>
+      </div>
+    </div>
+    <div class="w-100"></div>
+  </div>
+  
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="uid">{{ "LandLord_UID" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span ngbTooltip="( Text length <= 50 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+        <input
+          [(ngModel)]="model.uid"
+          maxlength="50"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="uid">{{ "LandLord_UPWD" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+        <input
+          [(ngModel)]="model.upwd"
+          maxlength="200"
+          type="password"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordNo">{{ "LandLord_NO" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+
+        <input
+          [(ngModel)]="model.landLordNo"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordName">{{ "LandLord_NAME" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+
+        <input
+          [(ngModel)]="model.landLordName"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+    
+    <div class="col-6">
+    <div class="form-group">
+      <label for="landLordSex">{{ "LandLord_SEX" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="sex-remote"
+        [codeType]="'LandLord_SEX'"
+        (ngModelChange)="sexChange($event)"
+        [selectedValue]="model.landLordSex + ''"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordBirthday">{{
+          "LandLord_BIRTHDAY" | translate
+        }}</label>
+        <ejs-datepicker
+          locale="en-US"
+          format="yyyy/MM/dd"
+          [(ngModel)]="model.landLordBirthday"
+        ></ejs-datepicker>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordIdcard">{{
+          "LandLord_IDCARD" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordIdcard"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordEmail">{{ "LandLord_EMAIL" | translate }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 100 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordEmail"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordMobile">{{
+          "LandLord_MOBILE" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 10 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordMobile"
+          maxlength="10"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="landLordAddress">{{
+          "LandLord_ADDRESS" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 100 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordAddress"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <div class="col-12 text-center">
+      <div class="kv-avatar">
+        <div class="file-loading">
+          <input
+            id="avatar-1"
+            name="avatar-1"
+            (change)="onFileChangeLogo($event)"
+            type="file"
+            required
+          />
+        </div>
+      </div>
+      <div class="kv-avatar-hint">
+        <small>{{ "Select file < 5000 KB" | translate }}</small>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <label>{{ "LandLord_COMMENT" | translate }}</label>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          [(ngModel)]="model.comment"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light ml-2 float-right"
+      (click)="cancel()"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.landLordName"
+      (click)="save()"
+      class="btn btn-primary float-right"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>

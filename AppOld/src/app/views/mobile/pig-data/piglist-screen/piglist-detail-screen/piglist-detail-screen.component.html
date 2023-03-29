@@ -1,0 +1,701 @@
+<div class="main-content" id="main-text">
+  <div class="sidebar-content">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div class="heading">{{ "Pig Detail" | translate }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mt-2">
+        <div id="formId">
+          <div class="form-group row mr-1">
+            <label for="farmGuid" class="col-4 col-sm-2 col-form-label">{{
+              "FARM" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-dropdownlist
+                id="farmGuid"
+                [(ngModel)]="model.farmGuid"
+                [fields]="fields"
+                [disabled]="true"
+                (change)="farmChange($event)"
+                [dataSource]="farmData"
+              ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row mr-1">
+            <label for="areaGuid" class="col-4 col-sm-2 col-form-label">{{ "AREA" | translate }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-dropdownlist
+              id="areaGuid"
+              [(ngModel)]="model.areaGuid"
+              (change)="areaChange($event)"
+              [fields]="fields"
+              [dataSource]="areaData"
+            ></ejs-dropdownlist>
+            </div>
+          </div>
+
+
+          <div class="form-group row mr-1">
+            <label for="barnGuid" class="col-4 col-sm-2 col-form-label">{{ "BARN" | translate }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-dropdownlist
+              id="barnGuid"
+              [(ngModel)]="model.barnGuid"
+              (change)="barnChange($event)"
+              [fields]="fields"
+              [dataSource]="barnData"
+            ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="cullingTankGuid" class="col-4 col-sm-2 col-form-label">{{ "CULLING_TANK" | translate }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-dropdownlist
+              [(ngModel)]="model.cullingTankGuid"
+              (change)="cullingTankChange($event)"
+              [fields]="fields"
+              [dataSource]="cullingTankData"
+              id="cullingTankGuid"
+            ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="roomGuid" class="col-4 col-sm-2 col-form-label">{{ "ROOM" | translate }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-dropdownlist
+              id="roomGuid"
+          [(ngModel)]="model.roomGuid"
+          (change)="roomChange($event)"
+          [fields]="fields"
+          [dataSource]="roomData"
+        ></ejs-dropdownlist>
+            </div>
+          </div> -->
+
+          <div class="form-group row mr-1">
+            <label for="penGuid" class="col-4 col-sm-2 col-form-label">{{
+              "PEN" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-dropdownlist
+                id="penGuid"
+                [(ngModel)]="model.penGuid"
+                (change)="penChange($event)"
+                [fields]="fields"
+                [dataSource]="penData"
+              ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="pigType-remote" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_TYPE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="pigType-remote"
+                [codeType]="'Pig_Type'"
+                [(selectedValue)]="model.pigType"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row mr-1">
+            <label for="phase-remote" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_PHASE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="phase-remote"
+                [codeType]="'Pig_Phase'"
+                [(selectedValue)]="model.phase"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div> -->
+
+          <div class="form-group row mr-1">
+            <label for="outsourcing" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_OUTSOURCING" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="outsourcing"
+                [(ngModel)]="model.outsourcing"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="father-remote" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_FATHER_GUID" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <app-pig-dropdownlist
+                id="father-remote"
+                (ngModelChange)="fatherChange($event)"
+                [selectedValue]="model.fatherGuid"
+              >
+              </app-pig-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="mother-remote" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_MOTHER_GUID" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <app-pig-dropdownlist
+                id="mother-remote"
+                (ngModelChange)="motherChange($event)"
+                [selectedValue]="model.motherGuid"
+              >
+              </app-pig-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="idno" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_IDNO" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="idno"
+                [(ngModel)]="model.idno"
+                maxlength="40"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="earNo" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_EAR_NO" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="earNo"
+                [(ngModel)]="model.earNo"
+                maxlength="40"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="earTag" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_EAR_TAG" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="earTag"
+                [(ngModel)]="model.earTag"
+                maxlength="40"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="rfidtag" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_RFID_TAG" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="rfidtag"
+                [(ngModel)]="model.rfidtag"
+                maxlength="40"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="birthday" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_BIRTHDAY" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="birthday"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.birthday"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="dayAge" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_DAY_AGE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="dayAge"
+                [(ngModel)]="model.dayAge"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="sex-remote" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_SEX" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="sex-remote"
+                [codeType]="'PIG_SEX'"
+                (ngModelChange)="sexChange($event)"
+                [selectedValue]="model.sex + ''"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="weight" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_WEIGHT" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="weight"
+                [(ngModel)]="model.weight"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="weightDate" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_WEIGHT_DATE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="weightDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.weightDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="weightDayAge" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_WEIGHT_DAY_AGE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="weightDayAge"
+                [(ngModel)]="model.weightDayAge"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="breed-remote" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_BREED" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="breed-remote"
+                [codeType]="'Breed'"
+                [(selectedValue)]="model.breed"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="birthPenGuid-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_BIRTH_PEN_GUID" | translate }}(公分)</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-pen-dropdownlist
+              [enabledLoad]="true"
+                id="birthPenGuid-remote"
+                [(selectedValue)]="model.birthPenGuid"
+              >
+              </app-pen-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="enterOrigin-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_ENTER_ORIGIN" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-pen-dropdownlist
+              [enabledLoad]="true"
+                id="enterOrigin-remote"
+                [(selectedValue)]="model.enterOrigin"
+              >
+              </app-pen-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="enterDate" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_ENTER_DATE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="enterDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.enterDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="enterDept" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_ENTER_DEPT" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="enterDept"
+                [(ngModel)]="model.enterDept"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="transferMoney" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_TRANSFER_MONEY" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+                id="transferMoney"
+                [(ngModel)]="model.transferMoney"
+                min="0"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="transferDate" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_TRANSFER_DATE" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              
+              <ejs-datepicker
+                id="transferDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.transferDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="transferFrom" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_TRANSFER_FROM" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <input
+              id="transferFrom"
+              [(ngModel)]="model.transferFrom"
+              min="0"
+              type="number"
+              class="form-control"
+            />
+              <!-- <ejs-dropdownlist
+                id="transferFrom"
+                [(ngModel)]="model.transferFrom"
+                [fields]="fields"
+                (change)="farmChange($event)"
+                [dataSource]="farmData"
+              ></ejs-dropdownlist> -->
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="farrowStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_FARROW_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="farrowStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.farrowStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row mr-1">
+            <label for="farrowComment" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_FARROW_COMMENT" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <textarea
+                id="farrowComment"
+                [(ngModel)]="model.farrowComment"
+                type="text"
+                class="form-control"
+                rows="2"
+                cols="2"
+              ></textarea>
+            </div>
+          </div> -->
+
+          <div class="form-group row mr-1">
+            <label
+              for="suckingCheckInDate"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_SUCKING_CHECKIN_DATE" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="suckingCheckInDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.suckingCheckInDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="suckingCheckInStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_SUCKING_CHECKIN_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="suckingCheckInStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.suckingCheckInStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="suckingCheckOutDate"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_SUCKING_CHECKOUT_DATE" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="suckingCheckOutDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.suckingCheckOutDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="suckingCheckOutStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_SUCKING_CHECKOUT_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="suckingCheckOutStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.suckingCheckOutStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="growerCheckInDate"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_GROWER_CHECKIN_DATE" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="growerCheckInDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.growerCheckInDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="growerCheckInStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_GROWER_CHECKIN_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="growerCheckInStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.growerCheckInStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="growerCheckOutDate"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_GROWER_CHECKOUT_DATE" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="growerCheckOutDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.growerCheckOutDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="growerCheckOutStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_GROWER_CHECKOUT_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="growerCheckOutStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.growerCheckOutStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="finisherCheckInDate"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_FINISHER_CHECKIN_DATE" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="finisherCheckInDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.finisherCheckInDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="finisherCheckInStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_FINISHER_CHECKIN_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="finisherCheckInStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.finisherCheckInStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="finisherCheckOutDate"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_FINISHER_CHECKOUT_DATE" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <ejs-datepicker
+                id="finisherCheckOutDate"
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.finisherCheckOutDate"
+              ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label
+              for="finisherCheckOutStatus-remote"
+              class="col-4 col-sm-2 col-form-label"
+              >{{ "PIG_FINISHER_CHECKOUT_STATUS" | translate }}</label
+            >
+            <div class="col-8 col-sm-10">
+              <app-code-type-dropdownlist
+                id="finisherCheckOutStatus-remote"
+                [codeType]="'Pig_Status'"
+                [(selectedValue)]="model.finisherCheckOutStatus"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label for="comment" class="col-4 col-sm-2 col-form-label">{{
+              "PIG_COMMENT" | translate
+            }}</label>
+            <div class="col-8 col-sm-10">
+              <textarea
+                id="comment"
+                [(ngModel)]="model.comment"
+                type="text"
+                class="form-control"
+                rows="2"
+                cols="2"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row mr-1">
+            <div class="col-12 d-flex justify-content-center">
+              <button type="submit" class="btn btn-success" (click)="save()">
+                {{ "Save" | translate }}
+              </button>
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                [routerLink]="
+                  '/mobile/pigdata/piglist/' + type + '/' + makeOrderGuid
+                "
+              >
+                {{ "Cancel" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

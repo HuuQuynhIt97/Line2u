@@ -1,0 +1,20 @@
+input, textarea {
+  box-shadow: 0.5px 0.5px 1px;
+}
+label {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.e-input-group {
+  box-shadow: 0.5px 0.5px 1px !important;
+  padding:3px !important;
+
+}
+.report-main-card {
+  min-height: calc(100vh - 120px);
+}
+@media (min-width: 576px) {
+  .report-main-card {
+    min-height: calc(100vh - 236px);
+  }
+}

@@ -1,0 +1,33 @@
+export interface Medicine {
+  id: number;
+  medicineType: string;
+  medicineNo: string;
+  medicineName: string;
+  medicineElement: string;
+  medicineEffect: string;
+  medicineSideEffect: string;
+  medicineBreed: string;
+  medicineRange: string;
+  medicineCare: string;
+  comment: string;
+  cancelFlag: string;
+  createDate: string | null;
+  createBy: number | null;
+  updateDate: string | null;
+  updateBy: number | null;
+  status: number | null;
+  guid: string;
+  farmGuid: string;
+  medicineTypeName: string;
+  deleteDate: string | null;
+  deleteBy: number | null;
+  vendorGuid: string;
+  location: string;
+  spec: string;
+  amount: number | null;
+  price: number | null;
+  cost: number | null;
+  expireDate: any | null;
+  locationName: string;
+  qty: number | null;
+}

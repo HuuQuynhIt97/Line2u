@@ -1,0 +1,90 @@
+<ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div>
+  <body >
+    <div id="reactRoot">
+      <div id="vendor-details-root">
+          <app-home-header></app-home-header>
+          
+          <main>
+         
+            <div class="card">
+              <div class="row">
+                <div class="col-md-8 cart">
+                  <div class="title">
+                    <div class="row">
+                      <div class="col">
+                        <h4><b>{{'Shopping Cart' | translate}}</b></h4>
+                      </div>
+                      <div class="col align-self-center text-right text-muted">{{count}} {{'items' | translate}}</div>
+                    </div>
+                  </div>
+                  <ng-container *ngFor="let item of cartDetail; let i=index">
+                    <div class="row border-top border-bottom">
+                      <div class="row main align-items-center">
+                        <div class="col-2">
+                          <img class="img-fluid" [src]="imagePath(item.photoPath) " >
+                        </div>
+                        <div class="col">
+                          <div class="row text-muted" style="font-weight: bold;">{{item.productName}}</div>
+                          <!-- <div 
+                          [innerHTML]="safeHtml(item.productDescription)"
+                          class="row">
+                          </div> -->
+                        </div>
+                        <div class="col">
+                          <a style="cursor: pointer;" (click)="minusItem(item)" >-</a>
+                          <a href="#" class="border">{{item.quantity}}</a>
+                          <a style="cursor: pointer;" (click)="plusItem(item)" >+</a>
+                        </div>
+                        <div class="col">$ {{item.productPrice * item.quantity}}
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-container>
+                  
+                  
+                </div>
+                <div class="col-md-4 summary">
+                  
+                  <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                    <div class="col">{{'TOTAL PRICE' | translate}}</div>
+                    <div class="col text-right">$ {{totalPrice}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <button class="btn btn-primary" (click)="backToShop()">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        {{'BACK_TO_SHOP' | translate}}
+                      </button>
+                    </div>
+                    <div class="col-6">
+                      <button class="btn btn-success" (click)="checkOut()">
+                        {{'CHECK_OUT' | translate}}
+                        <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+          <!-- <footer class="footer">
+              
+          </footer> -->
+
+      </div>
+    </div>
+    <footer class="footer mobile">
+      <div class="row no-gutters social-container">
+        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-facebook"></span><span>{{'HOME'| translate}}</span></a></div>
+        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-instagram"></span><span>{{'CONTACT'| translate}}</span></a></div>
+        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-twitter"></span><span>{{'MESSAGE'| translate}}</span></a></div>
+        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'HELP'| translate}}</span></a></div>
+        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'PROFILE'| translate}}</span></a></div>
+      </div>
+    </footer>
+  </body>
+</div>

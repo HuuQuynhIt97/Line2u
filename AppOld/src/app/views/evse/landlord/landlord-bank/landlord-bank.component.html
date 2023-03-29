@@ -1,0 +1,117 @@
+<div class="card">
+    <div class="card-body p-0">
+        <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="dataSource"
+      [query]="query"
+      [allowPaging]="true"
+      [allowResizing]="true"
+      [allowSorting]="true"
+      [allowMultiSorting]='true'
+      [enableInfiniteScrolling]="true"
+      gridLines="Both"
+      [editSettings]="editSettings"
+      [toolbar]="toolbarOptions"
+      (toolbarClick)="toolbarClick($event)"
+      
+    >
+      <e-columns>
+        <e-column
+        field="option"
+        [allowSorting]="false"
+        [allowSearching]="false"
+        [allowGrouping]="false"
+        [allowFiltering]="false"
+        [allowEditing]="false"
+        textAlign="Left"
+            headerTextAlign="Center"
+        width="80"
+        headerTextAlign="Center"
+        headerText="{{ 'OPTION' | translate}}"
+      >
+        <ng-template #template let-data>
+          <span (click)="delete(data.id)"class="delete-grid">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span (click)="edit(data)" class="edit-grid">
+            <i class="fa fa-edit"></i>
+          </span>
+        </ng-template>
+      </e-column>
+      <e-column
+      field=""
+      [width]="200"
+      textAlign="Center"
+      headerTextAlign="Center"
+      [headerText]="'Avatar' | translate "
+    >
+
+    <ng-template #template let-data>
+      <img [src]="data.photoPath ? apiHost + data.photoPath : noImage" width="100" height="100" [alt]="data.bankAccount" class="img-thumbnail">
+    </ng-template>
+
+    </e-column>
+
+        <e-column
+          field="bankAccount"
+          [width]="200"
+          textAlign="Left"
+          headerTextAlign="Center"
+          [headerText]="'User2Bank_BankAccount' | translate "
+        >
+        </e-column>
+                 
+        <e-column
+          field="bankGuidName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'User2Bank_BankGuid' | translate }}"
+        >
+        </e-column>
+
+                     
+        <e-column
+          field="statusName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'User2Bank_Status' | translate }}"
+        >
+        </e-column>
+
+        <e-column
+          field="comment"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'User2Bank_Comment' | translate }}"
+        >
+        </e-column>
+<!--         
+        <e-column
+          field="landlordGuidName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'User2Bank_LandlordGuid' | translate }}"
+        >
+        </e-column> -->
+        
+
+        
+    
+        <e-column
+          field="id"
+          [allowSearching]="false"
+          textAlign="Left"
+          headerTextAlign="Center"
+          [isPrimaryKey]="true"
+          [visible]="false"
+          headerText="ID"
+        >
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  
+    </div>
+  </div>
+  <app-landlord-bank-action (saveChange)="saveChange()"></app-landlord-bank-action>
+  

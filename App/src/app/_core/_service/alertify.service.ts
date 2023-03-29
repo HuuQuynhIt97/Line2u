@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+// import * as Swal from 'sweetalert2';
 declare let Swal: any;
 @Injectable({
   providedIn: 'root'

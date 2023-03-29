@@ -45,12 +45,11 @@ SwiperCore.use([
   templateUrl: './home.component.html',
   styleUrls: [
     './home.component.css',
-    '../../../assets/css/foodpanda.css'
   ],
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  
+  public closeBanner : boolean | undefined;
   fieldsLang: object = { text: "name", value: "id" };
   menus: any;
   lang: string;
@@ -120,6 +119,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.loadLogoData();
     this.loadBannerData();
    
+  }
+  toggleBanner(){
+    this.closeBanner = !this.closeBanner;
   }
   removeLocalStore(key: string) {
     localStorage.removeItem(key);

@@ -1,0 +1,31 @@
+export interface Disinfection {
+  id: number;
+  disinfectionType: string;
+  disinfectionNo: string;
+  disinfectionName: string;
+  disinfectionElement: string;
+  disinfectionEffect: string;
+  disinfectionSideEffect: string;
+  disinfectionBreed: string;
+  disinfectionRange: string;
+  disinfectionCare: string;
+  comment: string;
+  cancelFlag: string;
+  createDate: string | null;
+  createBy: number | null;
+  updateDate: string | null;
+  updateBy: number | null;
+  status: number | null;
+  guid: string;
+  farmGuid: string;
+  deleteDate: string | null;
+  deleteBy: number | null;
+  vendorGuid: string;
+  location: string;
+  spec: string;
+  amount: number | null;
+  price: number | null;
+  cost: number | null;
+  expireDate: any | null;
+  qty: number | null;
+}

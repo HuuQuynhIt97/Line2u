@@ -1,0 +1,245 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'NAV_ORDER' | translate}}</li>
+  </ol>
+</nav>
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div class="row">
+<div class="col-12">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        height="600px"
+        (dataBound)='dataBound()'
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+(rowSelected)="rowSelected($event)"
+
+        (excelExportComplete)="excelExpComplete($event)"
+      >
+        <e-columns>
+          <e-column
+            field="option"
+            textAlign="Left"
+            headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+              <span style="color: transparent;"> | </span>
+              <span (click)="detail(data)" class="edit-grid">
+                <i class="fa fa-info-circle"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+
+
+          <e-column
+            field="guid"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'ORDER' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="customerName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'ORDER_CUSTOMER' | translate }}"
+          >
+          </e-column>
+          <!-- <e-column
+            field="categoryName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'ORDER_STATUS' | translate }}"
+          >
+          </e-column> -->
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+</div>
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+
+    <div class="row">
+      
+
+      <div class="col-md-12">
+        <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "ORDER_ID" | translate }}</label>
+        <div class="form-group">
+          <label for="uid">{{ "ORDER_ID" | translate }}</label>
+          <input
+            [(ngModel)]="model.guid"
+            maxlength="200"
+            type="text"
+            readonly
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "CUSTOMER" | translate }}</label>
+        <div class="form-group">
+          <label for="uid">{{ "CUSTOMER" | translate }}</label>
+          <input
+            [(ngModel)]="model.customerName"
+            maxlength="200"
+            [readOnly]=""
+            type="text"
+            readonly
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-12">
+        <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "ORDER_DATE" | translate }}</label>
+        <div class="form-group">
+          <label for="uid">{{ "ORDER_DATE" | translate }}</label>
+          <input
+            [(ngModel)]="model.createDate"
+            maxlength="200"
+            readOnly
+            type="datetime"
+            readonly
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="status">{{ "TOTAL_PRICE" | translate }}</label>
+          <input
+            readonly
+            [(ngModel)]="model.totalPrice "
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="status">{{ "PAYMENT_METHOD" | translate }}</label>
+          <app-my-code-type-dropdownlist
+            id="paymentMethod-type-remote"
+            [codeType]="'Payment_Method'"
+            [(selectedValue)]="model.paymentType"
+          >
+          </app-my-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="status">{{ "PAYMENT_STATUS" | translate }}</label>
+          <app-my-code-type-dropdownlist
+            id="paymentStatus-type-remote"
+            [codeType]="'Payment_Status'"
+            [(selectedValue)]="model.isPayment"
+          >
+          </app-my-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "DELIVERY_STATUS" | translate }}</label>
+        <div class="form-group">
+          <label for="uid">{{ "DELIVERY_STATUS" | translate }}</label>
+          <app-my-code-type-dropdownlist
+            id="delivery-type-remote"
+            [codeType]="'Payment_Delivery'"
+            [(selectedValue)]="model.delivery"
+          >
+          </app-my-code-type-dropdownlist>
+        </div>
+      </div>
+
+     
+    </div>
+
+   
+</div>
+
+  <div class="modal-footer">
+    
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,222 @@
+<div id="frame">
+  <div id="sidepanel">
+    <div id="profile">
+      <div class="wrap">
+        <img id="profile-img" [src]="botInfoData?.pictureUrl" class="offline" alt />
+        <p>{{botInfoData?.displayName}}</p>
+        <div id="status-options">
+          <ul>
+            <li id="status-online">
+              <span class="status-circle"></span>
+              <p>{{ 'ON_LINE' | translate}}</p>
+            </li>
+            <li id="status-offline">
+              <span class="status-circle"></span>
+              <p>{{ 'OFF_LINE' | translate}}</p>
+            </li>
+          </ul>
+        </div>
+        <div id="expanded">
+        </div>
+      </div>
+    </div>
+    <div id="search">
+      <label for>
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </label>
+      <input type="text" (keyup.enter)='searchProjects()' [(ngModel)]="keyword" placeholder="{{'SEARCH_USER' | translate}}" />
+    </div>
+    <div id="contacts">
+      <ul>
+        <li class="contact" *ngFor="let item of userLine" (click)="joinGroup(item)">
+          <div class="wrap">
+            <img [src]="item.photoPath"  alt />
+            <div class="meta">
+              <p class="name">{{item.accountName}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="bottom-bar">
+      <button id="addcontact" class="d-none">
+        <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
+        <span>Add group</span>
+      </button>
+      <button id="settings" class="d-none">
+        <i class="fa fa-cog fa-fw" aria-hidden="true"></i>
+        <span>Settings</span>
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="contact-profile">
+      <img [src]="defaultImage()" alt />
+      <p>{{projectName}}</p>
+    </div>
+
+    <div id="messageBox" class="messages" ref="messageBox">
+      <ul>
+        <ng-container *ngFor="let item of messages; let i=index">
+          <ng-container *ngIf="item.sender === botInfoData?.userId; else elseTemplate">
+            <li class="sent" >
+              <div class="clearfix">
+                <div class="username-sent" >{{item.userName_Sender}}, {{datetime(item.createDate)}}
+                </div>
+              </div>
+              <div class="sent-content">
+                <img [src]="botInfoData?.pictureUrl" alt />
+                <p>{{item.message}}</p>
+              </div>
+            </li>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <li class="replies" >
+              <div class="clearfix">
+                <div class="username-replies" >{{item.userName_Sender}}, {{datetime(item.createDate)}}
+                </div>
+              </div>
+              <div>
+                <img [src]="item?.url === null ? defaultImage() : item?.url " alt />
+                <p>{{item.message}}</p>
+              </div>
+            </li>
+          </ng-template>
+          
+        </ng-container>
+      </ul>
+    </div>
+    <div class="message-input">
+     
+      <div class="wrap">
+        <input type="text" autocomplete="off"  id="inputChat"
+        [attr.disabled]="projectName?.length === 0 ? true : null"
+        (blur)="onBlurInputChat($event)" (keyup)='sendMessage($event)' [(ngModel)]="message"
+          placeholder="Write your message..." />
+        <button class="submit" >
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- <section class="message-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="chat-area">
+          <div class="chatlist">
+            <div class="modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="chat-header">
+                  <div class="msg-search">
+                      <input type="text" class="form-control" id="inlineFormInputGroup" 
+                      (keyup.enter)='searchProjects()' [(ngModel)]="keyword" placeholder="{{'SEARCH_USER' | translate}}"
+                      aria-label="search">
+                      <a class="add" href="#"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/add.svg" alt="add"></a>
+                  </div>
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="Open-tab" data-bs-toggle="tab" data-bs-target="#Open" type="button" role="tab" aria-controls="Open" aria-selected="true">{{'USER_LIST' | translate}}</button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="modal-body">
+                  <div class="chat-lists">
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
+                        <div class="chat-list">
+                          <a *ngFor="let item of userLine" (click)="joinGroup(item)" class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                              
+                              <img class="img-fluid" 
+                              [src]="defaultImage()"
+                              width="45px"
+                              height="45px"
+                              alt="user img">
+                              <span class="active"></span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                              <h3>{{item.accountName}}</h3>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chatbox">
+            <div class="modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="msg-head">
+                  <div class="row">
+                    <div class="col-8">
+                      <div class="d-flex align-items-center">
+                        <span class="chat-icon"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title"></span>
+                        <div class="flex-shrink-0">
+                          <img class="img-fluid" 
+                            width="45px"
+                            height="45px"
+                            [src]="defaultImage()"
+                            alt="user img">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h3>{{projectName}}</h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-body">
+                  <div class="msg-body" id="msg-body">
+                    <ul >
+                      <ng-container *ngFor="let item of messages; let i=index">
+                        <ng-container *ngIf="item.sender === botInfoData?.userId; else elseTemplate">
+                          <li class="sender">
+                            <p> {{item.message}}</p>
+                            <span class="time">{{datetime(item.createDate)}}</span>
+                          </li>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                          <li class="repaly">
+                            <p>{{item.message}}</p>
+                            <span class="time">{{datetime(item.createDate)}}</span>
+                          </li> 
+                         
+                        </ng-template>
+                        
+                      </ng-container>
+                      <li>
+                          <div class="divider">
+                              <h6>Today</h6>
+                          </div>
+                      </li>
+                        
+                    </ul>
+                  </div>
+                </div>
+                <div class="send-box">
+                  <form >
+                      <input type="text" class="form-control" aria-label="message…" 
+                      [attr.disabled]="projectName?.length === 0 ? true : null"
+                      name="message"
+                      (blur)="onBlurInputChat($event)" (keyup)='sendMessage($event)' [(ngModel)]="message"
+                      placeholder="Write your message..."
+                      >
+                      <button class="submit" type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->

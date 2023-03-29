@@ -1,0 +1,188 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'Landlord Profile' | translate}}</li>
+  </ol>
+</nav>
+<div class="row p-2">
+  <div class="col-12 text-center">
+    <div class="kv-avatar">
+      <div class="file-loading">
+        <input
+          id="avatar-1"
+          name="avatar-1"
+          (change)="onFileChangeLogo($event)"
+          type="file"
+          required
+        />
+      </div>
+    </div>
+    <div class="kv-avatar-hint">
+      <small>{{ "Select file < 5000 KB" | translate }}</small>
+    </div>
+  </div>
+ 
+  </div>
+  
+
+  <div class="row p-2">
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordNo">{{ "LandLord_NO" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+
+        <input
+          [(ngModel)]="model.landLordNo"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordName">{{ "LandLord_NAME" | translate }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+
+        <input
+          [(ngModel)]="model.landLordName"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+    
+    <div class="col-12">
+    <div class="form-group">
+      <label for="landLordSex">{{ "LandLord_SEX" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="sex-remote"
+        [codeType]="'LandLord_SEX'"
+        (ngModelChange)="sexChange($event)"
+        [selectedValue]="model.landLordSex + ''"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordBirthday">{{
+          "LandLord_BIRTHDAY" | translate
+        }}</label>
+        <ejs-datepicker
+          locale="en-US"
+          format="yyyy/MM/dd"
+          [(ngModel)]="model.landLordBirthday"
+        ></ejs-datepicker>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordIdcard">{{
+          "LandLord_IDCARD" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordIdcard"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordEmail">{{ "LandLord_EMAIL" | translate }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 100 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordEmail"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordMobile">{{
+          "LandLord_MOBILE" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 10 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordMobile"
+          maxlength="10"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="landLordAddress">{{
+          "LandLord_ADDRESS" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 100 )</span
+        >
+        <input
+          [(ngModel)]="model.landLordAddress"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+  
+    <div class="col-12">
+      <label>{{ "LandLord_COMMENT" | translate }}</label>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          [(ngModel)]="model.comment"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row p-2">
+    <div class="col-12">
+    <button
+      type="button"
+      class="btn btn-light ml-2 float-right"
+      (click)="cancel()"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.landLordName"
+      (click)="save()"
+      class="btn btn-primary float-right"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- <h1>Profile Page</h1> -->

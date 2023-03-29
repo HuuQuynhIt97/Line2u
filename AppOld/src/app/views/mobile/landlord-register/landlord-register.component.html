@@ -1,0 +1,64 @@
+<section class="vh-100"
+  >
+  <div class="mask d-flex align-items-center h-100">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body">
+              <h3 class="text-center mb-5">{{'Register an account' | translate}}</h3>
+
+                <div class="form-group row">
+                    <label for="username" class="col-4 col-md-2 col-form-label">{{'Username' | translate}}</label>
+                    <div class="col-8 col-md-10">
+                      <input type="text" [(ngModel)]="username" class="form-control" id="username">
+                    </div>
+                  </div>
+                <div class="form-group row">
+                    <label for="password" class="col-4 col-md-2 col-form-label">{{'Password' | translate}}</label>
+                    <div class="col-8 col-md-10">
+                      <input type="password" [(ngModel)]="password" class="form-control" id="password">
+                    </div>
+                  </div>
+
+                <div class="row">
+                <div class="col-4 col-md-2">
+
+                </div>
+                <div class="col-8 col-md-10">
+                    <p class="policy">
+                        1.為向您提供交易相關基本功能,我們會收集、使用
+                        必要的資訊 ) <br>
+    
+                        z.基於您的授權我們可能會獲取您的位置等資訊,您
+                        有權拒絕或取消授權; <br>
+    
+                        3.我們會採取業界先進的安全措施保護您的資訊安全 <br>
+                        4未經您同意,我們不會從地三方處獲取、共相或向
+                        其提供您的個人資訊
+                      </p>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" [(ngModel)]="agree" type="checkbox" id="policy" value="option1">
+                        <label class="form-check-label" for="policy">{{'Agree policy' | translate}}</label>
+                      </div>
+                </div>
+
+                </div>
+                 
+                
+                  <div class="d-flex justify-content-center mt-2">
+                    <button type="button"
+                    [disabled]="!username || !password"
+                      class="btn-login btn-block btn-lg" (click)="register()">{{'Register' | translate}}</button>
+                  </div>
+
+                  <p class="text-center text-muted mb-0">{{'Have already an account?' | translate}} <a [routerLink]="'/mobile/landlord-login'"
+                    class="fw-bold text-body"><u>{{'Login here' | translate}}</u></a></p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

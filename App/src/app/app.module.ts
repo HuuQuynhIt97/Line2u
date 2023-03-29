@@ -138,6 +138,10 @@ import { ShopCartComponent } from './views/home/home-store/shop-cart/shop-cart.c
 import { CheckOutComponent } from './views/home/home-store/check-out/check-out.component';
 import { OrderTrackingComponent } from './views/home/home-store/order-tracking/order-tracking.component';
 import { HomeHeaderComponent } from './views/home/home-header/home-header.component';
+import { AdvertisementbannerComponent } from './views/layout/advertisementbanner/advertisementbanner.component';
+import { Advertisementbanner1Component } from './views/layout/advertisementbanner1/advertisementbanner1.component';
+import { Advertisementbanner2Component } from './views/layout/advertisementbanner2/advertisementbanner2.component';
+import { Footer1Component } from './views/layout/footer1/footer1.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -171,7 +175,11 @@ if (!lang) {
     ShopCartComponent,
     CheckOutComponent,
     OrderTrackingComponent,
-    HomeHeaderComponent
+    HomeHeaderComponent,
+    AdvertisementbannerComponent,
+    Advertisementbanner1Component,
+    Advertisementbanner2Component,
+    Footer1Component
 
   ],
   imports: [

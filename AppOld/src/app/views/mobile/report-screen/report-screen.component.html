@@ -1,0 +1,51 @@
+<!-- <nav aria-label="breadcrumb" class="mobile-nav">
+    <ol class="breadcrumb mobile-breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{'My Report' | translate}}</li>
+    </ol>
+  </nav>
+
+<div class="row p-2">
+
+  <div class="col-12 mb-4">
+    <app-device-dropdownlist
+    id="device"
+    [placeholder]="'Choose a device' | translate"
+    [(selectedValue)]="deviceGuid"
+  >
+  </app-device-dropdownlist>
+  </div>
+  <div class="col-12">
+    <ejs-schedule #schedule
+    id="schedule"
+    [selectedDate]="selectedDate" 
+    [eventSettings]="eventSettings"
+    (selectedDateChange)="selectedDateChange($event)"
+    (popupOpen)="onPopupOpen($event)" 
+    [locale]='localeSchedule'
+    (cellClick)="cellClick($event)"
+    (eventRendered)="onEventRendered($event)"
+    (eventClick)="onClick($event)"
+    cssClass='schedule-event-template' 
+  >
+
+  <e-views>
+    <e-view option='Month' >
+      <ng-template #eventTemplate let-data>
+        <div class='template-wrap' [style.background-color]="data.BackgoundColor" style="width: 100%;cursor: pointer;">
+          <div class="subject" 
+            [style.padding-top]="data.PaddingTop" 
+            [style.text-align]="data.TextAlign" 
+            [style.font-size]="data.Fontsize"
+            [style.background-color]="data.BackgoundColor" 
+            [innerHTML]="templateData(data.Subject)">
+          </div>
+        </div>
+      </ng-template>
+    </e-view>
+  </e-views>
+  
+  </ejs-schedule>
+  </div>
+</div> -->
+<h1>Report Page</h1>

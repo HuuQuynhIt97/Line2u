@@ -1,0 +1,24 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'Alert' | translate}}</li>
+  </ol>
+</nav>
+<div class="card m-2" [class.unseen]="item.status !== 1"  *ngFor="let item of dataSource; let i = index">
+<div class="card-body p-1" (click)="seen(item.guid)">
+ <a>
+  <div class="row"  >
+    <div class="col-2 text-center d-flex align-items-center justify-content-center">
+     <i class="{{item.icon ? item.icon : 'fa fa-warning'}}" style="font-size: 32px;"></i>
+    </div>
+    <div class="col-10">
+      <h2 class="lead"><b>{{item.subject}}</b></h2>
+      <p class="text-right">
+        {{ formatDate(item.createDate) }}
+      </p>
+    </div>
+  </div>
+ </a>
+</div>
+</div>
+  

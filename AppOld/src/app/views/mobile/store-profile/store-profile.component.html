@@ -1,0 +1,157 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'User Profile' | translate}}</li>
+  </ol>
+</nav>
+<div class="wrapper">
+  <div class="main-content" id="main-text">
+    <div class="row p-2">
+      <div class="col-12 text-center">
+        <div class="kv-avatar">
+          <div class="file-loading">
+            <input
+              id="avatar-1"
+              name="avatar-1"
+              (change)="onFileChangeLogo($event)"
+              type="file"
+              required
+            />
+          </div>
+        </div>
+        <div class="kv-avatar-hint">
+          <small>{{ "Select file < 5000 KB" | translate }}</small>
+        </div>
+      </div>
+     
+      </div>
+      
+    
+      <div class="row p-2">
+    
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_NAME" | translate }}</label>
+            <span  style="color: red">(*)</span>
+            <!-- <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            > -->
+    
+            <input
+              [(ngModel)]="model.storeName"
+              name="storeName"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+    
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordName">{{ "STORE_ADDRESS" | translate }}</label>
+            <span  style="color: red">(*)</span>
+    
+            <input
+              [(ngModel)]="model.storeAddress"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="body" style="font-weight: bold;">{{ "STORE_DESCRIPTION" | translate }}</label>
+  
+          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
+          
+            </ejs-richtexteditor>
+        </div>
+        
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordSex">{{ "SITE_OPEN_TIME" | translate }}</label>
+            <!-- <span  style="color: red">(*)</span> -->
+            <ejs-timepicker
+                locale='vi'
+                id="start_times"
+                format="HH:mm"
+                #ejTimePickers
+                [value]="start_times"
+                (change)="startTimesChange($event)"
+                >
+              </ejs-timepicker>
+           
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordSex">{{ "SITE_CLOSE_TIME" | translate }}</label>
+            <ejs-timepicker
+              locale='vi'
+              id="start_times"
+              format="HH:mm"
+              #ejTimePickers
+              [value]="end_times"
+              (change)="closeTimesChange($event)"
+              >
+            </ejs-timepicker>
+           
+          </div>
+        </div>
+    
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordSex">{{ "SITE_LOW_PRICE" | translate }}</label>
+            <input
+              [(ngModel)]="model.storeLowPrice"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+           
+          </div>
+        </div>
+    
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordSex">{{ "SITE_HIGHT_PRICE" | translate }}</label>
+            <input
+              [(ngModel)]="model.storeHightPrice"
+              name="storeHightPrice"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+           
+          </div>
+        </div>
+     
+    
+        
+      </div>
+    
+      <div class="row p-2">
+        <div class="col-12">
+        <button
+          type="button"
+          class="btn btn-light ml-2 float-right"
+          (click)="cancel()"
+        >
+          {{ "CLOSE" | translate }}
+        </button>
+        <button
+          type="submit"
+          [disabled]="!model.storeName"
+          (click)="save()"
+          class="btn btn-primary float-right"
+        >
+          {{ "SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <h1>Profile Page</h1> -->

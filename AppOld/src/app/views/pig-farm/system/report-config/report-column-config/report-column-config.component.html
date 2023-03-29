@@ -1,0 +1,258 @@
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="data"
+[allowPaging]="false"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+(actionBegin)="actionBegin($event)"
+(actionComplete)="actionComplete($event)"
+[editSettings]="editSettings"
+[pageSettings]="pageSettings"
+[toolbar]="toolbarOptions"
+[allowExcelExport]="true"
+[enableInfiniteScrolling]='true'
+(recordDoubleClick)="onDoubleClick($event)"
+(toolbarClick)="toolbarClick($event)"
+(headerCellInfo)='headerCellInfo($event)'
+(rowDrop)='rowDrop($event)'
+[height]="bottomHeight"
+[allowRowDragAndDrop]='true'
+(excelExportComplete)='excelExpComplete($event)'
+
+      >
+        <e-columns>
+          <ng-template #odsTemplate let-data>
+            <button
+              class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+              type="button"
+              id="grid_odsexport"
+              tabindex="-1"
+              (click)="odsExport()"
+              style="width: auto"
+            >
+              <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+              ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+            </button>
+          </ng-template>
+  <e-column
+    field="option"
+    textAlign="Left"
+          headerTextAlign="Center"
+    width="80"
+    headerTextAlign="Center"
+    [allowSorting]="false"
+    [allowSearching]="false"
+    [allowGrouping]="false"
+    [allowFiltering]="false"
+    [allowEditing]="false"
+    headerText="{{ 'OPTION' | translate }}"
+  >
+    <ng-template #template let-data>
+      <span (click)="delete(data.id)" class="delete-grid">
+        <i class="fa fa-trash"></i>
+      </span>
+    </ng-template>
+  </e-column>
+  <e-column
+    field="sequence"
+    [allowEditing]="true"
+    [allowSearching]="false"
+    [allowFiltering]="false"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'COLUMN_REPORT_SEQUENCE' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="slkey"
+    textAlign="Left"
+    [validationRules]='keyRules'
+    headerText="{{ 'COLUMN_REPORT_KEY' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="sltw"
+    [validationRules]='commonRules'
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'COLUMN_REPORT_TW' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="slcn"
+    [validationRules]='commonRules'
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'COLUMN_REPORT_CN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="slen"
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'COLUMN_REPORT_EN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="slvn"
+    [validationRules]='commonRules'
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'COLUMN_REPORT_VN' | translate }}"
+  >
+  </e-column>
+  <e-column
+    field="columnWidth"
+    textAlign="Left"
+          headerTextAlign="Center"
+    editType='numericedit'
+    [validationRules]='widthRules'
+    headerText="{{ 'COLUMN_WIDTH' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="textAlign"
+  textAlign="Left"
+        headerTextAlign="Center"
+  headerText="{{ 'TEXT_ALIGN' | translate }}"
+>
+<ng-template #editTemplate let-data>
+  <ejs-dropdownlist [(value)]="textAlign" [dataSource]="['Left', 'Center', 'Right']"></ejs-dropdownlist>
+</ng-template>
+</e-column>
+  <e-column
+    field="comment"
+    [validationRules]='commentRules'
+    textAlign="Left"
+          headerTextAlign="Center"
+    headerText="{{ 'COLUMN_REPORT_COMMENT' | translate }}"
+  >
+  </e-column>
+</e-columns>
+</ejs-grid>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 class="modal-title" [ngbTooltip]="title"> <i class="fas fa-plus"></i> {{ title | translate }} </h4>
+
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+
+          <label ngbTooltip="COLUMN_REPORT_KEY" for="Name">{{ "COLUMN_REPORT_KEY" | translate }}</label>
+
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 100 )</span>
+
+          <input
+            [(ngModel)]="model.slkey"
+            maxlength="500"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+
+          <label ngbTooltip="COLUMN_REPORT_EN" for="EN">{{ "COLUMN_REPORT_EN" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 500 )</span>
+          <input
+            [(ngModel)]="model.slen"
+            maxlength="500"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+
+          <label ngbTooltip="COLUMN_REPORT_TW" for="TW">{{ "COLUMN_REPORT_TW" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 500 )</span>
+
+          <input
+            [(ngModel)]="model.sltw"
+            maxlength="500"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+          <label ngbTooltip="COLUMN_REPORT_CN" for="CN">{{ "COLUMN_REPORT_CN" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 500 )</span>
+          <input
+            [(ngModel)]="model.slcn"
+            maxlength="500"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+          <label ngbTooltip="COLUMN_REPORT_VN" for="VN">{{ "COLUMN_REPORT_VN" | translate }}</label>
+          <span class="max-length"> ( {{"Text length"| translate }} <= 500 )</span>
+
+          <input
+            [(ngModel)]="model.slvn"
+            maxlength="500"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="form-group">
+
+          <label ngbTooltip="COLUMN_REPORT_COMMENT" for="comment">{{ "COLUMN_REPORT_COMMENT" | translate }}</label>
+          <textarea
+            [(ngModel)]="model.comment"
+            name="comment"
+            type="text"
+            class="form-control"
+            rows="4"
+            cols="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+    <span ngbTooltip="Note: (*) is a required field" *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ 'Note: (*) is a required field' | translate }}
+    </span>
+
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button ngbTooltip="SAVE" [disabled]="!model.slkey" (click)="save()" class="btn btn-primary">
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+
+</ng-template>
+

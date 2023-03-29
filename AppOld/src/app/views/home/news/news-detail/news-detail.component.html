@@ -1,0 +1,89 @@
+
+<app-home-header></app-home-header>
+<div class="wrapper">
+  <div class="container pb50">
+      <div class="row">
+          <div class="col-md-9 mb40">
+              <article>
+                  <img 
+                  [src]="baseUrl + news?.photoPath" 
+                  alt="" class="img-fluid mb30">
+                  <div class="post-content">
+                      <h3 style="font-weight: bolder; font-size: 25px;">{{news?.subject}}</h3>
+                      <ul class="post-meta list-inline">
+                        <li class="list-inline-item">
+                          <i class="fa fa-calendar-o"></i> <a href="#">{{news?.createDate | date: "yyyy-MM-dd"}}</a>
+                        </li>
+                          <!-- <li class="list-inline-item">
+                              <i class="fa fa-user-circle-o"></i> <a href="#">John Doe</a>
+                          </li>
+                          
+                          <li class="list-inline-item">
+                              <i class="fa fa-tags"></i> <a href="#">Bootstrap4</a>
+                          </li> -->
+                      </ul>
+                      <ng-container *ngIf="news?.body !== null; else elseTemplate">
+                        <p [innerHTML]="safeHtml(news?.body)"></p>
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <p>{{'CONTENT_EMPTY' | translate}}</p>
+                      </ng-template>
+                      
+                      <hr class="mb40">
+                      
+                  </div>
+              </article>
+
+          </div>
+         
+      </div>
+  </div>
+</div>
+
+
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <header>
+        <h1>{{news?.subject}}</h1>
+        <p>{{'DATE' | translate}}: {{news?.createDate | date: "yyyy-MM-dd"}}</p>
+        <img  style="  display: block;
+          width: 80%;
+          height: 50%;
+          object-fit: cover; margin-bottom: 25px;" [src]="baseUrl + news?.photoPath" [alt]="news?.subject" class="center" loading="lazy" />
+      </header>
+      
+      <input type="hidden" value="xxx" />
+      <main>
+        <article>
+          <ng-container *ngIf="news?.body !== null; else elseTemplate">
+            <div [innerHTML]="safeHtml(news?.body)"></div>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <p>{{'CONTENT_EMPTY' | translate}}</p>
+          </ng-template>
+          
+          
+        </article>
+      </main>
+      
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="text-center" style="margin-bottom: 25px;">
+    <button type="button" [routerLink]="'/home'" class="btn btn-warning">{{'BACK_HOME' | translate}}</button>
+    <span style="color: transparent;"> | </span>
+    <button type="button" [routerLink]="'/user-login'" class="btn btn-success">{{'LOGIN' | translate}}</button>
+  </div>
+ 
+</div> -->
+
+<footer class="footer mobile">
+  <div class="row no-gutters social-container">
+    <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-facebook"></span><span>{{'HOME'| translate}}</span></a></div>
+    <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-instagram"></span><span>{{'CONTACT'| translate}}</span></a></div>
+    <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-twitter"></span><span>{{'MESSAGE'| translate}}</span></a></div>
+    <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'HELP'| translate}}</span></a></div>
+    <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'PROFILE'| translate}}</span></a></div>
+  </div>
+</footer>

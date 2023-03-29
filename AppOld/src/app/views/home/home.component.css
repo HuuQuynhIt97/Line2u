@@ -1,0 +1,48 @@
+
+.btn-mobile-login {
+  font-size: 1rem !important;
+    font-weight: bold !important;
+}
+.btn-mobile-login:hover {
+  color: #000000;
+  opacity: .9;
+  transition: all .5;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  /* text-align:center */
+}
+.wrapper {
+  min-height: 100%;
+  /* margin-bottom: -50px; */
+  overflow-y: auto;
+}
+.footer,
+.push {
+  height: 50px;
+}
+.footer{
+  background: #233b2e;
+
+}
+.mobile{
+  background: #233b2e;
+  z-index: 99;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+
+.social-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-transform: uppercase;
+}
+.social-container .col {
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+}

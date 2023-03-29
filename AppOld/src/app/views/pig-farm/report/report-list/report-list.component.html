@@ -1,0 +1,246 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div
+  class="alert alert-warning alert-dismissible fade show"
+  role="alert"
+  *ngIf="warningAlert"
+>
+  <h5>
+    <strong
+      ><i class="fas fa-exclamation-triangle"></i>
+      {{ "Please setting the report first!" | translate }}</strong
+    >
+  </h5>
+</div>
+<div class="card mb-2 my-box-shadow">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg col-6">
+        <div class="form-group">
+          <label ngbTooltip="REPORT_START_DATE" for="startDate">{{
+            "REPORT_START_DATE" | translate
+          }}</label>
+          <ejs-datepicker
+            [locale]="'en-US'"
+            format="yyyy/MM/dd"
+            [(ngModel)]="startDate"
+            [placeholder]="'Choose a start date' | translate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+      <div class="col-lg col-6">
+        <div class="form-group">
+          <label ngbTooltip="REPORT_END_DATE" for="endDate">{{
+            "REPORT_END_DATE" | translate
+          }}</label>
+          <ejs-datepicker
+            [locale]="'en-US'"
+            format="yyyy/MM/dd"
+            [(ngModel)]="endDate"
+            [placeholder]="'Choose a end date' | translate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+      <div class="col-lg col-12 mb-3">
+        <label for="keyword">{{ "KEYWORD" | translate }}</label>
+        <div class="e-input-group e-search" role="search">
+          <input
+            id="grid_906580341_0_searchbar"
+            class="e-input"
+            type="search"
+            [placeholder]="'Search' | translate"
+            [(ngModel)]="keyWord"
+          />
+          <span
+            id="grid_906580341_0_searchbutton"
+            class="e-input-group-icon e-search-icon e-icons"
+            tabindex="-1"
+            title="Search"
+            aria-label="search"
+          >
+            <i class="fa fa-search"></i>
+          </span>
+        </div>
+      </div>
+      <div class="col-lg col-2">
+        <button
+          ngbTooltip="OPEN"
+          class="btn btn-success"
+          (click)="filter()"
+          style="margin-top: 35px"
+        >
+          {{ "OPEN" | translate }}
+        </button>
+        <button
+        class="btn btn-success"
+        (click)="reset()"
+        style="margin-top: 35px"
+      >
+        {{ "RESET" | translate }}
+      </button>
+      </div>
+      <div class="col-lg col-5">
+        <!-- <div class="form-group">
+          <label ngbTooltip="REPORT_SORT_BY" for="sortBy">{{
+            "REPORT_SORT_BY" | translate
+          }}</label>
+          <ejs-dropdownlist
+            id="orderBy"
+            [(value)]="orderBy"
+            [fields]="fields"
+            [dataSource]="columns"
+            [placeholder]="'Choose a column' | translate"
+          >
+          </ejs-dropdownlist>
+        </div> -->
+      </div>
+
+      <div class="col-lg col-5">
+        <!-- <div class="form-group">
+          <label ngbTooltip="REPORT_THEN_BY" for="thenBy">{{
+            "REPORT_THEN_BY" | translate
+          }}</label>
+          <ejs-dropdownlist
+            id="thenBy"
+            [(value)]="thenBy"
+            [fields]="fields"
+            [dataSource]="columns"
+            [placeholder]="'Choose a column' | translate"
+          >
+          </ejs-dropdownlist>
+        </div> -->
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-lg-2 col-6" *ngIf="makeOrderGuid1Visibled">
+        <div class="form-group">
+          <label for="makeOrderGuid1">{{
+            "MakeOrderGuid1" | translate
+          }}</label>
+          <app-makeorder-dropdownlist
+          id="makeOrderGuid1"
+          [(selectedValue)]="makeOrderGuid1"
+          ngDefaultControl
+          ></app-makeorder-dropdownlist>
+        </div>
+      </div>
+      <div class="col-lg-2 col-6" *ngIf="makeOrderGuid2Visibled">
+        <div class="form-group">
+          <label for="makeOrderGuid2">{{
+            "MakeOrderGuid2" | translate
+          }}</label>
+          <app-makeorder-dropdownlist
+          id="makeOrderGuid2"
+          [(selectedValue)]="makeOrderGuid2"
+          ngDefaultControl
+          ></app-makeorder-dropdownlist>
+        </div>
+      </div>
+      <div class="col-lg-2 col-12 mb-3" *ngIf="roomGuid1Visibled">
+        <label for="roomGuid1">{{
+          "RoomGuid1" | translate
+        }}</label>
+        <app-room-dropdownlist
+        id="roomGuid1"
+        [(selectedValue)]="roomGuid1"
+        ngDefaultControl
+        ></app-room-dropdownlist>
+      </div>
+      <div class="col-lg-2 col-5" *ngIf="roomGuid2Visibled">
+        <label for="roomGuid2">{{
+          "RoomGuid2" | translate
+        }}</label>
+        <app-room-dropdownlist
+        id="roomGuid2"
+        [(selectedValue)]="roomGuid2"
+        ngDefaultControl
+        ></app-room-dropdownlist>
+      </div>
+
+      <div class="col-lg-2 col-5">
+      </div>
+      <div class="col-lg-2 col-2">
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="col-md-12 p-0 my-box-shadow">
+  <div class="card report-main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowResizing]="true"
+        [allowPaging]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [allowPdfExport]="true"
+        [toolbar]="toolbarOptions"
+        [selectionSettings]="selectOptions"
+        gridLines="Both"
+        [showColumnChooser]='true'
+        [locale]="locale"
+        width='100%'
+        [editSettings]="editSettings"
+        [pageSettings]="pageSettings"
+        (toolbarClick)="toolbarClick($event)"
+        (actionBegin)="actionBegin($event)"
+        (actionComplete)="actionComplete($event)"
+        [resizeSettings]="resizeSettings"
+        (dataBound)="dataBound()"
+        (excelExportComplete)='excelExpComplete($event)'
+      >
+        <ng-template #odsTemplate let-data>
+          <button
+            class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+            type="button"
+            id="grid_odsexport"
+            tabindex="-1"
+            (click)="odsExport()"
+            style="width: auto"
+          >
+            <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+            ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+          </button>
+        </ng-template>
+
+        <ng-template #jsonTemplate let-data>
+          <button
+            class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+            type="button"
+            id="grid_odsexport"
+            tabindex="-1"
+            (click)="jsonExport()"
+            style="width: auto"
+          >
+            <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+            ><span class="e-tbar-btn-text">{{ 'Json Export' | translate}} </span>
+          </button>
+        </ng-template>
+
+        <e-columns>
+          <ng-template #template ngFor let-column [ngForOf]="columns">
+            <e-column
+              [field]="column?.field"
+              [minWidth]="column?.width || ''"
+              headerTextAlign="Left"
+              [textAlign]="column.textAlign"
+              [autoFit]="column?.width === null || column?.width === '' ? true : false"
+              [headerText]="column?.headerText || column?.field"
+            >
+            </e-column>
+          </ng-template>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>

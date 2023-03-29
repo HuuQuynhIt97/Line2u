@@ -35,7 +35,6 @@ import { Cart } from 'src/app/_core/_model/evse/cart';
   templateUrl: './shop-cart.component.html',
   styleUrls: [
     './shop-cart.component.css',
-    '../../../../../assets/css/foodpanda.css'
   ],
   encapsulation: ViewEncapsulation.None
 })

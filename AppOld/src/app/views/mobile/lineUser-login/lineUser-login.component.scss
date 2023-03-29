@@ -1,0 +1,39 @@
+#line-login-btn.btn{
+    background-color: #02C755;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  #line-login-btn.btn:hover{
+    background-color: #09B24B;
+  }
+  #line-login-btn.btn:active{
+    background-color: #028B3A;
+  }
+
+  #line-back-btn.btn {
+    background-color: #233b2e!important;
+   
+}
+#line-back-btn.btn:active {
+  background-color: #233b2e!important;
+ 
+}
+  #line-login-btn.btn svg{
+    width: 3em;
+    vertical-align: middle;
+    padding: 5px;
+    margin-left: 2px;
+  }
+  #line-login-btn.btn .line-login-text{
+    padding: 13px 30px;
+    display: inline-block;
+    border-left: 1px solid rgba(0,0,0,0.1);
+  }
+
+  #line-back-btn.btn .line-back-text{
+    padding: 13px 30px;
+    display: inline-block;
+    border-left: 1px solid rgba(0,0,0,0.1);
+  }

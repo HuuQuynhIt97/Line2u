@@ -1,0 +1,57 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item " aria-current="page" routerLink="/mobile/field">{{'My Field' | translate}}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{'Field Detail' | translate}}</li>
+  </ol>
+</nav>
+<div class="card m-2">
+  <div class="card-body p-1">
+    <div class="row"  routerLink="/mobile/field/detail">
+      <div class="col-5 text-center d-flex align-items-center justify-content-center">
+        <img
+        [src]="baseUrl + item.sitePhoto"
+        width="150"
+        height="150"
+        [alt]="item.siteName"
+        class="img-fluid"
+        />
+      </div>
+      <div class="col-7">
+        <h2 class="lead"><b>{{item.siteName}}</b></h2>
+        <p class="text-muted text-sm">
+          {{ item.siteAddress }}
+        </p>
+        <p>
+          {{ item.comment }}
+        </p>
+      </div>
+    </div>
+  
+  
+  
+  </div>
+</div>
+<div class="d-flex justify-content-center mt-5">
+  <h4 class="mr-4"><span class="badge badge-success">18</span> Total </h4>
+  <h4 class="mr-4"> <span class="badge badge-primary">15</span> Usable</h4>
+  <h4 class="mr-4"> <span class="badge badge-danger">3</span> Error</h4>
+</div>
+<div class="p-2">
+  <div class="field-info d-flex justify-content-center align-items-center mb-5">
+    <i class="fa fa-exclamation-triangle mr-1" aria-hidden="true"></i>
+    <span> Report Error</span>
+  </div>
+ 
+  <div class="field-info d-flex justify-content-center align-items-center mb-5">
+    <i class="fa fa-file mr-1"></i> 
+    <span> Check Report</span>
+  </div>
+
+   
+  <div class="field-info d-flex justify-content-center align-items-center mb-5" routerLink="/mobile/field">
+    <i class="fa fa-home mr-1"></i> 
+    <span> Back to Field</span>
+  </div>
+
+</div>

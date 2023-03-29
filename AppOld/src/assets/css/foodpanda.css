@@ -1,0 +1,445 @@
+@charset "UTF-8";
+@import "food1.css"; 
+@import "food2.css";        
+@import "food3.css";
+@import "food4.css";
+:root{
+
+    --colorBrandGrayedout: rgb(234, 129, 174);
+    --colorBrandPrimaryDark: #C21760;
+    --colorBrandHighlightLvl1: #FDF2F7;
+    --colorLinearGradient1: #FF2B85;
+    --colorLinearGradient2: #A11350;
+    --colorRatingHighlight: rgb(233, 240, 248);
+    --colorRatingTagText: #333333;
+    --colorDealHighlightLvl1: #fdf2f7;
+    --colorDealHighlightLvl2: #fad9e7;
+    --colorDealTertiary: #f6b2cf;
+    --colorBrandPrimary: #ff2b85;
+    --colorBrandSecondary: #687580;
+    --colorBrandDark: #c21760;
+    --colorBrandHighlight: #fdf2f7;
+    --colorGradientBrand: linear-gradient(90deg, #ff2b85 0%, #e21b70 100%);
+    --colorGradientDark: #e21b70;
+    --colorGradientLight: #ff2b85;
+    --colorInteractionPrimary: #e21b70;
+    --colorInteractionSecondary: #666666;
+    --colorInteractionTertiary: #ed66a0;
+    --colorInteractionPrimaryHover: #c21760;
+    --colorInteractionSecondaryHover: #333333;
+    --colorInteractionPrimaryFeedback: #fdf2f7;
+    --colorInfoBannerCta: #c21760;
+    --colorOnInteractionPrimary: #ffffff;
+    --colorOnInteractionPrimaryHover: #ffffff;
+    --colorOnInteractionSecondary: #e21b70;
+    --colorOnInteractionSecondaryHover: #c21760;
+    --colorInteractionBackgroundHover: #fdf2f7;
+    --colorInteractionTextHover: #c21760;
+    --colorInteractionFocus: #ff2b85;
+    --colorInteractionFocusReversed: #fdf2f7;
+    --colorMainText: #c21760;
+    --colorTiersSubtitleText: #ffffff;
+    --colorTier3SubtitleText: #ffffff;
+    --colorTier1Tile: #767676;
+    --colorTier2Tile: #c21760;
+    --colorTier3Tile: #2B3035;
+    --colorHowItWorksText: #c21760;
+    --colorHowItWorksIconBg: #c21760;
+    --colorTimerBg: #c21760;
+    --colorTimerDigit: #ffffff;
+    --colorNextTiersText: #ffffff;
+    --colorNextTier3Text: #ffffff;
+    --colorDefaultTier: #ffffff;
+    --colorRdpSheetTier1: #ff2b85;
+    --colorRdpSheetTier2: #c21760;
+    --colorRdpSheetTier3: #2B3035;
+    --colorRdpSheetTier4: #767676;
+    --colorStarBgTier1: #ff2b85;
+    --colorStarBgTier2: #c21760;
+    --colorStarBgTier3: #2B3035;
+    --colorRdpSheetTierTextBg1: #fef6f9;
+    --colorRdpSheetTierTextBg2: #fdf2f7;
+    --colorRdpSheetTierTextBg3: #E3E6E8;
+    --colorRdpSheetTierTextBg4: #dcdcdc;
+    --colorNextTier1Rdp: #ff2b85;
+    --colorNextTier2Rdp: #c21760;
+    --colorNextTier3Rdp: #2B3035;
+    --colorNextTier4Rdp: #767676;
+    --colorPopupText: #ffffff;
+    --colorGenericBg: #fad9e7;
+    --colorExpDealBg: #c21760;
+    --colorExpDealText: #ffffff;
+    --colorExpStarBgDefault: #dcdcdc;
+    --colorExpStarBgActive: #e21b70;
+    --colorExpFooterTextDefault: #767676;
+    --colorExpFooterTextActive: #e21b70;
+    --colorExpTimerContainer: #ffffff;
+    --colorExpFooterTimerBg: #e21b70;
+    --colorExpFooterTimerDigit: #ffffff;
+    --colorRating: #ffb413;
+    --colorRatingBackground: #f6b2cf;
+    --colorRatingFeedbackBackground: #fdf2f7;
+    --colorRatingFeedbackActive: #e21b70;
+    --colorPopularIcon: #ffb413;
+    --colorRatingOutline: #FF5F33;
+    --colorDealSecondary: #ed66a0;
+    --colorDealPrimary: #e21b70;
+    --colorDealTextOnWhite: #e21b70;
+    --colorDealBannerText: #e21b70;
+    --colorPriceEmphasis: #333333;
+    --colorTagDealBackground: #e21b70;
+    --colorTagDealText: #ffffff;
+    --colorTagBestCityBackground: #2B3035;
+    --colorTagBestCityText: #ffffff;
+    --colorRatingLightTagIcon: #ffffff;
+    --colorRatingLightTagText: #ffffff;
+    --colorTagPrimaryText: #ffffff;
+    --colorTagPrimaryBackground: #e21b70;
+    --colorPopularHighlight: #ffedc6;
+    --colorPopularTagText: #333333;
+    --colorPopularTagIcon: #ffb413;
+    --colorTagSponsoredBackground: #333333cc;
+    --colorTagSuccessText: #ffffff;
+    --colorInformation: #56616A;
+    --colorError: #e03000;
+    --colorSuccess: #3c8264;
+    --colorWarning: #fcc54c;
+    --colorInformationHighlight: #EEF0F1;
+    --colorErrorHighlight: #fdefeb;
+    --colorSuccessHighlight: #f0f5f3;
+    --colorWarningHighlight: #fffbf1;
+    --colorSpecial1: #f6b2cf;
+    --colorSpecial2: #ed66a0;
+    --colorSpecial3: #ff2b85;
+    --colorSpecial4: #E3E6E8;
+    --colorSpecial5: #B9C0C6;
+    --colorSpecial6: #919DA6;
+    --colorSpecial7: #2B3035;
+    --colorNeutralPrimary: #333333;
+    --colorNeutralSecondary: #767676;
+    --colorNeutralInactive: #cacaca;
+    --colorNeutralBorder: #dcdcdc;
+    --colorNeutralDivider: #ebebeb;
+    --colorNeutralSurface: #f7f7f7;
+    --colorWhite: #ffffff;
+    --colorTransparent: #00000000;
+    --colorDark4: #3333330a;
+    --colorDark64: #333333a3;
+    --colorLight80: #ffffffcc;
+    --colorLight56: #ffffff8f;
+    --colorIlluSecondaryDark: #687580;
+    --colorIlluSecondary75: #ed66a0;
+    --colorIlluSecondary50: #f6b2cf;
+    --colorIlluSecondary30: #fad9e7;
+    --colorIlluSecondary20: #ffd271;
+    --colorIlluSecondary15: #ffedc6;
+    --colorIlluSecondary10: #E3E6E8;
+    --colorTileNavigationPrimary800: #e21b70;
+    --colorTileNavigationPrimary700: #ff2b85;
+    --colorTileNavigationPrimary600: #ed66a0;
+    --colorTileNavigationPrimary500: #f6b2cf;
+    --colorTileListPrimary400: #fad9e7;
+    --colorTileListPrimary300: #fad9e7;
+    --colorTileListPrimary200: #fad9e7;
+    --colorTileListPrimary100: #fad9e7;
+    --colorTileNavigationSecondary800: #ffd271;
+    --colorTileNavigationSecondary700: #ffdb8d;
+    --colorTileNavigationSecondary600: #ffe4aa;
+    --colorTileNavigationSecondary500: #ffe9b8;
+    --colorTileListSecondary400: #ffe9b8;
+    --colorTileListSecondary300: #ffe9b8;
+    --colorTileListSecondary200: #ffe9b8;
+    --colorTileListSecondary100: #ffe9b8;
+    --colorTileNavigationTertiary800: #919DA6;
+    --colorTileNavigationTertiary700: #B9C0C6;
+    --colorTileNavigationTertiary600: #C7CDD1;
+    --colorTileNavigationTertiary500: #E3E6E8;
+    --colorTileListTertiary400: #EEF0F1;
+    --colorTileListTertiary300: #EEF0F1;
+    --colorTileListTertiary200: #EEF0F1;
+    --colorTileListTertiary100: #EEF0F1;
+    --colorSocialMediaFacebook: #1877F2;
+    --colorSocialMediaFacebookHover: #1364CE;
+    --colorFocusRingLight: #B2E2F0;
+    --colorFocusRingDark: #0067A0;
+    --bdsCornerRadiusBase: 8px;
+    --bdsCornerRadiusContainer: 8px;
+    --bdsCornerRadiusMedia: 8px;
+    --bdsCornerRadiusOverlay: 16px;
+    --bdsCornerRadiusButton: 8px;
+    --bdsCornerRadiusPressed: 12px;
+    --bdsCornerRadiusField: 8px;
+    --bdsCornerRadiusSwitch: 8px;
+    --bdsCornerRadiusPill: 9999px;
+    --bdsCornerRadiusMini: 4px;
+    --bdsCornerRadiusCircle: 9999px;
+    --bdsSpacingXxxs: 2px;
+    --bdsSpacingXxs: 4px;
+    --bdsSpacingXs: 8px;
+    --bdsSpacingSt: 12px;
+    --bdsSpacingSm: 16px;
+    --bdsSpacingMd: 24px;
+    --bdsSpacingLg: 32px;
+    --bdsSpacingXl: 48px;
+    --bdsSpacingXxl: 64px;
+    --bdsSpacingXxxl: 80px;
+    --bdsElevationLow: 0px 0px 24px 0px rgba(0,0,0,0.16);
+    --bdsElevationMedium: 0px 0px 48px 0px rgba(0,0,0,0.24);
+    --bdsElevationHigh: 0px 0px 96px 0px rgba(0,0,0,0.24);
+    --bdsMotionEasingEntrance: cubic-bezier(0, 0, 0.1, 1);
+    --bdsMotionEasingExit: cubic-bezier(0.52, 0, 1, 1);
+    --bdsMotionEasingStandard: cubic-bezier(0.22, 0.1, 0.1, 1);
+    --bdsMotionEasingBounce: cubic-bezier(0.35, 0.12, 0.14, 1.42);
+    --bdsMotionDelay50: 50ms;
+    --bdsMotionDelay100: 100ms;
+    --bdsMotionDelay150: 150ms;
+    --bdsMotionDuration100: 100ms;
+    --bdsMotionDuration150: 150ms;
+    --bdsMotionDuration200: 200ms;
+    --bdsMotionDuration250: 250ms;
+    --bdsMotionDuration300: 300ms;
+    --bdsMotionDuration350: 350ms;
+    --bdsMotionDuration450: 450ms;
+    --bdsMotionDuration500: 500ms;
+    --bdsMotionDuration600: 600ms;
+    --bdsGridMinWidthSm: 480px;
+    --bdsGridMinWidthMd: 768px;
+    --bdsGridMinWidthLg: 960px;
+    --bdsGridMinWidthXl: 1264px;
+    --bdsGridMaxWidthSm: 767px;
+    --bdsGridMaxWidthMd: 959px;
+    --bdsGridMaxWidthLg: 1263px;
+    --bdsGridMaxWidthXl: 1440px;
+    --bdsGridColSm: 6;
+    --bdsGridColMd: 6;
+    --bdsGridColLg: 12;
+    --bdsGridColXl: 12;
+    --bdsGridGutterSm: 16px;
+    --bdsGridGutterMd: 16px;
+    --bdsGridGutterLg: 24px;
+    --bdsGridGutterXl: 24px;
+    --bdsGridMarginSm: 16px;
+    --bdsGridMarginMd: 16px;
+    --bdsGridMarginLg: 64px;
+    --bdsGridMarginXl: 64px;
+    --bdsZindexSurfaceBase: 1;
+    --bdsZindexSurfaceRaised: 1;
+    --bdsZindexSurfacePeaked: 1;
+    --bdsZindexLowBase: 100;
+    --bdsZindexLowRaised: 125;
+    --bdsZindexLowPeaked: 150;
+    --bdsZindexMediumBase: 200;
+    --bdsZindexMediumRaised: 225;
+    --bdsZindexMediumPeaked: 250;
+    --bdsZindexHighBase: 300;
+    --bdsZindexHighRaised: 325;
+    --bdsZindexHighPeaked: 350;
+    --bdsTypographyBgLargeFontFamily: Open Sans;
+    --bdsTypographyBgLargeFontSize: 160px;
+    --bdsTypographyBgLargeFontWeight: 700;
+    --bdsTypographyBgLargeLineHeight: 1.3;
+    --bdsTypographyBgMediumFontFamily: Open Sans;
+    --bdsTypographyBgMediumFontSize: 120px;
+    --bdsTypographyBgMediumFontWeight: 700;
+    --bdsTypographyBgMediumLineHeight: 1.3;
+    --bdsTypographyBgSmallFontFamily: Open Sans;
+    --bdsTypographyBgSmallFontSize: 80px;
+    --bdsTypographyBgSmallFontWeight: 700;
+    --bdsTypographyBgSmallLineHeight: 1.3;
+    --bdsTypographyTitleXxlargeFontFamily: Open Sans;
+    --bdsTypographyTitleXxlargeFontSize: 40px;
+    --bdsTypographyTitleXxlargeFontWeight: 600;
+    --bdsTypographyTitleXxlargeLineHeight: 1.3;
+    --bdsTypographyTitleXlargeFontFamily: Open Sans;
+    --bdsTypographyTitleXlargeFontSize: 32px;
+    --bdsTypographyTitleXlargeFontWeight: 600;
+    --bdsTypographyTitleXlargeLineHeight: 1.3125;
+    --bdsTypographyTitleXlargeSecondaryFontFamily: Open Sans;
+    --bdsTypographyTitleXlargeSecondaryFontSize: 32px;
+    --bdsTypographyTitleXlargeSecondaryFontWeight: 400;
+    --bdsTypographyTitleXlargeSecondaryLineHeight: 1.3125;
+    --bdsTypographyTitleLargeFontFamily: Open Sans;
+    --bdsTypographyTitleLargeFontSize: 24px;
+    --bdsTypographyTitleLargeFontWeight: 700;
+    --bdsTypographyTitleLargeLineHeight: 1.333333333;
+    --bdsTypographyTitleLargeSecondaryFontFamily: Open Sans;
+    --bdsTypographyTitleLargeSecondaryFontSize: 24px;
+    --bdsTypographyTitleLargeSecondaryFontWeight: 400;
+    --bdsTypographyTitleLargeSecondaryLineHeight: 1.333333333;
+    --bdsTypographyTitleMediumFontFamily: Open Sans;
+    --bdsTypographyTitleMediumFontSize: 18px;
+    --bdsTypographyTitleMediumFontWeight: 700;
+    --bdsTypographyTitleMediumLineHeight: 1.555555556;
+    --bdsTypographyTitleMediumSecondaryFontFamily: Open Sans;
+    --bdsTypographyTitleMediumSecondaryFontSize: 18px;
+    --bdsTypographyTitleMediumSecondaryFontWeight: 400;
+    --bdsTypographyTitleMediumSecondaryLineHeight: 1.555555556;
+    --bdsTypographyTitleSmallFontFamily: Open Sans;
+    --bdsTypographyTitleSmallFontSize: 16px;
+    --bdsTypographyTitleSmallFontWeight: 700;
+    --bdsTypographyTitleSmallLineHeight: 1.5;
+    --bdsTypographyLabelLargeFontFamily: Open Sans;
+    --bdsTypographyLabelLargeFontSize: 16px;
+    --bdsTypographyLabelLargeFontWeight: 600;
+    --bdsTypographyLabelLargeLineHeight: 1.5;
+    --bdsTypographyLabelMediumFontFamily: Open Sans;
+    --bdsTypographyLabelMediumFontSize: 14px;
+    --bdsTypographyLabelMediumFontWeight: 600;
+    --bdsTypographyLabelMediumLineHeight: 1.571428571;
+    --bdsTypographyLabelSmallFontFamily: Open Sans;
+    --bdsTypographyLabelSmallFontSize: 12px;
+    --bdsTypographyLabelSmallFontWeight: 600;
+    --bdsTypographyLabelSmallLineHeight: 1.5;
+    --bdsTypographyLabelSmallSecondaryFontFamily: Open Sans;
+    --bdsTypographyLabelSmallSecondaryFontSize: 12px;
+    --bdsTypographyLabelSmallSecondaryFontWeight: 400;
+    --bdsTypographyLabelSmallSecondaryLineHeight: 1.5;
+    --bdsTypographyLabelXsmallFontFamily: Open Sans;
+    --bdsTypographyLabelXsmallFontSize: 10px;
+    --bdsTypographyLabelXsmallFontWeight: 600;
+    --bdsTypographyLabelXsmallLineHeight: 1.6;
+    --bdsTypographyParagraphMediumFontFamily: Open Sans;
+    --bdsTypographyParagraphMediumFontSize: 16px;
+    --bdsTypographyParagraphMediumFontWeight: 400;
+    --bdsTypographyParagraphMediumLineHeight: 1.5;
+    --bdsTypographyParagraphSmallFontFamily: Open Sans;
+    --bdsTypographyParagraphSmallFontSize: 14px;
+    --bdsTypographyParagraphSmallFontWeight: 400;
+    --bdsTypographyParagraphSmallLineHeight: 1.571428571;
+    --bdsTypographyParagraphXsmallFontFamily: Open Sans;
+    --bdsTypographyParagraphXsmallFontSize: 12px;
+    --bdsTypographyParagraphXsmallFontWeight: 600;
+    --bdsTypographyParagraphXsmallLineHeight: 1.833333333;
+    --bdsTypographyParagraphXsmallSecondaryFontFamily: Open Sans;
+    --bdsTypographyParagraphXsmallSecondaryFontSize: 12px;
+    --bdsTypographyParagraphXsmallSecondaryFontWeight: 400;
+    --bdsTypographyParagraphXsmallSecondaryLineHeight: 1.833333333;
+    --bdsTypographyRibbonBaseFontFamily: Open Sans;
+    --bdsTypographyRibbonBaseFontSize: 14px;
+    --bdsTypographyRibbonBaseFontWeight: 600;
+    --bdsTypographyRibbonBaseLineHeight: 1.571428571;
+    --bdsTypographyMiniBaseFontFamily: Open Sans;
+    --bdsTypographyMiniBaseFontSize: 10px;
+    --bdsTypographyMiniBaseFontWeight: 700;
+    --bdsTypographyMiniBaseLineHeight: 1.6;
+    --colorErrorRgb: 224, 48, 0;
+    --colorWarningRgb: 252, 197, 76;
+    --colorSuccessRgb: 60, 130, 100;
+    --colorInformationRgb: 39, 111, 191;
+    --colorInteractionPrimaryRgb: 215, 15, 100;
+    --colorRiderBanner: rgb(215, 15, 100);
+    --colorTagDealBg: #E21B70;
+    --colorTagPrimaryBg: #E21B70;
+    --colorOverlayDark4: #0000000A;
+    --colorOverlayDark64: #000000A3;
+    --colorOverlayLight56: #ffffff8F;
+    --colorOverlayLight80: #ffffffCC;
+    --colorJokerPrimary: #1F4D5D;
+    --colorJokerPrimaryBk: #E3E6E8;
+    --colorJokerPrimaryBk2: #B9C0C6;
+    --colorJokerSecondary: #FF2B85;
+    --colorJokerSecondaryBk: #FAD9E7;
+    --colorJokerTertiary: #C21760;
+    --colorJokerTertiaryBk: #FEF6F9;
+    --tileNavPrimary800: #d70f64;
+    --tileNavPrimary700: #df3f83;
+    --tileNavPrimary600: #e76fa2;
+    --tileNavPrimary500: #ef9fc1;
+    --tileListPrimary400: #f9d7db;
+    --tileListPrimary300: #f9d7db;
+    --tileListPrimary200: #f9d7db;
+    --tileListPrimary100: #f9d7db;
+    --tileNavSecondary800: #ffd271;
+    --tileNavSecondary700: #ffdb8d;
+    --tileNavSecondary600: #ffe4aa;
+    --tileNavSecondary500: #ffe8b8;
+    --tileListSecondary400: #ffe9b8;
+    --tileListSecondary300: #ffe8b8;
+    --tileListSecondary200: #ffe8b8;
+    --tileListSecondary100: #ffe8b8;
+    --tileNavTertiary800: #919DA6;
+    --tileNavTertiary700: #B9C0C6;
+    --tileNavTertiary600: #C7CDD1;
+    --tileNavTertiary500: #E3E6E8;
+    --tileListTertiary400: #EEF0F1;
+    --tileListTertiary300: #EEF0F1;
+    --tileListTertiary200: #EEF0F1;
+    --tileListTertiary100: #EEF0F1;
+}
+.header .logo {
+    background-color: transparent !important;
+    display: flex;
+}
+.rdp-header {
+    z-index: 99;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+}
+.rdp-header #global-header {
+    background-color: #233b2e !important;
+}
+#global-header .header .account-link, #global-header .header .language-wrapper a {
+    background-color: #233b2e !important;
+}
+
+#cart {
+    min-height: 100vh;
+    position: fixed !important;
+    top: 64px;
+}
+.cart-summary.cart-summary-sticky {
+    display: grid !important;
+}
+@media screen and (min-width: 960px) {
+    .logo {
+        align-items: flex-start ;
+        justify-content: flex-start !important;
+        padding: 16px 24px 0 !important
+    }
+}
+
+@media screen and (min-width: 480px) {
+
+    .logo {
+        padding: 0 24px ;
+        align-items: center !important ;
+        display: flex !important;
+        height: 64px !important;
+        justify-content: center !important;
+        padding: 0 !important;
+    }
+    .header .logo {
+        background-color: transparent !important;
+        display: flex;
+    }
+}
+
+.dish-menu-category-list.fixed{
+    position: fixed ;
+    z-index: 99;
+  }
+
+  .account .svg-stroke-container circle {
+    fill: #6c757d !important;
+}
+.sticky-cart-button {
+    background-color: #233b2e !important;
+    width: 100%;
+}
+.cart-icon .svg-stroke-container path {
+    fill: #ffffff !important;
+    transition: stroke .15s cubic-bezier(.25,.46,.45,.94);
+}
+.cart-icon .products-count {
+    color: #fff !important;
+}
+
+.h-64px, .size-64px {
+    height: 64px;
+}
+
+/*cart css*/
+
+

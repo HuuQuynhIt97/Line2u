@@ -1,0 +1,208 @@
+<div class="main-content" id="main-text">
+  <div class="sidebar-content">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div class="heading">豬隻基本資料 Pig Data</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 my-2 p-0 d-flex justify-content-between">
+        <div class="d-flex justify-content-between align-items-center">
+          <label class="mx-2">型態</label>
+          <select id="u7_input" class="u7_input form-control">
+            <option class="u7_input_option" value="種公豬">種公豬</option>
+            <option class="u7_input_option" value="種母豬">種母豬</option>
+            <option class="u7_input_option" value="新公豬">新公豬</option>
+            <option class="u7_input_option" value="新母豬">新母豬</option>
+            <option class="u7_input_option" value="哺乳豬">哺乳豬</option>
+            <option class="u7_input_option" value="保育豬">保育豬</option>
+            <option class="u7_input_option" value="肥育豬">肥育豬</option>
+          </select>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <label class="mx-2">單號</label>
+          <select id="u91_input" class="u91_input form-control mr-2">
+            <option class="u7_input_option" value="作業Operate20220115">
+              作業Operate20220115
+            </option>
+            <option class="u7_input_option" value="作業Operate20220112">
+              作業Operate20220112
+            </option>
+            <option class="u7_input_option" value="作業Operate20220111">
+              作業Operate20220111
+            </option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="col-12 p-0">
+        <div class="d-flex justify-content-start align-items-center w-100">
+          <label for="input" class="col-form-label ml-2" style="width: 25%"
+            >Input IDNO/RFID <br />掃豬/掃欄</label
+          >
+          <div class="hover-box" style="width: 45%;">
+            <img src=" ../../../../../../../assets/img/mobile/qrcode.png" alt="">
+            <input
+            type="text"
+            class="form-control form-control-sm"
+            id="input"
+            placeholder=""
+            style="width: calc(100% - 35px); margin-left: 35px;"
+          />
+          </div>
+
+          <button class="btn btn-success btn-sm ml-2" style="width: 22%">
+            輸入Scan
+          </button>
+        </div>
+      </div>
+
+      <div class="col-12 mb-2 p-0">
+        <div class="d-flex justify-content-start align-items-center w-100">
+          <label for="input" class="col-form-label ml-2" style="width: 25%"
+            >Upload Text file</label
+          >
+          <div class="hover-box" style="width: 45%;">
+            <img src=" ../../../../../../../assets/img/mobile/upload.png" alt="">
+            <input
+            type="text"
+            class="form-control form-control-sm"
+            id="input"
+            placeholder=""
+            style="width: calc(100% - 35px); margin-left: 35px;"
+          />
+          </div>
+
+          <button class="btn btn-success btn-sm ml-2" style="width: 22%">
+            上傳 Upload
+          </button>
+        </div>
+      </div>
+
+      <div class="col-12 p-0">
+        <div class="title ml-2">選擇豬隻 Pig List</div>
+      </div>
+
+      <div class="col-12 p-0">
+        <table class="">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Code<br />豬隻號碼</th>
+              <th scope="col">Pen<br />豬隻號碼</th>
+              <th scope="col">Breed<br />品種</th>
+              <th scope="col">Weight<br />重量 g</th>
+              <th scope="col">Day Age<br />天齡</th>
+              <th scope="col">Function<br />功能</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>500212-0612</td>
+              <td>PN00212</td>
+              <td>洛克夏</td>
+              <td>20,000</td>
+              <td>55</td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>500212-0612</td>
+              <td>PN00212</td>
+              <td>洛克夏</td>
+              <td>20,000</td>
+              <td>55</td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <td>3</td>
+              <td>500212-0612</td>
+              <td>PN00212</td>
+              <td>洛克夏</td>
+              <td>20,000</td>
+              <td>55</td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <td>4</td>
+              <td>500212-0612</td>
+              <td>PN00212</td>
+              <td>洛克夏</td>
+              <td>20,000</td>
+              <td>55</td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <td>5</td>
+              <td>500212-0612</td>
+              <td>PN00212</td>
+              <td>洛克夏</td>
+              <td>20,000</td>
+              <td>55</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-2 mx-2">
+          <p>
+            <span class="btn-text"> 總數Total : 132 隻pigs </span>
+          </p>
+          <button class="btn btn-danger btn-sm"> <i class="fa fa-trash-alt"></i> Delete All</button>
+        </div>
+      </div>
+
+      <div class="col-12 p-0">
+        <div class="title ml-2">選擇豬隻 Pig List</div>
+      </div>
+      
+      <div class="col-12 p-0">
+        <table class="table table-bordered">
+
+          <tbody>
+            <tr>
+              <td>
+                IDNO: 50021-06123 <br>
+                Location:<br>
+                棟D.房A005.欄105262<br>
+              </td>
+              <td>
+                Breed : 洛克夏<br>
+                Weight : 20,000 g<br>
+                Day Age : 55 d<br>
+              </td>
+              <td align="center">
+                <button class="btn btn-secondary" (click)='goToOperateDetail()'>詳細資料<br>Detail</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12 p-0">
+        <div class="flex-container-type ml-2">
+          <div (click)="goToFeeding()">餵飼 <br />Feeding</div>
+
+          <div (click)="goToFeeding()">秤重 <br />Weighing</div>
+
+          <div (click)="goToFeeding()">欄位異動 <br />Move</div>
+
+          <div (click)="goToFeeding()">耳標釘標 <br />EarTag</div>
+
+          <div (click)="goToFeeding()">汰淘 <br />Culling</div>
+          <div (click)="goToFeeding()">死亡 <br />Death</div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

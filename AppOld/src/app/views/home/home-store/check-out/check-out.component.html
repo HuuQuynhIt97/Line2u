@@ -1,0 +1,584 @@
+<ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<!-- <div>
+  <body >
+    <div id="reactRoot">
+      <div id="vendor-details-root">
+          <div class="rdp-header" id="rdp-header">
+          <section id="global-header">
+              <header class="header overlay-header">
+                  <div data-testid="brand-logo-wrapper" class="logo-wrapper">
+                      <div class="logo">
+                          <a class="logo-header-link" href="/" data-testid="logo-header-link">
+                              <span class="svg-logo-wrapper">
+                                  <span aria-label="foodpanda">
+                                      <svg version="1.1" height="26" class="logo-icon" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 198.2 200.3" xml:space="preserve" aria-hidden="true" focusable="false">
+                                          <style type="text/css">.st0{fill:#D70F64;}</style>
+                                          <g>
+                                              <g>
+                                                  <path class="st0" d="M99,148c13.5,0,24.4-9.6,24.4-21.4H74.7C74.7,138.4,85.5,148,99,148z"></path>
+                                                  <g>
+                                                      <path class="st0" d="M181.3,46c5.5-4.8,9.1-11.8,9.1-19.8c0-14.4-11.7-26.1-26.2-26.1c-9.3,0-17.4,4.8-22,12
+                                                          c-13-6.3-27.6-9.9-43-9.9s-30,3.5-43,9.8c-4.7-7.2-12.7-12-22-12C19.8,0,8,11.7,8,26.1c0,7.9,3.5,15,9,19.7
+                                                          C6.3,61.6,0,80.7,0,101.2c0,54.7,44.5,99.1,99.1,99.1s99.1-44.4,99.1-99.1C198.3,80.9,192,61.8,181.3,46z M99.2,192.8
+                                                          c-50.4,0-91.4-41-91.4-91.4c0-19,5.8-36.6,15.7-51.2c9-13.2,21.4-24,35.8-31c12-5.9,25.5-9.2,39.8-9.2s27.8,3.3,39.9,9.2
+                                                          c14.5,7,26.8,17.8,35.8,31c9.9,14.6,15.7,32.2,15.7,51.2C190.6,151.8,149.6,192.8,99.2,192.8z"></path>
+                                                      <path class="st0" d="M99,120.5c1.5,0.4,17.2-4.9,17.2-12.3c0-4.1-12.7-4.9-17.2-4.9c-4.4,0-17.2,0.8-17.2,4.9
+                                                          C81.8,115.6,97.5,120.9,99,120.5z"></path>
+                                                      <path class="st0" d="M156.6,58.5c-8.6-5.7-27.7-9.1-35.1,0.8c0,0-9.4,10.1-0.2,20.6c9.3,10.5,16.4,20.3,18.5,28.8
+                                                          s5.5,12,12.4,12.1c6.9,0,20.1-10.5,21.8-27.4C175.7,76.5,165.2,64.1,156.6,58.5z M136.9,80.1c-2.9,0-5.2-2.3-5.2-5.2
+                                                          s2.4-5.2,5.2-5.2c2.9,0,5.2,2.3,5.2,5.2C142,77.7,139.7,80.1,136.9,80.1z"></path>
+                                                      <path class="st0" d="M76.5,59.2c-7.5-9.8-26.6-6.5-35.1-0.8c-8.6,5.7-19.1,18-17.4,34.9c1.6,16.9,14.9,27.4,21.8,27.4
+                                                          s10.3-3.5,12.4-12.1c2.1-8.5,9.3-18.3,18.5-28.8S76.5,59.2,76.5,59.2z M62.7,80.1c-2.9,0-5.2-2.3-5.2-5.2s2.3-5.2,5.2-5.2
+                                                          c2.9,0,5.2,2.3,5.2,5.2C67.8,77.7,65.5,80.1,62.7,80.1z"></path>
+                                                  </g>
+                                              </g>
+                                          </g>
+                                      </svg>
+                                      &nbsp;
+                                      <a href="#"  style="padding: 8px 5px 5px 5px; ">
+                                          <img [src]="baseUrl + logo" alt="Line2U" width="160px" height="60px" />
+                                      </a>
+                                  </span>
+                              </span>
+                          </a>
+                      </div>
+                  </div>
+                  <div class="language-wrapper">
+                      <div class="language-switch" data-testid="language-switch"><a href="/restaurant/otko/fei-xiang-yu-zhou-fu-he-shi-can-yin" hreflang="zh" lang="zh" aria-label="访问我们的中文网站。"><span class="sr-only">中文 </span>中文</a></div>
+                  </div>
+                  
+                  
+                  <ng-container *ngIf="!isLogin; else elseTemplate3">
+                      <div class="user-wrapper">
+                          <div class="account" data-testid="header-account">
+                              <a  class="account-link" (click)="loginUser()" style="cursor: pointer;" data-testid="account-link-login">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-stroke-container">
+                                      <g fill="none" fill-rule="evenodd">
+                                          <circle cx="12" cy="12" r="12" fill="#D70F64" fill-rule="nonzero"></circle>
+                                          <path fill="#FFF" fill-rule="nonzero" d="M13.1818252 12.6666667C15.366281 12.6666667 17.1649879 14.3335701 17.3176726 16.4681904L17.3252836 16.6080555 17.3333337 17.0416667C17.3333337 17.1848516 17.2285728 17.3039382 17.0904223 17.3286342L17.0371901 17.3333333 6.96281056 17.3333333C6.81742783 17.3333333 6.69651331 17.2301562 6.67143827 17.0940941L6.666667 17.0416667 6.666667 16.75C6.666667 14.5418198 8.44636147 12.7430258 10.670143 12.6690344L10.8126768 12.6666667 13.1818252 12.6666667zM12.0000003 6C13.6568546 6 15.0000003 7.34314575 15.0000003 9 15.0000003 10.6568543 13.6568546 12 12.0000003 12 10.3431461 12 9.00000033 10.6568543 9.00000033 9 9.00000033 7.34314575 10.3431461 6 12.0000003 6z"></path>
+                                      </g>
+                                  </svg>
+                                  
+                                  <span class="login-label">{{'Login' | translate}}</span>
+                              </a>
+                          </div>
+                      </div>
+                  </ng-container>
+                  <ng-template #elseTemplate3>
+                      <div  [ngClass]="isOpenDropdown ? 'user-wrapper open' : 'user-wrapper'">
+                          <div class="account" data-testid="header-account">
+                              <button (click)="OpenDropdown()"  #toggleButton class="account-link" data-testid="account-link-authenticated" aria-label="Hữu" aria-haspopup="true" aria-expanded="true">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-stroke-container">
+                                  <g fill="none" fill-rule="evenodd">
+                                  <circle cx="12" cy="12" r="12" fill="#D70F64" fill-rule="nonzero"></circle>
+                                  <path fill="#FFF" fill-rule="nonzero" d="M13.1818252 12.6666667C15.366281 12.6666667 17.1649879 14.3335701 17.3176726 16.4681904L17.3252836 16.6080555 17.3333337 17.0416667C17.3333337 17.1848516 17.2285728 17.3039382 17.0904223 17.3286342L17.0371901 17.3333333 6.96281056 17.3333333C6.81742783 17.3333333 6.69651331 17.2301562 6.67143827 17.0940941L6.666667 17.0416667 6.666667 16.75C6.666667 14.5418198 8.44636147 12.7430258 10.670143 12.6690344L10.8126768 12.6666667 13.1818252 12.6666667zM12.0000003 6C13.6568546 6 15.0000003 7.34314575 15.0000003 9 15.0000003 10.6568543 13.6568546 12 12.0000003 12 10.3431461 12 9.00000033 10.6568543 9.00000033 9 9.00000033 7.34314575 10.3431461 6 12.0000003 6z"></path>
+                                  </g>
+                              </svg>
+                              <span class="login-label">{{username}}</span>
+                              <span class="header__account__toggle__arrow">
+                                  <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg">
+                                  <path class="svg-stroke-container" stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" fill="none" stroke="#D70F64" d="m3.5,1.5l5,5.5l-5,5.5"></path>
+                                  </svg>
+                              </span>
+                              </button>
+                          </div>
+                          <ul *ngIf="isOpenDropdown" #menu class="header-account-menu header-account-menu-sm" data-testid="header-account-menu">
+                              <ejs-dropdownlist   
+                                  [(ngModel)]="lang" (change)="langValueChange($event)" 
+                                  [fields]="fieldsLang" 
+                              [dataSource]="languageData"
+                                  >
+                                  <ng-template #itemTemplate="" let-data="">
+                                      <div class="text-black">{{data?.id | translate}}</div>
+                                  </ng-template>
+                                  <ng-template #valueTemplate="" let-data="">
+                                      <div class="text-black">{{data?.id | translate}}</div>
+                                  </ng-template>
+                              </ejs-dropdownlist>
+                              <button  class="header-account-menu__language-switcher header-account-menu-link" data-testid="account-menu-language-switcher">
+                                  {{username}}
+                              </button>
+                              <hr class="header-account-menu-divider">
+                              <li><a class="header-account-menu-link"  data-testid="account-menu-profile">{{'PROFILE' | translate}}</a></li>
+                              <hr class="header-account-menu-divider">
+                              <li><a class="header-account-menu-link" (click)="logOutUser()" data-testid="account-link-logout">{{'SIGN_OUT' | translate}}</a></li>
+                          </ul>
+                      </div>
+                  </ng-template>
+                  
+              
+                  <div class="cart-icon-wrapper" data-testid="cart-icon-wrapper">
+                      <div class="cart-icon">
+                          <button (click)="openCart()">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke-container" width="24" height="24" aria-hidden="true" focusable="false">
+                                  <path fill="#707070" d="M12 2.75a4.75 4.75 0 014.744 4.5h3.103a1 1 0 01.99 1.141l-1.714 12a1 1 0 01-.99.859H5.867a1 1 0 01-.99-.859l-1.714-12a1 1 0 01.99-1.141h3.103A4.75 4.75 0 0112 2.75zm5.559 14.75H6.44a.4.4 0 00-.396.457l.208 1.45a.4.4 0 00.396.343H17.35a.4.4 0 00.396-.343l.208-1.45a.4.4 0 00-.396-.457zm1.25-8.75H5.19a.4.4 0 00-.396.457l.922 6.45a.4.4 0 00.396.343h11.775a.4.4 0 00.396-.343l.922-6.45a.4.4 0 00-.396-.457zM12 4.25a3.251 3.251 0 00-3.193 2.638.305.305 0 00.3.362h5.796a.297.297 0 00.292-.35A3.251 3.251 0 0012 4.25z"></path>
+                              </svg>
+                              <span class="sr-only"></span>
+                              <span class="products-count" *ngIf="count > 0" aria-hidden="true">{{count}}</span>
+                          </button>
+                      </div>
+                  </div>
+                  <div class="pick-up"></div>
+              </header>
+          </section>
+          </div>
+          <main>
+            <div class="container wrapper">
+              <div class="row cart-body">
+                <form class="form-horizontal" method="post" action="">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+                    <div class="panel panel-info">
+                      <div class="panel-heading">
+                        Review Order 
+                        <div class="pull-right"><small><a class="afix-1" href="#">Edit Cart</a></small></div>
+                      </div>
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <div class="col-sm-3 col-xs-3">
+                            <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                          </div>
+                          <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">Product name</div>
+                            <div class="col-xs-12"><small>Quantity:<span>1</span></small></div>
+                          </div>
+                          <div class="col-sm-3 col-xs-3 text-right">
+                            <h6><span>$</span>25.00</h6>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <hr />
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-3 col-xs-3">
+                            <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                          </div>
+                          <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">Product name</div>
+                            <div class="col-xs-12"><small>Quantity:<span>1</span></small></div>
+                          </div>
+                          <div class="col-sm-3 col-xs-3 text-right">
+                            <h6><span>$</span>25.00</h6>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <hr />
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-3 col-xs-3">
+                            <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                          </div>
+                          <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">Product name</div>
+                            <div class="col-xs-12"><small>Quantity:<span>2</span></small></div>
+                          </div>
+                          <div class="col-sm-3 col-xs-3 text-right">
+                            <h6><span>$</span>50.00</h6>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <hr />
+                        </div>
+                        <div class="form-group">
+                          <div class="col-xs-12">
+                            <strong>Subtotal</strong>
+                            <div class="pull-right"><span>$</span><span>200.00</span></div>
+                          </div>
+                          <div class="col-xs-12">
+                            <small>Shipping</small>
+                            <div class="pull-right"><span>-</span></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <hr />
+                        </div>
+                        <div class="form-group">
+                          <div class="col-xs-12">
+                            <strong>Order Total</strong>
+                            <div class="pull-right"><span>$</span><span>150.00</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+                    <div class="panel panel-info">
+                      <div class="panel-heading">Address</div>
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <h4>Shipping Address</h4>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Country:</strong></div>
+                          <div class="col-md-12">
+                            <input type="text" class="form-control" name="country" value="" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-6 col-xs-12">
+                            <strong>First Name:</strong>
+                            <input type="text" name="first_name" class="form-control" value="" />
+                          </div>
+                          <div class="span1"></div>
+                          <div class="col-md-6 col-xs-12">
+                            <strong>Last Name:</strong>
+                            <input type="text" name="last_name" class="form-control" value="" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Address:</strong></div>
+                          <div class="col-md-12">
+                            <input type="text" name="address" class="form-control" value="" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>City:</strong></div>
+                          <div class="col-md-12">
+                            <input type="text" name="city" class="form-control" value="" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>State:</strong></div>
+                          <div class="col-md-12">
+                            <input type="text" name="state" class="form-control" value="" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
+                          <div class="col-md-12">
+                            <input type="text" name="zip_code" class="form-control" value="" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Phone Number:</strong></div>
+                          <div class="col-md-12"><input type="text" name="phone_number" class="form-control" value="" /></div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Email Address:</strong></div>
+                          <div class="col-md-12"><input type="text" name="email_address" class="form-control" value="" /></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel panel-info">
+                      <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Card Type:</strong></div>
+                          <div class="col-md-12">
+                            <select id="CreditCardType" name="CreditCardType" class="form-control">
+                              <option value="5">Visa</option>
+                              <option value="6">MasterCard</option>
+                              <option value="7">American Express</option>
+                              <option value="8">Discover</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Credit Card Number:</strong></div>
+                          <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12"><strong>Card CVV:</strong></div>
+                          <div class="col-md-12"><input type="text" class="form-control" name="car_code" value="" /></div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <strong>Expiration Date</strong>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                              <option value="">Month</option>
+                              <option value="01">01</option>
+                              <option value="02">02</option>
+                              <option value="03">03</option>
+                              <option value="04">04</option>
+                              <option value="05">05</option>
+                              <option value="06">06</option>
+                              <option value="07">07</option>
+                              <option value="08">08</option>
+                              <option value="09">09</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                              <option value="12">12</option>
+                            </select>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                              <option value="">Year</option>
+                              <option value="2015">2015</option>
+                              <option value="2016">2016</option>
+                              <option value="2017">2017</option>
+                              <option value="2018">2018</option>
+                              <option value="2019">2019</option>
+                              <option value="2020">2020</option>
+                              <option value="2021">2021</option>
+                              <option value="2022">2022</option>
+                              <option value="2023">2023</option>
+                              <option value="2024">2024</option>
+                              <option value="2025">2025</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <span>Pay secure using your credit card.</span>
+                          </div>
+                          <div class="col-md-12">
+                            <ul class="cards">
+                              <li class="visa hand">Visa</li>
+                              <li class="mastercard hand">MasterCard</li>
+                              <li class="amex hand">Amex</li>
+                            </ul>
+                            <div class="clearfix"></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="row cart-footer">
+              </div>
+            </div>
+          </main>
+          <footer class="footer">
+              
+          </footer>
+
+      </div>
+    </div>
+  </body>
+</div> -->
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<div id="reactRoot">
+  <div id="vendor-details-root">
+    <app-home-header></app-home-header>
+  </div>
+</div>
+<div class="container wrapper">
+    
+  <div class="row cart-body">
+      <form class="form-horizontal" method="post" action="">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+          <!--REVIEW ORDER-->
+          <div class="panel panel-info">
+              <div class="panel-heading">
+                  Review Order 
+                  <div class="pull-right">
+                    <small>
+                      <a class="afix-1" (click)="backEditCart()">
+                        Edit Cart
+                      </a>
+                    </small>
+                  </div>
+              </div>
+              <div class="panel-body">
+                <ng-container *ngFor="let item of cartDetail; let i=index">
+
+                  <div class="form-group">
+                      <div class="col-sm-3 col-xs-3">
+                          <img class="img-responsive" 
+                          [src]="imagePath(item.photoPath) "
+                          
+                          />
+                      </div>
+                      <div class="col-sm-6 col-xs-6">
+                          <div class="col-xs-12">{{item.productName}}</div>
+                          <div class="col-xs-12"><small>{{'Label.Quantity' | translate}}:<span>{{item.quantity}}</span></small></div>
+                      </div>
+                      <div class="col-sm-3 col-xs-3 text-right">
+                          <h6><span>$</span>{{item.productPrice * item.quantity}}</h6>
+                      </div>
+                  </div>
+                  <div class="form-group"><hr /></div>
+                </ng-container>
+                
+                  
+                  <!-- <div class="form-group"><hr /></div>
+                  <div class="form-group">
+                      <div class="col-xs-12">
+                          <strong>Subtotal</strong>
+                          <div class="pull-right"><span>$</span><span>200.00</span></div>
+                      </div>
+                      <div class="col-xs-12">
+                          <small>Shipping</small>
+                          <div class="pull-right"><span>-</span></div>
+                      </div>
+                  </div> -->
+                  <div class="form-group"><hr /></div>
+                  <div class="form-group">
+                      <div class="col-xs-12">
+                          <strong>{{'Label.Order_Total' | translate}}</strong>
+                          <div class="pull-right"><span>$</span><span>{{totalPrice}}</span></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!--REVIEW ORDER END-->
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+          <!--SHIPPING METHOD-->
+          <div class="panel panel-info">
+              <div class="panel-heading">Address</div>
+              <div class="panel-body">
+                  <div class="form-group">
+                      <div class="col-md-12">
+                          <h4>Shipping Address</h4>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-md-6 col-xs-12">
+                          <strong>First Name:</strong>
+                          <input type="text" name="accountName" [(ngModel)]="modelAccount.accountName" class="form-control" value="" />
+                      </div>
+                      <div class="span1"></div>
+                      <!-- <div class="col-md-6 col-xs-12">
+                          <strong>Last Name:</strong>
+                          <input type="text" name="last_name" class="form-control" value="" />
+                      </div> -->
+                  </div>
+                  <div class="form-group">
+                      <div class="col-md-12"><strong>Address:</strong></div>
+                      <div class="col-md-12">
+                          <input type="text" 
+                          name="accountAddress" [(ngModel)]="modelAccount.accountAddress" class="form-control" 
+                          required />
+                      </div>
+                  </div>
+                 
+                  <div class="form-group">
+                      <div class="col-md-12"><strong>Phone Number:</strong></div>
+                      <div class="col-md-12">
+                        <input type="text" [(ngModel)]="modelAccount.accountTel" name="accountTel" 
+                        class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-md-12"><strong>Email Address:</strong></div>
+                      <div class="col-md-12">
+                        <input type="text" 
+                        [(ngModel)]="modelAccount.accountEmail" name="accountEmail"
+                         class="form-control" required /></div>
+                  </div>
+              </div>
+          </div>
+          <!--SHIPPING METHOD END-->
+  
+          <!--CREDIT CART PAYMENT-->
+          <div class="panel panel-info">
+              <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
+              <div class="panel-body">
+                  <div class="form-group">
+                      <div class="col-md-12"><strong>{{'label.payment.method' | translate}}:</strong></div>
+                      <div class="col-md-12">
+                        <!-- <ejs-dropdownlist   
+                            [(ngModel)]="lang" (change)="langValueChange($event)" 
+                            [fields]="fieldsLang" 
+                        [dataSource]="languageData"
+                            >
+                            <ng-template #itemTemplate="" let-data="">
+                                <div class="text-black">{{data?.id | translate}}</div>
+                            </ng-template>
+                            <ng-template #valueTemplate="" let-data="">
+                                <div class="text-black">{{data?.id | translate}}</div>
+                            </ng-template>
+                        </ejs-dropdownlist> -->
+                        <select id="CreditCardType" (change)="changeMethod($event)" name="CreditCardType" class="form-control">
+                          <ng-container *ngFor="let item_payment_method of paymentData; let i=index">
+                            <option [value]="item_payment_method.id">{{item_payment_method.name | translate}}</option>
+                          </ng-container>
+                          
+                          </select>
+                      </div>
+                  </div>
+                  <ng-container *ngIf="!isDelevery">
+  
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Credit Card Number:</strong></div>
+                        <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Card CVV:</strong></div>
+                        <div class="col-md-12"><input type="text" class="form-control" name="car_code" value="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <strong>Expiration Date</strong>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                        </select>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                                <option value="">Year</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                        </select>
+                        </div>
+                    </div>
+                  </ng-container>
+                  
+                  <div class="form-group">
+                      <div class="col-md-12">
+                          <span>Pay secure using your credit card.</span>
+                      </div>
+                      <div class="col-md-12">
+                          <ul class="cards">
+                              <li class="visa hand">Visa</li>
+                              <li class="mastercard hand">MasterCard</li>
+                              <!-- <li class="amex hand">Amex</li> -->
+                          </ul>
+                          <div class="clearfix"></div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <button type="submit" (click)="saveOrder()" class="btn btn-primary btn-submit-fix">{{'label.PlaceOrder' | translate}}</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!--CREDIT CART PAYMENT END-->
+        </div>
+      
+      </form>
+  </div>
+  <div class="row cart-footer">
+
+  </div>
+</div>

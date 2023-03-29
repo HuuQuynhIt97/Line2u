@@ -1,0 +1,308 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'Products List' | translate}}</li>
+  </ol>
+</nav>
+<div class="container">
+  <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+    <p class="loading">Loading data...</p>
+  </ngx-spinner>
+  <div class="row">
+  <div class="col-12">
+    
+    <div class="card main-card">
+      <div class="card-body table-responsive p-0">
+        <ejs-grid
+        #grid 
+        id='grid'
+        [toolbar]="toolbarOptions"
+        [dataSource]='data'
+        [allowPaging]="true"
+        (dataBound)='dataBound()'
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+        [pageSettings]="pageSettings"
+          >
+          <ng-template #parentTemplate let-data>
+            <ejs-dropdownlist
+              style="width: 200px"
+              [fields]="categoryFields"
+              [allowFiltering]="true"
+              id="toolbar_dropdown"
+              #toolbar_dropdown
+              (change)="CategoryFilter($event)"
+              (open)="onOpenPopUpMainDropdown($event)"
+              placeholder="{{'Select Category' | translate}}"
+              [dataSource]="categoryData"
+            >
+            </ejs-dropdownlist>
+          </ng-template>
+        <e-columns>
+            <e-column field='ContactName' headerText='' >
+              <ng-template #template let-data>
+                  <div class="card m-0 p-0">
+                    <div class="card-header bg-primary text-white">
+                      {{data.subject}}
+                      <span style="color: transparent;"> || </span>
+                      <span (click)="delete(data.id)" class="delete-grid">
+                        <i class="fa fa-trash"></i>
+                      </span>
+                      <span (click)="openModal(optionModal, data)" class="edit-grid">
+                        <i class="fa fa-edit"></i>
+                      </span>
+                    </div>
+                    <div
+                      class="card-body p-0"
+                      [style.background-color]="data.recordDate === null ? '#f5dada' : '#1576b61f' "
+                    >
+
+                    <div class="d-flex justify-content-start mt-2">
+                        <div style="width: 40%">
+                          <div class="d-flex justify-content-start">
+                            
+                            <img
+                            width="100%"
+                            [src]="imagePath(data.photoPath)"
+                            class="avatar"
+                          />
+                          </div>
+                        </div>
+                        <div style="width: 50%">
+                          <div class="d-flex justify-content-start">
+                            <div style="width: 50%" >
+                              <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{data.createDate | date: "yyyy-MM-dd"}}</div>
+                              <!-- <div style=" word-wrap: break-word;" [innerHtml]="data.content"></div> -->
+                              <div style=" word-wrap: break-word;">{{data.productName}}</div>
+                              <div class="container">
+                                <div class="row">
+                                  <p style="color: red; text-decoration: line-through;">{{data.productPriceDiscount}}$</p>
+                                  <p>  -  </p>
+                                  <p>{{data.productPrice}}$</p>
+                                </div>
+                              </div>
+                             
+                              <div style=" word-wrap: break-word;">&nbsp;&nbsp;&nbsp;&nbsp;{{data.comment}}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </ng-template>
+            </e-column>
+
+        </e-columns>
+        </ejs-grid>
+      </div>
+      <!-- /.card-body -->
+    </div>
+  </div>
+  
+  </div>
+  <ng-template #optionModal let-modal>
+    <div class="modal-header my-modal">
+      <h4 [ngbTooltip]="title" class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" id="option">
+  
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <label for="engineerSex">{{ "CATEGORY" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <ejs-dropdownlist
+              [fields]="categoryFields"
+              [allowFiltering]="true"
+              id="categorydropdown"
+              #categorydropdown
+              (open)="onOpenPopUpFuneralModal($event)"
+              [(ngModel)]="model.categoryGuid"
+              placeholder="{{'Select Category' | translate}}"
+              [dataSource]="categoryData"
+            >
+            </ejs-dropdownlist>
+            <!-- <app-code-type-dropdownlist
+              id="webnew-type-remote"
+              [codeType]="'WebNews_Type'"
+              [(selectedValue)]="model.categoryGuid"
+            >
+            </app-code-type-dropdownlist> -->
+          </div>
+        </div>
+  
+        <div class="col-md-6">
+          <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "PRODUCT_NAME" | translate }}</label>
+          <div class="form-group">
+            <label for="uid">{{ "PRODUCT_NAME" | translate }}</label>
+            <input
+              [(ngModel)]="model.productName"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+  
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="uid">{{ "PRODUCT_PRICE" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <!-- <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span> -->
+            <input
+              [(ngModel)]="model.productPrice"
+              maxlength="200"
+              type="number"
+              class="form-control"
+            />
+          </div>
+        </div>
+  
+        <div class="col-12">
+          <div class="form-group">
+            <label for="uid">{{ "PRODUCT_PRICE_DISCOUNT" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <input
+              [(ngModel)]="model.productPriceDiscount"
+              maxlength="200"
+              type="number"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="allfarm">{{
+              "PRODUCT_STATUS" | translate
+            }}</label>
+            &nbsp;
+            <app-leo-checkbox [(checked)]="model.status"></app-leo-checkbox>
+            <!-- <ejs-checkbox [(ngModel)]="model.status"></ejs-checkbox> -->
+          </div>
+        </div>
+  
+        <!-- <div class="col-md-6">
+          <div class="form-group">
+            <label for="status">{{ "PRODUCT_STATUS" | translate }}</label>
+            <input
+              [(ngModel)]="model.status"
+              type="number"
+              class="form-control"
+            />
+          </div>
+        </div> -->
+  
+        <div class="col-12 mb-2">
+          <label for="body">{{ "PRODUCT_DESCRIPTION" | translate }}</label>
+  
+          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.productDescription'>
+          
+            </ejs-richtexteditor>
+        </div>
+  
+  
+  
+        <div class="col-12 text-center">
+  
+  
+          <div class="kv-avatar">
+            <div class="file-loading">
+              <input
+                id="avatar-1"
+                name="avatar-1"
+                (change)="onFileChangeLogo($event)"
+                type="file"
+                required
+              />
+            </div>
+          </div>
+          <div class="kv-avatar-hint">
+            <small>{{ "Select file < 5000 KB" | translate }}</small>
+          </div>
+        </div>
+  
+        <div class="col-12">
+          <label>{{ "PRODUCT_COMMENT" | translate }}</label>
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              [(ngModel)]="model.comment"
+              cols="4"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+  
+     
+  </div>
+  
+    <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class="mr-2">
+            <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+            : {{ audit?.createBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Create date time" | translate
+            }}</span>
+            : {{ audit?.createDate }}</span
+          >
+        </p>
+        <p>
+          <span class="mr-2"
+            ><span class="my-font-weight-bold">{{
+              "Update by" | translate
+            }}</span>
+            : {{ audit?.updateBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Update date time" | translate
+            }}</span>
+            : {{ audit?.updateDate }}</span
+          >
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ "Note: (*) is a required field" | translate }}
+      </span>
+      <button
+        type="button"
+        class="btn btn-light"
+        ngbTooltip="CLOSE"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+      <button
+        type="submit"
+        [disabled]="!model.productName 
+        || !model.categoryGuid
+        || !model.productPrice
+        || !model.productPriceDiscount
+        
+        "
+        (click)="save()"
+        ngbTooltip="SAVE"
+        class="btn btn-primary"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+  </ng-template>
+  
+</div>

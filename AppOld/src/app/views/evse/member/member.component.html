@@ -1,0 +1,670 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div class="row">
+
+<div class="col-5 left">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [toolbar]="toolbarOptions"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        height="70vh"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+(rowSelected)="rowSelected($event)"
+(excelExportComplete)="excelExpComplete($event)"
+      >
+        <e-columns>
+          <e-column
+            field="option"
+            textAlign="Left"
+            headerTextAlign="Center"
+            width="80"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #odsTemplate let-data>
+              <button
+                class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                type="button"
+                id="grid_odsexport"
+                tabindex="-1"
+                (click)="odsExport()"
+                style="width: auto"
+              >
+                <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+                ><span class="e-tbar-btn-text"
+                  >{{ "Ods Export" | translate }}
+                </span>
+              </button>
+            </ng-template>
+            <ng-template #template let-data>
+              <span (click)="delete(data.id)" class="delete-grid">
+                <i class="fa fa-trash"></i>
+              </span>
+              <span (click)="openModal(optionModal, data)" class="edit-grid">
+                <i class="fa fa-edit"></i>
+              </span>
+            </ng-template>
+          </e-column>
+
+          <e-column
+            field="id"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [visible]="false"
+            isPrimaryKey="true"
+            headerText="{{ 'ID' }}"
+          >
+          </e-column>
+          <e-column
+            field="memberNo"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="120"
+            headerText="{{ 'Member_NO' | translate }}"
+          >
+          </e-column>
+          <e-column
+            field="memberName"
+            textAlign="Left"
+            headerTextAlign="Center"
+            [width]="100"
+            headerText="{{ 'Member_NAME' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="memberMobile"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'Member_MOBILE' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="memberAddress"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'Member_ADDRESS' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="memberIdcard"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'Member_IDCARD' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="memberEmail"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerTextAlign="Center"
+            headerText="{{ 'Member_EMAIL' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+            field="comment"
+            [allowSearching]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'Member_COMMENT' | translate }}"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+<div class="col-7">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <nav class="nav nav-pills nav-justified p-2" >
+        <a class="nav-link my-nav" (click)="active='Detail'" [ngClass]="{ 'active': active == 'Detail'}">{{'Member_Detail' | translate}}</a>
+      </nav>
+
+      <div class="row p-2">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
+            <app-site-dropdownlist
+              id="Site_GUID"
+              [enabledLoad]="true"
+              [(selectedValue)]="model.siteGuid"
+            >
+            </app-site-dropdownlist>
+          </div>
+        </div>
+        <div class="w-100"></div>
+      </div>
+        <div class="row p-2">
+    
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="uid">{{ "Member_UID" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <span ngbTooltip="( Text length <= 50 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+              <input
+                [(ngModel)]="model.uid"
+                maxlength="50"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="uid">{{ "Member_UPWD" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+              <input
+                [(ngModel)]="model.upwd"
+                maxlength="200"
+                type="password"
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberNo">{{ "Member_NO" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 20 )</span
+              >
+    
+              <input
+                [(ngModel)]="model.memberNo"
+                maxlength="20"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberName">{{ "Member_NAME" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 20 )</span
+              >
+    
+              <input
+                [(ngModel)]="model.memberName"
+                maxlength="20"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+          
+          <div class="col-6">
+          <div class="form-group">
+            <label for="memberSex">{{ "Member_SEX" | translate }}</label>
+            <app-code-type-dropdownlist
+              id="sex-remote"
+              [codeType]="'Member_SEX'"
+              (ngModelChange)="sexChange($event)"
+              [selectedValue]="model.memberSex + ''"
+            >
+            </app-code-type-dropdownlist>
+          </div>
+        </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberBirthday">{{
+                "Member_BIRTHDAY" | translate
+              }}</label>
+              <ejs-datepicker
+                locale="en-US"
+                format="yyyy/MM/dd"
+                [(ngModel)]="model.memberBirthday"
+              ></ejs-datepicker>
+            </div>
+          </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberIdcard">{{
+                "Member_IDCARD" | translate
+              }}</label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 20 )</span
+              >
+              <input
+                [(ngModel)]="model.memberIdcard"
+                maxlength="20"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberEmail">{{ "Member_EMAIL" | translate }}</label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 100 )</span
+              >
+              <input
+                [(ngModel)]="model.memberEmail"
+                maxlength="100"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberMobile">{{
+                "Member_MOBILE" | translate
+              }}</label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 10 )</span
+              >
+              <input
+                [(ngModel)]="model.memberMobile"
+                maxlength="10"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <div class="col-6">
+            <div class="form-group">
+              <label for="memberAddress">{{
+                "Member_ADDRESS" | translate
+              }}</label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 100 )</span
+              >
+              <input
+                [(ngModel)]="model.memberAddress"
+                maxlength="100"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-12 text-center">
+            <div class="kv-avatar">
+              <div class="file-loading">
+                <input
+                  id="avatar-1"
+                  name="avatar-1"
+                  (change)="onFileChangeLogo($event)"
+                  type="file"
+                  required
+                />
+              </div>
+            </div>
+            <div class="kv-avatar-hint">
+              <small>{{ "Select file < 5000 KB" | translate }}</small>
+            </div>
+          </div>
+    
+          <div class="col-12">
+            <label>{{ "Member_COMMENT" | translate }}</label>
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                [(ngModel)]="model.comment"
+                cols="4"
+                rows="4"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+        <div class="col-12">
+          <div class="mr-auto" *ngIf="model?.id > 0">
+            <p>
+              <span class="mr-2">
+                <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+                : {{ audit?.createBy }}</span
+              >
+              <span
+                ><span class="my-font-weight-bold">{{
+                  "Create date time" | translate
+                }}</span>
+                : {{ audit?.createDate }}</span
+              >
+            </p>
+            <p>
+              <span class="mr-2"
+                ><span class="my-font-weight-bold">{{
+                  "Update by" | translate
+                }}</span>
+                : {{ audit?.updateBy }}</span
+              >
+              <span
+                ><span class="my-font-weight-bold">{{
+                  "Update date time" | translate
+                }}</span>
+                : {{ audit?.updateDate }}</span
+              >
+            </p>
+          </div>
+          <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+            {{ "Note: (*) is a required field" | translate }}
+          </span>
+          <button
+            type="button"
+            class="btn btn-light float-right"
+            ngbTooltip="CLOSE"
+            (click)="cancel()"
+          >
+            {{ "CLOSE" | translate }}
+          </button>
+          <button
+            type="submit"
+            [disabled]="!model.memberName"
+            (click)="save()"
+            ngbTooltip="SAVE"
+            class="btn btn-primary float-right"
+          >
+            {{ "SAVE" | translate }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<ng-template #optionModal let-modal>
+  <div class="modal-header my-modal">
+    <h4 [ngbTooltip]="title" class="modal-title">
+      <i class="fas fa-plus"></i> {{ title | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="option">
+    <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
+        <app-site-dropdownlist
+          id="Site_GUID"
+          [enabledLoad]="true"
+          [(selectedValue)]="model.siteGuid"
+        >
+        </app-site-dropdownlist>
+      </div>
+    </div>
+    <div class="w-100"></div>
+  </div>
+    <div class="row">
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="uid">{{ "Member_UID" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span ngbTooltip="( Text length <= 50 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+          <input
+            [(ngModel)]="model.uid"
+            maxlength="50"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="uid">{{ "Member_UPWD" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
+          <input
+            [(ngModel)]="model.upwd"
+            maxlength="200"
+            type="password"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberNo">{{ "Member_NO" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+
+          <input
+            [(ngModel)]="model.memberNo"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberName">{{ "Member_NAME" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+
+          <input
+            [(ngModel)]="model.memberName"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      <div class="col-6">
+      <div class="form-group">
+        <label for="memberSex">{{ "Member_SEX" | translate }}</label>
+        <app-code-type-dropdownlist
+          id="sex-remote"
+          [codeType]="'Member_SEX'"
+          (ngModelChange)="sexChange($event)"
+          [selectedValue]="model.memberSex + ''"
+        >
+        </app-code-type-dropdownlist>
+      </div>
+    </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberBirthday">{{
+            "Member_BIRTHDAY" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.memberBirthday"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberIdcard">{{
+            "Member_IDCARD" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 20 )</span
+          >
+          <input
+            [(ngModel)]="model.memberIdcard"
+            maxlength="20"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberEmail">{{ "Member_EMAIL" | translate }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.memberEmail"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberMobile">{{
+            "Member_MOBILE" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 10 )</span
+          >
+          <input
+            [(ngModel)]="model.memberMobile"
+            maxlength="10"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberAddress">{{
+            "Member_ADDRESS" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.memberAddress"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-12 text-center">
+        <div class="kv-avatar">
+          <div class="file-loading">
+            <input
+              id="avatar-1"
+              name="avatar-1"
+              (change)="onFileChangeLogo($event)"
+              type="file"
+              required
+            />
+          </div>
+        </div>
+        <div class="kv-avatar-hint">
+          <small>{{ "Select file < 5000 KB" | translate }}</small>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label>{{ "Member_COMMENT" | translate }}</label>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="model.comment"
+            cols="4"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="mr-auto" *ngIf="model?.id > 0">
+      <p>
+        <span class="mr-2">
+          <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+          : {{ audit?.createBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Create date time" | translate
+          }}</span>
+          : {{ audit?.createDate }}</span
+        >
+      </p>
+      <p>
+        <span class="mr-2"
+          ><span class="my-font-weight-bold">{{
+            "Update by" | translate
+          }}</span>
+          : {{ audit?.updateBy }}</span
+        >
+        <span
+          ><span class="my-font-weight-bold">{{
+            "Update date time" | translate
+          }}</span>
+          : {{ audit?.updateDate }}</span
+        >
+      </p>
+    </div>
+    <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+      {{ "Note: (*) is a required field" | translate }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.memberName"
+      (click)="save()"
+      ngbTooltip="SAVE"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</ng-template>

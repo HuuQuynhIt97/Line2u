@@ -38,7 +38,6 @@ import { Cart } from 'src/app/_core/_model/evse/cart';
   templateUrl: './check-out.component.html',
   styleUrls: [
     './check-out.component.css',
-  // '../../../../../assets/css/foodpanda.css'
   ],
   encapsulation: ViewEncapsulation.ShadowDom
 })
