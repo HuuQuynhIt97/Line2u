@@ -158,65 +158,54 @@
 
 <!-- slider -->
 <section class="about-us-slider swiper-container p-relative">
-  <div class="swiper-wrapper">
-      <div class="swiper-slide slide-item">
-          <img src="assets/img/about/blog/1920x700/banner-1.jpg" class="img-fluid full-width" alt="Banner">
-          <div class="transform-center">
-              <div class="container">
-                  <div class="row justify-content-start">
-                      <div class="col-lg-7 align-self-center">
-                          <div class="right-side-content">
-                              <h1 class="text-custom-white fw-600">Increase takeout sales by 50%</h1>
-                              <h3 class="text-custom-white fw-400">with the largest delivery platform in the U.S. and
-                                  Canada</h3>
-                              <a routerLink="/restaurant" class="btn-second btn-submit">Learn More.</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="overlay overlay-bg"></div>
-      </div>
-      <div class="swiper-slide slide-item">
-          <img src="assets/img/about/blog/1920x700/banner-2.jpg" class="img-fluid full-width" alt="Banner">
-          <div class="transform-center">
-              <div class="container">
-                  <div class="row justify-content-center">
-                      <div class="col-lg-8 align-self-center">
-                          <div class="right-side-content text-center">
-                              <h1 class="text-custom-white fw-600">Increase takeout sales by 50%</h1>
-                              <h3 class="text-custom-white fw-400">with the largest delivery platform in the U.S. and
-                                  Canada</h3>
-                              <a routerLink="/restaurant" class="btn-second btn-submit">Learn More.</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="overlay overlay-bg"></div>
-      </div>
-      <div class="swiper-slide slide-item">
-          <img src="assets/img/about/blog/1920x700/banner-3.jpg" class="img-fluid full-width" alt="Banner">
-          <div class="transform-center">
-              <div class="container">
-                  <div class="row justify-content-end">
-                      <div class="col-lg-7 align-self-center">
-                          <div class="right-side-content text-right">
-                              <h1 class="text-custom-white fw-600">Increase takeout sales by 50%</h1>
-                              <h3 class="text-custom-white fw-400">with the largest delivery platform in the U.S. and
-                                  Canada</h3>
-                              <a routerLink="/restaurant" class="btn-second btn-submit">Learn More.</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="overlay overlay-bg"></div>
-      </div>
+    <div class="swiper-wrapper">
+        <swiper
+          [loop]="true"
+          [navigation]="true"
+          [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+          [pagination]="{ clickable: true, dynamicBullets: true }"
+          >
+          <ng-container  *ngFor="let item of banners; let i = index">
+            <ng-template  swiperSlide>
+                <a [href]="item.link" target="_blank">
+                <img  style="  display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;" [src]="imagePath(item.photoPath)" [alt]="item.subject" loading="lazy" />
+                </a>
+                
+            </ng-template>
+          </ng-container>
+        </swiper>
+    </div>
+  <!-- <div class="swiper-wrapper">
+    <ng-container *ngFor="let item_banner of banners; let i=index">
+        <div class="swiper-slide slide-item">
+            <img 
+            [src]="imagePath(item_banner.photoPath)"
+             class="img-fluid full-width" alt="" >
+            <div class="transform-center">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-lg-7 align-self-center">
+                            <div class="right-side-content">
+                                <h1 class="text-custom-white fw-600">Increase takeout sales by 50%</h1>
+                                <h3 class="text-custom-white fw-400">with the largest delivery platform in the U.S. and
+                                    Canada</h3>
+                                <a routerLink="/restaurant" class="btn-second btn-submit">Learn More.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="overlay overlay-bg"></div>
+        </div>
+    </ng-container>
+    
+      
   </div>
-  <!-- Add Arrows -->
   <div class="swiper-button-next"></div>
-  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-prev"></div> -->
 </section>
 <!-- slider -->
 
@@ -226,13 +215,16 @@
       <div class="row">
           <div class="col-12">
               <div class="section-header-left">
-                  <h3 class="text-light-black header-title title">Browse by cuisine <span class="fs-14"><a
-                              routerLink="/restaurant">See all restaurant</a></span></h3>
+                  <h3 class="text-light-black header-title title">{{'Store list.label' | translate}} <span class="fs-14"><a
+                              routerLink="/restaurant">{{'See all store.label' | translate}}</a></span></h3>
               </div>
           </div>
           <div class="col-12">
               <div class="category-slider swiper-container">
-                  <div class="swiper-wrapper">
+                <div class="swiper-wrapper">
+                    <app-home-store-list></app-home-store-list>
+                </div>
+                  <!-- <div class="swiper-wrapper">
                       <div class="swiper-slide">
                           <a routerLink="/restaurant" class="categories">
                               <div class="icon icon-parent text-custom-white bg-light-green"> <i
@@ -305,9 +297,8 @@
                           </a>
                       </div>
                   </div>
-                  <!-- Add Arrows -->
                   <div class="swiper-button-next"></div>
-                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-button-prev"></div> -->
               </div>
           </div>
       </div>
@@ -315,14 +306,33 @@
 </section>
 <!-- Browse by category -->
 
-<!-- your previous order -->
+<!-- article -->
 <section class="recent-order section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-header-left">
+                    <h3 class="text-light-black header-title title">{{'Article.Label'}} <span class="fs-14"><a
+                                routerLink="/orderdetails">{{'See all artice.label'}}</a></span></h3>
+                </div>
+            </div>
+            <div class="col-12">
+
+                <app-news></app-news>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- article -->
+
+<!-- your previous order -->
+<!-- <section class="recent-order section-padding">
   <div class="container">
       <div class="row">
           <div class="col-12">
               <div class="section-header-left">
-                  <h3 class="text-light-black header-title title">Your previous orders <span class="fs-14"><a
-                              routerLink="/orderdetails">See all past orders</a></span></h3>
+                  <h3 class="text-light-black header-title title">{{'Article.Label'}} <span class="fs-14"><a
+                              routerLink="/orderdetails">{{'See all artice.label'}}</a></span></h3>
               </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
@@ -403,7 +413,7 @@
           </div>
       </div>
   </div>
-</section>
+</section> -->
 <!-- your previous order -->
 
 <!-- Explore collection -->
@@ -771,7 +781,7 @@
               </div>
           </div>
       </div>
-      <app-advertisementbanner></app-advertisementbanner>
+      <!-- <app-advertisementbanner></app-advertisementbanner> -->
       <div class="row">
           <div class="col-lg-9 col-md-8">
               <div class="row">
@@ -1109,7 +1119,7 @@
               </div>
           </div>
       </div>
-      <app-advertisementbanner1></app-advertisementbanner1>
+      <!-- <app-advertisementbanner1></app-advertisementbanner1> -->
       <div class="row">
           <div class="col-lg-3 col-md-4">
               <div class="large-product-box mb-xl-20 p-relative">
@@ -1447,7 +1457,7 @@
               </div>
           </div>
       </div>
-      <app-advertisementbanner2></app-advertisementbanner2>
+      <!-- <app-advertisementbanner2></app-advertisementbanner2> -->
 
       <div class="row">
           <div class="col-lg-9 col-md-8">
@@ -1808,6 +1818,11 @@
 </section>
 <!-- Explore collection -->
 
+<!-- news2 -->
+<section>
+    <app-new-role></app-new-role>
+</section>
+<!-- news2 -->
 <!-- <div class="banner-adv-bg" [ngClass]="closeBanner ? 'd-none':''">
   <div id="banner-adv" class="banner-adv">
       <div class="flex-adv">

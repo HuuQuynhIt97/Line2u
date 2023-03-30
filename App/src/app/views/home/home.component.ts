@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService } from 'herr-core';
+import { AlertifyService, UtilitiesService } from 'herr-core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { DashboardService } from 'src/app/_core/_service/dashboard.service';
@@ -27,7 +27,8 @@ import { eventClick } from '@syncfusion/ej2-angular-schedule';
 import { StoreProfile } from 'src/app/_core/_model/xaccount';
 import { Products } from 'src/app/_core/_model/evse/products';
 import { AuthService } from 'src/app/_core/_service/auth.service';
-
+import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
+import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 SwiperCore.use([
   Navigation,
   Pagination,
@@ -70,14 +71,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   baseUrl = environment.apiUrlImage;
   banners= [];
   news= [];
+  store= [];
   logo: any;
   isMobileBrowser: boolean = false
-  @ViewChild('printableArea', { static: false }) printableArea!: ElementRef;
-  ctx: HTMLElement;
-  @HostListener('window:afterprint', ['$event'])
-  onWindowAfterPrint(event) {
-    console.log('... afterprint', event);
-  }
+  sysConf: any;
   isOpenDropdown: boolean = false
   username: ''
   storeInfo: StoreProfile = {} as StoreProfile;
@@ -85,6 +82,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   totalPrice: number;
   isLogin: boolean = false
   user = JSON.parse(localStorage.getItem('user'))
+  apiHost = environment.apiUrl.replace('/api/', '');
+  noImage = ImagePathConstants.NO_IMAGE_QR;
   constructor(
     private spinner: NgxSpinnerService,
     private webBannerService: WebBannerService,
@@ -92,33 +91,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private sysMenuService: SysMenuService,
     private alertify: AlertifyService,
     private translate: TranslateService,
+    private utilityService: UtilitiesService,
+    private serviceStore: StoreProfileService,
     private router: Router
 
   ) { 
     this.isMobileBrowser = Browser.isDevice
   }
-  @HostListener("window:beforeprint", ["$event"])
-  onBeforePrint() {
-    console.log("onBeforePrint");
-  }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
+    this.loadStoreData()
+    this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
     if (this.authService.loggedIn()) {
       this.isLogin = true
       this.username = this.user.accountName
     }else {
       this.isLogin = false
     }
-    this.removeLocalStore('cart')
-    this.removeLocalStore('cart_detail')
-    this.ctx = document.getElementById('share') as HTMLElement
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
     this.loadBannerData();
-   
   }
   toggleBanner(){
     this.closeBanner = !this.closeBanner;
@@ -268,8 +263,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
       })
       .catch((err) => {});
   }
-
-
+  loadStoreData() {
+    this.serviceStore.getAll().subscribe(x=> {
+      console.log('store', x)
+      this.store = x;
+    })
+    
+  }
+  imagePath(path) {
+    if (path !== null && this.utilityService.checkValidImage(path)) {
+      if (this.utilityService.checkExistHost(path)) {
+        return path;
+      }
+      return this.apiHost + path;
+    }
+    return this.noImage;
+  }
   langValueChange(args) {
     const lang = args.itemData.id.toLowerCase();
     localStorage.removeItem("lang");

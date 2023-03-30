@@ -1,13 +1,4 @@
-/* @charset "UTF-8";
-@import "../../../../../assets/css/food2.css";   */
 
-
-.rdp-header #global-header {
-    background-color: #233b2e !important;
-}
-.panel-info>.panel-heading {
-    color: #f2f6f8 !important;
-}
 .steps {
     margin-top: -41px;
     display: inline-block;

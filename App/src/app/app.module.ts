@@ -53,7 +53,7 @@ import { ResetPasswordComponent } from './views/reset-password/reset-password.co
 import { ForgotPasswordComponent } from './views/forgot-password/forgot-password.component';
 import { HomeComponent } from './views/home/home.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -142,6 +142,10 @@ import { AdvertisementbannerComponent } from './views/layout/advertisementbanner
 import { Advertisementbanner1Component } from './views/layout/advertisementbanner1/advertisementbanner1.component';
 import { Advertisementbanner2Component } from './views/layout/advertisementbanner2/advertisementbanner2.component';
 import { Footer1Component } from './views/layout/footer1/footer1.component';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { Footer2Component } from './views/layout/footer2/footer2.component';
+import { RestaurantrightsidebarComponent } from './views/layout/restaurantrightsidebar/restaurantrightsidebar.component';
+import { RestaurantleftsidebarComponent } from './views/layout/restaurantleftsidebar/restaurantleftsidebar.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -179,7 +183,10 @@ if (!lang) {
     AdvertisementbannerComponent,
     Advertisementbanner1Component,
     Advertisementbanner2Component,
-    Footer1Component
+    Footer1Component,
+    Footer2Component,
+    RestaurantrightsidebarComponent,
+    RestaurantleftsidebarComponent
 
   ],
   imports: [
@@ -198,6 +205,8 @@ if (!lang) {
     CoreModule,
     NgxSpinnerModule,
     NgbModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
     ChartAllModule,
     GridAllModule,
     CheckBoxAllModule,
@@ -226,6 +235,10 @@ if (!lang) {
     ErrorInterceptorProvider,
     AuthService,
     DatePipe,
+    Location, {
+      provide: LocationStrategy,
+      useClass: PathLocationStrategy
+    },
     DashboardService,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
   ],

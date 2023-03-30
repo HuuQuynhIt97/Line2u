@@ -14,8 +14,10 @@ import { AlertifyService } from "herr-core";
 import { Subscription } from "rxjs";
 import { NgxSpinnerService } from "ngx-spinner";
 import { SysMenuService } from "src/app/_core/_service/sys-menu.service";
+import { environment } from "src/environments/environment";
 declare let $: any;
-
+import { DataManager, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
+import { Browser } from '@syncfusion/ej2-base';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -45,6 +47,10 @@ export class NavbarComponent implements OnInit {
   isMobileMode: boolean = JSON.parse(localStorage.getItem('user'))?.mobileMode
   isLineAccount: string = JSON.parse(localStorage.getItem('user'))?.isLineAccount
   usernameLine: any;
+  baseUrl = environment.apiUrlImage;
+  isLogin: boolean = false
+  logo: any;
+  isMobileBrowser: boolean = false
   constructor(
     private authService: AuthService,
     private cookieService: CookieService,
@@ -59,7 +65,9 @@ export class NavbarComponent implements OnInit {
     private accountService: XAccountService,
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
-  ) { }
+  ) {
+    this.isMobileBrowser = Browser.isDevice
+   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -90,11 +98,34 @@ export class NavbarComponent implements OnInit {
     this.usernameLine =  JSON.parse(localStorage.getItem('user'))?.accountName || "Guest";
     this.nickName =
     JSON.parse(localStorage.getItem("user"))?.nickName || "No Name";
-  this.username =
+    this.username =
     JSON.parse(localStorage.getItem("user"))?.username || "Guest";
     setInterval(() => this.updateCurrentTime(), 1 * 1000);
+    if (this.authService.loggedIn()) {
+      this.isLogin = true
+      this.username = this.user.accountName
+    }else {
+      this.isLogin = false
+    }
     this.getMenu();
+    this.loadLogoData();
 
+  }
+  loadLogoData() {
+    let query = new Query();
+    query.where("type", "equal", "Logo");
+    new DataManager({
+      url: `${environment.apiUrl}WebNews/LoadData?lang=${localStorage.getItem(
+        "lang"
+      )}`,
+      adaptor: new UrlAdaptor(),
+    })
+      .executeQuery(query.sortBy("sortId"))
+      .then((res: any) => {
+        var data = res.result.result;
+        this.logo = data.length > 0 ? data[0].photoPath : "../../../assets/images/logo.png";
+      })
+      .catch((err) => {});
   }
   langValueChange(args) {
     const lang = args.itemData.id.toLowerCase();

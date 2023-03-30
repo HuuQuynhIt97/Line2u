@@ -1,0 +1,10 @@
+.header .logo img {
+    width: 106px !important;
+    height: 30px !important;
+}
+.header .mainNavCol {
+    background-color: #233b2e !important;
+}
+.header {
+    background-color: #233b2e !important;
+}

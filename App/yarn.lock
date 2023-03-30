@@ -1980,6 +1980,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/grecaptcha@^3.0.1":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/grecaptcha/-/grecaptcha-3.0.4.tgz#3de601f3b0cd0298faf052dd5bd62aff64c2be2e"
+  integrity sha512-7l1Y8DTGXkx/r4pwU1nMVAR+yD/QC+MCHKXAyEX/7JZhwcN1IED09aZ9vCjjkcGdhSQiu/eJqcXInpl6eEEEwg==
+
 "@types/intro.js@^3.0.0":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@types/intro.js/-/intro.js-3.0.2.tgz#cbf9b69f055b77582cc2cebe236e9a405b30efbd"
@@ -4845,6 +4850,11 @@ elliptic@^6.5.3:
     inherits "^2.0.4"
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
+
+emailjs-com@^2.4.1:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/emailjs-com/-/emailjs-com-2.6.4.tgz#c3bac8f7ee58d536ab34923e73013ad39f299f46"
+  integrity sha512-4G8rxq+1mbL4rGntMa9tqNJ4N9BhuCl8lFJASDHxZVXeC82ivwL6qw+Zu48cAWHpNK2/F3vScaAZk8zoTAfiAA==
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -7942,6 +7952,14 @@ ng-packagr@^11.0.0:
     stylus "^0.54.8"
     sync-rpc "^1.3.6"
     terser "^5.5.1"
+
+ng-recaptcha@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/ng-recaptcha/-/ng-recaptcha-8.0.1.tgz#4068eabf34caffbf9e1aa6db1e5310f380705909"
+  integrity sha512-Urc/0iGof9gqdXJ3HydpDrDlS3qLnjYLHqabCexpci8H3g6fYPeVWCKa2/haDHPUiyGc/+SXUaf7qTHlzJjObg==
+  dependencies:
+    "@types/grecaptcha" "^3.0.1"
+    tslib "^2.0.0"
 
 ngx-clipboard@^13.0.1:
   version "13.0.1"

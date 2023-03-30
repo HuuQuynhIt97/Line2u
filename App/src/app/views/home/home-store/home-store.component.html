@@ -2,461 +2,1172 @@
 <ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
-<div>
-    <body >
-        <div id="reactRoot">
-            <div id="vendor-details-root">
-                <app-home-header></app-home-header>
-                <main>
-                    <div class="box-flex fd-row">
-                        <div class="vendor-section">
-                            <section class="rdp-banner-container" style="top: 64px; margin-bottom: 0px;">
-                            
-                            </section>
-                            <section class="box-flex vendor-info-section">
-                                <ng-container *ngIf="banners.length > 0; else elseTemplate4">
-                                    <ngb-carousel >
-                                        <ng-container *ngFor="let item of banners; let i=index">
-                                            <ng-template ngbSlide>
-                                                <div class="picsum-img-wrapper" (click)="detailNewBanner(item)">
-                                                    <img 
-                                                    class="reponsive"
-                                                    width="100% !important"
-                                                    [src]="imagePath(item.photoPath)" 
-                                                    [alt]="item.subject">
-                                                </div>
-                                            
-                                            </ng-template>
-                                        
-                                        </ng-container>
-                                        
-                                    </ngb-carousel>
-                                </ng-container>
-                                <ng-template #elseTemplate4>
-                                    <div class="box-flex vendor-responsive-banner bottom-shadow">
-                                        <img data-testid="hero-banner-image" class="vendor-responsive-banner__image" 
-                                        [src]="imagePath(storeInfo.photoPath) " 
-                                        sizes="(min-width:960px) calc(100vw - 352px),100vw" [alt]="storeInfo.storeName">
-                                    </div>
-                                </ng-template>
-                                
-                                <div class="box-flex vendor-info-main section-container ai-start  fw-wrap">
-                                    <button class="box-flex w-100">
-                                        <div class="box-flex w-100 ai-start   fd-row">
-                                            <a  class="overflow-hidden size-64px rounded-content" style="
-                                                    border: 1px solid #e5e5e5;
-                                                    border-radius: 50%;
-                                                    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.06);
-                                                    height: 64px;
-                                                    ">
-                                                <img style="height: 69px !important;width: 65px !important;" class="h-64px  mx-auto lazyloaded" 
-                                                [src]="imagePath(storeInfo.photoPath) " 
-                                                >
-                                            </a>
-                                            <div class="box-flex vendor-info-main-details" aria-label="霏翔宇宙複合式餐飲 - Reviews &amp; info" data-testid="vendor-main-info-section-button">
-                                                <h1 class="sm:f-title-medium-font-size md:f-title-medium-font-size lg:f-title-medium-font-size f-title-large-font-size sm:fw-title-medium-font-weight md:fw-title-medium-font-weight lg:fw-title-medium-font-weight fw-title-large-font-weight sm:mb-sm mb-md">
-                                                    {{storeInfo.storeName}}
-                                                </h1>
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                        <hr>
-                                        <div class="box-flex info-section-data-container ai-center  fw-wrap fd-row p-relative mb-xs" data-testid="vendor-info-section-crd-container">
-                                            <span [innerHTML]="safeHtml(storeInfo.body)" >
-                                            </span>
-                                            <!-- <div id="vendor-tag-0" class="bds-c-tag bds-c-tag--size-standard bds-c-tag--variant-primary mr-xs" data-testid="vendor-tag-0">
-                                            </div> -->
-                                            <div class="box-flex box-flex pr-xs" data-testid="vendor-info-ratings">
-                                                <div class="box-flex rating ai-center  fw-nowrap fd-row" id="vendor-rating" data-testid="vendor-rating">
-                                                    <!-- <svg aria-hidden="true" focusable="false" class="fl-none" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.88486 12.1954L4.88943 13.7787C4.64763 13.9065 4.34857 13.813 4.22145 13.5699C4.17083 13.4731 4.15336 13.3622 4.17175 13.2544L4.74383 9.90101C4.75759 9.82035 4.73099 9.73805 4.6727 9.68092L2.24935 7.30602C2.05373 7.11431 2.04973 6.79947 2.24041 6.6028C2.31634 6.52448 2.41583 6.47352 2.52348 6.45779L5.87247 5.96853C5.95302 5.95676 6.02265 5.9059 6.05868 5.83251L7.55639 2.78147C7.67729 2.53518 7.97388 2.43406 8.21885 2.55561C8.3164 2.60402 8.39535 2.6834 8.4435 2.78147L9.94121 5.83251C9.97723 5.9059 10.0469 5.95676 10.1274 5.96853L13.4764 6.45779C13.7467 6.49728 13.9341 6.74963 13.8948 7.02142C13.8791 7.12965 13.8284 7.22968 13.7505 7.30602L11.3272 9.68092C11.2689 9.73805 11.2423 9.82035 11.2561 9.90101L11.8281 13.2544C11.8743 13.5251 11.6935 13.7822 11.4242 13.8286C11.317 13.8471 11.2067 13.8296 11.1105 13.7787L8.11503 12.1954C8.04298 12.1573 7.95691 12.1573 7.88486 12.1954Z"></path>
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.3294 12.4109L7.41756 11.3071C7.78198 11.1145 8.21791 11.1145 8.58233 11.3071L10.6705 12.4109L10.2703 10.065C10.2016 9.66218 10.3341 9.24989 10.6273 8.96256L12.3274 7.2964L9.98286 6.95388C9.57451 6.89422 9.22406 6.63679 9.04353 6.26902L7.99994 4.14309L6.95635 6.26902C6.77582 6.63679 6.42538 6.89422 6.01702 6.95388L3.67247 7.2964L5.37263 8.96256C5.66581 9.24989 5.79831 9.66218 5.72958 10.065L5.3294 12.4109ZM4.88943 13.7745L7.88486 12.1912C7.95691 12.1532 8.04298 12.1532 8.11503 12.1912L11.1105 13.7745C11.2067 13.8254 11.317 13.843 11.4242 13.8245C11.6935 13.7781 11.8743 13.521 11.8281 13.2503L11.2561 9.89686C11.2423 9.8162 11.2689 9.7339 11.3272 9.67677L13.7505 7.30187C13.8284 7.22553 13.8791 7.1255 13.8948 7.01727C13.9341 6.74548 13.7467 6.49313 13.4764 6.45364L10.1274 5.96438C10.0469 5.95261 9.97723 5.90175 9.94121 5.82836L8.4435 2.77732C8.39535 2.67925 8.3164 2.59986 8.21885 2.55146C7.97388 2.42991 7.67729 2.53103 7.55639 2.77732L6.05868 5.82836C6.02265 5.90175 5.95302 5.95261 5.87247 5.96438L2.52348 6.45364C2.41583 6.46937 2.31634 6.52033 2.24041 6.59865C2.04973 6.79532 2.05373 7.11016 2.24935 7.30187L4.6727 9.67677C4.73099 9.7339 4.75759 9.8162 4.74383 9.89686L4.17175 13.2503C4.15336 13.3581 4.17083 13.469 4.22145 13.5658C4.34857 13.8089 4.64763 13.9023 4.88943 13.7745Z"></path>
-                                                    </svg> -->
-                                                    <!-- <span class="rating--label-primary cl-rating-tag-text f-label-small-font-size fw-label-small-font-weight lh-label-small-line-height">4.6/5</span> -->
-                                                    <!-- <span class="rating--label-secondary cl-neutral-secondary f-label-small-secondary-font-size fw-label-small-secondary-font-weight lh-label-small-secondary-line-height">
-                                                        (100+)
-                                                    </span> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- <ul class="box-flex vendor-info-main-details-cuisines ai-center jc-start fw-wrap fd-row">
-                                            <li class="characteristic-list-item">
-                                                <span class="cl-rating f-label-medium-font-size fw-label-medium-font-weight lh-label-medium-line-height" data-testid="vendor-buget-symbol-highlighted">$</span><span class="cl-rating f-label-medium-font-size fw-label-medium-font-weight lh-label-medium-line-height" data-testid="vendor-buget-symbol-highlighted">$</span><span class="cl-rating f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height" data-testid="vendor-buget-symbol-normal">$</span>
-                                                <div class="box-flex info-items-dot-separator"></div>
-                                            </li>
-                                            <li class="characteristic-list-item" data-testid="vendor-characteristic-list-item">
-                                                <span class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height">Snacks</span>
-                                                <div class="box-flex info-items-dot-separator"></div>
-                                            </li>
-                                            <li class="characteristic-list-item" data-testid="vendor-characteristic-list-item">
-                                                <span class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height">Non Mark-Up </span>
-                                                <div class="box-flex info-items-dot-separator"></div>
-                                            </li>
-                                        </ul> -->
-                                    </button>
-                                </div>
-                            </section>
-                            
-                            <section
-                            [ngClass]="selectedIndex == 2 ? 'box-flex vendor-details-navigation dish-menu-category-list fixed' : 'box-flex vendor-details-navigation dish-menu-category-list'"
-                                data-testid="vendor-details-navigation-container" style="top: 64px;">
-                                <div class="box-flex section-container ai-center   fd-row">
-                                    <div class="dish-control-holder" data-testid="swimlane-container">
-                                        <div class="nav-holder" id="nav-holder">
-                                            <ul>
-                                                <!-- <li id="category-id-0"><a href="#menu__category-id-0" title="Popular" class="" data-testid="category-swimlane-item">{{'CATEGORY' | translate}}</a></li> -->
-                                                <ng-container *ngFor="let _category of mainCategory">
-                                                    <li id="category-id-1925538">
-                                                    <a (click)="loadProduct(_category)" [title]="_category?.categoryName" class="" data-testid="category-swimlane-item">
-                                                        {{_category?.categoryName || null}}
-                                                    </a>
-                                                    </li>
-                                                </ng-container>
-                                                
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            
-                            <section class="menu__items-wrapper menu" id="menu">
-                               
-                                <ng-container *ngFor="let _products of products">
-                                    <ng-container *ngIf="_products?.list_product.length > 0; else elseTemplate2">
-                                        <div  class="box-flex dish-category-section bg-white mt-sm" data-testid="menu-popular-category-section" data-id="0">
-                                            <div tabindex="-1" class="dish-category-section__inner-wrapper section-container" id="menu__category-id-0">
-                                                <div class="box-flex ai-center   fd-row">
-                                                <svg aria-hidden="true" focusable="false" class="fl-interaction-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="24" height="24">
-                                                    <path d="M10.346 5.598c-1.012-.89-1.42-1.944-1.222-3.16l.03-.168a.333.333 0 00-.545-.318l-.336.298c-.8.717-1.297 1.24-1.491 1.57l-.07.129c-.363.709-.707 2.156.621 3.602.972.84.667 2.1-.551 2.1-.525 0-.912-1.055-1.162-3.166l-.047-.436a.333.333 0 00-.564-.206C2.96 7.82 2.524 9.92 3.702 12.141a4.942 4.942 0 006.752 1.809c2.364-1.365 3.327-4.14 2.213-5.95l-.231-.304c-.584-.758-.73-.902-2.09-2.098z"></path>
-                                                </svg>
-                                                <h2 class="dish-category-title cl-neutral-primary f-title-large-font-size fw-title-large-font-weight lh-title-large-line-height">{{_products.category}}</h2>
-                                                </div>
-                                                <ul class="box-flex jc-space-between fw-wrap fd-row" style="padding-left: 0px;">
-                                                <ng-container *ngFor="let item of _products?.list_product">
-                                                    <li class="box-flex dish-card bg-white jc-space-between p-relative mt-sm sm:pl-zero md:pl-md lg:pl-md pl-sm sm:pr-zero md:pr-md lg:pr-md pr-sm sm:pt-zero md:pt-md lg:pt-md pt-sm sm:pb-sm md:pb-md lg:pb-md pb-sm br-xxs bs-1" data-testid="menu-product">
-                                                        <!-- <button  data-testid="menu-product-button-overlay-id" class="product-button-overlay" aria-label="煎餃,  $ 36 - Add to cart"></button> -->
-                                                        <div class="box-flex ai-start jc-space-between  fd-row" aria-hidden="true">
-                                                            <div class="box-flex reduce-width-for-image w-100 pr-sm">
 
-                                                                <h3 class="truncate cl-neutral-primary sm:f-label-medium-font-size f-title-small-font-size sm:fw-label-medium-font-weight fw-title-small-font-weight">
-                                                                    <span *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id" class="dish-item-counter vertical-align-middle bg-interaction-primary cl-white f-mini-base-font-size fw-mini-base-font-weight lh-mini-base-line-height mr-xxs pl-xxs pr-xxs" data-testid="menu-product-quantity">
-                                                                        {{item.totalOrder}} x
-                                                                    </span>
-                                                                    <span class="vertical-align-middle" data-testid="menu-product-name">
-                                                                        {{item.productName}}
-                                                                    </span>
-                                                                </h3>
-                                                                <p 
-                                                                [innerHTML]="safeHtml(item.productDescription)"
-                                                                class="dish-description truncate cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height mt-xxs" 
-                                                                data-testid="menu-product-description">
-                                                                </p>
-                                                            </div>
-                                                            <picture class="dish-card-image" data-testid="menu-product-image" 
-                                                            [style.background-image]="'url(' + imagePath(item.photoPath) + ')'"
-                                                            >
-                                                                <div></div>
-                                                            </picture>
-                                                        </div>
-                                                        <div   class="box-flex ai-start jc-space-between  fd-row">
-                                                            <div class="box-flex grow reduce-width-for-image ai-start jc-space-between  fd-row pr-sm" data-testid="product-action-bar-container">
-                                                                <div class="box-flex ai-center  fw-wrap fd-row">
-                                                                    <p class="cl-neutral-primary sm:f-ribbon-base-font-size f-label-large-font-size sm:fw-ribbon-base-font-weight fw-label-large-font-weight mr-xs mt-xxs" data-testid="menu-product-price">from $ {{item.productPrice}}<span class="strike-through cl-neutral-secondary sm:f-14 f-paragraph-medium-font-size sm:fw-light fw-paragraph-medium-font-weight ml-xxs" data-testid="menu-product-price-before-discount">$ {{item.productPriceDiscount}}</span></p>
-                                                                    <div class="box-flex fw-wrap fd-row pr-xs"></div>
-                                                                </div>
-                                                            </div>
-                                                            <button (click)="removeCart(item)">
-                                                                <div  class="box-flex button remove-cart-button ai-center jc-center  fd-row ml-sm  mt-xxs" >
-                                                                    <svg width="200" height="200" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
-                                                                </div>
-                                                            </button>
-                                                            <button (click)="addToCart(item)">
-                                                                <div  class="box-flex button add-to-cart-button ai-center jc-center  fd-row ml-sm  mt-xxs" >
-                                                                    <svg  
-                                                                    aria-hidden="true" 
-                                                                    focusable="false" class="fl-white" 
-                                                                    width="16" height="16" 
-                                                                    xmlns="http://www.w3.org/2000/svg" 
-                                                                    xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                                                    viewBox="0 0 24 24">
-                                                                        <defs>
-                                                                            <path d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" id="sIcPlus"></path>
-                                                                        </defs>
-                                                                        <use  xlink:href="#sIcPlus" fill-rule="evenodd"></use>
-                                                                    </svg>
-                                                                </div>
-                                                            </button>
-                                                        </div>
-                                                    </li>
-                                                </ng-container>
-                                                
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                    <ng-template #elseTemplate2>
-                                        <p>{{'PRODUCT_EMPTY'| translate}}</p>
-                                    </ng-template>
-                                    
-                                </ng-container>
-                                
-                                
-                            </section>
+<app-navbar></app-navbar>
 
-                            <section class="section-container">
+<!-- restaurent top -->
+<div class="page-banner p-relative smoothscroll" id="menu">
+    <img 
+    [src]="imagePath(storeInfo.photoPath) "
+    sizes="(min-width:960px) calc(100vw - 352px),100vw"
+     class="img-fluid full-width" alt="banner">
+    <div class="overlay-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="back-btn">
+                        <button type="button" class="text-light-green"> 
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="tag-share"> 
+                        <span class="text-light-green share-tag">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- restaurent top -->
 
-                            </section>
+<!-- restaurent details -->
+<section class="restaurent-details  u-line">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="heading padding-tb-10">
+                    <h3 class="text-light-black title fw-700 no-margin">{{storeInfo.storeName}}</h3>
+                    <p class="text-light-black sub-title no-margin"  [innerHTML]="safeHtml(storeInfo.body)">
+                        <!-- <span>
+                            <a routerLink="/checkout" class="text-success">Change locations</a>
+                        </span> -->
+                    </p>
+                    <div class="head-rating">
+                        <div class="rating"> 
+                            <span class="fs-16 text-yellow">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="fs-16 text-yellow">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="fs-16 text-yellow">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="fs-16 text-yellow">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="fs-16 text-dark-white">
+                                <i class="fas fa-star"></i>
+                            </span> 
+                            <span class="text-light-black fs-12 rate-data">58 rating</span>
                         </div>
-                        <div class="clearfix"></div>
-                        <aside class="box-flex cart-column bs-3">
-                            <div class="box-flex" id="cart" data-testid="cart-section" style="top: 64px;">
-                                <div id="cart-log" aria-live="polite" aria-atomic="true" data-testid="cart-log"><span>Total $ 152</span></div>
-                                <div class="cart-summary cart-summary-container cart-summary-sticky">
-                                
-                                    <div class="cart-summary-header">
-                                        <h2 class="cart-summary-header-title">{{'Your order from' | translate}} <span>{{storeInfo.storeName}}</span></h2>
+                        <div class="product-review">
+                            <div class="restaurent-details-mob">
+                                <a routerLink="/restaurant"> <span class="text-light-black"><i class="fas fa-info-circle"></i></span>
+                                    <span class="text-dark-white">info</span>
+                                </a>
+                            </div>
+                            <div class="restaurent-details-mob">
+                                <a routerLink="/restaurant"> <span class="text-light-black"><i class="fas fa-info-circle"></i></span>
+                                    <span class="text-dark-white">info</span>
+                                </a>
+                            </div>
+                            <div class="restaurent-details-mob">
+                                <a routerLink="/restaurant"> <span class="text-light-black"><i class="fas fa-info-circle"></i></span>
+                                    <span class="text-dark-white">info</span>
+                                </a>
+                            </div>
+                            <div class="restaurent-details-mob">
+                                <a routerLink="/restaurant"> <span class="text-light-black"><i class="fas fa-info-circle"></i></span>
+                                    <span class="text-dark-white">info</span>
+                                </a>
+                            </div>
+                            <h6 class="text-light-black no-margin">91<span class="fs-14">% Food was good</span></h6>
+                            <h6 class="text-light-black no-margin">91<span class="fs-14">% Food was good</span></h6>
+                            <h6 class="text-light-black no-margin">91<span class="fs-14">% Food was good</span></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="restaurent-logo">
+                    <img 
+                    [src]="imagePath(storeInfo.photoPath) "
+                    class="img-fluid" 
+                    alt="#">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- restaurent details -->
+
+<!-- restaurent tab -->
+<div class="restaurent-tabs u-line">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="restaurent-menu scrollnav">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"> <a class="nav-link active text-light-white fw-700" data-toggle="pill" href="#menu">Menu</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link text-light-white fw-700" data-toggle="pill" href="#about">About</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link text-light-white fw-700" data-toggle="pill" href="#review">Reviews</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link text-light-white fw-700" data-toggle="pill" href="#mapgallery">Map & Gallery</a>
+                        </li>
+                    </ul>
+                    <div class="add-wishlist">
+                        <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- restaurent tab -->
+
+<!-- restaurent address -->
+<div class="restaurent-address u-line">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="address-details">
+                    <div class="address">
+                        <div class="delivery-address"> <a routerLink="/orderdetails" class="text-light-black">Delivery, ASAP (45–55m)</a>
+                            <div class="delivery-type"> <span class="text-success fs-12 fw-500">No minimun</span><span class="text-light-white">, Free Delivery</span>
+                            </div>
+                        </div>
+                        <div class="change-address"> <a routerLink="/checkout" class="fw-500">Change</a>
+                        </div>
+                    </div>
+                    <p class="text-light-white no-margin">Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- restaurent address -->
+
+<!-- restaurent meals -->
+<section class="section-padding restaurent-meals bg-light-theme">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-3">
+                <app-restaurantleftsidebar></app-restaurantleftsidebar>  
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="promocodeimg mb-xl-20 p-relative">
+                            <img src="assets/img/banner.jpg" class="img-fluid full-width" alt="promocode">
+                            <div class="promocode-text">
+                                <div class="promocode-text-content">
+                                    <h5 class="text-custom-white mb-2 fw-600">Get $10 off your first order!</h5>
+                                    <p class="text-custom-white no-margin">Spend $15 or more and get $10 off your first delivery order.</p>
+                                </div>
+                                <div class="promocode-btn"> <a routerLink="/restaurant">Get Deal</a>
+                                </div>
+                            </div>
+                            <div class="overlay overlay-bg"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 restaurent-meal-head mb-md-40">
+                        <!-- <div class="card">
+                            <div class="card-header">
+                                <div class="section-header-left">
+                                    <h3 class="text-light-black header-title">
+                                        <a class="card-link text-light-black no-margin" data-toggle="collapse" href="#collapseOne">
+                                        Most Popular
+                                        </a>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div id="collapseOne" class="collapse show">
+                                <div class="card-body no-padding">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="restaurent-product-list">
+                                                <div class="restaurent-product-detail">
+                                                    <div class="restaurent-product-left">
+                                                        <div class="restaurent-product-title-box">
+                                                            <div class="restaurent-product-box">
+                                                                <div class="restaurent-product-title">
+                                                                    <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup"><a href="javascript:void(0)" class="text-light-black fw-600">Bacon Egg & Vegan Burger - Meal</a></h6>
+                                                                    <p class="text-light-white">600-700 Cal.</p>
+                                                                </div>
+                                                                <div class="restaurent-product-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                                                                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="restaurent-product-rating">
+                                                                <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                                                </div>
+                                                                <div class="rating-text">
+                                                                    <p class="text-light-white fs-12 title">3845 ratings</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="restaurent-product-caption-box"> <span class="text-light-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</span>
+                                                        </div>
+                                                        <div class="restaurent-tags-price">
+                                                            <div class="restaurent-tags"> 
+                                                                <span class="text-custom-white square-tag">
+                                                                    <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                                                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                                                    <img src="assets/img/svg/006-chili.svg" alt="tag">
+                                                                    </span>
+                                                                <span class="text-custom-white square-tag">
+                                                                    <img src="assets/img/svg/005-chef.svg" alt="tag">
+                                                                    </span>
+                                                                <span class="text-custom-white square-tag">
+                                                                    <img src="assets/img/svg/008-protein.svg" alt="tag">
+                                                                    </span>
+                                                                <span class="text-custom-white square-tag">
+                                                                    <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                                                                    </span>
+                                                            </div> 
+                                                                <span class="circle-tag">
+                                                                    <img src="assets/img/svg/010-heart.svg" alt="tag">
+                                                                </span>
+                                                            <div class="restaurent-product-price">
+                                                                <h6 class="text-success fw-600 no-margin">$7.99+</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="restaurent-product-img">
+                                                        <img src="assets/img/dish/150x151/dish-1.jpg" class="img-fluid" alt="#">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="restaurent-product-list">
+                                                <div class="restaurent-product-detail">
+                                                    <div class="restaurent-product-left">
+                                                        <div class="restaurent-product-title-box">
+                                                            <div class="restaurent-product-box">
+                                                                <div class="restaurent-product-title">
+                                                                    <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup"><a href="javascript:void(0)" class="text-light-black fw-600">Bacon Egg & Vegan Burger - Meal</a></h6>
+                                                                    <p class="text-light-white">600-700 Cal.</p>
+                                                                </div>
+                                                                <div class="restaurent-product-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                                                                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="restaurent-product-rating">
+                                                                <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                                                </div>
+                                                                <div class="rating-text">
+                                                                    <p class="text-light-white fs-12 title">3845 ratings</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="restaurent-product-caption-box"> <span class="text-light-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</span>
+                                                        </div>
+                                                        <div class="restaurent-tags-price">
+                                                            <div class="restaurent-tags"> <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/006-chili.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/005-chef.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/008-protein.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                                </span>
+                                                            </div> <span class="circle-tag">
+                                <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                            </span>
+                                                            <div class="restaurent-product-price">
+                                                                <h6 class="text-success fw-600 no-margin">$7.99+</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="restaurent-product-img">
+                                                        <img src="assets/img/dish/150x151/dish-2.jpg" class="img-fluid" alt="#">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="restaurent-product-list">
+                                                <div class="restaurent-product-detail">
+                                                    <div class="restaurent-product-left">
+                                                        <div class="restaurent-product-title-box">
+                                                            <div class="restaurent-product-box">
+                                                                <div class="restaurent-product-title">
+                                                                    <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup"><a href="javascript:void(0)" class="text-light-black fw-600">Bacon Egg & Vegan Burger - Meal</a></h6>
+                                                                    <p class="text-light-white">600-700 Cal.</p>
+                                                                </div>
+                                                                <div class="restaurent-product-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                                                                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="restaurent-product-rating">
+                                                                <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                                                </div>
+                                                                <div class="rating-text">
+                                                                    <p class="text-light-white fs-12 title">3845 ratings</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="restaurent-product-caption-box"> <span class="text-light-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</span>
+                                                        </div>
+                                                        <div class="restaurent-tags-price">
+                                                            <div class="restaurent-tags"> <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/006-chili.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/005-chef.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/008-protein.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                                </span>
+                                                            </div> <span class="circle-tag">
+                                <img src="assets/img/svg/010-heart.svg" alt="tag">
+                            </span>
+                                                            <div class="restaurent-product-price">
+                                                                <h6 class="text-success fw-600 no-margin">$7.99+</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="restaurent-product-img">
+                                                        <img src="assets/img/dish/150x151/dish-3.jpg" class="img-fluid" alt="#">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="restaurent-product-list">
+                                                <div class="restaurent-product-detail">
+                                                    <div class="restaurent-product-left">
+                                                        <div class="restaurent-product-title-box">
+                                                            <div class="restaurent-product-box">
+                                                                <div class="restaurent-product-title">
+                                                                    <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup"><a href="javascript:void(0)" class="text-light-black fw-600">Bacon Egg & Vegan Burger - Meal</a></h6>
+                                                                    <p class="text-light-white">600-700 Cal.</p>
+                                                                </div>
+                                                                <div class="restaurent-product-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                                                                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="restaurent-product-rating">
+                                                                <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                                                </div>
+                                                                <div class="rating-text">
+                                                                    <p class="text-light-white fs-12 title">3845 ratings</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="restaurent-product-caption-box"> <span class="text-light-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</span>
+                                                        </div>
+                                                        <div class="restaurent-tags-price">
+                                                            <div class="restaurent-tags"> <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/006-chili.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/005-chef.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/008-protein.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                                </span>
+                                                            </div> <span class="circle-tag">
+                                <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                            </span>
+                                                            <div class="restaurent-product-price">
+                                                                <h6 class="text-success fw-600 no-margin">$7.99+</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="restaurent-product-img">
+                                                        <img src="assets/img/dish/150x151/dish-4.jpg" class="img-fluid" alt="#">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="restaurent-product-list">
+                                                <div class="restaurent-product-detail">
+                                                    <div class="restaurent-product-left">
+                                                        <div class="restaurent-product-title-box">
+                                                            <div class="restaurent-product-box">
+                                                                <div class="restaurent-product-title">
+                                                                    <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup"><a href="javascript:void(0)" class="text-light-black fw-600">Bacon Egg & Vegan Burger - Meal</a></h6>
+                                                                    <p class="text-light-white">600-700 Cal.</p>
+                                                                </div>
+                                                                <div class="restaurent-product-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                                                                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="restaurent-product-rating">
+                                                                <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                    <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                                                </div>
+                                                                <div class="rating-text">
+                                                                    <p class="text-light-white fs-12 title">3845 ratings</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="restaurent-product-caption-box"> <span class="text-light-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</span>
+                                                        </div>
+                                                        <div class="restaurent-tags-price">
+                                                            <div class="restaurent-tags"> <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/006-chili.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/005-chef.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/008-protein.svg" alt="tag">
+                                </span>
+                                                                <span class="text-custom-white square-tag">
+                                <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                                </span>
+                                                            </div> <span class="circle-tag">
+                                <img src="assets/img/svg/010-heart.svg" alt="tag">
+                            </span>
+                                                            <div class="restaurent-product-price">
+                                                                <h6 class="text-success fw-600 no-margin">$7.99+</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="restaurent-product-img">
+                                                        <img src="assets/img/dish/150x151/dish-5.jpg" class="img-fluid" alt="#">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="cart-summary-items--wrapper" style="max-height: 115px;">
-                                        <div class="cart-summary-group-item" data-testid="cart-summary-group-item">
-                                            <div class="cart-summary-items" data-testid="cart-summary-items">
-                                                <ul class="box-flex cart-summary-item-list cart-summary-item-list--expanded cart-summary-item-list--nonborder" data-testid="cart-list-items">
-                                                    <li class="box-flex">
-                                                        <div class="product-row" data-testid="row-card">
-                                                            <section class="product-card" data-testid="cart-product-card">
-                                                                <div class="product-card-attributes">
-                                                                    <button class="button-text status--default product-name-prices" data-testid="cart-product-button" aria-label="咖哩炸雞飯,  $ 99 - Double-tap to add special instructions for your dish" tabindex="0" aria-live="polite">
-                                                                        <span class="product-card-name">咖哩炸雞飯</span>
-                                                                        <div class="product-card-prices">
-                                                                            <p class="product-card-price">$ 99</p>
-                                                                        </div>
-                                                                    </button>
-                                                                    <div class="product-card-description">
-                                                                        <div class="product-card-variations">
-                                                                            <h4 class="cl-neutral-primary f-label-small-font-size fw-label-small-font-weight lh-label-small-line-height"></h4>
-                                                                            <div class="box-flex product-toppings" data-testid="card-product-toppings"></div>
-                                                                        </div>
-                                                                        <div class="instant-cart-manager-container">
-                                                                            <div class="instant-cart-manager instant-cart-manager-variant-small" data-quantity="1">
-                                                                                <button aria-label="Delete" class="decrease-product-count" data-testid="cartlib-remove-icon">
-                                                                                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                                                        <g id="ic-trash-sm" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                                                            <g id="Group-4" transform="translate(7.000000, 6.000000)" fill="#D70F64">
-                                                                                                <path d="M3.961,10.0159912 L3.961,5.01245117 L4.966,5.01245117 L4.966,10.0159912 L3.961,10.0159912 Z M5.971,10.0159912 L5.971,5.01245117 L6.976,5.01245117 L6.976,10.0159912 L5.971,10.0159912 Z M3.0024,0.0003 L8.0024,0.0003 L8.0024,2.0003 L10.9994,2.0003 L10.9994,3.0003 L9.9004,3.0003 L8.9994,13.0003 L2.0004,13.0003 L1.0994,3.0003 L0.0004,3.0003 L0.0004,2.0003 L3.0024,2.0003 L3.0024,0.0003 Z M4.0024,2.0003 L7.0024,2.0003 L7.0024,0.9993 L4.0024,0.9993 L4.0024,2.0003 Z M2.1054,3.0003 L2.9054,12.0003 L8.0954,12.0003 L8.8944,3.0003 L2.1054,3.0003 Z" id="Combined-Shape"></path>
-                                                                                            </g>
-                                                                                        </g>
+                                </div>
+                            </div>
+                        </div> -->
+                        <ng-container *ngFor="let _products of products">
+                            <ng-container *ngIf="_products?.list_product.length > 0; else elseTemplate">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="section-header-left">
+                                            <h3 class="text-light-black header-title">
+                                                <a class="card-link text-light-black no-margin" data-toggle="collapse" href="#collapseTwo">
+                                                    {{_products.category}}
+                                                </a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse show">
+                                        <div class="card-body no-padding">
+                                            <div class="row">
+                                                <ng-container *ngFor="let item of _products?.list_product">
+                                                    <div class="col-lg-12">
+                                                        <div class="restaurent-product-list">
+                                                            <div class="restaurent-product-detail">
+                                                                <div class="restaurent-product-left">
+                                                                    <div class="restaurent-product-title-box">
+                                                                        <div class="restaurent-product-box">
+                                                                            <div class="restaurent-product-title">
+                                                                                <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup">
+                                                                                    <a href="javascript:void(0)" class="text-light-black fw-600">
+                                                                                        {{item.productName}}
+                                                                                    </a> 
+
+                                                                                    <a  *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id"
+                                                                                        style="background-color: #e21b70;"
+                                                                                        class="text-light-black fw-600" 
+                                                                                        >
+                                                                                        {{item.totalOrder}} x
+                                                                                    </a>
+                                                                                </h6>
+                                                                                <p class="text-light-white">600-700 Cal.</p>
+                                                                            </div>
+                                                                            <div class="restaurent-product-label"> 
+                                                                                <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
+                                                                                    <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
+                                                                                </span>
+                                                                                <span (click)="addToCart(item)" class="rectangle-tag bg-dark text-custom-white">
+                                                                                    <svg  
+                                                                                        aria-hidden="true" 
+                                                                                        focusable="false" class="fl-white" 
+                                                                                        width="16" height="16" 
+                                                                                        xmlns="http://www.w3.org/2000/svg" 
+                                                                                        xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                                                                        viewBox="0 0 24 24">
+                                                                                            <defs>
+                                                                                                <path 
+                                                                                                d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" 
+                                                                                                fill="#ffffff"
+                                                                                                id="sIcPlus"></path>
+                                                                                            </defs>
+                                                                                            <use  xlink:href="#sIcPlus" fill-rule="evenodd"></use>
                                                                                     </svg>
-                                                                                </button>
-                                                                                <span data-testid="instant-cart-quantity" class="instant-cart-manager-quantity">1</span>
-                                                                                <button aria-label="Add" class="increase-product-count" data-testid="cartlib-plus-icon">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                                                                        <path fill="#7D7D7D" id="ic-plus-sm-path" d="M12 12V7h1v5h5v1h-5v5h-1v-5H7v-1h5z"></path>
-                                                                                    </svg>
-                                                                                </button>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="restaurent-product-rating">
+                                                                            <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                                <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                                <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                                <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                                                                <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                                                            </div>
+                                                                            <div class="rating-text">
+                                                                                <p class="text-light-white fs-12 title">3845 ratings</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="restaurent-product-caption-box"> 
+                                                                        <span class="text-light-white" [innerHTML]="safeHtml(item.productDescription)">
+                                                                        </span>
+                                                                    </div>
+                                                                    <!-- <div class="restaurent-tags-price">
+                                                                        <div class="restaurent-tags"> 
+                                                                            <span class="text-custom-white square-tag">
+                                                                                <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                                                                            </span>
+                                                                            <span class="text-custom-white square-tag">
+                                                                                <img src="assets/img/svg/006-chili.svg" alt="tag">
+                                                                            </span>     
+                                                                            <span class="text-custom-white square-tag">
+                                                                                <img src="assets/img/svg/005-chef.svg" alt="tag">
+                                                                            </span>
+                                                                            <span class="text-custom-white square-tag">
+                                                                                <img src="assets/img/svg/008-protein.svg" alt="tag">
+                                                                            </span>
+                                                                            <span class="text-custom-white square-tag">
+                                                                                <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                                                                            </span>
+                                                                        </div> 
+                                                                        <span class="circle-tag">
+                                                                            <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                                                                        </span>
+                                                                        <div class="restaurent-product-price">
+                                                                            <h6 class="text-success fw-600 no-margin">$7.99+</h6>
+                                                                        </div>
+                                                                    </div> -->
                                                                 </div>
-                                                            </section>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="cart-add-drinks-button cart-upsell-drinks-button hide">
-                                        <svg class="svg-stroke-container" width="23px" height="20px" viewBox="0 0 23 20" version="1.1">
-                                            <g id="mWeb" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g transform="translate(-136.000000, -598.000000)" fill="#D70F64">
-                                                    <g transform="translate(16.000000, 230.000000)">
-                                                        <g transform="translate(0.000000, 188.000000)">
-                                                            <g transform="translate(0.000000, 170.000000)">
-                                                                <g transform="translate(120.000000, 9.000000)">
-                                                                    <g>
-                                                                        <path d="M19.858,15.30525 C19.766,15.41225 18.982,16.13425 15.658,15.02525 C13.695,14.37025 12.223,14.36325 11.278,15.00125 C11.212,15.04525 11.171,15.09925 11.115,15.14725 L10.089,8.99925 L20.91,8.99925 L19.858,15.30525 Z M19.076,19.99925 L11.923,19.99925 L11.349,16.55825 C11.365,16.45425 11.446,16.08525 11.854,15.81925 C12.322,15.51425 13.304,15.29425 15.341,15.97425 C17.547,16.70925 18.866,16.72925 19.656,16.52225 L19.076,19.99925 Z M22.5,7.99925 C22.776,7.99925 23,8.22325 23,8.49925 C23,8.77625 22.776,8.99925 22.5,8.99925 L21.923,8.99925 L19.993,20.58125 C19.953,20.82325 19.744,20.99925 19.5,20.99925 L11.5,20.99925 C11.255,20.99925 11.046,20.82325 11.006,20.58125 L9.076,8.99925 L8.5,8.99925 C8.223,8.99925 8,8.77625 8,8.49925 C8,8.22325 8.223,7.99925 8.5,7.99925 L15,7.99925 L15,4.29225 L18.146,1.14625 C18.341,0.95125 18.658,0.95125 18.853,1.14625 C19.048,1.34125 19.048,1.65825 18.853,1.85325 L16,4.70625 L16,7.99925 L22.5,7.99925 Z M6.5,14 C6.776,14 7,14.224 7,14.5 C7,14.776 6.776,15 6.5,15 L4,15 L4,17.5 C4,17.776 3.776,18 3.5,18 C3.224,18 3,17.776 3,17.5 L3,15 L0.5,15 C0.224,15 0,14.776 0,14.5 C0,14.224 0.224,14 0.5,14 L3,14 L3,11.5 C3,11.224 3.224,11 3.5,11 C3.776,11 4,11.224 4,11.5 L4,14 L6.5,14 Z"></path>
-                                                                    </g>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                        Add a drink
-                                    </div>
-                                    <!-- <div class="cart-summary-footer">
-                                        <hr class="cart__delivery--cutlery__horizontal--line">
-                                        <div class="cart-summary-amounts-wrapper" data-testid="cartlib-summary-amounts">
-                                            <dl class="cart-summary-amounts-list cart-summary-amounts-minimum-subtotal">
-                                                <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-subtotal">Subtotal</dt>
-                                                <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-subtotal">$ 99</dd>
-                                            </dl>
-                                            <dl class="cart-summary-amounts-list cart-summary-amounts-delivery-fee">
-                                                <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-deliveryfee">Delivery Fee</dt>
-                                                <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-deliveryfee"><span class="cl-neutral-secondary f-paragraph-small-font-size fw-paragraph-small-font-weight lh-paragraph-small-line-height ml-xs">$ 49</span></dd>
-                                            </dl>
-                                            <dl class="cart-summary-amounts-list cart-summary-amounts-service-fee">
-                                                <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-servicefee">
-                                                    + Service fee
-                                                    <span>
-                                                        ﻿
-                                                        <span data-testid="variable-price-tooltip" class="tooltip-trigger-wrapper variable-price-tooltip" role="button" tabindex="0">
-                                                            <div class="box-flex p-relative">
-                                                                <div data-testid="icon-fallback-content" style="height: 24px; width: 24px;"></div>
-                                                                <div class="box-flex tooltip-con invisible top align-left p-absolute br-xs bs-1" id="tooltip" style="--tooltipClippingOffset:4px; --tooltipMaxWidth:220px;">
-                                                                    <div class="box-flex tooltip-arrow bg-information bs-1"></div>
-                                                                    <div class="box-flex tooltip-inner bg-information cl-white pa-sm br-xs"><span class="tooltip-inner-text f-paragraph-xsmall-font-size fw-paragraph-xsmall-font-weight lh-paragraph-xsmall-line-height">This fee goes into providing you better customer care and app experience</span></div>
+                                                                <div class="restaurent-product-img">
+                                                                    <img 
+                                                                    [src]="imagePath(item.photoPath)"
+                                                                    class="img-fluid" alt="#">
                                                                 </div>
                                                             </div>
-                                                        </span>
-                                                    </span>
-                                                </dt>
-                                                <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-servicefee">$ 3</dd>
-                                            </dl>
-                                            <dl class="cart-summary-amounts-list cart-summary-amounts-container-charge">
-                                                <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-container-fee">+ Container fee</dt>
-                                                <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-container-fee">$ 1</dd>
-                                            </dl>
-                                        </div>
-                                        <dl class="cart-summary-amounts-list cart-summary-amounts-total">
-                                            <dt class="box-flex ai-center jc-start  fd-row" data-testid="cartlib-total-price">Total&nbsp;<em>(incl. VAT)</em></dt>
-                                            <dd class="box-flex ai-center jc-end  fd-row" data-testid="cartlib-total-price">$ 152</dd>
-                                        </dl>
-                                        <div>
-                                            <div class="cart-summary-checkout-button"><button class="button status--default full" data-testid="cart-summary-checkout-button" data-vendor-code="otko" aria-live="polite">Go to checkout</button></div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
-                            <div id="react-cart-modal">
-                                <div class="modaled modaled-middle">
-                                    <div class="modal-cart-button cart-button-container">
-                                        <div class="cart-button" data-testid="sticky-cart-button">
-                                            <button (click)="openCart()" class="button status--default sticky-cart-button" aria-live="polite">
-                                                <span class="cart-icon" aria-hidden="true">
-                                                    <a class="vendor-cart-icon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke-container" width="24" height="24" aria-hidden="true" focusable="false">
-                                                            <path fill="#707070" d="M12 2.75a4.75 4.75 0 014.744 4.5h3.103a1 1 0 01.99 1.141l-1.714 12a1 1 0 01-.99.859H5.867a1 1 0 01-.99-.859l-1.714-12a1 1 0 01.99-1.141h3.103A4.75 4.75 0 0112 2.75zm5.559 14.75H6.44a.4.4 0 00-.396.457l.208 1.45a.4.4 0 00.396.343H17.35a.4.4 0 00.396-.343l.208-1.45a.4.4 0 00-.396-.457zm1.25-8.75H5.19a.4.4 0 00-.396.457l.922 6.45a.4.4 0 00.396.343h11.775a.4.4 0 00.396-.343l.922-6.45a.4.4 0 00-.396-.457zM12 4.25a3.251 3.251 0 00-3.193 2.638.305.305 0 00.3.362h5.796a.297.297 0 00.292-.35A3.251 3.251 0 0012 4.25z"></path>
-                                                        </svg>
-                                                        <span class="products-count" *ngIf="count > 0">{{count}}</span>
-                                                    </a>
-                                                </span>
-                                                <span class="" >{{'View Cart' | translate}}</span>
-                                                <span class="products-value" >$ {{totalPrice}}</span>
-                                                <div data-testid="loading-dots" class="calcul-animation"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                
+                                             
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </aside>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                
+                            </ng-template>
+                            
+                            
+                        </ng-container>
+                        
+                        
                     </div>
-                </main>
-                
-                <section class="section-container"></section>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3">
+                <app-restaurantrightsidebar></app-restaurantrightsidebar> 
+            </div>
+        </div>
+    </div>
+</section>
+<!-- restaurent meals -->
 
-                <ngb-carousel *ngIf="news?.length > 0">
-                    <ng-template ngbSlide>
-                        <div class="row">
-                        <div style="cursor: pointer;" (click)="detailNew(item)" class="item card col-md-3" *ngFor="let item of news">
-                            <img [src]="imagePath(item.photoPath)" class="card-img-top" [alt]="item.subject">
-                            <div class="card-body">
-                            <h5 class="card-title">{{item.subject}}</h5>
-                            <a style="cursor: pointer;" (click)="detailNew(item)"   class="btn btn-primary">{{'Read' | translate}}</a>
+<!-- restaurent about -->
+<section class="section-padding restaurent-about smoothscroll" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-light-black fw-700 title">Great Burger Menu Info</h3>
+                <p class="text-light-green no-margin">American, Breakfast, Coffee and Tea, Fast Food, Hamburgers</p>
+                <p class="text-light-white no-margin">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> <span class="text-success fs-16">$</span>
+                <span class="text-success fs-16">$</span>
+                <span class="text-success fs-16">$</span>
+                <span class="text-dark-white fs-16">$</span>
+                <span class="text-dark-white fs-16">$</span>
+                <ul class="about-restaurent">
+                    <li> <i class="fas fa-map-marker-alt"></i>
+                        <span>
+            <a routerLink="/restaurant" class="text-light-white">
+                314 79th St<br>
+                Rite Aid, Brooklyn, NY, 11209
+            </a>
+            </span>
+                    </li>
+                    <li> <i class="fas fa-phone-alt"></i>
+                        <span><a href="tel:" class="text-light-white">(347) 123456789</a></span>
+                    </li>
+                    <li> <i class="far fa-envelope"></i>
+                        <span><a href="mailto:" class="text-light-white">demo@domain.com</a></span>
+                    </li>
+                </ul>
+                <ul class="social-media pt-2">
+                    <li> <a routerLink="/restaurant"><i class="fab fa-facebook-f"></i></a>
+                    </li>
+                    <li> <a routerLink="/restaurant"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li> <a routerLink="/restaurant"><i class="fab fa-instagram"></i></a>
+                    </li>
+                    <li> <a routerLink="/restaurant"><i class="fab fa-pinterest-p"></i></a>
+                    </li>
+                    <li> <a routerLink="/restaurant"><i class="fab fa-youtube"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="restaurent-schdule">
+                    <div class="card">
+                        <div class="card-header text-light-white fw-700 fs-16">Hours</div>
+                        <div class="card-body">
+                            <div class="schedule-box">
+                                <div class="day text-light-black">Monday</div>
+                                <div class="time text-light-black">Delivery: 7:00am - 10:59pm</div>
+                            </div>
+                            <div class="collapse" id="schdule">
+                                <div class="schedule-box">
+                                    <div class="day text-light-black">Tuesday</div>
+                                    <div class="time text-light-black">Delivery: 7:00am - 10:00pm</div>
+                                </div>
+                                <div class="schedule-box">
+                                    <div class="day text-light-black">Wednesday</div>
+                                    <div class="time text-light-black">Delivery: 7:00am - 10:00pm</div>
+                                </div>
+                                <div class="schedule-box">
+                                    <div class="day text-light-black">Thursday</div>
+                                    <div class="time text-light-black">Delivery: 7:00am - 10:00pm</div>
+                                </div>
+                                <div class="schedule-box">
+                                    <div class="day text-light-black">Friday</div>
+                                    <div class="time text-light-black">Delivery: 7:00am - 10:00pm</div>
+                                </div>
+                                    <div class="schedule-box">
+                                    <div class="day text-light-black">Saturday</div>
+                                    <div class="time text-light-black">Delivery: 7:00am - 10:00pm</div>
+                                </div>
+                                    <div class="schedule-box">
+                                    <div class="day text-light-black">Sunday</div>
+                                    <div class="time text-light-black">Delivery: 7:00am - 10:00pm</div>
+                                </div>
                             </div>
                         </div>
+                        <div class="card-footer"> <a class="fw-500 collapsed" data-toggle="collapse" href="#schdule">See the full schedule</a>
                         </div>
-                    </ng-template>
-                </ngb-carousel>
-                <!-- <footer class="footer">
-                    
-                </footer> -->
-
-                
+                    </div>
+                </div>
             </div>
-        
         </div>
-        
-    </body>
-</div>
-<ng-template #optionModal let-modal>
-  <div class="modal-header my-modal">
-    <h4 [ngbTooltip]="title" class="modal-title">
-      <i class="fas fa-plus"></i> {{ title | translate }}
-    </h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body" id="option">
-    
-    <div class="modal-body">
-      <table class="table table-image">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">{{'Product' | translate}}</th>
-            <th scope="col">{{'Price' | translate}}</th>
-            <th scope="col">{{'Qty' | translate}}</th>
-            <th scope="col">{{'Total' | translate}}</th>
-            <th scope="col">{{'Actions' | translate}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of cartDetail; let i=index">
-            <td class="w-25">
-              <img [src]="baseUrl + item.photoPath" 
-              class="img-fluid img-thumbnail" 
-              alt="Sheep">
-            </td>
-            <td>{{item.productName}}</td>
-            <td>{{item.productPrice}}$</td>
-            <td class="qty">
-              {{item.quantity}}
-            </td>
-            <td>{{item.productPrice * item.quantity}}$</td>
-            <td>
-              <a style="cursor: pointer;" (click)="minusItem(item)" class="btn btn-danger btn-sm">
-                <i class="fa fa-minus"></i>
-              </a>
-              <span style="color: transparent;"> | </span>
-              <a style="cursor: pointer;" (click)="plusItem(item)" class="btn btn-success btn-sm">
-                <i class="fa fa-plus"></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table> 
-      <div class="d-flex justify-content-end">
-        <h5>{{'Total_Price' | translate}}: <span class="price text-success">{{totalPrice}}$</span></h5>
-      </div>
     </div>
-  </div>
+</section>
+<!-- restaurent about -->
 
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-light"
-      ngbTooltip="CLOSE"
-      (click)="modal.close('Close click')"
-    >
-      {{ "CLOSE" | translate }}
-    </button>
-    <button
-      type="submit"
-      (click)="saveOrder()"
-      ngbTooltip="SAVE"
-      class="btn btn-success"
-    >
-      {{ "CHECK_OUT" | translate }}
-    </button>
-  </div>
-</ng-template>
+<!-- map gallery -->
+<div class="map-gallery-sec section-padding bg-light-theme smoothscroll" id="mapgallery">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="main-box">
+                    <div class="row">
+                        <div class="col-md-6 map-pr-0">
+                            <iframe id="locmap" src="https://maps.google.com/maps?q=university%20of%20san%20francisco&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+                        </div>
+                        <div class="col-md-6 map-pl-0">
+                            <div class="gallery-box padding-10">
+                                <ul class="gallery-img">
+                                    <li>
+                                        <a class="image-popup" href="assets/img/gallery/img-1.jpg" title="Image title">
+                                            <img src="assets/img/gallery/img-1.jpg" class="img-fluid full-width" alt="9.jpg" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="image-popup" href="assets/img/gallery/img-2.jpg" title="Image title">
+                                            <img src="assets/img/gallery/img-2.jpg" class="img-fluid full-width" alt="9.jpg" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="image-popup" href="assets/img/gallery/img-3.jpg" title="Image title">
+                                            <img src="assets/img/gallery/img-3.jpg" class="img-fluid full-width" alt="9.jpg" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="image-popup" href="assets/img/gallery/img-4.jpg" title="Image title">
+                                            <img src="assets/img/gallery/img-4.jpg" class="img-fluid full-width" alt="9.jpg" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="image-popup" href="assets/img/gallery/img-5.jpg" title="Image title">
+                                            <img src="assets/img/gallery/img-5.jpg" class="img-fluid full-width" alt="9.jpg" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="image-popup" href="assets/img/gallery/img-6.jpg" title="Image title">
+                                            <img src="assets/img/gallery/img-6.jpg" class="img-fluid full-width" alt="9.jpg" />
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- map gallery -->
 
+<!-- restaurent reviews -->
+<section class="section-padding restaurent-review smoothscroll" id="review">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-header-left">
+                    <h3 class="text-light-black header-title title">Reviews for Great Burger</h3>
+                </div>
+                <div class="restaurent-rating mb-xl-20">
+                    <div class="star"> <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-dark-white fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-dark-white fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                    </div> <span class="fs-12 text-light-black">58 Ratings</span>
+                </div>
+                <p class="text-light-black mb-xl-20">Here's what people are saying:</p>
+                <ul>
+                    <li>
+                        <h6 class="text-light-black mb-1">73%</h6>
+                        <span class="text-light-black fs-12 fw-400">Food was good</span>
+                    </li>
+                    <li>
+                        <h6 class="text-light-black mb-1">85%</h6>
+                        <span class="text-light-black fs-12 fw-400">Delivery was on time</span>
+                    </li>
+                    <li>
+                        <h6 class="text-light-black mb-1">68%</h6>
+                        <span class="text-light-black fs-12 fw-400">Order was accurate</span>
+                    </li>
+                </ul>
+                <div class="u-line"></div>
+            </div>
+            <div class="col-md-12">
+                <div class="review-box">
+                    <div class="review-user">
+                        <div class="review-user-img">
+                            <img src="assets/img/blog-details/40x40/user-1.png" class="rounded-circle" alt="#">
+                            <div class="reviewer-name">
+                                <p class="text-light-black fw-600">Sarra <small class="text-light-white fw-500">New York, (NY)</small>
+                                </p> <i class="fas fa-trophy text-black"></i><span class="text-light-black">Top Reviewer</span>
+                            </div>
+                        </div>
+                        <div class="review-date"> <span class="text-light-white">Sep 20, 2022</span>
+                        </div>
+                    </div>
+                    <div class="ratings"> <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="ml-2 text-light-white">2 days ago</span>
+                    </div>
+                    <p class="text-light-black">Delivery was fast and friendly. Food was not great especially the salad. Will not be ordering from again. Too many options to settle for this place.</p> <span class="text-light-white fs-12 food-order">Kathy
+            ordered:</span>
+                    <ul class="food">
+                        <li>
+                            <button class="add-pro bg-gradient-red">Coffee <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-dark">Pizza <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-gradient-green">Noodles <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-gradient-orange">Burger <span class="close">+</span>
+        </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="review-box">
+                    <div class="review-user">
+                        <div class="review-user-img">
+                            <img src="assets/img/blog-details/40x40/user-2.png" class="rounded-circle" alt="#">
+                            <div class="reviewer-name">
+                                <p class="text-light-black fw-600">Sarra <small class="text-light-white fw-500">New York, (NY)</small>
+                                </p> <i class="fas fa-trophy text-black"></i><span class="text-light-black">Top Reviewer</span>
+                            </div>
+                        </div>
+                        <div class="review-date"> <span class="text-light-white">Sep 20, 2022</span>
+                        </div>
+                    </div>
+                    <div class="ratings"> <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="ml-2 text-light-white">2 days ago</span>
+                    </div>
+                    <p class="text-light-black">Delivery was fast and friendly. Food was not great especially the salad. Will not be ordering from again. Too many options to settle for this place.</p> <span class="text-light-white fs-12 food-order">Kathy
+            ordered:</span>
+                    <ul class="food">
+                        <li>
+                            <button class="add-pro bg-gradient-red">Coffee <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-dark">Pizza <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-gradient-green">Noodles <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-gradient-orange">Burger <span class="close">+</span>
+        </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="review-box">
+                    <div class="review-user">
+                        <div class="review-user-img">
+                            <img src="assets/img/blog-details/40x40/user-1.png" class="rounded-circle" alt="#">
+                            <div class="reviewer-name">
+                                <p class="text-light-black fw-600">Sarra <small class="text-light-white fw-500">New York, (NY)</small>
+                                </p> <i class="fas fa-trophy text-black"></i><span class="text-light-black">Top Reviewer</span>
+                            </div>
+                        </div>
+                        <div class="review-date"> <span class="text-light-white">Sep 20, 2022</span>
+                        </div>
+                    </div>
+                    <div class="ratings"> <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="text-yellow fs-16">
+            <i class="fas fa-star"></i>
+            </span>
+                        <span class="ml-2 text-light-white">2 days ago </span>
+                    </div>
+                    <p class="text-light-black">Delivery was fast and friendly. Food was not great especially the salad. Will not be ordering from again. Too many options to settle for this place.</p> <span class="text-light-white fs-12 food-order">Kathy
+            ordered:</span>
+                    <ul class="food">
+                        <li>
+                            <button class="add-pro bg-gradient-red">Coffee <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-dark">Pizza <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-gradient-green">Noodles <span class="close">+</span>
+        </button>
+                        </li>
+                        <li>
+                            <button class="add-pro bg-gradient-orange">Burger <span class="close">+</span>
+        </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="review-img">
+                    <img src="assets/img/review-footer.png" class="img-fluid" alt="#">
+                    <div class="review-text">
+                        <h2 class="text-light-white mb-2 fw-600">Be one of the first to review</h2>
+                        <p class="text-light-white">Order now and write a review to give others the inside scoop.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- restaurent reviews -->
 
+<!-- offer near -->
+<section class="fresh-deals section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-header-left">
+                    <h3 class="text-light-black header-title title">Offers near you</h3>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="fresh-deals-slider swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="product-box">
+                                <div class="product-img">
+                                    <a routerLink="/restaurant">
+                                        <img src="assets/img/restaurants/255x150/shop-10.jpg" class="img-fluid full-width" alt="product-img">
+                                    </a>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="title-box">
+                                        <h6 class="product-title"><a routerLink="/restaurant" class="text-light-black">Great Burger</a></h6>
+                                    </div>
+                                    <p class="text-light-white">American, Fast Food</p>
+                                    <div class="product-details">
+                                        <div class="price-time"> <span class="text-light-black time">30-40 min</span>
+                                            <span class="text-light-white price">$10 min</span>
+                                        </div>
+                                        <div class="rating"> <span>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </span>
+                                            <span class="text-light-white text-right">4225 ratings</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-footer-2">
+                                    <div class="discount"> <span class="text-success fs-12">$3 off</span>
+                                    </div>
+                                    <div class="discount-coupon"> <span class="text-light-white fs-12">First order only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-box">
+                                <div class="product-img">
+                                    <a routerLink="/restaurant">
+                                        <img src="assets/img/restaurants/255x150/shop-11.jpg" class="img-fluid full-width" alt="product-img">
+                                    </a>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="title-box">
+                                        <h6 class="product-title"><a routerLink="/restaurant" class="text-light-black">Flavor Town</a></h6>
+                                    </div>
+                                    <p class="text-light-white">Breakfast, Lunch & Dinner</p>
+                                    <div class="product-details">
+                                        <div class="price-time"> <span class="text-light-black time">30-40 min</span>
+                                            <span class="text-light-white price">$10 min</span>
+                                        </div>
+                                        <div class="rating"> <span>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </span>
+                                            <span class="text-light-white text-right">4225 ratings</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-footer-2">
+                                    <div class="discount"> <span class="text-success fs-12">$3 off</span>
+                                    </div>
+                                    <div class="discount-coupon"> <span class="text-light-white fs-12">First order only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-box">
+                                <div class="product-img">
+                                    <a routerLink="/restaurant">
+                                        <img src="assets/img/restaurants/255x150/shop-22.jpg" class="img-fluid full-width" alt="product-img">
+                                    </a>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="title-box">
+                                        <h6 class="product-title"><a routerLink="/restaurant" class="text-light-black">Big Bites</a></h6>
+                                    </div>
+                                    <p class="text-light-white">Pizzas, Fast Food</p>
+                                    <div class="product-details">
+                                        <div class="price-time"> <span class="text-light-black time">30-40 min</span>
+                                            <span class="text-light-white price">$10 min</span>
+                                        </div>
+                                        <div class="rating"> <span>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </span>
+                                            <span class="text-light-white text-right">4225 ratings</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-footer-2">
+                                    <div class="discount"> <span class="text-success fs-12">$3 off</span>
+                                    </div>
+                                    <div class="discount-coupon"> <span class="text-light-white fs-12">First order only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-box">
+                                <div class="product-img">
+                                    <a routerLink="/restaurant">
+                                        <img src="assets/img/restaurants/255x150/shop-23.jpg" class="img-fluid full-width" alt="product-img">
+                                    </a>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="title-box">
+                                        <h6 class="product-title"><a routerLink="/restaurant" class="text-light-black">Smile N’ Delight</a></h6>
+                                    </div>
+                                    <p class="text-light-white">Desserts, Beverages</p>
+                                    <div class="product-details">
+                                        <div class="price-time"> <span class="text-light-black time">30-40 min</span>
+                                            <span class="text-light-white price">$10 min</span>
+                                        </div>
+                                        <div class="rating"> <span>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </span>
+                                            <span class="text-light-white text-right">4225 ratings</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-footer-2">
+                                    <div class="discount"> <span class="text-success fs-12">$3 off</span>
+                                    </div>
+                                    <div class="discount-coupon"> <span class="text-light-white fs-12">First order only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-box">
+                                <div class="product-img">
+                                    <a routerLink="/restaurant">
+                                        <img src="assets/img/restaurants/255x150/shop-24.jpg" class="img-fluid full-width" alt="product-img">
+                                    </a>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="title-box">
+                                        <h6 class="product-title"><a routerLink="/restaurant" class="text-light-black">Lil Johnny’s</a></h6>
+                                    </div>
+                                    <p class="text-light-white">Continental & Mexican</p>
+                                    <div class="product-details">
+                                        <div class="price-time"> <span class="text-light-black time">30-40 min</span>
+                                            <span class="text-light-white price">$10 min</span>
+                                        </div>
+                                        <div class="rating"> <span>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </span>
+                                            <span class="text-light-white text-right">4225 ratings</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-footer-2">
+                                    <div class="discount"> <span class="text-success fs-12">$3 off</span>
+                                    </div>
+                                    <div class="discount-coupon"> <span class="text-light-white fs-12">First order only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- offer near -->
+
+<app-footer2></app-footer2>

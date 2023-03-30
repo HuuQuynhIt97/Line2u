@@ -39,6 +39,15 @@ export class P404Component implements OnInit {
     //   this.router.navigateByUrl('/login');
     // });
   }
+  back() {
+    const uri = this.router.url;
+    let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+    if(uri === isLogin_Cus_url) {
+      this.router.navigate(['home']);
+    }else {
+      this.router.navigate([isLogin_Cus_url]);
+    }
+  }
   loadLang() {
     this.translate.get("Access-denied").subscribe(res => {
       this.title = res;

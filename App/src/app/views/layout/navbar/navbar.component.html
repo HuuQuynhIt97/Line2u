@@ -1,75 +1,4 @@
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
-    <div class="container-fluid">
-        <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
-          <img src="../../../assets/images/logo.png" alt="LINE2U" class="mr-2" />
-        </a>
-        <h2 class="text-white" style="font-size: 20 !important;">
-            {{'LINE_2_U' | translate}}
-        </h2>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarNavDropdown" class="navbar-collapse collapse">
-            <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
-            <ul class="navbar-nav">
-              <ng-container *ngFor="let item of menus">
-                <li class="nav-item dropdown" *ngIf="item.hasChildren">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
-                  <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <ng-container *ngFor="let subItem of item.children">
-                      <a class="dropdown-item"(click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
-                    </ng-container>
-                     
-                    </div>
-              </li>
-              <li class="nav-item" *ngIf="!item.hasChildren">
-                <a class="nav-link"  (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
-               </li>
-              </ng-container>
-               
-              <li class="nav-item">
-                <a class="nav-link">
-                  <span class="font-weight-bold text-white">{{currentTime}}</span>
-                </a>
-              </li>
 
-              <div class="lang-select">
-                <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
-                  <ng-template #itemTemplate="" let-data="">
-                    <div class="text-black">{{data.id | translate}}</div>
-                </ng-template>
-                <ng-template #valueTemplate="" let-data="">
-                  <div class="text-black">{{data.id | translate}}</div>
-              </ng-template>
-                </ejs-dropdownlist>
-            </div>
-
-              <li class="nav-item dropdown">
-                
-                
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink" >
-                  <ng-container *ngIf="isLineAccount == '1'; else elseTemplate">
-                    <i class="fas fa-user-tie"></i> {{usernameLine}}
-                  </ng-container>
-                  <ng-template #elseTemplate>
-                    
-                    <i class="fas fa-user-tie"></i> {{username}} | {{nickName}}
-                  </ng-template>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" routerLink="/profile">{{ "Profile_Menu" | translate}}</a>
-                    <a class="dropdown-item"  routerLink="/change-password">{{ "ChangePassword_Menu" | translate}}</a>
-                    <a class="dropdown-item" (click)="logout()">{{ "LogOut" | translate}}</a>
-                   
-                  </div>
-            </li>
-              
-            </ul>
-         
-  
-        </div>
-    </div>
-  </nav> -->
 
   <!-- Navigation -->
   <div class="header">
@@ -79,8 +8,10 @@
                 <div class="col-12 mainNavCol">
                     <!-- logo -->
                     <div class="logo mainNavCol">
-                        <a routerLink="/">
-                            <img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+                        <a routerLink="/" >
+                            <img 
+                            [src]="baseUrl + logo"
+                            class="img-fluid" alt="Logo">
                         </a>
                     </div>
                     <!-- logo -->
@@ -89,18 +20,18 @@
                             <div class="row">
                                 <!-- location picker -->
                                 <div class="col-lg-6 col-md-5">
-                                    <a href="javascript:void(0)" class="delivery-add p-relative"> <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
+                                    <!-- <a href="javascript:void(0)" class="delivery-add p-relative"> <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
                                         <span class="address">Brooklyn, NY</span>
                                     </a>
                                     <div class="location-picker">
                                         <input type="text" class="form-control" placeholder="Enter a new address">
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <!-- location picker -->
                                 <!-- search -->
                                 <div class="col-lg-6 col-md-7">
                                     <div class="search-box padding-10">
-                                        <input type="text" class="form-control" placeholder="Pizza, Burger, Chinese">
+                                        <input type="text" class="form-control" placeholder="{{'Search' | translate}}">
                                     </div>
                                 </div>
                                 <!-- search -->
@@ -113,7 +44,7 @@
                                 <span>Order Now</span>
                             </a>
                         </div>
-                        <div class="catring parent-megamenu">
+                        <!-- <div class="catring parent-megamenu">
                             <a href="javascript:void(0)"> <span>Pages <i class="fas fa-caret-down"></i></span>
                                 <i class="fas fa-bars"></i>
                             </a>
@@ -213,12 +144,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- mobile search -->
-                        <div class="mobile-search">
+                        <!-- <div class="mobile-search">
                             <a href="#" data-toggle="modal" data-target="#search-box"> <i class="fas fa-search"></i>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- mobile search -->
                         <!-- user account -->
                         <div class="user-details p-relative">
@@ -385,7 +316,7 @@
                         <!-- user cart -->
                     </div>
                 </div>
-                <div class="col-sm-12 mobile-search">
+                <!-- <div class="col-sm-12 mobile-search">
                     <div class="mobile-address">
                         <a href="javascript:void(0)" class="delivery-add" data-toggle="modal" data-target="#address-box"> <span class="address">Brooklyn, NY</span>
                         </a>
@@ -402,10 +333,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </header>
 </div>
-<div class="main-sec"></div>
+<div *ngIf="!isMobileBrowser" class="main-sec"></div>
 <!-- Navigation -->

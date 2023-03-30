@@ -39,7 +39,6 @@ import { Cart } from 'src/app/_core/_model/evse/cart';
   styleUrls: [
     './check-out.component.css',
   ],
-  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class CheckOutComponent implements OnInit {
 
