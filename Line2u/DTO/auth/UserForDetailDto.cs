@@ -9,6 +9,7 @@ namespace Line2u.DTO.auth
     {
         public object ID { get; set; }
         public string Guid { get; set; }
+        public string Image { get; set; }
         public string UID { get; set; }
         public string IsLineAccount { get; set; }
         public bool IsCustomer { get; set; }

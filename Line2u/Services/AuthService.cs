@@ -588,6 +588,7 @@ namespace Line2u.Services
             {
                 userResponse.UID = user.Uid;
                 userResponse.IsLineAccount = user.IsLineAccount;
+                userResponse.Image = user.LinePicture;
                 userResponse.SubscribeLine = subscribeLine;
                 userResponse.IsCustomer = string.IsNullOrEmpty(user.LineOfficialId) ? true : false;
             }

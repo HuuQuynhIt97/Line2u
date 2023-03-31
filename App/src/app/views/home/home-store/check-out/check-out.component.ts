@@ -32,6 +32,7 @@ import { Order } from 'src/app/_core/_model/evse/order';
 import { OrderService } from 'src/app/_core/_service/evse/order.service';
 import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-check-out',
@@ -118,6 +119,7 @@ export class CheckOutComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private orderService: OrderService,
+    private toastr: ToastrService,
     public modalService: NgbModal,
     private serviceCart: CartService
 
@@ -160,17 +162,17 @@ export class CheckOutComponent implements OnInit {
     // this.cartDetail = this.getLocalStore("cart_detail");
   }
   cartCountTotal() {
-    this.serviceCart.cartCountTotal(this.user.uid).subscribe(res => {
+    this.serviceCart.cartCountTotal(this.user?.uid).subscribe(res => {
       this.count = res
     })
   }
   cartAmountTotal() {
-    this.serviceCart.cartAmountTotal(this.user.uid).subscribe(res => {
+    this.serviceCart.cartAmountTotal(this.user?.uid).subscribe(res => {
       this.totalPrice = res
     })
   }
   getProductsInCart() {
-    this.serviceCart.getProductsInCart(this.user.uid).subscribe(res => {
+    this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
       console.log(res)
       this.cartDetail = res
       this.spinner.hide()
@@ -357,7 +359,8 @@ export class CheckOutComponent implements OnInit {
   }
   saveOrder(){
     if(this.cartDetail.length === 0) {
-      return this.alertify.error(this.translate.instant('CART_EMPTY'))
+      return this.toastr.error(this.translate.instant('CART_EMPTY'));
+      // return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
       if (this.validate(this.modelAccount) == false) return;
       console.log(this.cartDetail)
@@ -388,22 +391,22 @@ export class CheckOutComponent implements OnInit {
   }
   validate(model: XAccount) {
     if (model.accountName === null || model.accountName === undefined || model.accountName === '') {
-      this.alertify.warning(this.translate.instant('Name do not empty'),true);
+      this.toastr.warning(this.translate.instant('Name do not empty'));
       return false;
     }
 
     if (model.accountAddress === null || model.accountAddress === undefined || model.accountAddress === '') {
-      this.alertify.warning(this.translate.instant('Address do not empty'),true);
+      this.toastr.warning(this.translate.instant('Address do not empty'));
       return false;
     }
 
     if (model.accountTel === null || model.accountTel === undefined || model.accountTel === '') {
-      this.alertify.warning(this.translate.instant('Phone Number do not empty'),true);
+      this.toastr.warning(this.translate.instant('Phone Number do not empty'));
       return false;
     }
 
     if (model.accountEmail === null || model.accountEmail === undefined || model.accountEmail === '') {
-      this.alertify.warning(this.translate.instant('Email do not empty'),true);
+      this.toastr.warning(this.translate.instant('Email do not empty'));
       return false;
     }
 

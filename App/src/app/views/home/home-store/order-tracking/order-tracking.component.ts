@@ -35,7 +35,7 @@ import { OrderService } from 'src/app/_core/_service/evse/order.service';
   selector: 'app-order-tracking',
   templateUrl: './order-tracking.component.html',
   styleUrls: ['./order-tracking.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom
+  // encapsulation: ViewEncapsulation.ShadowDom
 })
 export class OrderTrackingComponent implements OnInit {
 

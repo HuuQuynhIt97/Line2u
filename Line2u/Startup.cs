@@ -101,7 +101,6 @@ namespace Line2u
             app.UseSwaggerUI(option => { option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description); });
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<Line2uHub>("/line2u-hub");
@@ -111,11 +110,7 @@ namespace Line2u
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = @"wwwroot/ClientApp";
-                //if (env.IsDevelopment())
-                //{
-                //    spa.Options.SourcePath = @"../dmr-app";
-                //    spa.UseAngularCliServer(npmScript: "start");
-                //}
+
             });
         }
     }

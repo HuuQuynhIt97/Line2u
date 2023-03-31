@@ -8,3 +8,10 @@
 .header {
     background-color: #233b2e !important;
 }
+
+.header .right-side .user-details>a>span {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 150px;
+    text-overflow: ellipsis;
+}

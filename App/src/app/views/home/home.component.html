@@ -1,210 +1,45 @@
-<!-- <div class="nav-link" #share id="share" (click)="navigate('item')" >Print</div>
-<div *ngIf="!isMobileBrowser">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
-    <div class="container-fluid">
-        <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; ">
-          <img [src]="baseUrl + logo" alt="Line2U" class="mr-2" />
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarNavDropdown" class="navbar-collapse collapse">
-            <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
-            <ul class="navbar-nav">
-              <ng-container *ngFor="let item of menus">
-                <li class="nav-item dropdown" *ngIf="item.hasChildren">
-                  <a class="nav-link dropdown-toggle"  data-toggle="dropdown" >{{ item.name }}</a>
-                  <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <ng-container *ngFor="let subItem of item.children">
-                      <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
-                    </ng-container>
-                    
-                    </div>
-              </li>
-              <li class="nav-item" *ngIf="!item.hasChildren">
-                <a class="nav-link" id="share" (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
-              </li>
-              </ng-container>
-              
-              <div class="lang-select">
-                <ejs-dropdownlist  id="lang-select-dropdown"  [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
-                  <ng-template #itemTemplate="" let-data="">
-                    <div class="text-black">{{data.id | translate}}</div>
-                </ng-template>
-                <ng-template #valueTemplate="" let-data="">
-                  <div class="text-black">{{data.id | translate}}</div>
-              </ng-template>
-                </ejs-dropdownlist>
-            </div>
-            
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-  </nav>
-  <app-home-store-list></app-home-store-list>
-  <div class="row my-4">
-    <div class="col-12">
-      
-    </div>
-  </div>
-  <swiper
-  [loop]="true"
-  [navigation]="true"
-  [autoplay]="{ delay: 2000, disableOnInteraction: false }"
-  [pagination]="{ clickable: true, dynamicBullets: true }"
-  >
-  <ng-container  *ngFor="let item of banners; let i = index">
-  <ng-template  swiperSlide>
-    <a [href]="item.link" target="_blank">
-      <img  style="  display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
-    </a>
-    
-  </ng-template>
-  </ng-container>
-  </swiper>
-
-
-    <div class="row my-4">
-      <div class="col-12">
-        
-      </div>
-    </div>
-  <app-news></app-news>
-  <app-new-role></app-new-role>
-
-  <div class="footer" style="height: auto; background-color: #233b2e">
-
-    <div class="row">
-      <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
-        <a class="btn-mobile-login" routerLink="/login"><i class="fas fa-user mr-2"></i>{{'Login' | translate}}</a>
-      </div>
-    </div>
-    <div class="container">
-
-    </div>
-  </div>
-</div>
-<div *ngIf="isMobileBrowser">
-  <body>
-    <div class="header">
-      <app-home-header></app-home-header>
-    </div>
-    
-    <div class="wrapper">
-
-      <app-home-store-list></app-home-store-list>
-      <div class="row my-4">
-        <div class="col-12">
-          
-        </div>
-      </div>
-
-      <swiper
-      [loop]="true"
-      [navigation]="true"
-      [autoplay]="{ delay: 2000, disableOnInteraction: false }"
-      [pagination]="{ clickable: true, dynamicBullets: true }"
-      >
-      <ng-container  *ngFor="let item of banners; let i = index">
-      <ng-template  swiperSlide>
-        <a [href]="item.link" target="_blank">
-          <img  style="  display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
-        </a>
-        
-      </ng-template>
-      </ng-container>
-      </swiper>
-      <div class="row my-4">
-        <div class="col-12">
-          
-        </div>
-      </div>
-      <app-news></app-news>
-      <app-new-role></app-new-role>
-      <app-home-user-anonymous></app-home-user-anonymous>
-  
-      <div class="push"></div>
-    </div>
-    
-    <footer class="footer mobile">
-      <div class="row no-gutters social-container">
-        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-facebook"></span><span>{{'HOME'| translate}}</span></a></div>
-        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-instagram"></span><span>{{'CONTACT'| translate}}</span></a></div>
-        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-twitter"></span><span>{{'MESSAGE'| translate}}</span></a></div>
-        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'HELP'| translate}}</span></a></div>
-        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-youtube-play"></span><span>{{'PROFILE'| translate}}</span></a></div>
-      </div>
-    </footer>
-  </body>
- 
-
-</div>
-
-
-
- -->
 
 <app-navbar></app-navbar>
 
 <!-- slider -->
 <section class="about-us-slider swiper-container p-relative">
-    <div class="swiper-wrapper">
-        <swiper
-          [loop]="true"
-          [navigation]="true"
-          [autoplay]="{ delay: 2000, disableOnInteraction: false }"
-          [pagination]="{ clickable: true, dynamicBullets: true }"
-          >
-          <ng-container  *ngFor="let item of banners; let i = index">
+  <div class="swiper-wrapper">
+    <swiper
+    [loop]="true"
+    [navigation]="true"
+    [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+    [pagination]="{ clickable: true, dynamicBullets: true }"
+    >
+        <ng-container  *ngFor="let item_banner of banners; let i = index">
             <ng-template  swiperSlide>
-                <a [href]="item.link" target="_blank">
-                <img  style="  display: block;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;" [src]="imagePath(item.photoPath)" [alt]="item.subject" loading="lazy" />
-                </a>
-                
-            </ng-template>
-          </ng-container>
-        </swiper>
-    </div>
-  <!-- <div class="swiper-wrapper">
-    <ng-container *ngFor="let item_banner of banners; let i=index">
-        <div class="swiper-slide slide-item">
-            <img 
-            [src]="imagePath(item_banner.photoPath)"
-             class="img-fluid full-width" alt="" >
-            <div class="transform-center">
-                <div class="container">
-                    <div class="row justify-content-start">
-                        <div class="col-lg-7 align-self-center">
-                            <div class="right-side-content">
-                                <h1 class="text-custom-white fw-600">Increase takeout sales by 50%</h1>
-                                <h3 class="text-custom-white fw-400">with the largest delivery platform in the U.S. and
-                                    Canada</h3>
-                                <a routerLink="/restaurant" class="btn-second btn-submit">Learn More.</a>
+                    <div class="swiper-slide slide-item">
+                        <img 
+                        [src]="imagePath(item_banner.photoPath)"
+                        class="img-fluid full-width" alt="" >
+                        <div class="transform-center">
+                            <div class="container">
+                                <div class="row justify-content-start">
+                                    <div class="col-lg-7 align-self-center">
+                                        <div class="right-side-content">
+                                            <h1 class="text-custom-white fw-600">Increase takeout sales by 50%</h1>
+                                            <h3 class="text-custom-white fw-400">with the largest delivery platform in the U.S. and
+                                                Canada</h3>
+                                            <a routerLink="/restaurant" class="btn-second btn-submit">Learn More.</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="overlay overlay-bg"></div>
-        </div>
-    </ng-container>
-    
+                        <div class="overlay overlay-bg"></div>
+                    
+                    
+                     </div>
+                </ng-template>
+        </ng-container>
+    </swiper>
       
   </div>
-  <div class="swiper-button-next"></div>
+  <!-- <div class="swiper-button-next"></div>
   <div class="swiper-button-prev"></div> -->
 </section>
 <!-- slider -->
@@ -216,94 +51,21 @@
           <div class="col-12">
               <div class="section-header-left">
                   <h3 class="text-light-black header-title title">{{'Store list.label' | translate}} <span class="fs-14"><a
-                              routerLink="/restaurant">{{'See all store.label' | translate}}</a></span></h3>
+                              routerLink="/">{{'See all store.label' | translate}}</a></span></h3>
               </div>
           </div>
           <div class="col-12">
-              <div class="category-slider swiper-container">
+              <app-home-store-list></app-home-store-list>
+              <!-- <div class="category-slider swiper-container">
                 <div class="swiper-wrapper">
-                    <app-home-store-list></app-home-store-list>
                 </div>
-                  <!-- <div class="swiper-wrapper">
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon icon-parent text-custom-white bg-light-green"> <i
-                                      class="fas fa-map-marker-alt"></i>
-                              </div> <span class="text-light-black cat-name">Brooklyn</span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-1.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Italian </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-2.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Thai </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-3.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Chinese </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-4.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Mexican </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-5.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Indian </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-6.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Lebanese </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-7.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">Japanese </span>
-                          </a>
-                      </div>
-                      <div class="swiper-slide">
-                          <a routerLink="/restaurant" class="categories">
-                              <div class="icon text-custom-white bg-light-green ">
-                                  <img src="assets/img/restaurants/125x125/cuisine-8.jpg" class="rounded-circle"
-                                      alt="categories">
-                              </div> <span class="text-light-black cat-name">American </span>
-                          </a>
-                      </div>
-                  </div>
-                  <div class="swiper-button-next"></div>
-                  <div class="swiper-button-prev"></div> -->
-              </div>
+                  
+              </div> -->
           </div>
       </div>
   </div>
 </section>
+
 <!-- Browse by category -->
 
 <!-- article -->
@@ -312,8 +74,8 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-header-left">
-                    <h3 class="text-light-black header-title title">{{'Article.Label'}} <span class="fs-14"><a
-                                routerLink="/orderdetails">{{'See all artice.label'}}</a></span></h3>
+                    <h3 class="text-light-black header-title title">{{'Article.Label' | translate}} <span class="fs-14"><a
+                                routerLink="/">{{'See all artice.label' | translate}}</a></span></h3>
                 </div>
             </div>
             <div class="col-12">
@@ -417,7 +179,7 @@
 <!-- your previous order -->
 
 <!-- Explore collection -->
-<section class="ex-collection section-padding">
+<!-- <section class="ex-collection section-padding">
   <div class="container">
       <div class="row">
           <div class="col-12">
@@ -781,7 +543,7 @@
               </div>
           </div>
       </div>
-      <!-- <app-advertisementbanner></app-advertisementbanner> -->
+      <app-advertisementbanner></app-advertisementbanner>
       <div class="row">
           <div class="col-lg-9 col-md-8">
               <div class="row">
@@ -1119,7 +881,7 @@
               </div>
           </div>
       </div>
-      <!-- <app-advertisementbanner1></app-advertisementbanner1> -->
+      <app-advertisementbanner1></app-advertisementbanner1>
       <div class="row">
           <div class="col-lg-3 col-md-4">
               <div class="large-product-box mb-xl-20 p-relative">
@@ -1457,7 +1219,7 @@
               </div>
           </div>
       </div>
-      <!-- <app-advertisementbanner2></app-advertisementbanner2> -->
+      <app-advertisementbanner2></app-advertisementbanner2>
 
       <div class="row">
           <div class="col-lg-9 col-md-8">
@@ -1815,7 +1577,7 @@
           </div>
       </div>
   </div>
-</section>
+</section> -->
 <!-- Explore collection -->
 
 <!-- news2 -->

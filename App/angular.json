@@ -40,11 +40,10 @@
               "src/assets/css/nice-select.css",
               "src/assets/css/style.css",
               "src/assets/css/responsive.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
             ],
             "scripts": [
-              "./node_modules/alertifyjs/build/alertify.min.js",
-              "./node_modules/sweetalert2/dist/sweetalert2.js",
               "src/assets/js/jquery.min.js",
               "src/assets/js/popper.min.js",
               "src/assets/js/bootstrap.min.js",
@@ -53,6 +52,8 @@
               "src/assets/js/jquery.nice-select.min.js",
               "src/assets/js/jquery.magnific-popup.min.js",
               "src/assets/js/sticksy.js",
+              "./node_modules/alertifyjs/build/alertify.min.js",
+              "./node_modules/sweetalert2/dist/sweetalert2.js",
               "src/assets/js/quickmunch.js"
             ]
           },

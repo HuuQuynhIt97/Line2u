@@ -10,7 +10,7 @@ import { Query } from "@syncfusion/ej2-data";
 import moment from "moment";
 import { AutoLogoutService } from "src/app/_core/_service/apply-orders/auto-log-off.service";
 import { XAccountService } from "src/app/_core/_service/xaccount.service";
-import { AlertifyService } from "herr-core";
+import { AlertifyService, UtilitiesService } from "herr-core";
 import { Subscription } from "rxjs";
 import { NgxSpinnerService } from "ngx-spinner";
 import { SysMenuService } from "src/app/_core/_service/sys-menu.service";
@@ -18,6 +18,14 @@ import { environment } from "src/environments/environment";
 declare let $: any;
 import { DataManager, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
 import { Browser } from '@syncfusion/ej2-base';
+import { ToastrService } from "ngx-toastr";
+import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
+import { CartService } from "src/app/_core/_service/evse/cart.service";
+import { StoreProfileService } from "src/app/_core/_service/evse/store-profile.service";
+import { StoreProfile } from "src/app/_core/_model/xaccount";
+import { DataService } from "src/app/_core/_service/data.service";
+import { Cart } from "src/app/_core/_model/evse/cart";
+import { DomSanitizer } from "@angular/platform-browser";
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -34,6 +42,7 @@ export class NavbarComponent implements OnInit {
   ];
   currentTime
   user = JSON.parse(localStorage.getItem('user'))
+  userImage = JSON.parse(localStorage.getItem('user'))?.image
   nickName: any;
   username: any;
   menus: any;
@@ -48,25 +57,40 @@ export class NavbarComponent implements OnInit {
   isLineAccount: string = JSON.parse(localStorage.getItem('user'))?.isLineAccount
   usernameLine: any;
   baseUrl = environment.apiUrlImage;
+  storeInfo: StoreProfile = {} as StoreProfile;
   isLogin: boolean = false
   logo: any;
   isMobileBrowser: boolean = false
+  apiHost = environment.apiUrl.replace('/api/', '');
+  noImage = ImagePathConstants.NO_IMAGE_HEADER_IMAGE;
+  noImage_Product = ImagePathConstants.NO_IMAGE_QR;
+  count: any = 0;
+  totalPrice: number;
+  cartDetail: Cart[] = [];
   constructor(
     private authService: AuthService,
     private cookieService: CookieService,
     private alertify: AlertifyService,
     private router: Router,
-    private service: FarmService,
-    private serviceDash: DashboardService,
+    private utilityService: UtilitiesService,
     private trans: TranslateService,
-    private serviceHeader: HeaderService,
-    private autoLogoutService: AutoLogoutService,
     private translate:TranslateService,
-    private accountService: XAccountService,
     private spinner: NgxSpinnerService,
+    private dataService: DataService,
+    private serviceStore: StoreProfileService,
+    private toast: ToastrService,
+    public sanitizer: DomSanitizer,
     private sysMenuService: SysMenuService,
+    private serviceCart: CartService,
   ) {
     this.isMobileBrowser = Browser.isDevice
+    this.dataService.currentMessage.subscribe((res: any) => {
+      if(res === 'load cart') {
+        this.cartCountTotal()
+        this.cartAmountTotal()
+        this.getProductsInCart()
+      }
+    })
    }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -93,6 +117,10 @@ export class NavbarComponent implements OnInit {
   });
   }
   ngOnInit(): void {
+    this.getStoreInfor();
+    this.cartCountTotal()
+    this.cartAmountTotal()
+    this.getProductsInCart()
     this.currentTime = moment().format('HH:mm:ss, D/MMM');
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.usernameLine =  JSON.parse(localStorage.getItem('user'))?.accountName || "Guest";
@@ -110,6 +138,69 @@ export class NavbarComponent implements OnInit {
     this.getMenu();
     this.loadLogoData();
 
+  }
+  checkOut() {
+    const uri = this.router.url;
+    localStorage.setItem('isLogin_Cus',uri)
+    this.router.navigate([`home/store/shop-cart/check-out/payment`])
+  }
+  cartCountTotal() {
+    this.serviceCart.cartCountTotal(this.user?.uid || '').subscribe(res => {
+      this.count = res
+    })
+  }
+  cartAmountTotal() {
+    this.serviceCart.cartAmountTotal(this.user?.uid).subscribe(res => {
+      this.totalPrice = res
+    })
+  }
+  getProductsInCart() {
+    this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
+      console.log('getProductsInCart', res)
+      this.cartDetail = res
+    })
+  }
+  getStoreInfor() {
+    let uid = this.user?.uid || ''
+    this.serviceStore.GetWithGuid(uid).subscribe(res => {
+      this.storeInfo = res;
+    })
+  }
+  loginUser() {
+    const uri = this.router.url;
+    localStorage.setItem('isLogin_Cus',uri)
+    this.router.navigate(["user-login"], {
+      queryParams: { uri },
+      replaceUrl: true,
+    });
+    // return this.router.navigate[('user-login')]
+  }
+  logOutUser() {
+    const uri = this.router.url;
+    localStorage.setItem('lang','tw')
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    // this.router.navigate(['/mobile/landlord-login']);
+    this.toast.success(this.translate.instant('Logged out'));
+    location.reload();
+  }
+  imagePathCustome(path) {
+    if (path !== null) {
+      return  path;
+    }
+    return this.noImage;
+  }
+  safeHtml(html) {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+  imagePath(path) {
+    if (path !== null && this.utilityService.checkValidImage(path)) {
+      if (this.utilityService.checkExistHost(path)) {
+        return path;
+      }
+      return this.apiHost + path;
+    }
+    return this.noImage_Product;
   }
   loadLogoData() {
     let query = new Query();

@@ -6,12 +6,26 @@
 <app-navbar></app-navbar>
 
 <!-- restaurent top -->
-<div class="page-banner p-relative smoothscroll" id="menu">
-    <img 
-    [src]="imagePath(storeInfo.photoPath) "
-    sizes="(min-width:960px) calc(100vw - 352px),100vw"
-     class="img-fluid full-width" alt="banner">
-    <div class="overlay-2">
+<div style="position: sticky !important;" class="page-banner p-relative smoothscroll" id="menu">
+    <swiper
+    [loop]="true"
+    [navigation]="true"
+    [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+    [pagination]="{ clickable: true, dynamicBullets: true }"
+    >
+        <ng-container  *ngFor="let item_banner of banners; let i = index">
+            <ng-template  swiperSlide>
+                <img 
+                style="cursor: pointer;"
+                (click)="detailNewBanner(item_banner)"
+                [src]="imagePath(item_banner.photoPath) "
+                sizes="(min-width:960px) calc(100vw - 352px),100vw"
+                class="img-fluid full-width" alt="banner">
+                   
+            </ng-template>
+        </ng-container>
+    </swiper>
+    <!-- <div class="overlay-2">
         <div class="container">
             <div class="row">
                 <div class="col-6">
@@ -30,7 +44,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 <!-- restaurent top -->
 
@@ -66,7 +80,7 @@
                             <span class="text-light-black fs-12 rate-data">58 rating</span>
                         </div>
                         <div class="product-review">
-                            <div class="restaurent-details-mob">
+                            <!-- <div class="restaurent-details-mob">
                                 <a routerLink="/restaurant"> <span class="text-light-black"><i class="fas fa-info-circle"></i></span>
                                     <span class="text-dark-white">info</span>
                                 </a>
@@ -85,7 +99,7 @@
                                 <a routerLink="/restaurant"> <span class="text-light-black"><i class="fas fa-info-circle"></i></span>
                                     <span class="text-dark-white">info</span>
                                 </a>
-                            </div>
+                            </div> -->
                             <h6 class="text-light-black no-margin">91<span class="fs-14">% Food was good</span></h6>
                             <h6 class="text-light-black no-margin">91<span class="fs-14">% Food was good</span></h6>
                             <h6 class="text-light-black no-margin">91<span class="fs-14">% Food was good</span></h6>
@@ -156,12 +170,12 @@
 <section class="section-padding restaurent-meals bg-light-theme">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xl-3 col-lg-3">
-                <app-restaurantleftsidebar></app-restaurantleftsidebar>  
+            <div class="col-xl-1 col-lg-1">
+                <!-- <app-restaurantleftsidebar></app-restaurantleftsidebar>   -->
             </div>
-            <div class="col-xl-6 col-lg-6">
+            <div class="col-xl-8 col-lg-8">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <!-- <div class="col-lg-12">
                         <div class="promocodeimg mb-xl-20 p-relative">
                             <img src="assets/img/banner.jpg" class="img-fluid full-width" alt="promocode">
                             <div class="promocode-text">
@@ -174,7 +188,7 @@
                             </div>
                             <div class="overlay overlay-bg"></div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg-12 restaurent-meal-head mb-md-40">
                         <!-- <div class="card">
                             <div class="card-header">
@@ -627,9 +641,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h3 class="text-light-black fw-700 title">Great Burger Menu Info</h3>
+                <h3 class="text-light-black fw-700 title">{{storeInfo.storeName}}</h3>
                 <p class="text-light-green no-margin">American, Breakfast, Coffee and Tea, Fast Food, Hamburgers</p>
-                <p class="text-light-white no-margin">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> <span class="text-success fs-16">$</span>
+                <p class="text-light-white no-margin">{{storeInfo.comment}}
+
+                </p> <span class="text-success fs-16">$</span>
                 <span class="text-success fs-16">$</span>
                 <span class="text-success fs-16">$</span>
                 <span class="text-dark-white fs-16">$</span>
@@ -637,9 +653,10 @@
                 <ul class="about-restaurent">
                     <li> <i class="fas fa-map-marker-alt"></i>
                         <span>
-            <a routerLink="/restaurant" class="text-light-white">
-                314 79th St<br>
-                Rite Aid, Brooklyn, NY, 11209
+            <a routerLink="/" class="text-light-white">
+                <!-- 314 79th St<br>
+                Rite Aid, Brooklyn, NY, 11209 -->
+                {{storeInfo.storeAddress}}
             </a>
             </span>
                     </li>
@@ -651,15 +668,15 @@
                     </li>
                 </ul>
                 <ul class="social-media pt-2">
-                    <li> <a routerLink="/restaurant"><i class="fab fa-facebook-f"></i></a>
+                    <li> <a routerLink="/"><i class="fab fa-facebook-f"></i></a>
                     </li>
-                    <li> <a routerLink="/restaurant"><i class="fab fa-twitter"></i></a>
+                    <li> <a routerLink="/"><i class="fab fa-twitter"></i></a>
                     </li>
-                    <li> <a routerLink="/restaurant"><i class="fab fa-instagram"></i></a>
+                    <li> <a routerLink="/"><i class="fab fa-instagram"></i></a>
                     </li>
-                    <li> <a routerLink="/restaurant"><i class="fab fa-pinterest-p"></i></a>
+                    <li> <a routerLink="/"><i class="fab fa-pinterest-p"></i></a>
                     </li>
-                    <li> <a routerLink="/restaurant"><i class="fab fa-youtube"></i></a>
+                    <li> <a routerLink="/"><i class="fab fa-youtube"></i></a>
                     </li>
                 </ul>
             </div>
@@ -764,7 +781,7 @@
 <!-- map gallery -->
 
 <!-- restaurent reviews -->
-<section class="section-padding restaurent-review smoothscroll" id="review">
+<!-- <section class="section-padding restaurent-review smoothscroll" id="review">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -969,11 +986,11 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- restaurent reviews -->
 
 <!-- offer near -->
-<section class="fresh-deals section-padding">
+<!-- <section class="fresh-deals section-padding">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -1160,14 +1177,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Add Arrows -->
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- offer near -->
 
 <app-footer2></app-footer2>

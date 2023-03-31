@@ -163,6 +163,7 @@ export class ActionConstants {
 }
 export class ImagePathConstants {
   public static NO_IMAGE = '/assets/images/default-avatar-male.png';
+  public static NO_IMAGE_HEADER_IMAGE = '/assets/img/user-1.png';
   public static NO_IMAGE_QR = '/assets/images/no-img.jpg';
   public static NO_IMAGE_COMPONENT = '/assets/images/pages/content-img-4.jpg';
   public static NO_IMAGE_ACTION_COMPONENT = '/assets/images/no-img.jpg';

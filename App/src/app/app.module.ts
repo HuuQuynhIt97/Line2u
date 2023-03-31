@@ -146,6 +146,7 @@ import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { Footer2Component } from './views/layout/footer2/footer2.component';
 import { RestaurantrightsidebarComponent } from './views/layout/restaurantrightsidebar/restaurantrightsidebar.component';
 import { RestaurantleftsidebarComponent } from './views/layout/restaurantleftsidebar/restaurantleftsidebar.component';
+import { ToastrModule } from 'ngx-toastr';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -197,6 +198,12 @@ if (!lang) {
     NgbCarouselModule,
     FormsModule,
     ReactiveFormsModule,
+    // ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
     CommonModule,
     HttpClientModule,
     SafePipeModule,

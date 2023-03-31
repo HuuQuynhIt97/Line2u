@@ -11,7 +11,7 @@ import { StoreProfileService } from "src/app/_core/_service/evse/store-profile.s
 import { WebNewsService } from "src/app/_core/_service/evse/web-news.service";
 import { environment } from "src/environments/environment";
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
-
+import { Browser } from '@syncfusion/ej2-base';
 @Component({
   selector: 'app-home-store-list',
   templateUrl: './home-store-list.component.html',
@@ -24,12 +24,14 @@ export class HomeStoreListComponent implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   baseUrl = environment.apiUrlImage;
   sysConf: any;
-
+  isMobileBrowser: boolean = false
   constructor(
     private service: StoreProfileService,
     private utilityService: UtilitiesService,
     private router: Router
-    ) {}
+    ) {
+      this.isMobileBrowser = Browser.isDevice
+    }
 
   ngOnInit(): void {
     this.loadStoreData();
