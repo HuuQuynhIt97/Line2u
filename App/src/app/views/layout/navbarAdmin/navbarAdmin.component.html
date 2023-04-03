@@ -1,0 +1,214 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar" style="background-color: #233b2e !important;">
+  <div class="container-fluid">
+      <a routerLink="/line2u/home" >
+        <img  style="height: 50px;" src="../../../assets/images/logo.png" alt="LINE2U" class="mr-2" />
+      </a>
+      <!-- <h2 class="text-white" style="font-size: 20 !important;">
+          {{'LINE_2_U' | translate}}
+      </h2> -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navbarNavDropdown" class="navbar-collapse collapse">
+          <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
+          <ul class="navbar-nav">
+            <ng-container *ngFor="let item of menus">
+              <li class="nav-item dropdown" *ngIf="item.hasChildren">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
+                  <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <ng-container *ngFor="let subItem of item.children">
+                      <a class="dropdown-item" (click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
+                    </ng-container>
+                    
+                    </div>
+              </li>
+              <li class="nav-item" *ngIf="!item.hasChildren">
+                <a class="nav-link"  (click)="navigate(item)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" >{{ item.name }}</a>
+              </li>
+            </ng-container>
+             
+            <li class="nav-item">
+              <a class="nav-link">
+                <!-- <span class="font-weight-bold text-white">{{currentTime}}</span> -->
+              </a>
+            </li>
+
+            <div class="lang-select">
+              <ejs-dropdownlist  id="lang-select-dropdown" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
+                <ng-template #itemTemplate="" let-data="">
+                  <div class="text-black">{{data.id | translate}}</div>
+              </ng-template>
+              <ng-template #valueTemplate="" let-data="">
+                <div class="text-black">{{data.id | translate}}</div>
+            </ng-template>
+              </ejs-dropdownlist>
+          </div>
+
+            <li class="nav-item dropdown">
+              
+              
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink" >
+                <ng-container *ngIf="isLineAccount == '1'; else elseTemplate">
+                  <i class="fas fa-user-tie"></i> {{usernameLine}}
+                </ng-container>
+                <ng-template #elseTemplate>
+                  
+                  <i class="fas fa-user-tie"></i> {{username}} | {{nickName}}
+                </ng-template>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" routerLink="/profile">{{ "Profile_Menu" | translate}}</a>
+                  <a class="dropdown-item" (click)="logout()">{{ "LogOut" | translate}}</a>
+                  <a class="dropdown-item"  routerLink="/change-password">{{ "ChangePassword_Menu" | translate}}</a>
+                 
+                </div>
+          </li>
+            
+          </ul>
+       
+
+      </div>
+  </div>
+</nav>
+
+
+<!-- Navigation -->
+<!-- <div class="header">
+  <header class="full-width">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 mainNavCol">
+          <div class="logo mainNavCol">
+            <a routerLink="/line2u/home" >
+            <img 
+              [src]="baseUrl + logo"
+              class="img-fluid" alt="Logo">
+            </a>
+          </div>
+          <div class="main-search mainNavCol">
+            <form class="main-search search-form full-width">
+              <div class="row">
+                <div class="col-lg-6 col-md-5">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="right-side fw-700 mainNavCol">
+            <div class="catring parent-megamenu full-width">
+              <a href="javascript:void(0)"> 
+                <span>{{'Pages.Admin' | translate}} <i class="fas fa-caret-down"></i></span>
+              <i class="fas fa-bars"></i>
+              </a>
+              <div class="megamenu ">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="row">
+                      
+                      <div class="col-lg-8 col-md-7">
+                        <div class="row">
+                          <ng-container *ngFor="let item of menus">
+                            <div class="col-lg-3 col-sm-6">
+                              <div class="menu-style">
+                                <div class="menu-title">
+                                  <h6 class="cat-name"><a href="#" class="text-light-black">{{ item.name }}</a></h6>
+                                </div>
+                                <ul>
+                                  <ng-container *ngFor="let subItem of item.children">
+                                  <li>
+                                    
+                                      <a 
+                                      style="cursor: pointer;"
+                                        (click)="navigate(subItem)"
+                                        class="text-light-white fw-500" 
+                                        routerLinkActive="active" 
+                                        [routerLinkActiveOptions]="{exact: true}">
+                                        {{ subItem.name}}
+                                      </a>
+                                    
+                                  </li>
+                                </ng-container>
+                                </ul>
+                              </div>
+                            </div>
+                          </ng-container>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cart-btn full-width">
+              <ejs-dropdownlist   
+              [(ngModel)]="lang" (change)="langValueChange($event)" 
+              [fields]="fieldsLang" 
+              [dataSource]="languageData"
+              >
+              <ng-template #itemTemplate="" let-data="">
+                <div class="text-black">{{data?.id | translate}}</div>
+              </ng-template>
+              <ng-template #valueTemplate="" let-data="">
+                <div class="text-black">{{data?.id | translate}}</div>
+              </ng-template>
+              </ejs-dropdownlist>
+            </div>
+            
+            <div class="user-details p-relative full-width">
+              <ng-container *ngIf="!isLogin; else elseTemplate4">
+                <a style="cursor: pointer;" (click)="loginUser()" class="text-light-white fw-500">
+                <img 
+                  src="assets/img/user-1.png"
+                  class="rounded-circle" alt="userimg"> 
+                <span>
+                {{'Login' | translate}}
+                </span>
+                </a>
+              </ng-container>
+              <ng-template #elseTemplate4>
+                <a href="javascript:void(0)" class="text-light-white fw-500">
+                <img [src]="imagePathCustome(userImage)" 
+                  style="width: 30px !important;"
+                  class="rounded-circle" alt="userimg"> 
+                <span>
+                {{'Hi' | translate}},{{user?.username}} | {{username}}
+                </span>
+                </a>
+                <div class="user-dropdown">
+                  <ul>
+                    <li>
+                      <a  routerLink="/profile">
+                        <div class="icon">
+                          <i class="flaticon-user"></i>
+                        </div>
+                        <span class="details">{{ "Profile_Menu" | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/change-password">
+                        <div class="icon"><i class="flaticon-user"></i>
+                        </div>
+                        <span class="details">{{ "ChangePassword" | translate}}</span>
+                      </a>
+                    </li>
+                    
+                  </ul>
+                  <div class="user-footer"> 
+                    <span class="text-light-black">
+                    Not {{username}}?
+                    </span>
+                    <a style="cursor: pointer;" (click)="logout()">{{'SIGN_OUT' | translate}}</a>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+<div *ngIf="!isMobileBrowser" class="main-sec"></div> -->
+<!-- Navigation -->
+
+

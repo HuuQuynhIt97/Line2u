@@ -26,6 +26,7 @@ import {
   FilteringEventArgs,
   highlightSearch,
 } from "@syncfusion/ej2-angular-dropdowns";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-system-menu",
@@ -110,6 +111,7 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
     private service: SysMenuService,
     public modalService: NgbModal,
     private alertify: AlertifyService,
+    private toast: ToastrService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private config: NgbTooltipConfig,
@@ -146,14 +148,14 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
     this.service.update(this.model).subscribe(
       (res) => {
         if (res.success === true) {
-          this.alertify.success(this.alert.updated_ok_msg);
+          this.toast.success(this.alert.updated_ok_msg);
           this.loadData();
         } else {
-          this.alertify.warning(this.alert.system_error_msg);
+          this.toast.warning(this.alert.system_error_msg);
         }
       },
       (error) => {
-        this.alertify.warning(this.alert.system_error_msg);
+        this.toast.warning(this.alert.system_error_msg);
       }
     );
   }
@@ -404,17 +406,17 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
         this.service.delete(id).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.deleted_ok_msg);
+              this.toast.success(this.alert.deleted_ok_msg);
               this.loadData();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
-          (err) => this.alertify.warning(this.alert.system_error_msg)
+          (err) => this.toast.warning(this.alert.system_error_msg)
         );
       },
       () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
   }
@@ -428,20 +430,20 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
         this.service.add(this.model).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.created_ok_msg);
+              this.toast.success(this.alert.created_ok_msg);
               this.loadData();
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       },
       () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
   }
@@ -455,20 +457,20 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
         this.service.update(this.model).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.updated_ok_msg);
+              this.toast.success(this.alert.updated_ok_msg);
               this.loadData();
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       },
       () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
   }

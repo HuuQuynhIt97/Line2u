@@ -8,7 +8,11 @@ input {
   cursor: pointer;
 }
 
-
+#line-back-btn.btn .line-back-text{
+  padding: 13px 30px;
+  display: inline-block;
+  border-left: 1px solid rgba(0,0,0,0.1);
+}
 #line-login-btn.btn{
   background-color: #02C755;
   border-radius: 8px;

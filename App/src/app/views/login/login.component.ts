@@ -10,6 +10,7 @@ import { PermissionService } from 'src/app/_core/_service/permission.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private authService: AuthService,
     private cookieService: CookieService,
     private alertifyService: AlertifyService,
+    private toast: ToastrService,
     private trans: TranslateService
   ) {
     this.loadLang()
@@ -74,6 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit(): void {
     this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
+    console.log(this.sysConf)
     // this.loadLang()
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
@@ -95,6 +98,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         const uri = decodeURI(this.uri) || backUrl;
         this.router.navigate([uri]);
       }
+    }
+  }
+  back() {
+    const uri = this.router.url;
+    let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+    if(uri === isLogin_Cus_url) {
+      this.router.navigate(['home']);
+    }else {
+      this.router.navigate([isLogin_Cus_url]);
     }
   }
   removeLocalStore(key: string) {
@@ -164,7 +176,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     
-      this.alertifyService.success(this.trans.instant('Login Success!'));
+      this.toast.success(this.trans.instant('Login Success!'));
       this.loading = 0;
 
 
@@ -175,10 +187,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         let Url = '/login-Fail';
         this.router.navigate([Url]);
       }else { 
-        this.alertifyService.warning(this.trans.instant(error), true);
+        this.toast.warning(this.trans.instant(error));
       }
      } else {
-      this.alertifyService.warning(this.trans.instant('Server error!'), true);
+      this.toast.warning(this.trans.instant('Server error!'));
 
      }
       this.loading = 0;
@@ -232,9 +244,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       this.loading = 0;
     } catch (error) {
       if (error.indexOf('error') == -1) {
-        this.alertifyService.warning(this.trans.instant(error), true);
+        this.toast.warning(this.trans.instant(error));
       } else {
-       this.alertifyService.warning(this.trans.instant('Server error!'), true);
+       this.toast.warning(this.trans.instant('Server error!'));
 
       }
       this.loading = 0;

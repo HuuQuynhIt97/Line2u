@@ -36,11 +36,11 @@
     <div class="row no-gutters overflow-auto">
       <div class="col-md-6">
         <div class="main-banner">
-          <img src="assets/img/banner/banner-1.jpg" class="img-fluid full-width main-img" alt="banner">
-          <div class="overlay-2 main-padding">
+          <img [src]="sysConf.Cus_Login_Image" class="img-fluid full-width main-img" alt="banner">
+          <!-- <div class="overlay-2 main-padding">
             <img src="assets/img/logo-2.jpg" class="img-fluid" alt="logo">
           </div>
-          <img src="assets/img/banner/burger.png" class="footer-img" alt="footer-img">
+          <img src="assets/img/banner/burger.png" class="footer-img" alt="footer-img"> -->
         </div>
       </div>
       <div class="col-md-6">
@@ -70,14 +70,12 @@
                     <div class="form-group">
                       <button type="submit" (click)="back()" id="line-back-btn" class="btn-second btn-google full-width ">
                         <span class="line-back-text">
-                          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
                           {{'BACK' | translate}}
                         </span>
-                        <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i>{{'BACK' | translate}} -->
                       </button>
                     </div>
-                    <!-- <div class="form-group text-center mb-0"> <a routerLink="/register">Create your account</a>
-                    </div> -->
+                  
                   </div>
                 </div>
               </form>

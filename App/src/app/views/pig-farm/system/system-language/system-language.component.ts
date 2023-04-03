@@ -12,6 +12,7 @@ import { setCulture, L10n } from '@syncfusion/ej2-base';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
+import { ToastrService } from 'ngx-toastr';
 declare let $;
 @Component({
   selector: 'app-system-language',
@@ -65,6 +66,7 @@ export class SystemLanguageComponent extends BaseComponent implements OnInit {
     private service: SystemLanguageService,
     public modalService: NgbModal,
     private alertify: AlertifyService,
+    private toast: ToastrService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     config: NgbTooltipConfig,
@@ -216,16 +218,16 @@ export class SystemLanguageComponent extends BaseComponent implements OnInit {
         this.service.delete(id).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.deleted_ok_msg);
+              this.toast.success(this.alert.deleted_ok_msg);
               this.loadData();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
-          (err) => this.alertify.warning(this.alert.system_error_msg)
+          (err) => this.toast.warning(this.alert.system_error_msg)
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
 
@@ -241,26 +243,26 @@ export class SystemLanguageComponent extends BaseComponent implements OnInit {
         this.service.add(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.created_ok_msg);
+              this.toast.success(this.alert.created_ok_msg);
               this.loadData();
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(res.message, true);
+              this.toast.warning(res.message);
             }
           },
           (error) => {
             if (error.indexOf('error') == -1) {
               this.translate.get(error).subscribe((res: string) => {
-                this.alertify.warning(res, true);
+                this.toast.warning(res);
               });
             } else {
-              this.alertify.warning(this.alert.serverError, true);
+              this.toast.warning(this.alert.serverError);
 
             }
           }
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
 
@@ -276,26 +278,26 @@ export class SystemLanguageComponent extends BaseComponent implements OnInit {
         this.service.update(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.updated_ok_msg);
+              this.toast.success(this.alert.updated_ok_msg);
               this.loadData();
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(res.message, true);
+              this.toast.warning(res.message);
             }
           },
           (error) => {
             if (error.indexOf('error') == -1) {
               this.translate.get(this.alert.exist_message).subscribe((res: string) => {
-                this.alertify.warning(res, true);
+                this.toast.warning(res);
               });
             } else {
-              this.alertify.warning(this.alert.serverError, true);
+              this.toast.warning(this.alert.serverError);
 
             }
           }
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
   }

@@ -32,6 +32,7 @@
             "styles": [
               "src/custom-theme.scss",
               "src/assets/css/bootstrap.min.css",
+              "src/assets/css/bootstrap-icons.css",
               "src/assets/css/font-awesome.css",
               "src/assets/css/font/flaticon.css",
               "src/assets/css/swiper.min.css",
@@ -39,6 +40,7 @@
               "src/assets/css/magnific-popup.css",
               "src/assets/css/nice-select.css",
               "src/assets/css/style.css",
+              "src/assets/css/fileinput.css",
               "src/assets/css/responsive.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
@@ -47,6 +49,8 @@
               "src/assets/js/jquery.min.js",
               "src/assets/js/popper.min.js",
               "src/assets/js/bootstrap.min.js",
+              "src/assets/js/fileinput.js",
+              "src/assets/js/LANG.js",
               "src/assets/js/ion.rangeSlider.min.js",
               "src/assets/js/swiper.min.js",
               "src/assets/js/jquery.nice-select.min.js",

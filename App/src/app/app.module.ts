@@ -147,6 +147,7 @@ import { Footer2Component } from './views/layout/footer2/footer2.component';
 import { RestaurantrightsidebarComponent } from './views/layout/restaurantrightsidebar/restaurantrightsidebar.component';
 import { RestaurantleftsidebarComponent } from './views/layout/restaurantleftsidebar/restaurantleftsidebar.component';
 import { ToastrModule } from 'ngx-toastr';
+import { NavbarAdminComponent } from './views/layout/navbarAdmin/navbarAdmin.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -187,7 +188,8 @@ if (!lang) {
     Footer1Component,
     Footer2Component,
     RestaurantrightsidebarComponent,
-    RestaurantleftsidebarComponent
+    RestaurantleftsidebarComponent,
+    NavbarAdminComponent
 
   ],
   imports: [
