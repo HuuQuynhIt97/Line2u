@@ -17,20 +17,12 @@ export function lineLoginOrNotifyInitializer(
           let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
           let isCustomer = JSON.parse(localStorage.getItem('user'))?.isCustomer
           let backUrl = '/home';
-          // let uri = this.route.snapshot.queryParams.uri || backUrl;
-          // if(isLogin_Cus.length > 0) {
-          //   router.navigate([isLogin_Cus]);
-          // }
+          
           router.navigate([isLogin_Cus_url]);
-          // if(isLineAccount === "1" && !isCustomer) {
-          //   router.navigate(['/mobile/home']);
-          // }else if (isLineAccount === "1" && isCustomer) {
-            
-          // }else {
-          //   router.navigate([backUrl]);
-          // }
+          
         }).add(resolve);
-      }else {
+      }
+      else {
         lineService.getProfileFake('').subscribe(data => {}).add(resolve);
       }
     });

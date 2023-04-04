@@ -1,4 +1,9 @@
-
+/* @media (max-width: 576px) {
+} */
+.payment-option-tab>.nav>.nav-item {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
 .steps {
     margin-top: -41px;
     display: inline-block;

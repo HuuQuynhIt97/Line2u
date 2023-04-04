@@ -76,6 +76,8 @@ import { UserHelpComponent } from './user-help/user-help.component';
 import { MobileCartOrderComponent } from './mobile-cart-order/mobile-cart-order.component';
 import { CartOrderDetailComponent } from './mobile-cart-order/cart-order-detail/cart-order-detail.component';
 import { Common2Module } from 'src/app/_core/commons/common2.module';
+import { NavbarMobileComponent } from './layout/navbar-mobile/navbar-mobile.component';
+import { Footer1Component } from '../layout/footer1/footer1.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -146,7 +148,8 @@ loadCldr(
     UserContactComponent,
     UserHelpComponent,
     MobileCartOrderComponent,
-    CartOrderDetailComponent
+    CartOrderDetailComponent,
+    NavbarMobileComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     

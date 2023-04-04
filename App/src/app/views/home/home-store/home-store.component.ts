@@ -29,6 +29,7 @@ import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.se
 import { AuthService } from 'src/app/_core/_service/auth.service';
 import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
@@ -103,6 +104,7 @@ export class HomeStoreComponent implements OnInit {
     private utilityService: UtilitiesService,
     private route: ActivatedRoute,
     private alertify: AlertifyService,
+    private toast: ToastrService,
     public sanitizer: DomSanitizer,
     private router: Router,
     private authService: AuthService,
@@ -176,7 +178,7 @@ export class HomeStoreComponent implements OnInit {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     // this.router.navigate(['/mobile/landlord-login']);
-    this.alertify.message(this.translate.instant('Logged out'));
+    this.toast.success(this.translate.instant('Logged out'));
     location.reload();
   }
   imagePath(path) {
@@ -234,7 +236,7 @@ export class HomeStoreComponent implements OnInit {
         else {
           this.serviceCart.update(this.cartModel).subscribe(res => {
             console.log('update',res)
-            // this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+            // this.toast.success(this.translate.instant('Add_To_Cart_Success'))
             this.cartCountTotal()
             this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
             this.dataService.changeMessage('load cart')
@@ -269,7 +271,7 @@ export class HomeStoreComponent implements OnInit {
       this.cartModel.productPrice = item.productPrice
       this.serviceCart.add(this.cartModel).subscribe(res => {
         console.log(res)
-        this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+        this.toast.success(this.translate.instant('Add_To_Cart_Success'))
         this.cartCountTotal()
         this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
         this.dataService.changeMessage('load cart')
@@ -309,7 +311,7 @@ export class HomeStoreComponent implements OnInit {
       // }
       // this.setLocalStore("cart_detail", cart);
       // const cartDetail = this.getLocalStore("cart_detail");
-      // this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+      // this.toast.success(this.translate.instant('Add_To_Cart_Success'))
       // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
       // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     }
@@ -374,7 +376,7 @@ export class HomeStoreComponent implements OnInit {
   }
   openCart(){
     if(this.count === 0) {
-      return this.alertify.warning(this.translate.instant('CART_EMPTY'),true)
+      return this.toast.warning(this.translate.instant('CART_EMPTY'))
     }else {
       const uri = this.router.url;
       localStorage.setItem('isLogin_Cus',uri)
@@ -388,13 +390,13 @@ export class HomeStoreComponent implements OnInit {
   saveOrder(){
     const cart_detail = this.getLocalStore("cart_detail");
     if(cart_detail.length === 0) {
-      return this.alertify.error(this.translate.instant('CART_EMPTY'))
+      return this.toast.error(this.translate.instant('CART_EMPTY'))
     }else {
       console.log(cart_detail)
       this.removeLocalStore('cart')
       this.removeLocalStore('cart_detail')
       this.count = 0
-      this.alertify.success(this.translate.instant('Order_Success'))
+      this.toast.success(this.translate.instant('Order_Success'))
       this.modalReference.close();
     }
   }

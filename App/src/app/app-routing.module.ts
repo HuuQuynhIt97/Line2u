@@ -193,6 +193,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'home/store/shop-cart/check-out/payment/:transactionId/:orderId',
+    component: CheckOutComponent,
+    data: {
+      title: 'Check out'
+    }
+  },
+  {
     path: 'home/store/order-tracking',
     component: OrderTrackingComponent,
     data: {

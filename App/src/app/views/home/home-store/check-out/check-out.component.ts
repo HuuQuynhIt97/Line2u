@@ -33,6 +33,7 @@ import { OrderService } from 'src/app/_core/_service/evse/order.service';
 import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
+import { LinePayService } from 'src/app/_core/_service/evse/linePay.service';
 
 @Component({
   selector: 'app-check-out',
@@ -121,6 +122,7 @@ export class CheckOutComponent implements OnInit {
     private orderService: OrderService,
     private toastr: ToastrService,
     public modalService: NgbModal,
+    private linePayService: LinePayService,
     private serviceCart: CartService
 
   ) { 
@@ -129,6 +131,17 @@ export class CheckOutComponent implements OnInit {
       numVisible: 1,
       numScroll: 3
   }];
+   const payment = {
+      amount: this.getLocalStore('totalPrice') || 0,
+      currency: "TWD",
+    };
+  if(window.location.href.indexOf('transactionId=') > 0) {
+    let params = window.location.href.split('?')[1].split('&');
+    let transactionId = params[0].replace('transactionId=', '')
+    let orderId = params[1].replace('orderId=', '')
+    console.log(payment)
+    this.confrimLinePay(transactionId,orderId,payment)
+  }
   this.renderer.listen('window', 'click',(e:Event)=>{
     // this.isOpenDropdown = !this.isOpenDropdown;
     } );
@@ -160,6 +173,17 @@ export class CheckOutComponent implements OnInit {
     // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     // this.cartDetail = this.getLocalStore("cart_detail");
+    
+  }
+  confrimLinePay(transactionId,orderId,data){
+    this.linePayService.confirmPayment(transactionId,orderId,data).subscribe((res: any) => {
+      console.log(res)
+      if(res.returnCode === '0000') {
+        this.toastr.success(this.translate.instant('Order_Success'))
+        this.dataService.changeMessage('load cart')
+        this.router.navigate([`home/store/order-tracking`])
+      }
+    }) 
   }
   cartCountTotal() {
     this.serviceCart.cartCountTotal(this.user?.uid).subscribe(res => {
@@ -173,7 +197,6 @@ export class CheckOutComponent implements OnInit {
   }
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
-      console.log(res)
       this.cartDetail = res
       this.spinner.hide()
     })
@@ -185,12 +208,10 @@ export class CheckOutComponent implements OnInit {
       this.isDelevery = true
     }
     this.paymentType = args.target.value
-    console.log(args.target.value)
   }
   getUserCheckoutInfo(){
     this.serviceAccount.getById(this.user.id).subscribe(res => {
       this.modelAccount = res
-      console.log(this.modelAccount)
     })
   }
   backEditCart() {
@@ -362,8 +383,8 @@ export class CheckOutComponent implements OnInit {
       return this.toastr.error(this.translate.instant('CART_EMPTY'));
       // return this.alertify.error(this.translate.instant('CART_EMPTY'))
     }else {
-      if (this.validate(this.modelAccount) == false) return;
-      console.log(this.cartDetail)
+      // if (this.validate(this.modelAccount) == false) return;
+      this.setLocalStore('totalPrice', this.totalPrice)
       this.orderModel.totalPrice = this.totalPrice
       this.orderModel.createBy = this.user.id
       this.orderModel.customerName = this.modelAccount.accountName
@@ -376,18 +397,53 @@ export class CheckOutComponent implements OnInit {
       this.orderModel.paymentType = this.paymentType
       this.orderModel.isPayment = 'Unpaid'
       this.orderModel.delivery = 'Pending'
-      console.log(this.orderModel)
-      this.orderService.add(this.orderModel).subscribe(res => {
-        this.alertify.success(this.translate.instant('Order_Success'))
-        // this.removeLocalStore('cart')
-        // this.removeLocalStore('cart_detail')
-        this.dataService.changeMessage('load cart')
-        // this.count = 0
-        this.router.navigate([`home/store/order-tracking`])
+      const products = this.cartDetail.map((item: any) => {
+          return {
+            name: item.productName,
+            quantity: item.quantity,
+            price: item.productPrices,
+            imageUrl: this.imagePath(item.photoPath)
+          }
       })
-      // 
-      // this.modalReference.close();
+      const payment = 
+      {
+        amount: this.totalPrice,
+        currency: "TWD",
+        orderId: Date.now().toString(), //使用 Timestamp 當作 orderId
+        packages: [
+          {
+            id: this.generateGuid(),
+            amount: this.totalPrice,
+            name: "測試",
+            products: products
+          },
+        ],
+        RedirectUrls: {
+          ConfirmUrl: "https://d831-2402-800-6311-ebda-e5d0-b9e7-8304-cec8.ap.ngrok.io/confirm.html",
+          CancelUrl: "https://3a8e-114-37-157-213.jp.ngrok.io/api/LinePay/Cancel",
+        }
+      };
+      this.linePayService.createPayment(payment).subscribe((res: any) => {
+        console.log(res)
+        if(res.returnCode === '0000') {
+          this.orderService.add(this.orderModel).subscribe(res => {})
+          return window.location.assign(res.info.paymentUrl.web)
+          // return this.router.navigateByUrl(res.info.paymentUrl.web)
+          // window.location.assign(res.info.paymentUrl.web)
+        }
+      })
+      
     }
+  }
+  confirmOrder() {
+
+  }
+  generateGuid() : string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
   validate(model: XAccount) {
     if (model.accountName === null || model.accountName === undefined || model.accountName === '') {

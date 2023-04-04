@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { AuthService } from "../../../_core/_service/auth.service";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { FarmService } from "src/app/_core/_service/farms";
@@ -26,12 +25,15 @@ import { StoreProfile } from "src/app/_core/_model/xaccount";
 import { DataService } from "src/app/_core/_service/data.service";
 import { Cart } from "src/app/_core/_model/evse/cart";
 import { DomSanitizer } from "@angular/platform-browser";
+import { AuthService } from "src/app/_core/_service/auth.service";
+
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  selector: 'app-navbar-mobile',
+  templateUrl: './navbar-mobile.component.html',
+  styleUrls: ['./navbar-mobile.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarMobileComponent implements OnInit {
+
   fieldsLang: object = { text: "name", value: "id" };
   lang: string;
   languageData = [
@@ -66,7 +68,6 @@ export class NavbarComponent implements OnInit {
   noImage_Product = ImagePathConstants.NO_IMAGE_QR;
   count: any = 0;
   totalPrice: number;
-  isOpenDropdown: boolean = false
   cartDetail: Cart[] = [];
   constructor(
     private authService: AuthService,
@@ -140,14 +141,10 @@ export class NavbarComponent implements OnInit {
     this.loadLogoData();
 
   }
-  showCartinfor() {
-    console.log('show')
-    // this.isOpenDropdown = false
-  }
   checkOut() {
     const uri = this.router.url;
     localStorage.setItem('isLogin_Cus',uri)
-    // this.router.navigate([`home/store/shop-cart/check-out/payment`])
+    this.router.navigate([`home/store/shop-cart/check-out/payment`])
   }
   cartCountTotal() {
     this.serviceCart.cartCountTotal(this.user?.uid || '').subscribe(res => {
@@ -299,5 +296,5 @@ export class NavbarComponent implements OnInit {
       this.spinner.hide();
     });
   }
- 
+
 }

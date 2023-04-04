@@ -194,7 +194,7 @@
                         </a>
                       </li>
                       <li>
-                        <a [href]="'mobile/home'">
+                        <a  [href]="'mobile/home'">
                           <div class="icon"><i class="flaticon-rewind"></i>
                           </div>
                           <span class="details">{{'Cus.manager.store' | translate}}</span>
@@ -208,14 +208,14 @@
                         </a>
                       </li>
                       <li>
-                        <a routerLink="/">
+                        <a href="home">
                           <div class="icon"><i class="flaticon-breadbox"></i>
                           </div>
                           <span class="details">{{'label.shopping' | translate}}</span>
                         </a>
                       </li>
                       <li>
-                        <a routerLink="store/order-tracking">
+                        <a href="home/store/order-tracking" >
                           <div class="icon"><i class="flaticon-gift"></i>
                           </div>
                           <span class="details">{{'label.your.order-tracking' | translate}}</span>
@@ -332,14 +332,25 @@
                     </div>
                     <div class="card-footer padding-15"> 
                       <a style="cursor: pointer;"
+                        href="home/store/shop-cart/check-out/payment"
                         (click)="checkOut()"
                         class="btn-first green-btn text-custom-white full-width fw-500">
                       Proceed to Checkout
                       </a>
                     </div>
+                    <div class="card-footer padding-15"> 
+                      <a style="cursor: pointer;"
+                      href="javascript:void(0)"
+                        (click)="showCartinfor()"
+                        class="btn-first green-btn text-custom-white full-width fw-500">
+                        {{'Back' | translate}}
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
+              
+              
               <!-- user cart -->
             </div>
           </div>

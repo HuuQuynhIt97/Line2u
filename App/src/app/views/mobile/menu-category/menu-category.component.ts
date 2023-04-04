@@ -300,11 +300,11 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
     if (data?.id > 0) {
       this.model = {...data};
       this.getAudit(this.model.id);
-      this.title = 'MainCategory_Edit_Model';
+      this.title = 'Edit_Model';
     } else {
       this.model.id = 0;
       this.model.status = 1;
-      this.title = 'MainCategory_Add_Model';
+      this.title = 'Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
    this.configImage();

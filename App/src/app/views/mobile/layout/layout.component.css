@@ -5,6 +5,7 @@
   text-overflow: ellipsis;
   overflow-y: scroll !important;
 }
+
 #line-notify {
   /* background-image: url('../../../../assets/img/line.ico'); */
   background: #28a745;

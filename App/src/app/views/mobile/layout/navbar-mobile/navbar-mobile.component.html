@@ -1,0 +1,206 @@
+<!-- Navigation -->
+<div class="header">
+  <header class="full-width">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 mainNavCol">
+          <div class="logo mainNavCol">
+            <a href="mobile/home" >
+            <img 
+              [src]="baseUrl + logo"
+              class="img-fluid" alt="Logo">
+            </a>
+          </div>
+          <div class="main-search mainNavCol">
+            <form class="main-search search-form full-width">
+              <div class="row">
+                <div class="col-lg-6 col-md-5">
+                  
+                </div>
+                <div class="col-lg-6 col-md-7">
+                  <div class="search-box padding-10">
+                    <input type="text" class="form-control" placeholder="{{'Search' | translate}}">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="right-side fw-700 mainNavCol">
+           
+            <div class="cart-btn full-width">
+              <ejs-dropdownlist   
+              [(ngModel)]="lang" (change)="langValueChange($event)" 
+              [fields]="fieldsLang" 
+              [dataSource]="languageData"
+              >
+              <ng-template #itemTemplate="" let-data="">
+                <div class="text-black">{{data?.id | translate}}</div>
+              </ng-template>
+              <ng-template #valueTemplate="" let-data="">
+                <div class="text-black">{{data?.id | translate}}</div>
+              </ng-template>
+              </ejs-dropdownlist>
+            </div>
+          
+            <div class="user-details p-relative full-width">
+              <ng-container *ngIf="!isLogin; else elseTemplate4">
+                <a style="cursor: pointer;" (click)="loginUser()" class="text-light-white fw-500">
+                <img 
+                  src="assets/img/user-1.png"
+                  class="rounded-circle" alt="userimg"> 
+                <span>
+                {{'Login' | translate}}
+                </span>
+                </a>
+              </ng-container>
+              <ng-template #elseTemplate4>
+                <a href="javascript:void(0)" class="text-light-white fw-500">
+                <img [src]="imagePathCustome(userImage)" 
+                  style="width: 30px !important;"
+                  class="rounded-circle" alt="userimg"> 
+                <span>
+                {{'Hi' | translate}},{{username}}
+                </span>
+                </a>
+                <div class="user-dropdown" style="overflow-x: scroll;height: 500px;">
+                  <ul>
+                    <!-- <li>
+                      <a href="javascript:void(0)">
+                        <div class="icon"><i class="flaticon-user"></i>
+                        </div>
+                        <span class="details">{{'Cus.Profile' | translate}}</span>
+                      </a>
+                    </li> -->
+                    <li>
+                      <a  [href]="'mobile/cart-order'">
+                        <div class="icon"><i class="flaticon-rewind"></i>
+                        </div>
+                        <span class="details">{{'Manager.store' | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a [href]="'home/store/' + storeInfo?.storeName + '/' + storeInfo?.id ">
+                        <div class="icon"><i class="flaticon-takeaway"></i>
+                        </div>
+                        <span class="details">{{'label.my.store' | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="home">
+                        <div class="icon"><i class="flaticon-breadbox"></i>
+                        </div>
+                        <span class="details">{{'label.shopping' | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="home/store/order-tracking" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{'label.your.order-tracking' | translate}}</span>
+                      </a>
+                    </li>
+                    
+                  </ul>
+                  <div class="user-mobile-footer"></div>
+                  <ul>
+                    <li>
+                      <a href="mobile/store-profile">
+                        <div class="icon"><i class="flaticon-user"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_STORE_PROFILE' | translate }}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a  [href]="'home'">
+                        <div class="icon"><i class="flaticon-rewind"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_SHOPPING' | translate }}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a [href]="'mobile/cart-order'">
+                        <div class="icon"><i class="flaticon-takeaway"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_CART_ORDER' | translate }}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="mobile/menu-category">
+                        <div class="icon"><i class="flaticon-breadbox"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_MENU_CATEGORY' | translate }}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="mobile/products-list" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_PRODUCTS_LIST' | translate }}</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="mobile/banner" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_MY_BANNER_USER' | translate }}</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="mobile/news" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_MY_NEWS_USER' | translate }}</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="mobile/account" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_MY_LINE_USER' | translate }}</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="home/send-message" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_SEND_MESSAGE' | translate }}</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="home/send-message" >
+                        <div class="icon"><i class="flaticon-gift"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_MESSAGE_HISTORY' | translate }}</span>
+                      </a>
+                    </li>
+                    
+                    
+                  </ul>
+
+                  <div class="user-footer"> 
+                    <span class="text-light-black">
+                    Not {{username}}?
+                    </span>
+                    <a style="cursor: pointer;" (click)="logOutUser()">{{'SIGN_OUT' | translate}}</a>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+
+            <div class="cart-btn cart-dropdown">
+              <a href="javascript:void(0)" class="text-light-green fw-700"> <i id='line-notify' class="fas fa-bell" ></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+<div *ngIf="!isMobileBrowser" class="main-sec"></div>
+<!-- Navigation -->
