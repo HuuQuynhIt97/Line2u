@@ -282,11 +282,18 @@
                 </div> -->
               <!-- user notification -->
               <!-- user cart -->
-              <div class="cart-btn cart-dropdown">
-                <a href="javascript:void(0)" class="text-light-green fw-700"> <i class="fas fa-shopping-bag"></i>
+              <!-- <div class="cart-btn cart-dropdown">
+                <a (click)="showCartinfor()" href="javascript:void(0)" class="text-light-green fw-700"> <i class="fas fa-shopping-bag"></i>
                 <span class="user-alert-cart" *ngIf="count > 0">{{count}}</span>
                 </a>
-                <div class="cart-detail-box">
+                
+                
+              </div> -->
+              <div class="cart-btn cart-dropdown">
+                <a  href="javascript:void(0)" class="text-light-green fw-700"> <i class="fas fa-shopping-bag"></i>
+                <span class="user-alert-cart" *ngIf="count > 0">{{count}}</span>
+                </a>
+                <div id="cart-detail-box" class="cart-detail-box">
                   <div class="card">
                     <div class="card-header padding-15">{{'Your Order' | translate}}</div>
                     <div class="card-body no-padding">
@@ -294,8 +301,8 @@
                         <ng-container *ngFor="let item of cartDetail; let i=index">
                           <div class="cat-product-box">
                             <div class="cat-product">
-                              <div class="cat-name">
-                                <a href="javascript:void(0)">
+                              <div class="cat-name" style="width: 100%;">
+                                <a >
                                   <p class="text-light-green">
                                     <span class="text-dark-white">
                                     {{item.quantity}}
@@ -307,9 +314,23 @@
                                 </a>
                               </div>
                               <div class="delete-btn">
-                                <a href="javascript:void(0)" class="text-dark-white"> <i class="far fa-trash-alt"></i>
+                                <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                                  <i class="fa fa-minus-circle" aria-hidden="true"></i>
                                 </a>
                               </div>
+                              <span style="color: transparent;"> | </span>
+                              <div class="delete-btn">
+                                <a (click)="addToCart(item)" href="javascript:void(0)"  class="text-dark-white"> 
+                                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </a>
+                              </div>
+                              <span style="color: transparent;"> | </span>
+                              <div class="delete-btn">
+                                <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                                  <i class="far fa-trash-alt"></i>
+                                </a>
+                              </div>
+                              <span style="color: transparent;"> | </span>
                               <div class="price"> <a href="javascript:void(0)" class="text-dark-white fw-500">
                                 ${{item.productPrice * item.quantity}}
                                 </a>
@@ -332,10 +353,10 @@
                     </div>
                     <div class="card-footer padding-15"> 
                       <a style="cursor: pointer;"
-                        href="home/store/shop-cart/check-out/payment"
+                        [href]="count === 0 ? 'javascript:void(0)' : 'home/store/shop-cart/check-out/payment'"
                         (click)="checkOut()"
                         class="btn-first green-btn text-custom-white full-width fw-500">
-                      Proceed to Checkout
+                      {{'Proceed to Checkout' | translate}}
                       </a>
                     </div>
                     <div class="card-footer padding-15"> 
@@ -348,8 +369,8 @@
                     </div>
                   </div>
                 </div>
+
               </div>
-              
               
               <!-- user cart -->
             </div>

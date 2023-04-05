@@ -114,10 +114,15 @@ export class HomeStoreComponent implements OnInit {
       breakpoint: '1024px',
       numVisible: 1,
       numScroll: 3
-  }];
-  this.renderer.listen('window', 'click',(e:Event)=>{
-    // this.isOpenDropdown = !this.isOpenDropdown;
-    } );
+    }];
+    this.dataService.currentMessage.subscribe((res: any) => {
+      if(res === 'load cart') {
+        this.cartCountTotal()
+        this.cartAmountTotal()
+        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+      }
+    })
+    
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -429,7 +434,7 @@ export class HomeStoreComponent implements OnInit {
   getStoreInfor(storeId) {
     this.service.getById(storeId).subscribe(res => {
       this.storeInfo = res;
-      this.getCategoryOfStore(this.storeInfo.accountGuid)
+      // this.getCategoryOfStore(this.storeInfo.accountGuid)
       this.getProducts(this.storeInfo.accountGuid , this.user?.uid)
       this.loadBannerData()
       this.loadNewData()

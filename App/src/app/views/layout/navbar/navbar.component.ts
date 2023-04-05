@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, Renderer2 } from "@angular/core";
 import { AuthService } from "../../../_core/_service/auth.service";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
@@ -26,6 +26,7 @@ import { StoreProfile } from "src/app/_core/_model/xaccount";
 import { DataService } from "src/app/_core/_service/data.service";
 import { Cart } from "src/app/_core/_model/evse/cart";
 import { DomSanitizer } from "@angular/platform-browser";
+import { Products } from "src/app/_core/_model/evse/products";
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -68,6 +69,7 @@ export class NavbarComponent implements OnInit {
   totalPrice: number;
   isOpenDropdown: boolean = false
   cartDetail: Cart[] = [];
+  cartModel: Cart = {} as Cart;
   constructor(
     private authService: AuthService,
     private cookieService: CookieService,
@@ -76,13 +78,15 @@ export class NavbarComponent implements OnInit {
     private utilityService: UtilitiesService,
     private trans: TranslateService,
     private translate:TranslateService,
+    private toast: ToastrService,
     private spinner: NgxSpinnerService,
     private dataService: DataService,
     private serviceStore: StoreProfileService,
-    private toast: ToastrService,
     public sanitizer: DomSanitizer,
     private sysMenuService: SysMenuService,
     private serviceCart: CartService,
+    private renderer: Renderer2,
+    private toastr: ToastrService
   ) {
     this.isMobileBrowser = Browser.isDevice
     this.dataService.currentMessage.subscribe((res: any) => {
@@ -92,6 +96,7 @@ export class NavbarComponent implements OnInit {
         this.getProductsInCart()
       }
     })
+    
    }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -140,14 +145,99 @@ export class NavbarComponent implements OnInit {
     this.loadLogoData();
 
   }
+  deleteCart(item) {
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.serviceCart.delete(item.id).subscribe(res => {
+        this.toast.success(this.translate.instant('Remove_Cart_Success'))
+        this.cartCountTotal()
+        this.getProductsInCart()
+        this.dataService.changeMessage('load cart')
+        this.cartAmountTotal();
+      })
+    }
+  }
+  removeCart(item) {
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.cartModel.id = item.id
+      this.cartModel.updateBy = this.user.id
+      this.cartModel.quantity = item.quantity - 1
+      if(item.id > 0) {
+        if(this.cartModel.quantity === 0) {
+          this.serviceCart.delete(this.cartModel.id).subscribe(res => {
+            this.cartCountTotal()
+            this.getProductsInCart()
+            this.dataService.changeMessage('load cart')
+            this.cartAmountTotal();
+          })
+        }
+        else {
+          this.serviceCart.update(this.cartModel).subscribe(res => {
+            this.toast.success(this.translate.instant('Update_Cart_Success'))
+            this.cartCountTotal()
+            this.getProductsInCart()
+            this.dataService.changeMessage('load cart')
+            this.cartAmountTotal();
+          })
+        }
+      }else {
+        this.spinner.hide()
+      }
+    }
+  }
+  addToCart(item) {
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.cartModel.accountUid = this.user.uid
+      this.cartModel.createBy = this.user.id
+      this.cartModel.quantity = 1
+      this.cartModel.productGuid = item.guid
+      this.cartModel.storeGuid = item.storeGuid
+      this.cartModel.productId = item.productId
+      this.cartModel.productPrice = item.productPrice
+      this.serviceCart.add(this.cartModel).subscribe(res => {
+        this.toast.success(this.translate.instant('Update_Cart_Success'))
+        this.cartCountTotal()
+        this.getProductsInCart()
+        this.dataService.changeMessage('load cart')
+        this.cartAmountTotal();
+      })
+    }
+  }
   showCartinfor() {
-    console.log('show')
-    // this.isOpenDropdown = false
+    this.isOpenDropdown = !this.isOpenDropdown
   }
   checkOut() {
-    const uri = this.router.url;
-    localStorage.setItem('isLogin_Cus',uri)
+    if(this.count === 0) {
+      return this.toastr.warning(this.translate.instant('CART_EMPTY'))
+    }else {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
     // this.router.navigate([`home/store/shop-cart/check-out/payment`])
+    }
+    
   }
   cartCountTotal() {
     this.serviceCart.cartCountTotal(this.user?.uid || '').subscribe(res => {
@@ -161,7 +251,6 @@ export class NavbarComponent implements OnInit {
   }
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
-      console.log('getProductsInCart', res)
       this.cartDetail = res
     })
   }

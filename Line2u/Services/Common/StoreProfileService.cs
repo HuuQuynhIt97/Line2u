@@ -24,16 +24,20 @@ using Microsoft.Extensions.Configuration;
 using Dapper;
 using isRock.LineBot;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using Syncfusion.JavaScript.Models;
 
 namespace Line2u.Services
 {
     public interface IStoreProfileService : IServiceBase<StoreProfile, StoreProfilesDto>
     {
         Task<OperationResult> AddFormAsync(StoreProfilesDto model);
+        Task<OperationResult> AddRatingComment(StoreRatingCommentDto model);
         Task<OperationResult> UpdateFormAsync(StoreProfilesDto model);
         Task<OperationResult> UpdateFormMobileAsync(StoreProfilesDto model);
         Task<object> DeleteUploadFile(decimal key);
         Task<object> GetByIDWithGuidAsync(string guid);
+        Task<object> GetRatingAndComment(string guid);
+        Task<bool> CheckRatingAndComment(string guid, int userId);
         Task<object> GetInforByStoreName(string name);
         Task<object> GetAll();
 
@@ -45,12 +49,14 @@ namespace Line2u.Services
     {
         private readonly ISPService _repoSp;
         private readonly IRepositoryBase<StoreProfile> _repo;
+        private readonly IRepositoryBase<StoreRatingComment> _repoRatingComment;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccountPermission> _repoXAccountPermission;
         private readonly IRepositoryBase<XAccountGroupPermission> _repoXAccountGroupPermission;
         private readonly IRepositoryBase<CodePermission> _repoCodePermission;
         private readonly IRepositoryBase<Employee> _repoEmployee;
         private readonly IRepositoryBase<XAccountGroup> _repoXAccountGroup;
+        private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly ISequenceService _sequenceService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -63,6 +69,8 @@ namespace Line2u.Services
         public StoreProfileService(
             IRepositoryBase<StoreProfile> repo,
             IRepositoryBase<CodeType> repoCodeType,
+            IRepositoryBase<XAccount> repoXAccount,
+            IRepositoryBase<StoreRatingComment> repoRatingComment,
             IRepositoryBase<XAccountPermission> repoXAccountPermission,
             IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission,
             IRepositoryBase<CodePermission> repoCodePermission,
@@ -83,6 +91,8 @@ namespace Line2u.Services
         {
             _repo = repo;
             _repoCodeType = repoCodeType;
+            _repoXAccount = repoXAccount;
+            _repoRatingComment = repoRatingComment;
             _repoXAccountPermission = repoXAccountPermission;
             _repoXAccountGroupPermission = repoXAccountGroupPermission;
             _repoCodePermission = repoCodePermission;
@@ -98,11 +108,6 @@ namespace Line2u.Services
             _configuration = configuration;
             _repoSp = repoSp;
         }
-
-       
-       
-
-       
 
         public async Task<object> UploadAvatarForMobile(IFormFile file, decimal key)
         {
@@ -224,8 +229,6 @@ namespace Line2u.Services
 
             FileExtension fileExtension = new FileExtension();
             var itemModel = await _repo.FindAll(x => x.AccountGuid == model.Guid).AsNoTracking().FirstOrDefaultAsync();
-           
-                itemModel = await _repo.FindAll(x => x.AccountGuid == model.Guid).FirstOrDefaultAsync();
             var item = _mapper.Map<StoreProfile>(itemModel);
             
 
@@ -354,9 +357,48 @@ namespace Line2u.Services
 
             }
         }
-      
 
-       
+        public override async Task<StoreProfilesDto> GetByIDAsync(object id)
+        {
+            var item = await _repo.FindByIDAsync(id);
+            var result_tamp = new StoreProfilesDto()
+            {
+                RatingCount = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count(),
+                RatingAVG = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count() > 0 ?
+                _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Sum(y => int.Parse(y.Rating)) : 0
+            };
+            var result = new StoreProfilesDto()
+            {
+                Id = item.Id,
+                AccountGuid = item.AccountGuid,
+                Body = item.Body,
+                Comment = item.Comment,
+                CreateBy = item.CreateBy,
+                CreateDate = item.CreateDate,
+                Facebook = item.Facebook,
+                Instagram = item.Instagram,
+                Youtube = item.Youtube,
+                Twitter = item.Twitter,
+                Pinterest = item.Pinterest,
+                PhotoPath = item.PhotoPath,
+                StoreAddress = item.StoreAddress,
+                StoreCloseTime = item.StoreCloseTime,
+                StoreOpenTime = item.StoreOpenTime,
+                StoreEmail = item.StoreEmail,
+                StoreTel = item.StoreTel,
+                StoreHightPrice = item.StoreHightPrice,
+                StoreLowPrice = item.StoreLowPrice,
+                StoreName = item.StoreName,
+                Guid = item.Guid,
+                Status = item.Status,
+                UpdateBy = item.UpdateBy,
+                UpdateDate = item.UpdateDate,
+                RatingCount = result_tamp.RatingCount,
+                RatingAVG = result_tamp.RatingCount > 0 ?  result_tamp.RatingAVG / result_tamp.RatingCount : 0
+            };
+            return result;
+        }
+
 
         public async Task<object> GetProfileMobile(string key)
         {
@@ -372,8 +414,8 @@ namespace Line2u.Services
         public async Task<OperationResult> UpdateFormMobileAsync(StoreProfilesDto model)
         {
             FileExtension fileExtension = new FileExtension();
-            var itemModel = await _repo.FindAll(x => x.Guid == model.Guid).AsNoTracking().FirstOrDefaultAsync();
-            var item = _mapper.Map<StoreProfile>(itemModel);
+            //var itemModel = await _repo.FindAll(x => x.Guid == model.Guid).AsNoTracking().FirstOrDefaultAsync();
+            var item = _mapper.Map<StoreProfile>(model);
           
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
@@ -399,13 +441,13 @@ namespace Line2u.Services
             try
             {
 
-                item.StoreOpenTime = model.StoreOpenTime;
-                item.StoreName = model.StoreName;
-                item.StoreAddress = model.StoreAddress;
-                item.StoreCloseTime= model.StoreCloseTime;
-                item.StoreLowPrice = model.StoreLowPrice;
-                item.StoreHightPrice = model.StoreHightPrice;
-                item.Body = model.Body;
+                //item.StoreOpenTime = model.StoreOpenTime;
+                //item.StoreName = model.StoreName;
+                //item.StoreAddress = model.StoreAddress;
+                //item.StoreCloseTime= model.StoreCloseTime;
+                //item.StoreLowPrice = model.StoreLowPrice;
+                //item.StoreHightPrice = model.StoreHightPrice;
+                //item.Body = model.Body;
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -446,6 +488,74 @@ namespace Line2u.Services
         public async Task<object> GetInforByStoreName(string name)
         {
             return _repo.FindAll(o => o.StoreName == name).FirstOrDefault();
+        }
+
+        public async Task<OperationResult> AddRatingComment(StoreRatingCommentDto model)
+        {
+            try
+            {
+                var item = _mapper.Map<StoreRatingComment>(model);
+                item.Guid = Guid.NewGuid().ToString("N") + DateTime.Now.ToString("ssff");
+                item.Status = 1;
+                _repoRatingComment.Add(item);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.AddSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<object> GetRatingAndComment(string guid)
+        {
+            var result_tamp = await _repoRatingComment.FindAll(x => x.StoreGuid == guid).Select(o => new
+            {
+                Comment = o.Comment,
+                Comment_Date = o.CreateDate,
+                Comment_Rating = o.Rating,
+                o.CreateBy
+            }).ToListAsync();
+            var result = result_tamp.Select(x => new
+            {
+                x.Comment,
+                x.Comment_Date,
+                x.Comment_Rating,
+                Comment_By = _repoXAccount.FindAll(o => o.AccountId == x.CreateBy).FirstOrDefault().AccountName,
+                Comment_Picture = _repoXAccount.FindAll(o => o.AccountId == x.CreateBy).FirstOrDefault().LinePicture,
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<bool> CheckRatingAndComment(string guid, int userId)
+        {
+            try
+            {
+                var result = await _repoRatingComment.FindAll(x => x.StoreGuid == guid && x.CreateBy == userId).ToListAsync();
+                var booled = result.Count > 0 ? true : false;
+
+                return booled;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw;
+            }
         }
     }
 }

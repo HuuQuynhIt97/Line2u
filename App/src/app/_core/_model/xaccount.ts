@@ -82,7 +82,17 @@ export interface Profile {
 export interface StoreProfile {
   id: number;
   createBy: number;
+  ratingCount: number;
+  ratingAVG: number;
+  updateBy: number;
   storeName: string | null;
+  storeTel: string | null;
+  storeEmail: string | null;
+  facebook: string | null;
+  twitter: string | null;
+  instagram: string | null;
+  pinterest: string | null;
+  youtube: string | null;
   storeAddress: string;
   storeOpenTime: string;
   storeCloseTime: string;

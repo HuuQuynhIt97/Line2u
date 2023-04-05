@@ -15,7 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Orders]",
+         "Name": "[dbo].[StoreRatingComment]",
          "ObjectType": 0
       }
    ],

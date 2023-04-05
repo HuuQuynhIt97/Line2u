@@ -90,6 +90,7 @@ export class CheckOutComponent implements OnInit {
   orderModel: Order = {} as Order;
   isOpenDropdown: boolean = false
   paymentType: any = 'Cash on delivery';
+  orderID: any;
   @HostListener("window:scroll", [])onWindowScroll() {
     //.scrollTop
     if(window.pageYOffset > 500) {
@@ -102,8 +103,10 @@ export class CheckOutComponent implements OnInit {
  CASH: string = 'Cash'
  LINE_PAY: string = 'Line Pay'
  cashMoney: number = 0
+ paymentSuccess: boolean = false
  @ViewChild('toggleButton') toggleButton: ElementRef;
  @ViewChild('menu') menu: ElementRef;
+ cartModel: Cart = {} as Cart;
   constructor(
     private spinner: NgxSpinnerService,
     private renderer: Renderer2,
@@ -111,6 +114,7 @@ export class CheckOutComponent implements OnInit {
     private sysMenuService: SysMenuService,
     private webNewsService: WebNewsUserService,
     private service: StoreProfileService,
+    private toast: ToastrService,
     private serviceMainCategory: MainCategoryService,
     private serviceProducts: ProductsService,
     private translate: TranslateService,
@@ -178,6 +182,95 @@ export class CheckOutComponent implements OnInit {
     // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     // this.cartDetail = this.getLocalStore("cart_detail");
     
+  }
+
+  deleteCart(item) {
+    this.spinner.show()
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.serviceCart.delete(item.id).subscribe(res => {
+        this.toast.success(this.translate.instant('Remove_Cart_Success'))
+        this.cartCountTotal()
+        this.getProductsInCart()
+        this.dataService.changeMessage('load cart')
+        this.cartAmountTotal();
+        this.spinner.hide()
+      })
+    }
+  }
+  removeCart(item) {
+    this.spinner.show()
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.cartModel.id = item.id
+      this.cartModel.updateBy = this.user.id
+      this.cartModel.quantity = item.quantity - 1
+      if(item.id > 0) {
+        if(this.cartModel.quantity === 0) {
+          this.serviceCart.delete(this.cartModel.id).subscribe(res => {
+            this.cartCountTotal()
+            this.getProductsInCart()
+            this.dataService.changeMessage('load cart')
+            this.cartAmountTotal();
+            this.spinner.hide()
+          })
+        }
+        else {
+          this.serviceCart.update(this.cartModel).subscribe(res => {
+            this.toast.success(this.translate.instant('Update_Cart_Success'))
+            this.cartCountTotal()
+            this.getProductsInCart()
+            this.dataService.changeMessage('load cart')
+            this.cartAmountTotal();
+            this.spinner.hide()
+          })
+        }
+      }else {
+        this.spinner.hide()
+      }
+    }
+  }
+  addToCart(item) {
+    this.spinner.show()
+    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+      const uri = this.router.url;
+      localStorage.setItem('isLogin_Cus',uri)
+      this.router.navigate(["user-login"], {
+        queryParams: { uri },
+        replaceUrl: true,
+      });
+    }else {
+      this.cartModel.accountUid = this.user.uid
+      this.cartModel.createBy = this.user.id
+      this.cartModel.quantity = 1
+      this.cartModel.productGuid = item.guid
+      this.cartModel.storeGuid = item.storeGuid
+      this.cartModel.productId = item.productId
+      this.cartModel.productPrice = item.productPrice
+      this.serviceCart.add(this.cartModel).subscribe(res => {
+        this.toast.success(this.translate.instant('Add_To_Cart_Success'))
+        this.cartCountTotal()
+        this.getProductsInCart()
+        this.dataService.changeMessage('load cart')
+        this.cartAmountTotal();
+        this.spinner.hide()
+      })
+    }
   }
   validateCashOut(method) {
     console.log(method)
@@ -258,9 +351,12 @@ export class CheckOutComponent implements OnInit {
       // })
 
       this.orderService.add(this.orderModel).subscribe(res => {
+        console.log(res)
         this.toastr.success(this.translate.instant('Order_Success'))
+        this.paymentSuccess = true
+        this.orderID = res.data.guid
         this.dataService.changeMessage('load cart')
-        this.router.navigate([`home/store/order-tracking`])
+        // this.router.navigate([`home/store/order-tracking`])
       })
       
     }
@@ -359,50 +455,51 @@ export class CheckOutComponent implements OnInit {
     this.dataService.changeLang('Store_Click')
     this.router.navigate([`home/news-detail/${item.id}`])
   }
-  addToCart(item: Products) {
-    this.isOpenDropdown = false
-    let isLogin_Cus = localStorage.getItem("isLogin_Cus")
-    if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
-      this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
-    }else {
-      let cart: Products[] = [];
-      cart = this.getLocalStore("cart_detail");
-      if(cart.length === 0) {
-        item.quantity = 1
-        item.price = parseFloat(item.productPrice)
-        cart.push(item)
-      }else {
-        for (let i = 0; i < cart.length; i++) {
-          if (cart[i].id == item.id ) {
-            cart[i].quantity = cart[i].quantity + 1;
-            cart[i].price = cart[i].price  + parseFloat(item.productPrice);
-            break;
-          }else {
-            const exsit = cart.filter(x => x.id === item.id );
-            if(exsit.length === 0) {
-              item.quantity = 1
-              item.price = parseFloat(item.productPrice)
-              cart.push(item)
-            }else {
-              for (let z = 0; z < cart.length; z++) {
-                if (cart[z].id == item.id ) {
-                  cart[z].quantity = cart[z].quantity + 1;
-                  cart[z].price = cart[z].price  + parseFloat(item.productPrice);
-                  break;
-                }
-              }
-            }
-            break;
-          }
-        }
-      }
-      this.setLocalStore("cart_detail", cart);
-      const cartDetail = this.getLocalStore("cart_detail");
-      this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
-      this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-      this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
-    }
-  }
+  // addToCart(item: Products) {
+  //   this.isOpenDropdown = false
+  //   let isLogin_Cus = localStorage.getItem("isLogin_Cus")
+  //   if((isLogin_Cus?.length === 0 || isLogin_Cus === null) || this.isLineAccount !== '1') {
+  //     this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
+  //   }else {
+  //     let cart: Products[] = [];
+  //     cart = this.getLocalStore("cart_detail");
+  //     if(cart.length === 0) {
+  //       item.quantity = 1
+  //       item.price = parseFloat(item.productPrice)
+  //       cart.push(item)
+  //     }else {
+  //       for (let i = 0; i < cart.length; i++) {
+  //         if (cart[i].id == item.id ) {
+  //           cart[i].quantity = cart[i].quantity + 1;
+  //           cart[i].price = cart[i].price  + parseFloat(item.productPrice);
+  //           break;
+  //         }else {
+  //           const exsit = cart.filter(x => x.id === item.id );
+  //           if(exsit.length === 0) {
+  //             item.quantity = 1
+  //             item.price = parseFloat(item.productPrice)
+  //             cart.push(item)
+  //           }else {
+  //             for (let z = 0; z < cart.length; z++) {
+  //               if (cart[z].id == item.id ) {
+  //                 cart[z].quantity = cart[z].quantity + 1;
+  //                 cart[z].price = cart[z].price  + parseFloat(item.productPrice);
+  //                 break;
+  //               }
+  //             }
+  //           }
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     this.setLocalStore("cart_detail", cart);
+  //     const cartDetail = this.getLocalStore("cart_detail");
+  //     this.alertify.success(this.translate.instant('Add_To_Cart_Success'))
+  //     this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
+  //     this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
+  //   }
+  // }
+
   minusItem(item) {
     // let cart: Products[] = [];
     // cart = this.getLocalStore("cart_detail");
@@ -446,6 +543,7 @@ export class CheckOutComponent implements OnInit {
     // this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
+
   plusItem(item) {
     // let cart: Products[] = [];
     // cart = this.getLocalStore("cart_detail");

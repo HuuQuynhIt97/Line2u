@@ -94,8 +94,16 @@ export class StoreProfileService extends CURDService<StoreProfile> {
   getProfile(key) {
     return this.http.get<any>(`${this.base}StoreProfile/GetProfile?key=${key}`, {});
   }
+  getRatingAndComment(key) {
+    return this.http.get<any>(`${this.base}StoreProfile/GetRatingAndComment?storeGuid=${key}`, {});
+  }
+
+  checkRatingAndComment(key,id) {
+    return this.http.get<any>(`${this.base}StoreProfile/CheckRatingAndComment?storeGuid=${key}&userId=${id}`, {});
+  }
+
+  postRatingComment(key) {
+    return this.http.post<any>(`${this.base}StoreProfile/AddRatingComment`, key);
+  }
  
-
-  
-
 }

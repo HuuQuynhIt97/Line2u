@@ -186,180 +186,142 @@
 <section class="final-order section-padding bg-light-theme">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-3">
-        <div class="sidebar">
-          <div class="cart-detail-box">
-            <div class="card">
-              <div class="card-header padding-15 fw-700">
-                {{'Your order from' | translate}}
-                <p class="text-light-white no-margin fw-500">{{modelAccount.accountName}}</p>
-              </div>
-              <div class="card-body no-padding" id="scrollstyle-4">
-                <ng-container *ngFor="let item of cartDetail; let i=index">
-                  <div class="cat-product-box">
-                    <div class="cat-product">
-                      <div class="cat-name">
-                        <a routerLink="/">
-                          <p class="text-light-green fw-700">
-                            <span class="text-dark-white">{{item.quantity}}</span> 
-                            {{item.productName}}
-                          </p>
-                          <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
-                          </span>
-                        </a>
-                      </div>
-                      <div class="delete-btn">
-                        <a routerLink="/checkout" class="text-dark-white"> 
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </div>
-                      <div class="price"> <a routerLink="/checkout" class="text-dark-white fw-500">
-                        ${{item.productPrice * item.quantity}}
-                        </a>
+      <div *ngIf="paymentSuccess" class="col-md-6 mx-auto mt-5">
+        <div class="payment">
+           <div class="payment_header">
+              <div class="check"><i class="fa fa-check" aria-hidden="true"></i></div>
+           </div>
+           <div class="content">
+              <h1>{{'Payment Success' | translate}} !</h1>
+              <p>{{'Your Order.PaymentSuccess' | translate}} {{orderID}} {{'Your Order.PaymentSuccess2' | translate}} </p>
+              <a href="/home">{{'Continue Shopping' | translate}}</a> 
+              <span style="color: transparent;">|</span> 
+              <a href="home/store/order-tracking">{{'My Order' | translate}}</a>
+           </div>
+           
+        </div>
+      </div>
+      <ng-container *ngIf="!paymentSuccess">
+     
+        <div class="col-lg-3">
+          <div class="sidebar">
+            <div class="cart-detail-box">
+              <div class="card">
+                <div class="card-header padding-15 fw-700">
+                  {{'Your order from' | translate}}
+                  <p class="text-light-white no-margin fw-500">{{modelAccount.accountName}}</p>
+                </div>
+                <div class="card-body no-padding" id="scrollstyle-4">
+                  <ng-container *ngFor="let item of cartDetail; let i=index">
+                    <div class="cat-product-box">
+                      <div class="cat-product">
+                        <div class="cat-name" style="width: 100%;">
+                          <a routerLink="/">
+                            <p class="text-light-green fw-700">
+                              <span class="text-dark-white">{{item.quantity}}</span> 
+                              {{item.productName}}
+                            </p>
+                            <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
+                            </span>
+                          </a>
+                        </div>
+
+                        <div class="delete-btn">
+                          <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                        <span style="color: transparent;"> | </span>
+                        <div class="delete-btn">
+                          <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                        <span style="color: transparent;"> | </span>
+                        <div class="delete-btn">
+                          <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="far fa-trash-alt"></i>
+                          </a>
+                        </div>
+                        <span style="color: transparent;"> | </span>
+
+                        <div class="price"> <a routerLink="/checkout" class="text-dark-white fw-500">
+                          ${{item.productPrice * item.quantity}}
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ng-container>
-                
-               
-                <!-- <div class="item-total">
-                  <div class="total-price border-0 pb-0"> <span class="text-dark-white fw-600">Items subtotal:</span>
-                    <span class="text-dark-white fw-600">$8.50</span>
-                  </div>
-                  <div class="total-price border-0 pt-0 pb-0"> <span class="text-light-green fw-600">Delivery fee:</span>
-                    <span class="text-light-green fw-600">Free</span>
-                  </div>
-                  <div class="total-price border-0 pt-0 pb-0"> <span class="text-dark-white fw-600">Sales tax:</span>
-                    <span class="text-dark-white fw-600">$1.50</span>
-                  </div>
-                  <div class="total-price border-0 pt-0 pb-0"> <span class="text-dark-white fw-600">Tip:</span>
-                    <span class="text-dark-white fw-600">$1.50</span>
-                  </div>
-                  <div class="total-price border-0 "> <span class="text-light-black fw-700">Total:</span>
-                    <span class="text-light-black fw-700">$18.50</span>
-                  </div>
-                </div> -->
-              </div>
-              <div class="card-footer p-0 modify-order">
-                <!-- <button class="text-custom-white full-width fw-500 bg-light-green"><i class="fas fa-chevron-left mr-2"></i> Modify Your Order</button> -->
-                <a routerLink="/" class="total-amount"> <span class="text-custom-white fw-700">{{'TOTAL' | translate}}</span>
-                <span class="text-custom-white fw-700">${{totalPrice}}</span>
-                </a>
+                  </ng-container>
+                </div>
+                <div class="card-footer p-0 modify-order">
+                  <a routerLink="/" class="total-amount"> <span class="text-custom-white fw-700">{{'TOTAL' | translate}}</span>
+                  <span class="text-custom-white fw-700">${{totalPrice}}</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-9">
-        <div class="main-box padding-20">
-          <!-- <div class="row mb-xl-20">
-            <div class="col-md-6">
-              <div class="section-header-left">
-                <h3 class="text-light-black header-title fw-700">Review and place order</h3>
-              </div>
-              <h6 class="text-light-black fw-700 fs-14">Review address, payments, and tip to complete your purchase</h6>
-              <h6 class="text-light-black fw-700 mb-2">Your order setting</h6>
-              <p class="text-light-green fw-600">Delivery, ASAP (60-70m)</p>
-              <form  >
-                <div class="row clearfix">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <input type="text" name="accountName" [(ngModel)]="modelAccount.accountName"
-                      class="form-control form-control-submit" placeholder="Name..." required>
-                    </div>
-                    <div class="form-group">
-                      <input type="text" name="accountAddress" [(ngModel)]="modelAccount.accountAddress"
-                      class="form-control form-control-submit" placeholder="Address..." required>
-                    </div>
-                    <div class="form-group">
-                      <input type="email" name="accountEmail" [(ngModel)]="modelAccount.accountEmail"
-                      class="form-control form-control-submit" placeholder="Email..." required>
-                    </div>
-                    <div class="form-group">
-                      <input type="text" name="accountTel" [(ngModel)]="modelAccount.accountTel"
-                      class="form-control form-control-submit" placeholder="Phone No." required>
-                    </div>
+        <div class="col-lg-9">
+          <div class="main-box padding-20">
+            <div class="row">
+              <div class="col-12">
+                <div class="payment-sec">
+                  <div class="section-header-left">
+                    <h3 class="text-light-black header-title">{{'Payment' | translate}}</h3>
                   </div>
-                  <div class="col-12">
-                    
-                  </div>
-                </div>
-              </form>
-              
-            </div>
-            <div class="col-md-6">
-              <div class="advertisement-img">
-                <img src="assets/img/checkout.jpg" class="img-fluid full-width" alt="advertisement-img">
-              </div>
-            </div>
-          </div> -->
-          <div class="row">
-            <div class="col-12">
-              <div class="payment-sec">
-                <!-- <div class="section-header-left">
-                  <h3 class="text-light-black header-title">Delivery Instructions</h3>
-                </div>
-                <div class="form-group">
-                  <textarea class="form-control form-control-submit" rows="4" placeholder="Delivery Details"></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="custom-checkbox">
-                  <input type="checkbox" name="#"> <span class="checkmark"></span> Spare me the napkins and plasticware. I'm trying to save the earth.</label>
-                </div> -->
-                <div class="section-header-left">
-                  <h3 class="text-light-black header-title">{{'Payment' | translate}}</h3>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <div id="accordion">
-                      <div class="payment-option-tab">
-                        <ul class="nav nav-tabs">
-                        
-                          <li class="nav-item"> 
-                            <a class="nav-link fw-600 active" data-toggle="tab" href="#cash">{{'Cash' | translate}}</a>
-                          </li>
-                          <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#newcreditcard">{{'Line Pay' | translate}}</a>
-                          </li>
-                         
-                        </ul>
-                        <div class="tab-content">
-                          <div class="tab-pane fade" id="newcreditcard">
-                            <div class="row">
+                  <div class="row">
+                    <div class="col-12">
+                      <div id="accordion">
+                        <div class="payment-option-tab">
+                          <ul class="nav nav-tabs">
+                          
+                            <li class="nav-item"> 
+                              <a class="nav-link fw-600 active" data-toggle="tab" href="#cash">{{'Cash' | translate}}</a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#newcreditcard">{{'Line Pay' | translate}}</a>
+                            </li>
+                          
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane fade" id="newcreditcard">
+                              <div class="row">
+                                
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label class="text-light-white fw-700">{{'Table.No' | translate}}</label> 
+                                    <span  style="color: red">(*)</span>
+                                    <input type="text" [(ngModel)]="table" name="table" class="form-control form-control-submit" placeholder="123....">
+                                  </div>
+                                </div>
                               
-                              <div class="col-md-3">
+                              </div>
+                              
+                              <div class="form-group">
+                                <button type="submit" (click)="saveOrder(LINE_PAY)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Place Your Order' | translate}}</button>
+                              </div>
+                              <p class="text-center text-light-black no-margin">By placing your order, you agree to {{'line2u' | translate}} <a routerLink="/checkout">terms of use</a> and <a routerLink="/checkout">privacy agreement</a>
+                              </p>
+                            </div>
+                            <div class="tab-pane active" id="cash">
+                              <div class="col-md-12">
                                 <div class="form-group">
-                                  <label class="text-light-white fw-700">{{'Table.No' | translate}}</label> 
+                                  <label class="text-light-white fw-700">{{'Table.No' | translate}}</label>
                                   <span  style="color: red">(*)</span>
                                   <input type="text" [(ngModel)]="table" name="table" class="form-control form-control-submit" placeholder="123....">
                                 </div>
-                              </div>
-                             
-                            </div>
-                            
-                            <div class="form-group">
-                              <button type="submit" (click)="saveOrder(LINE_PAY)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Place Your Order' | translate}}</button>
-                            </div>
-                            <p class="text-center text-light-black no-margin">By placing your order, you agree to {{'line2u' | translate}} <a routerLink="/checkout">terms of use</a> and <a routerLink="/checkout">privacy agreement</a>
-                            </p>
-                          </div>
-                          <div class="tab-pane active" id="cash">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label class="text-light-white fw-700">{{'Table.No' | translate}}</label>
-                                <span  style="color: red">(*)</span>
-                                <input type="text" [(ngModel)]="table" name="table" class="form-control form-control-submit" placeholder="123....">
+                                <div class="form-group">
+                                  <label class="text-light-white fw-700">{{'Cash.Money' | translate}}</label>
+                                  <span  style="color: red">(*)</span>
+                                  <input type="text" [(ngModel)]="cashMoney" name="cashMoney" class="form-control form-control-submit" placeholder="NT $123....">
+                                </div>
                               </div>
                               <div class="form-group">
-                                <label class="text-light-white fw-700">{{'Cash.Money' | translate}}</label>
-                                <span  style="color: red">(*)</span>
-                                <input type="text" [(ngModel)]="cashMoney" name="cashMoney" class="form-control form-control-submit" placeholder="NT $123....">
+                                <button type="submit" (click)="saveOrder(CASH)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Place Your Order' | translate}}</button>
                               </div>
+                              <p class="text-center text-light-black no-margin">By placing your order, you agree to {{'line2u' | translate}} <a href="javascript:void(0)">terms of use</a> and <a href="javascript:void(0)">privacy agreement</a>
+                              </p>
                             </div>
-                            <div class="form-group">
-                              <button type="submit" (click)="saveOrder(CASH)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Place Your Order' | translate}}</button>
-                            </div>
-                            <p class="text-center text-light-black no-margin">By placing your order, you agree to {{'line2u' | translate}} <a href="javascript:void(0)">terms of use</a> and <a href="javascript:void(0)">privacy agreement</a>
-                            </p>
                           </div>
                         </div>
                       </div>
@@ -370,8 +332,7 @@
             </div>
           </div>
         </div>
-      </div>
-      
+      </ng-container>
     </div>
   </div>
 </section>

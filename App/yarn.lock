@@ -1628,7 +1628,7 @@
     "@syncfusion/ej2-base" "~19.4.52"
     "@syncfusion/ej2-grids" "19.4.56"
 
-"@syncfusion/ej2-angular-inputs@^19.4.48":
+"@syncfusion/ej2-angular-inputs@19.4.52":
   version "19.4.52"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-angular-inputs/-/ej2-angular-inputs-19.4.52.tgz#00e31ae053f5f9d56e2a5c2c075f6d2224555b23"
   integrity sha512-/0zFBVcLkSWmRWLhyaBlZqZZIiUnVQWQi+Ay4EJGYN1XImdKulbPAOF1OwyibN6IZ7sJZGNHczOyRvw/DpdlPg==

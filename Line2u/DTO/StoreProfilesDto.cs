@@ -13,6 +13,13 @@ namespace Line2u.DTO
         public string StoreAddress { get; set; }
         public string StoreOpenTime { get; set; }
         public string StoreCloseTime { get; set; }
+        public string StoreTel { get; set; }
+        public string StoreEmail { get; set; }
+        public string Facebook { get; set; }
+        public string Twitter { get; set; }
+        public string Instagram { get; set; }
+        public string Pinterest { get; set; }
+        public string Youtube { get; set; }
         public string StoreLowPrice { get; set; }
         public string StoreHightPrice { get; set; }
         public string Body { get; set; }
@@ -26,6 +33,8 @@ namespace Line2u.DTO
         public decimal? Status { get; set; }
         public string Guid { get; set; }
         public string AccountGuid { get; set; }
+        public int RatingAVG { get; set; }
+        public int RatingCount { get; set; }
         public List<IFormFile> File { get; set; }
 
     }

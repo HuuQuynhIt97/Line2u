@@ -71,9 +71,65 @@ namespace Line2u.Data
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<OrderDetailHistory> OrderDetailHistories { get; set; }
 
+        public virtual DbSet<StoreRatingComment> StoreRatingComments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            modelBuilder.Entity<StoreRatingComment>(entity =>
+            {
+                entity.ToTable("StoreRatingComment");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccountGuid)
+                    .HasColumnName("Account_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Rating)
+                    .HasColumnName("RATING")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.StoreGuid)
+                    .HasColumnName("Store_GUID")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
             modelBuilder.Entity<Cart>(entity =>
             {
                 entity.ToTable("Cart");
@@ -467,6 +523,8 @@ namespace Line2u.Data
                     .HasColumnName("Photo_Path")
                     .HasMaxLength(200);
 
+               
+
                 entity.Property(e => e.Status)
                     .HasColumnName("STATUS")
                     .HasColumnType("numeric(18, 0)");
@@ -474,6 +532,32 @@ namespace Line2u.Data
                 entity.Property(e => e.StoreAddress)
                     .HasColumnName("STORE_ADDRESS")
                     .HasMaxLength(200);
+                entity.Property(e => e.StoreTel)
+                    .HasColumnName("STORE_TEL")
+                    .HasMaxLength(200);
+                entity.Property(e => e.StoreEmail)
+                    .HasColumnName("STORE_EMAIL")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Facebook)
+                   .HasColumnName("FACEBOOK")
+                   .HasMaxLength(200);
+
+                entity.Property(e => e.Twitter)
+                   .HasColumnName("TWITTER")
+                   .HasMaxLength(200);
+
+                entity.Property(e => e.Instagram)
+                   .HasColumnName("INSTAGRAM")
+                   .HasMaxLength(200);
+
+                entity.Property(e => e.Pinterest)
+                   .HasColumnName("PINTEREST")
+                   .HasMaxLength(200);
+
+                entity.Property(e => e.Youtube)
+                   .HasColumnName("YOUTUBE")
+                   .HasMaxLength(200);
 
                 entity.Property(e => e.StoreCloseTime)
                     .HasColumnName("STORE_CLOSE_TIME")

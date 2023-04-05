@@ -34,7 +34,7 @@
             <ng-container *ngFor="let item of cartDetail; let i=index">
                 <div class="cat-product-box">
                   <div class="cat-product">
-                    <div class="cat-name">
+                    <div class="cat-name" style="width: 100%;">
                       <a href="#">
                         <p class="text-light-green fw-700">
                           <span class="text-dark-white">
@@ -47,9 +47,23 @@
                       </a>
                     </div>
                     <div class="delete-btn">
-                      <a href="#" class="text-dark-white"> <i class="far fa-trash-alt"></i>
+                      <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
                       </a>
                     </div>
+                    <span style="color: transparent;"> | </span>
+                    <div class="delete-btn">
+                      <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                    <span style="color: transparent;"> | </span>
+                    <div class="delete-btn">
+                      <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                        <i class="far fa-trash-alt"></i>
+                      </a>
+                    </div>
+                    <span style="color: transparent;"> | </span>
                     <div class="price"> <a href="#" class="text-dark-white fw-500">
                         ${{item.productPrice * item.quantity}}
                       </a>

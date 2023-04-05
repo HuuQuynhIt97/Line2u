@@ -148,6 +148,7 @@ import { RestaurantrightsidebarComponent } from './views/layout/restaurantrights
 import { RestaurantleftsidebarComponent } from './views/layout/restaurantleftsidebar/restaurantleftsidebar.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NavbarAdminComponent } from './views/layout/navbarAdmin/navbarAdmin.component';
+import { DateAgoPipe } from './_core/pipes/date-ago.pipe';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -155,6 +156,7 @@ if (!lang) {
 }
 @NgModule({
   declarations: [
+    DateAgoPipe,
     AppComponent,
     LayoutComponent,
     HeaderComponent,

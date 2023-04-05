@@ -33,10 +33,6 @@
           <div class="form-group">
             <label for="landLordNo">{{ "STORE_NAME" | translate }}</label>
             <span  style="color: red">(*)</span>
-            <!-- <span class="max-length">
-              ( {{ "Text length" | translate }} <= 20 )</span
-            > -->
-    
             <input
               [(ngModel)]="model.storeName"
               name="storeName"
@@ -46,6 +42,34 @@
             />
           </div>
         </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_TEL" | translate }}</label>
+            <input
+              [(ngModel)]="model.storeTel"
+              name="storeTel"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_EMAIL" | translate }}</label>
+            <input
+              [(ngModel)]="model.storeEmail"
+              name="storeEmail"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        
     
         <div class="col-12">
           <div class="form-group">
@@ -67,6 +91,67 @@
           <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
           
             </ejs-richtexteditor>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_FACEBOOK_LINK" | translate }}</label>
+            <input
+              [(ngModel)]="model.facebook"
+              name="facebook"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_TWITTER_LINK" | translate }}</label>
+            <input
+              [(ngModel)]="model.twitter"
+              name="twitter"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_INSTAGRAM_LINK" | translate }}</label>
+            <input
+              [(ngModel)]="model.instagram"
+              name="instagram"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_PINTEREST_LINK" | translate }}</label>
+            <input
+              [(ngModel)]="model.pinterest"
+              name="pinterest"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordNo">{{ "STORE_YOUTUBE_LINK" | translate }}</label>
+            <input
+              [(ngModel)]="model.youtube"
+              name="youtube"
+              maxlength="200"
+              type="text"
+              class="form-control"
+            />
+          </div>
         </div>
         
         <div class="col-12">

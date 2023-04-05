@@ -1254,7 +1254,8 @@ span.type-tag{
 .header .right-side .cart-btn.notification-btn {
     position: static;
 }
-.cart-dropdown:hover>.cart-detail-box,
+.cart-dropdown:hover>
+.cart-detail-box,
 .notification-btn:hover>.notification-dropdown {
     opacity: 1;
     visibility: visible;

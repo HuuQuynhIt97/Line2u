@@ -30,12 +30,14 @@ import { AuthService } from 'src/app/_core/_service/auth.service';
 import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
   styleUrls: [
     './home-store.component.scss',
   ],
+  providers: [DatePipe],
   encapsulation: ViewEncapsulation.None
 })
 export class HomeStoreComponent implements OnInit {
@@ -69,6 +71,7 @@ export class HomeStoreComponent implements OnInit {
   isLineAccount: string = JSON.parse(localStorage.getItem('user'))?.isLineAccount
   isCustomer: boolean = JSON.parse(localStorage.getItem('user'))?.isCustomer
   noImage = ImagePathConstants.NO_IMAGE_QR;
+  noImage_Comment = ImagePathConstants.NO_IMAGE_HEADER_IMAGE;
   apiHost = environment.apiUrl.replace('/api/', '');
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   // public buttonsVisibility: CarouselButtonVisibility = "Visible";
@@ -78,6 +81,9 @@ export class HomeStoreComponent implements OnInit {
   selectedIndex = -1;
   isLogin: boolean = false
   isOpenDropdown: boolean = false
+  userImage = JSON.parse(localStorage.getItem('user'))?.image
+  ratingCommentData: any;
+  isRatingComment: boolean = false;
   @HostListener("window:scroll", [])onWindowScroll() {
     //.scrollTop
     if(window.pageYOffset > 500) {
@@ -88,6 +94,10 @@ export class HomeStoreComponent implements OnInit {
  }
  @ViewChild('toggleButton') toggleButton: ElementRef;
  @ViewChild('menu') menu: ElementRef;
+  selected = 1;
+	hovered = 0;
+	readonly = false;
+  comment: string
   constructor(
     private spinner: NgxSpinnerService,
     private renderer: Renderer2,
@@ -116,9 +126,13 @@ export class HomeStoreComponent implements OnInit {
       numVisible: 1,
       numScroll: 3
   }];
-  this.renderer.listen('window', 'click',(e:Event)=>{
-    // this.isOpenDropdown = !this.isOpenDropdown;
-    } );
+    this.dataService.currentMessage.subscribe((res: any) => {
+      if(res === 'load cart') {
+        this.cartCountTotal()
+        this.cartAmountTotal()
+        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+      }
+    })
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -144,6 +158,41 @@ export class HomeStoreComponent implements OnInit {
     this.cartAmountTotal()
     this.cartCountTotal();
    
+  }
+  cancelComment() {
+    this.comment = ''
+    this.selected = 1
+  }
+  postComment() {
+    const model = {
+      comment: this.comment,
+      rating: this.selected,
+      createBy: this.user.id,
+      storeGuid: this.storeInfo.guid
+    }
+    this.service.postRatingComment(model).subscribe(res => {
+      if(res.success) {
+        this.toast.success(this.translate.instant('Comment success'))
+        this.comment = ''
+        this.getStoreInfor(this.storeInfo.id)
+      }
+    })
+  }
+  checkRatingComment() {
+    this.service.checkRatingAndComment(this.storeInfo?.guid,this.user?.id).subscribe(res => {
+      this.isRatingComment = res
+    })
+  }
+  getRatingComment() {
+    this.service.getRatingAndComment(this.storeInfo?.guid).subscribe(res => {
+      this.ratingCommentData = res
+    })
+  }
+  imagePathCustome(path) {
+    if (path !== null) {
+      return  path;
+    }
+    return this.noImage_Comment;
   }
   navigateMenu() {
     this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}/order-tracking`])
@@ -235,7 +284,6 @@ export class HomeStoreComponent implements OnInit {
         }
         else {
           this.serviceCart.update(this.cartModel).subscribe(res => {
-            console.log('update',res)
             // this.toast.success(this.translate.instant('Add_To_Cart_Success'))
             this.cartCountTotal()
             this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
@@ -270,7 +318,6 @@ export class HomeStoreComponent implements OnInit {
       this.cartModel.productId = item.id
       this.cartModel.productPrice = item.productPrice
       this.serviceCart.add(this.cartModel).subscribe(res => {
-        console.log(res)
         this.toast.success(this.translate.instant('Add_To_Cart_Success'))
         this.cartCountTotal()
         this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
@@ -392,7 +439,6 @@ export class HomeStoreComponent implements OnInit {
     if(cart_detail.length === 0) {
       return this.toast.error(this.translate.instant('CART_EMPTY'))
     }else {
-      console.log(cart_detail)
       this.removeLocalStore('cart')
       this.removeLocalStore('cart_detail')
       this.count = 0
@@ -422,18 +468,20 @@ export class HomeStoreComponent implements OnInit {
   loadProduct(_category) {
     this.spinner.show()
     this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
-      console.log(res)
       this.products = res
       this.spinner.hide()
     })
   }
   getStoreInfor(storeId) {
     this.service.getById(storeId).subscribe(res => {
+      console.log(res)
       this.storeInfo = res;
       this.getCategoryOfStore(this.storeInfo.accountGuid)
       this.getProducts(this.storeInfo.accountGuid , this.user?.uid)
       this.loadBannerData()
       this.loadNewData()
+      this.getRatingComment()
+      this.checkRatingComment()
     })
   }
   getCategoryOfStore(guid){
@@ -443,7 +491,6 @@ export class HomeStoreComponent implements OnInit {
   }
   getProducts(store_guid, cus_guid){
     this.serviceMainCategory.getProducts(store_guid,cus_guid).subscribe(res => {
-      console.log('all product', res)
       this.products = res
     })
   }

@@ -217,6 +217,7 @@ export class StoreProfileComponent  implements OnInit {
        this.alert.updateMessage,
        () => {
         this.model.createBy = this.user.id;
+        this.model.updateBy = this.user.id;
          this.model.file = this.file || [];
          this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
            (res) => {

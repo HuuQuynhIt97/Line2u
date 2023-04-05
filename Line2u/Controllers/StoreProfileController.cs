@@ -30,6 +30,22 @@ namespace Line2u.Controllers
             return StatusCodeResult(await _service.AddAsync(model));
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddRatingComment([FromBody] StoreRatingCommentDto model)
+        {
+            return StatusCodeResult(await _service.AddRatingComment(model));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetRatingAndComment(string storeGuid)
+        {
+            return Ok(await _service.GetRatingAndComment(storeGuid));
+        }
+        [HttpGet]
+        public async Task<ActionResult> CheckRatingAndComment(string storeGuid,int userId)
+        {
+            return Ok(await _service.CheckRatingAndComment(storeGuid, userId));
+        }
         [HttpPut]
         public async Task<ActionResult> UpdateAsync([FromBody] StoreProfilesDto model)
         {
