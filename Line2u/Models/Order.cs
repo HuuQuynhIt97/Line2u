@@ -31,5 +31,7 @@ namespace Line2u.Models
         public string IsPayment { get; set; }
         public string Delivery { get; set; }
         public string CustomerEmail { get; set; }
+        public string TableNo { get; set; }
+        public decimal? CashReceived { get; set; }
     }
 }

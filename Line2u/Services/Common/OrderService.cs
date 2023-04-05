@@ -461,21 +461,55 @@ ISPService spService)
             var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
             var products = await _repoProduct.FindAll().ToListAsync();
             var result = (from x in order
-                          join y in order_detail on x.Guid equals y.OrderGuid
-                          let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
+                          let y = order_detail.Where(o => o.OrderGuid == x.Guid).ToList()
+                          //in order_detail on x.Guid equals y.OrderGuid
+                          //let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
                           select new
                           {
                               orderID = x.Guid,
-                              product_total_price = y.Quantity * y.Price,
-                              list_product = z.Select(o => new {
-                                o.ProductName,
-                                o.PhotoPath,
-                                price = y.Quantity * y.Price
-                              })
-                          }).ToList();
+                              list_product = getListProducts(y).Result
+                              //list_product = z.Select(o => new {
+                              //  o.ProductName,
+                              //  o.PhotoPath,
+                              //  price = y.Quantity * y.Price
+                              //})
+                          }).DistinctBy(o => o.orderID).ToList();
 
+            var result2 = result.GroupBy(x => x.orderID)
+            //.Select(o => new
+            //{
+            //    orderID = o.First().orderID,
+            //    list_product = o.GroupBy(z => z.orderID),
+            //})
+            .ToList();
 
             return result;
+        }
+
+        private async Task<object> getListProducts(List<OrderDetail> data)
+        {
+            var products = _repoProduct.FindAll().ToList();
+            var list = new List<object>();
+            foreach (var product in data)
+            {
+                var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
+
+                var item_add = new
+                {
+                    ProductName = item.ProductName,
+                    PhotoPath = item.PhotoPath,
+                    Price = product.Quantity * product.Price
+                };
+                    
+                //    .Select(x => new {
+                //    ProductName = x.ProductName,
+                //    PhotoPath = x.PhotoPath,
+                //    Price = product.Quantity * product.Price
+                //});
+                list.Add(item_add);
+            }
+
+            return list;
         }
 
         public async Task<object> GetDetailOrder(string id)

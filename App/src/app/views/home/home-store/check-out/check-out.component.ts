@@ -98,6 +98,10 @@ export class CheckOutComponent implements OnInit {
       this.selectedIndex =  -1
     }
  }
+ table: string
+ CASH: string = 'Cash'
+ LINE_PAY: string = 'Line Pay'
+ cashMoney: number = 0
  @ViewChild('toggleButton') toggleButton: ElementRef;
  @ViewChild('menu') menu: ElementRef;
   constructor(
@@ -131,17 +135,17 @@ export class CheckOutComponent implements OnInit {
       numVisible: 1,
       numScroll: 3
   }];
-   const payment = {
-      amount: this.getLocalStore('totalPrice') || 0,
-      currency: "TWD",
-    };
-  if(window.location.href.indexOf('transactionId=') > 0) {
-    let params = window.location.href.split('?')[1].split('&');
-    let transactionId = params[0].replace('transactionId=', '')
-    let orderId = params[1].replace('orderId=', '')
-    console.log(payment)
-    this.confrimLinePay(transactionId,orderId,payment)
-  }
+  //  const payment = {
+  //     amount: this.getLocalStore('totalPrice') || 0,
+  //     currency: "TWD",
+  //   };
+  // if(window.location.href.indexOf('transactionId=') > 0) {
+  //   let params = window.location.href.split('?')[1].split('&');
+  //   let transactionId = params[0].replace('transactionId=', '')
+  //   let orderId = params[1].replace('orderId=', '')
+  //   console.log(payment)
+  //   this.confrimLinePay(transactionId,orderId,payment)
+  // }
   this.renderer.listen('window', 'click',(e:Event)=>{
     // this.isOpenDropdown = !this.isOpenDropdown;
     } );
@@ -174,6 +178,92 @@ export class CheckOutComponent implements OnInit {
     // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     // this.cartDetail = this.getLocalStore("cart_detail");
     
+  }
+  validateCashOut(method) {
+    console.log(method)
+    console.log(this.cashMoney)
+    if (method === this.CASH) {
+      if (this.table === null || this.table === undefined || this.table === '') {
+        this.toastr.warning(this.translate.instant('Please input table'));
+        return false;
+      }
+      if (this.cashMoney === null || this.cashMoney === undefined || this.cashMoney === 0) {
+        this.toastr.warning(this.translate.instant('Please input Money'));
+        return false;
+      }
+      if (this.cashMoney < this.totalPrice) {
+        this.toastr.warning(this.translate.instant('Amount Error'));
+        return false;
+      }
+    }else {
+      if (this.table === null || this.table === undefined || this.table === '') {
+        this.toastr.warning(this.translate.instant('Please input table'));
+        return false;
+      }
+    }
+    return true;
+  }
+  saveOrder(method){
+    if(this.cartDetail.length === 0) {
+      return this.toastr.error(this.translate.instant('CART_EMPTY'));
+    }else {
+      if (this.validateCashOut(method) == false) return;
+      this.setLocalStore('totalPrice', this.totalPrice)
+      this.orderModel.totalPrice = this.totalPrice
+      this.orderModel.createBy = this.user.id
+      this.orderModel.customerName = this.modelAccount.accountName
+      this.orderModel.customerAddress = this.modelAccount.accountAddress
+      this.orderModel.customerEmail = this.modelAccount.accountEmail
+      this.orderModel.customerPhone = this.modelAccount.accountTel
+      this.orderModel.accountId = this.modelAccount.accountId
+      this.orderModel.storeGuid = this.storeInfo.guid
+      this.orderModel.products = this.cartDetail
+      this.orderModel.paymentType = method
+      this.orderModel.tableNo = this.table
+      this.orderModel.cashReceived = this.cashMoney || 0
+      this.orderModel.isPayment = 'Unpaid'
+      this.orderModel.delivery = 'Pending'
+      // const products = this.cartDetail.map((item: any) => {
+      //     return {
+      //       name: item.productName,
+      //       quantity: item.quantity,
+      //       price: item.productPrices,
+      //       imageUrl: this.imagePath(item.photoPath)
+      //     }
+      // })
+      // const payment = 
+      // {
+      //   amount: this.totalPrice,
+      //   currency: "TWD",
+      //   orderId: Date.now().toString(), 
+      //   packages: [
+      //     {
+      //       id: this.generateGuid(),
+      //       amount: this.totalPrice,
+      //       name: "測試",
+      //       products: products
+      //     },
+      //   ],
+      //   RedirectUrls: {
+      //     ConfirmUrl: "https://d831-2402-800-6311-ebda-e5d0-b9e7-8304-cec8.ap.ngrok.io/confirm.html",
+      //     CancelUrl: "https://3a8e-114-37-157-213.jp.ngrok.io/api/LinePay/Cancel",
+      //   }
+      // };
+      // this.linePayService.createPayment(payment).subscribe((res: any) => {
+      //   console.log(res)
+      //   if(res.returnCode === '0000') {
+      //     this.orderService.add(this.orderModel).subscribe(res => {})
+      //     return window.location.assign(res.info.paymentUrl.web)
+      //   }
+      // })
+
+      this.orderService.add(this.orderModel).subscribe(res => {
+        this.toastr.success(this.translate.instant('Order_Success'))
+        this.dataService.changeMessage('load cart')
+        this.router.navigate([`home/store/order-tracking`])
+      })
+      
+    }
   }
   confrimLinePay(transactionId,orderId,data){
     this.linePayService.confirmPayment(transactionId,orderId,data).subscribe((res: any) => {
@@ -378,63 +468,7 @@ export class CheckOutComponent implements OnInit {
     // this.cartDetail = this.getLocalStore("cart_detail");
     // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
-  saveOrder(){
-    if(this.cartDetail.length === 0) {
-      return this.toastr.error(this.translate.instant('CART_EMPTY'));
-      // return this.alertify.error(this.translate.instant('CART_EMPTY'))
-    }else {
-      // if (this.validate(this.modelAccount) == false) return;
-      this.setLocalStore('totalPrice', this.totalPrice)
-      this.orderModel.totalPrice = this.totalPrice
-      this.orderModel.createBy = this.user.id
-      this.orderModel.customerName = this.modelAccount.accountName
-      this.orderModel.customerAddress = this.modelAccount.accountAddress
-      this.orderModel.customerEmail = this.modelAccount.accountEmail
-      this.orderModel.customerPhone = this.modelAccount.accountTel
-      this.orderModel.accountId = this.modelAccount.accountId
-      this.orderModel.storeGuid = this.storeInfo.guid
-      this.orderModel.products = this.cartDetail
-      this.orderModel.paymentType = this.paymentType
-      this.orderModel.isPayment = 'Unpaid'
-      this.orderModel.delivery = 'Pending'
-      const products = this.cartDetail.map((item: any) => {
-          return {
-            name: item.productName,
-            quantity: item.quantity,
-            price: item.productPrices,
-            imageUrl: this.imagePath(item.photoPath)
-          }
-      })
-      const payment = 
-      {
-        amount: this.totalPrice,
-        currency: "TWD",
-        orderId: Date.now().toString(), //使用 Timestamp 當作 orderId
-        packages: [
-          {
-            id: this.generateGuid(),
-            amount: this.totalPrice,
-            name: "測試",
-            products: products
-          },
-        ],
-        RedirectUrls: {
-          ConfirmUrl: "https://d831-2402-800-6311-ebda-e5d0-b9e7-8304-cec8.ap.ngrok.io/confirm.html",
-          CancelUrl: "https://3a8e-114-37-157-213.jp.ngrok.io/api/LinePay/Cancel",
-        }
-      };
-      this.linePayService.createPayment(payment).subscribe((res: any) => {
-        console.log(res)
-        if(res.returnCode === '0000') {
-          this.orderService.add(this.orderModel).subscribe(res => {})
-          return window.location.assign(res.info.paymentUrl.web)
-          // return this.router.navigateByUrl(res.info.paymentUrl.web)
-          // window.location.assign(res.info.paymentUrl.web)
-        }
-      })
-      
-    }
-  }
+  
   confirmOrder() {
 
   }

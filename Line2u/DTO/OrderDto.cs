@@ -33,6 +33,8 @@ namespace Line2u.DTO
         public string PaymentType { get; set; }
         public string IsPayment { get; set; }
         public string Delivery { get; set; }
+        public string TableNo { get; set; }
+        public decimal? CashReceived { get; set; }
 
         public List<ProductsDto> Products { get; set; }
 

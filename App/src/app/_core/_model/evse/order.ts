@@ -1,6 +1,7 @@
 export interface Order {
     id: number;
     totalPrice: number | null;
+    cashReceived: number | null;
     isDelete: boolean;
     byingStatus: boolean;
     pendingStatus: boolean;
@@ -24,6 +25,7 @@ export interface Order {
     paymentType: string;
     isPayment: string;
     delivery: string;
+    tableNo: string;
     quantity: number;
     products: any;
 }

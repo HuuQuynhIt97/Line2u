@@ -184,6 +184,10 @@ namespace Line2u.Data
                     .HasColumnName("PRODUCT_GUID")
                     .HasMaxLength(40);
 
+                entity.Property(e => e.TableNo)
+                    .HasColumnName("Table_No")
+                    .HasMaxLength(40);
+
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
 
                 entity.Property(e => e.Status)
@@ -195,6 +199,7 @@ namespace Line2u.Data
                     .HasMaxLength(40);
 
                 entity.Property(e => e.TotalPrice).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.CashReceived).HasColumnName("Cash_Received").HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.UpdateBy)
                     .HasColumnName("UPDATE_BY")

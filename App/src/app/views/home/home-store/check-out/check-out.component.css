@@ -1,8 +1,7 @@
 /* @media (max-width: 576px) {
 } */
-.payment-option-tab>.nav>.nav-item {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
+.sidebar .cart-detail-box>.card .card-body {
+    height: auto !important;
 }
 .steps {
     margin-top: -41px;
