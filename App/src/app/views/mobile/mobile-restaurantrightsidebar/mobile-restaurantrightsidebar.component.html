@@ -1,0 +1,99 @@
+<div class="sidebar">
+  <!-- <div class="video-box mb-xl-20">
+    <div class="video_wrapper video_wrapper_full js-videoWrapper">
+      <iframe class="videoIframe js-videoIframe" src="https://www.youtube.com/embed/DgwCCN5Qi3E" data-src="https://www.youtube.com/embed/DgwCCN5Qi3E?autoplay=1&amp;rel=0" allow="autoplay"></iframe>
+      <div class="videoPoster js-videoPoster">
+        <div class="video-inner">
+          <i class="far fa-play-circle"></i>
+        </div>
+      </div>
+    </div>
+    <div class="discount-box main-box padding-tb-10">
+      <div class="discount-price padding-10">
+        <div class="left-side">
+          <h6 class="text-light-black fw-600 no-margin">Watch Now and get 50% discount</h6>
+          <p class="text-light-white no-margin">The hung-over foody (2022)</p>
+        </div>
+        <div class="right-side justify-content-end">
+          <div class="dis-text">
+            <span class="badge bg-light-green text-custom-white fw-400">Discount</span>
+            <h4 class="text-light-black no-margin">50%</h4>
+          </div>
+          <a routerLink="/restaurant">
+          <img src="assets/img/logo-3.jpg" class="img-fluid" alt="logo">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="cart-detail-box">
+    <div class="card">
+      <div class="card-header padding-15 fw-700">{{'Your Order' | translate}}</div>
+      <div class="card-body no-padding" id="scrollstyle-4">
+         <ng-container *ngIf="cartDetail.length > 0; else elseTemplate">
+          <ng-container *ngFor="let item of cartDetail; let i=index">
+              <div class="cat-product-box">
+                <div class="cat-product">
+                  <div class="cat-name" style="width: 100%;white-space: break-spaces">
+                    <a href="#">
+                      <p class="text-light-green fw-700">
+                        <span class="text-dark-white">
+                          {{item.quantity}}
+                            </span> 
+                            {{item.productName}}
+                        </p>
+                      <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
+                      </span>
+                    </a>
+                  </div>
+                  <div class="delete-btn minus-circle" style="font-size: 20px;">
+                    <a  href="javascript:void(0)" class="text-dark-white"> 
+                      <i class="fa fa-minus-circle" id="minus-circle" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <span style="color: transparent;"> | </span>
+                  <div class="delete-btn" style="font-size: 20px;">
+                    <a  href="javascript:void(0)" class="text-dark-white"> 
+                      <i class="fa fa-plus-circle" id="minus-circle" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <span style="color: transparent;"> | </span>
+                  <div class="delete-btn" style="font-size: 20px;">
+                    <a  href="javascript:void(0)" class="text-dark-white"> 
+                      <i class="far fa-trash-alt" id="minus-circle"></i>
+                    </a>
+                  </div>
+                  <span style="color: transparent;"> | </span>
+                  <div class="price"> <a href="#" class="text-dark-white fw-500">
+                      ${{item.productPrice * item.quantity}}
+                    </a>
+                  </div>
+                </div>
+              </div>
+          </ng-container>
+          
+          <div class="item-total">
+              <div class="total-price border-0"> <span class="text-dark-white fw-700">{{'Items subtotal' | translate}}:</span>
+                  <span class="text-dark-white fw-700">${{totalPrice}}</span>
+              </div>
+            
+          </div>
+         </ng-container>
+         <ng-template #elseTemplate>
+          <div class="item-total">
+              <div class="empty-bag padding-15 fw-700"> <a href="#">{{'rightSidebar.EmptyBag' | translate}}</a>
+              </div>
+          </div>
+         </ng-template>
+         
+          
+       
+      </div>
+      <div class="card-footer padding-15"> 
+        <a  style="cursor: pointer;" class="btn-first green-btn text-custom-white full-width fw-500">
+        {{'rightSidebar.ProceedToCheckout.label' | translate}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

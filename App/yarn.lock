@@ -3995,6 +3995,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.4.0:
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.13.tgz#eb1682f01d17c70ed5244317091d745c9a249ef8"
+  integrity sha512-by7jKAo73y5/Do0K6sxdTKHgndY0NMjG2bEdgeJxycbcmHuCiMXqw8sxy5C5Y5WTOTcDGmbT7Sr5CgKOXR06OA==
+
 cross-spawn@^6.0.0:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
@@ -5462,6 +5467,11 @@ file-loader@6.1.1:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+file-upload-with-preview@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/file-upload-with-preview/-/file-upload-with-preview-6.0.2.tgz#ae7da59e288bf024e1f4925c12a79c54984bf67f"
+  integrity sha512-MZL+ou4QRZJtcQ0Nuv9YIUQE4XoLENPsoWGiQmgY+oEMzMmp2cLOFCbSfFvUZOd9Mf7D1boTEcJaONoiKKo/bg==
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -7989,11 +7999,26 @@ ngx-drag-scroll@^8.0.0-beta.2:
   dependencies:
     tslib "^1.9.0"
 
+ngx-dropzone@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/ngx-dropzone/-/ngx-dropzone-2.5.0.tgz#40f4e291453b4ce2f98681f201e4c096493d3c9b"
+  integrity sha512-Q6F+veHVvGwJmQlgLA9p7P2GHtzY4kC8xJ2NWlke1YAt0utICC9jSXg8QZD6n1iFBYX1xOooPmd6X6Fo405C0g==
+  dependencies:
+    tslib "^1.9.0"
+
 ngx-image-cropper@^3.1.5:
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/ngx-image-cropper/-/ngx-image-cropper-3.3.5.tgz#39f636e3989c5c84241f5130d0124ded6631fbeb"
   integrity sha512-0yRVKG5XAbVo3rOaj/iFDlekGsxEqXKU9iXFbjyvHvRT2DFs+AjwtyvINsHCWw+4ed9yA4Y+wLIUNqzA0bfxLw==
   dependencies:
+    tslib "^1.9.0"
+
+ngx-image-uploader@^6.0.0-beta.1:
+  version "6.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/ngx-image-uploader/-/ngx-image-uploader-6.0.0-beta.1.tgz#5e566a35280fbfbb3ae4b1404d965db145bea620"
+  integrity sha512-8xF5I8WjYNaQmj+9RG2bwc4l7s3W+tnkph0ZE+tdP8+mcICt9DfiY3QXrfrCbStbJ4Dvz0/GRcXKt8EyGSJ72Q==
+  dependencies:
+    cropperjs "^1.4.0"
     tslib "^1.9.0"
 
 ngx-infinite-scroll@^8.0.1:

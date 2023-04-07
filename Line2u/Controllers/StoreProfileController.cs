@@ -103,7 +103,7 @@ namespace Line2u.Controllers
             return Ok(await _service.GetWithPaginationsAsync(paramater));
         }
         [HttpPost]
-        public async Task<ActionResult> DeleteUploadFile([FromForm] decimal key)
+        public async Task<ActionResult> DeleteUploadFile([FromQuery] decimal key)
         {
             return Ok(await _service.DeleteUploadFile(key));
         }

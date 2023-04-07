@@ -119,8 +119,11 @@ loadCldr(
     require('cldr-data/main/vi/numbers.json'),
     require('cldr-data/main/vi/timeZoneNames.json'),
     require('cldr-data/supplemental/weekdata.json'));
-
-    
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { HomeStoreComponent } from '../home/home-store/home-store.component';
+import { HomeStoreMobilePreviewComponent } from './home-store-mobile-preview/home-store-mobile-preview.component';
+import { SwiperModule } from 'swiper/angular';
+import { MobileRestaurantrightsidebarComponent } from './mobile-restaurantrightsidebar/mobile-restaurantrightsidebar.component';
 @NgModule({
   declarations: [
     MobileComponent,
@@ -153,13 +156,16 @@ loadCldr(
     MobileCartOrderComponent,
     CartOrderDetailComponent,
     NavbarMobileComponent,
-    BackPreviousPageComponent
+    BackPreviousPageComponent,
+    HomeStoreMobilePreviewComponent,
+    MobileRestaurantrightsidebarComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
   ],
   imports: [
     CommonModule,
+    NgxDropzoneModule,
     FormsModule,
     ReactiveFormsModule,
     DateRangePickerModule,
@@ -173,6 +179,7 @@ loadCldr(
     MenuAllModule,
     TimePickerAllModule,
     ScheduleModule,
+    SwiperModule,
     Common2Module.forRoot(),
     SharedModule.forRoot(),
     TranslateModule.forRoot({

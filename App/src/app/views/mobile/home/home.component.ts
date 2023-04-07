@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/_core/_service/auth.service';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 import { environment } from 'src/environments/environment';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
+import { DataService } from 'src/app/_core/_service/data.service';
 declare let $: any;
 
 @Component({
@@ -24,10 +25,14 @@ export class HomeComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'))
   noImage = ImagePathConstants.NO_IMAGE_QR;
   apiHost = environment.apiUrl.replace('/api/', '');
+  IsloadCategoryProductComponent: boolean = false
+  IsloadBannerNewComponent: boolean = false
+  IsloadPreviewComponent: boolean = false
   constructor(
     public router: Router,
     private cookieService: CookieService,
     private alertify: AlertifyService,
+    private dataService: DataService,
     private trans: TranslateService,
     private utilityService: UtilitiesService,
     private service: XAccountService,
@@ -40,6 +45,18 @@ export class HomeComponent implements OnInit {
     JSON.parse(localStorage.getItem("user_landlord"))?.username || "Guest";
     this.configImage();
 
+  }
+  loadCategoryProductComponent() {
+    this.IsloadCategoryProductComponent = true;
+  }
+  loadBannerNewComponent() {
+    this.IsloadBannerNewComponent = true
+    this.IsloadCategoryProductComponent = false
+  }
+  loadPreviewComponent() {
+    this.IsloadPreviewComponent = true
+    this.IsloadBannerNewComponent = false
+    this.IsloadCategoryProductComponent = false
   }
   loadDetail() {
     const guid = this.user.id;

@@ -30,17 +30,13 @@ import { AuthService } from 'src/app/_core/_service/auth.service';
 import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
+
 @Component({
-  selector: 'app-home-store',
-  templateUrl: './home-store.component.html',
-  styleUrls: [
-    './home-store.component.scss',
-  ],
-  providers: [DatePipe],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-home-store-mobile-preview',
+  templateUrl: './home-store-mobile-preview.component.html',
+  styleUrls: ['./home-store-mobile-preview.component.scss'],
 })
-export class HomeStoreComponent implements OnInit {
+export class HomeStoreMobilePreviewComponent implements OnInit {
 
   fieldsLang: object = { text: "name", value: "id" };
   menus: any;
@@ -82,6 +78,7 @@ export class HomeStoreComponent implements OnInit {
   isLogin: boolean = false
   isOpenDropdown: boolean = false
   userImage = JSON.parse(localStorage.getItem('user'))?.image
+  storeId = JSON.parse(localStorage.getItem('store'))?.id
   ratingCommentData: any;
   isRatingComment: boolean = false;
   @HostListener("window:scroll", [])onWindowScroll() {
@@ -146,7 +143,7 @@ export class HomeStoreComponent implements OnInit {
     }else {
       this.isLogin = false
     }
-    var storeId = this.route.snapshot.paramMap.get('id')
+    var storeId = this.storeId
     this.getStoreInfor(storeId) 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
@@ -203,6 +200,7 @@ export class HomeStoreComponent implements OnInit {
   loadBannerData() {
     let id = this.storeInfo.createBy !== null ? this.storeInfo.createBy : 0
     this.webBannerService.getByUserID(id).subscribe((x: any)=> {
+      console.log('banner' , x)
       this.banners = x;
     })
   }
@@ -245,7 +243,7 @@ export class HomeStoreComponent implements OnInit {
   }
   detailNewBanner(item) {
     this.dataService.changeLang('Store_Click')
-    this.router.navigate([`home/news-detail/${item.id}`])
+    this.router.navigate([`home/news-detail/${item.link}`])
   }
   cartCountTotal() {
     this.serviceCart.cartCountTotal(this.user?.uid || '').subscribe(res => {

@@ -29,8 +29,11 @@ export class WebNewsUserService  extends CURDService<WebNewsUser>{
     }
     const file = model.file;
     delete model.file;
+    const fileThumbnail = model.fileThumnail;
+    delete model.fileThumnail;
     const params = this.utilitiesService.ToFormData(model);
     params.append("file", file);
+    params.append("fileThumbnail", fileThumbnail);
     return this.http.post<OperationResult>(`${this.base}WebNewsUser/AddForm`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: WebNewsUser): Observable<OperationResult> {
@@ -45,8 +48,11 @@ export class WebNewsUserService  extends CURDService<WebNewsUser>{
 
     const file = model.file;
     delete model.file;
+    const fileThumbnail = model.fileThumnail;
+    delete model.fileThumnail;
     const params = this.utilitiesService.ToFormData(model);
     params.append("file", file);
+    params.append("fileThumbnail", fileThumbnail);
 
     return this.http.put<OperationResult>(`${this.base}WebNewsUser/updateForm`, params).pipe(catchError(this.handleError));
   }

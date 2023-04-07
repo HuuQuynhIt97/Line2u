@@ -102,18 +102,18 @@ public initialGridLoad = true;
     this.loadLang()
   }
   dataBound() {
-    if (this.initialGridLoad) {
-        this.initialGridLoad = false;
-        const pager = document.getElementsByClassName('e-gridpager');
-        let topElement;
-        if (this.grid.allowGrouping || this.grid.toolbar) {
-            topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
-                document.getElementsByClassName('e-toolbar');
-        } else {
-            topElement = document.getElementsByClassName('e-gridheader');
-        }
-        this.grid.element.insertBefore(pager[0], topElement[0]);
-    }
+    // if (this.initialGridLoad) {
+    //     this.initialGridLoad = false;
+    //     const pager = document.getElementsByClassName('e-gridpager');
+    //     let topElement;
+    //     if (this.grid.allowGrouping || this.grid.toolbar) {
+    //         topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
+    //             document.getElementsByClassName('e-toolbar');
+    //     } else {
+    //         topElement = document.getElementsByClassName('e-gridheader');
+    //     }
+    //     this.grid.element.insertBefore(pager[0], topElement[0]);
+    // }
 }
   loadDataCategory() {
     this.serviceMainCategory.getCategoryByUserID(this.user.uid).subscribe(res => {

@@ -1,13 +1,13 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
-    <li class="breadcrumb-item"><a href="mobile/home">{{'Home' | translate}}</a></li>
+    <!-- <li class="breadcrumb-item"><a href="mobile/home">{{'Home' | translate}}</a></li> -->
     <li class="breadcrumb-item active" aria-current="page">{{'NAV_MAIN_CATEGORY' | translate}}</li>
   </ol>
 </nav>
 <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
-<app-back-previous-page></app-back-previous-page>
+<!-- <app-back-previous-page></app-back-previous-page> -->
 <div class="row">
 
 <div class="col-12">
@@ -16,7 +16,6 @@
       <ejs-grid
         #grid
         id="grid"
-        height="600px"
         (dataBound)='dataBound()'
         [dataSource]="data"
         [allowPaging]="true"

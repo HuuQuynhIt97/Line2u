@@ -72,7 +72,7 @@
                       </a>
                     </li> -->
                     <li>
-                      <a  [href]="'mobile/cart-order'">
+                      <a  [href]="'mobile/home'">
                         <div class="icon"><i class="flaticon-rewind"></i>
                         </div>
                         <span class="details">{{'Manager.store' | translate}}</span>
@@ -80,6 +80,7 @@
                     </li>
                     <li>
                       <a [href]="'home/store/' + storeInfo?.storeName + '/' + storeInfo?.id ">
+                      <!-- <a [href]="'mobile/home'"> -->
                         <div class="icon"><i class="flaticon-takeaway"></i>
                         </div>
                         <span class="details">{{'label.my.store' | translate}}</span>
@@ -103,11 +104,18 @@
                   </ul>
                   <div class="user-mobile-footer"></div>
                   <ul>
-                    <li>
+                    <!-- <li>
                       <a href="mobile/store-profile">
                         <div class="icon"><i class="flaticon-user"></i>
                         </div>
                         <span class="details">{{ 'MOBILE_STORE_PROFILE' | translate }}</span>
+                      </a>
+                    </li> -->
+                    <li>
+                      <a [href]="'mobile/cart-order'">
+                        <div class="icon"><i class="flaticon-takeaway"></i>
+                        </div>
+                        <span class="details">{{ 'MOBILE_CART_ORDER' | translate }}</span>
                       </a>
                     </li>
                     <li>
@@ -117,14 +125,8 @@
                         <span class="details">{{ 'MOBILE_SHOPPING' | translate }}</span>
                       </a>
                     </li>
-                    <li>
-                      <a [href]="'mobile/cart-order'">
-                        <div class="icon"><i class="flaticon-takeaway"></i>
-                        </div>
-                        <span class="details">{{ 'MOBILE_CART_ORDER' | translate }}</span>
-                      </a>
-                    </li>
-                    <li>
+                   
+                    <!-- <li>
                       <a href="mobile/menu-category">
                         <div class="icon"><i class="flaticon-breadbox"></i>
                         </div>
@@ -153,7 +155,7 @@
                         </div>
                         <span class="details">{{ 'MOBILE_MY_NEWS_USER' | translate }}</span>
                       </a>
-                    </li>
+                    </li> -->
 
                     <!-- <li>
                       <a href="mobile/account" >

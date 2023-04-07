@@ -54,6 +54,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
         'Outdent', 'Indent', '|', 'ClearFormat',
         'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
 };
+  fileThumbnail: any;
   constructor(
     private service: WebNewsUserService,
     public modalService: NgbModal,
@@ -98,8 +99,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
  
   // life cycle ejs-grid
   toolbarClick(args) {
-    const functionName = this.functionName;
-    const printBy = this.printBy;
+    console.log(args.item.id)
       switch (args.item.id) {
         case 'grid_add':
           args.cancel = true;
@@ -163,6 +163,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       () => {
         this.model.createBy = this.user.id;
         this.model.file = this.file || [];
+        this.model.fileThumnail = this.fileThumbnail || [];
         delete this.model['column'];
         delete this.model['index'];
         this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
@@ -196,6 +197,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       () => {
         this.model.updateBy = this.user.id;
         this.model.file = this.file || [];
+        this.model.fileThumnail = this.fileThumbnail || [];
         delete this.model['column'];
         delete this.model['index'];
         this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
@@ -257,7 +259,8 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       this.title = 'Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-   this.configImage();
+    this.configImage();
+    this.configImageThubnail();
   }
   configImage(id="avatar-1") {
     const option = {
@@ -306,6 +309,53 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
 
     });
   }
+  configImageThubnail() {
+    const option = {
+      overwriteInitial: true,
+      maxFileSize: 1500,
+      showClose: false,
+      showCaption: false,
+      browseLabel: '',
+      removeLabel: '',
+      browseIcon: '<i class="bi-folder2-open"></i>',
+      removeIcon: '<i class="bi-x-lg"></i>',
+      removeTitle: 'Cancel or reset changes',
+      elErrorContainer: '#kv-avatar2-errors-1',
+      msgErrorClass: 'alert alert-block alert-danger',
+      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
+      layoutTemplates: { main2: '{preview} ' + ' {browse}' },
+      allowedFileExtensions: ["jpg", "png", "gif"],
+      initialPreview: [],
+      initialPreviewConfig: [],
+      deleteUrl: `${environment.apiUrl}WebNewsUser/DeleteUploadFileThumbnail`
+    };
+    if (this.model.thumbnail) {
+      this.model.thumbnail = this.imagePath(this.model.thumbnail);
+      const img = `<img src='${this.model.thumbnail}' class='file-preview-image' alt='Desert' title='Desert'>`;
+      option.initialPreview = [img]
+
+      const a = {
+        caption: '',
+        width: '',
+        url: `${environment.apiUrl}WebNewsUser/DeleteUploadFileThumbnail`, // server delete action
+        key: this.model.id,
+        extra: { id: this.model.id }
+      }
+      option.initialPreviewConfig = [a];
+    }
+    $("#avatar-2").fileinput(option);;
+    let that = this;
+    $('#avatar-2').on('filedeleted', function (event, key, jqXHR, data) {
+      console.log('Key = ' + key);
+      that.file = null;
+      that.model.fileThumnail = null;
+      that.model.thumbnail = null;
+      option.initialPreview = [];
+      option.initialPreviewConfig = [];
+      $(this).fileinput(option);
+
+    });
+  }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {
       if (this.utilityService.checkExistHost(path)) {
@@ -317,6 +367,9 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
   }
   onFileChangeLogo(args) {
     this.file = args.target.files[0];
+  }
+  onFileChangeThumbnail(args) {
+    this.fileThumbnail = args.target.files[0];
   }
   odsExport() {
     const functionName = this.functionName;
@@ -382,17 +435,17 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     this.getAudit(this.model.id)
   }
   dataBound() {
-    if (this.initialGridLoad) {
-        this.initialGridLoad = false;
-        const pager = document.getElementsByClassName('e-gridpager');
-        let topElement;
-        if (this.grid.allowGrouping || this.grid.toolbar) {
-            topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
-                document.getElementsByClassName('e-toolbar');
-        } else {
-            topElement = document.getElementsByClassName('e-gridheader');
-        }
-        this.grid.element.insertBefore(pager[0], topElement[0]);
-    }
+    // if (this.initialGridLoad) {
+    //     this.initialGridLoad = false;
+    //     const pager = document.getElementsByClassName('e-gridpager');
+    //     let topElement;
+    //     if (this.grid.allowGrouping || this.grid.toolbar) {
+    //         topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
+    //             document.getElementsByClassName('e-toolbar');
+    //     } else {
+    //         topElement = document.getElementsByClassName('e-gridheader');
+    //     }
+    //     this.grid.element.insertBefore(pager[0], topElement[0]);
+    // }
 }
 }

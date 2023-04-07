@@ -225,6 +225,7 @@ export interface WebNews {
     subject: string;
     body: string;
     photoPath: string;
+    thumbnail: string;
     link: string;
     comment: string;
     cancelFlag: string;
@@ -238,6 +239,7 @@ export interface WebNews {
     guid: string;
     typeName: string;
     file: any;
+    fileThumnail: any;
 }
 export interface WebNewsUser {
     id: number;
@@ -247,6 +249,7 @@ export interface WebNewsUser {
     subject: string;
     body: string;
     photoPath: string;
+    thumbnail: string;
     link: string;
     comment: string;
     cancelFlag: string;
@@ -260,6 +263,7 @@ export interface WebNewsUser {
     guid: string;
     typeName: string;
     file: any;
+    fileThumnail: any;
 }
 export interface User2Bank {
     id: number;

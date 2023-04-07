@@ -3,7 +3,7 @@
   <p class="loading">Loading data...</p>
 </ngx-spinner>
 
-<app-navbar></app-navbar>
+<!-- <app-navbar-mobile></app-navbar-mobile> -->
 
 <!-- restaurent top -->
 <div style="position: sticky !important;" class="page-banner p-relative smoothscroll" id="menu">
@@ -17,7 +17,6 @@
             <ng-template  swiperSlide>
                 <img 
                 style="cursor: pointer;"
-                (click)="detailNewBanner(item_banner)"
                 [src]="imagePath(item_banner.thumbnail) "
                 sizes="(min-width:960px) calc(100vw - 352px),100vw"
                 class="img-fluid full-width" alt="banner">
@@ -47,7 +46,6 @@
                                     <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
                                 </ng-template>
                             </ngb-rating>
-                            <!-- <span class="text-light-black fs-12 rate-data">{{storeInfo.ratingCount}} {{'rating' | translate}}</span> -->
                         </div>
                         <div class="product-review">
                             
@@ -133,21 +131,21 @@
                                                                                     <a href="javascript:void(0)" class="text-light-black fw-600">
                                                                                         {{item.productName}}
                                                                                     </a> 
-
+<!-- 
                                                                                     <a  *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id"
                                                                                         style="background-color: #e21b70;"
                                                                                         class="text-light-black fw-600" 
                                                                                         >
                                                                                         {{item.totalOrder}} x
-                                                                                    </a>
+                                                                                    </a> -->
                                                                                 </h6>
                                                                                 <!-- <p class="text-light-white">600-700 Cal.</p> -->
                                                                             </div>
                                                                             <div class="restaurent-product-label"> 
-                                                                                <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
+                                                                                <span  class="rectangle-tag bg-gradient-orange text-custom-white">
                                                                                     <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
                                                                                 </span>
-                                                                                <span (click)="addToCart(item)" class="rectangle-tag bg-dark text-custom-white">
+                                                                                <span  class="rectangle-tag bg-dark text-custom-white">
                                                                                     <svg  
                                                                                         aria-hidden="true" 
                                                                                         focusable="false" class="fl-white" 
@@ -211,7 +209,8 @@
                 </div>
             </div>
             <div class="col-xl-3 col-lg-3">
-                <app-restaurantrightsidebar></app-restaurantrightsidebar> 
+                <app-mobile-restaurantrightsidebar></app-mobile-restaurantrightsidebar>
+                <!-- <app-restaurantrightsidebar></app-restaurantrightsidebar>  -->
             </div>
         </div>
     </div>
@@ -312,11 +311,11 @@
 
                         </textarea>
                     </div>
-                    <div (click)="cancelComment()" class="mt-2 text-right">
+                    <div  class="mt-2 text-right">
                         <button class="btn btn-primary btn-sm shadow-none" type="button">
                             {{'Cancel comment' | translate}}
                         </button>
-                        <button (click)="postComment()" class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">
+                        <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">
                             {{'Post comment' | translate}}
                         </button>
                     </div>
@@ -347,7 +346,7 @@
                         </ng-template>
                     </ngb-rating>
                     
-                    <span class="ml-2 text-light-white">{{item_comment.comment_Date | dateAgo}}</span>
+                    <!-- <span class="ml-2 text-light-white">{{item_comment.comment_Date | dateAgo}}</span> -->
                 </div>
                 <p class="text-light-black">
                     {{item_comment.comment}} 
@@ -365,4 +364,4 @@
 <!-- offer near -->
 <!-- offer near -->
 
-<app-footer2></app-footer2>
+<app-mobile-footer></app-mobile-footer>

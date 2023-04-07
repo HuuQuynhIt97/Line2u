@@ -15,6 +15,7 @@ namespace Line2u.DTO
         public string Subject { get; set; }
         public string Body { get; set; }
         public string PhotoPath { get; set; }
+        public string Thumbnail { get; set; }
         public string Link { get; set; }
         public string Comment { get; set; }
         public string CancelFlag { get; set; }
@@ -29,5 +30,6 @@ namespace Line2u.DTO
         public string TypeName { get; set; }
         public string Author { get; set; }
         public List<IFormFile> File { get; set; }
+        public List<IFormFile> FileThumbnail { get; set; }
     }
 }

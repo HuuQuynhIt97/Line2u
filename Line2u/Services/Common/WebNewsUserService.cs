@@ -27,6 +27,7 @@ namespace Line2u.Services
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
+        Task<object> DeleteUploadFileThumbnail(decimal key);
         Task<OperationResult> AddFormAsync(WebNewsUserDto model);
         Task<OperationResult> UpdateFormAsync(WebNewsUserDto model);
         Task<object> GetByUserID(int userID);
@@ -88,6 +89,7 @@ ISPService spService)
                                   SortId = a.SortId,
                                   Subject = a.Subject,
                                   PhotoPath = a.PhotoPath,
+                                  Thumbnail = a.Thumbnail,
                                   StartDate = a.StartDate,
                                   EndDate = a.EndDate,
                                   Link = a.Link,
@@ -279,6 +281,11 @@ ISPService spService)
             var avatarUniqueFileName = string.Empty;
             var avatarFolderPath = "FileUploads\\images\\webnews\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+
+            //thumbnail
+            var thumbnailFileName = string.Empty;
+            var thumbnailFolderPath = "FileUploads\\images\\webnews\\thumbnail";
+            string thumbnailFolder = Path.Combine(_currentEnvironment.WebRootPath, thumbnailFolderPath);
             if (model.File != null)
             {
                 IFormFile files = model.File.FirstOrDefault();
@@ -286,6 +293,16 @@ ISPService spService)
                 {
                     avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
                     model.PhotoPath = $"/FileUploads/images/webnews/avatar/{avatarUniqueFileName}";
+                }
+            }
+
+            if (model.FileThumbnail != null)
+            {
+                IFormFile files = model.FileThumbnail.FirstOrDefault();
+                if (!files.IsNullOrEmpty())
+                {
+                    thumbnailFileName = await fileExtension.WriteAsync(files, $"{thumbnailFolder}\\{thumbnailFileName}");
+                    model.Thumbnail = $"/FileUploads/images/webnews/thumbnail/{thumbnailFileName}";
                 }
             }
             try
@@ -332,6 +349,12 @@ ISPService spService)
             var avatarFolderPath = "FileUploads\\images\\webnews\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
 
+            //thumbanail
+
+            var thumbnailUniqueFileName = string.Empty;
+            var thumbnailFolderPath = "FileUploads\\images\\webnews\\thumbnail";
+            string thumbnailAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, thumbnailFolderPath);
+
             if (model.File != null)
             {
                 IFormFile filesAvatar = model.File.FirstOrDefault();
@@ -341,6 +364,17 @@ ISPService spService)
                         fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
                     avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
                     item.PhotoPath = $"/FileUploads/images/webnews/avatar/{avatarUniqueFileName}";
+                }
+            }
+            if (model.FileThumbnail != null)
+            {
+                IFormFile filesAvatar_thumbnail = model.FileThumbnail.FirstOrDefault();
+                if (!filesAvatar_thumbnail.IsNullOrEmpty())
+                {
+                    if (!item.Thumbnail.IsNullOrEmpty())
+                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.Thumbnail.Replace("/", "\\").Replace("/", "\\")}");
+                    thumbnailUniqueFileName = await fileExtension.WriteAsync(filesAvatar_thumbnail, $"{thumbnailAvatarFolder}\\{thumbnailUniqueFileName}");
+                    item.Thumbnail = $"/FileUploads/images/webnews/thumbnail/{thumbnailUniqueFileName}";
                 }
             }
 
@@ -395,6 +429,44 @@ ISPService spService)
                             await _unitOfWork.SaveChangeAsync();
                         }
                     }
+
+                }
+
+
+                return new { status = true };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                return new { status = true };
+            }
+        }
+
+        public async Task<object> DeleteUploadFileThumbnail(decimal key)
+        {
+            try
+            {
+                var item = await _repo.FindByIDAsync(key);
+                if (item != null)
+                {
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, item.Thumbnail);
+                    FileExtension fileExtension = new FileExtension();
+                    var avatarUniqueFileName = item.Thumbnail;
+                    if (!avatarUniqueFileName.IsNullOrEmpty())
+                    {
+                        var result = fileExtension.Remove($"{_currentEnvironment.WebRootPath}\\{item.Thumbnail}");
+                        if (result)
+                        {
+                            item.Thumbnail = string.Empty;
+                            _repo.Update(item);
+                            await _unitOfWork.SaveChangeAsync();
+                        }
+                    }
+
                 }
 
 

@@ -759,6 +759,10 @@ namespace Line2u.Data
                     .HasColumnName("Photo_Path")
                     .HasMaxLength(200);
 
+                entity.Property(e => e.Thumbnail)
+                    .HasColumnName("Thumbnail")
+                    .HasMaxLength(200);
+
                 entity.Property(e => e.SortId)
                     .HasColumnName("SORT_ID")
                     .HasColumnType("numeric(18, 0)");

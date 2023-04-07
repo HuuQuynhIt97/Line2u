@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
-    <li class="breadcrumb-item"><a href="mobile/home">{{'Home' | translate}}</a></li>
+    <!-- <li class="breadcrumb-item"><a href="mobile/home">{{'Home' | translate}}</a></li> -->
     <li class="breadcrumb-item active" aria-current="page">{{'Products List' | translate}}</li>
   </ol>
 </nav>
@@ -26,8 +26,8 @@
         [pageSettings]="pageSettings"
           >
           <ng-template #parentTemplate let-data>
-            <app-back-previous-page></app-back-previous-page>
-            <span style="color: transparent;"> | </span>
+            <!-- <app-back-previous-page></app-back-previous-page>
+            <span style="color: transparent;"> | </span> -->
             <ejs-dropdownlist
               style="width: 200px"
               [fields]="categoryFields"

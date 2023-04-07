@@ -7,6 +7,7 @@ import { ToolbarType } from '@syncfusion/ej2-richtexteditor';
 import { AlertifyService, UtilitiesService } from 'herr-core';
 import { ToastrService } from 'ngx-toastr';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
+import { FunctionUtility } from 'src/app/_core/_helper/function-utility';
 import { Landlord } from 'src/app/_core/_model/evse/model';
 import { StoreProfile, XAccount } from 'src/app/_core/_model/xaccount';
 import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
@@ -58,11 +59,13 @@ export class StoreProfileComponent  implements OnInit {
     yes_message: this.translate.instant(MessageConstants.YES_MSG),
     no_message: this.translate.instant(MessageConstants.NO_MSG),
   };
+  listFile: File[] = [];
   constructor(
     private utilityService: UtilitiesService,
     private landlordService: LandlordService,
     private service: StoreProfileService,
     private alertify: AlertifyService,
+    private functionUtility: FunctionUtility,
     private toast: ToastrService,
     public translate: TranslateService,
     public datePipe: DatePipe,
@@ -75,18 +78,25 @@ export class StoreProfileComponent  implements OnInit {
     if (guid) {
       this.service.GetWithGuid(guid).subscribe(x=> {
         if(x !== null) {
-          console.log(x)
           this.model = x;
+          let listFileImage: string[] = [];
+          listFileImage.push(this.model.photoPath);
+          console.log(listFileImage)
+          listFileImage = listFileImage.filter(item => item !== null);
+          if (listFileImage?.length > 0) {
+            this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
+          }
           this.start_times = x.storeOpenTime
           this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
+          // this.configImage();
         }else {
-          console.log(this.model)
         }
-        this.configImage();
       })
     }
     
   }
+
+  
   ngOnInit(): void {
     this.loadDetail();
     // this.configImage();
@@ -123,7 +133,7 @@ export class StoreProfileComponent  implements OnInit {
       removeTitle: 'Cancel or reset changes',
       elErrorContainer: '#kv-avatar-errors-1',
       msgErrorClass: 'alert alert-block alert-danger',
-      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
+      defaultPreviewContent: `<img src="../../../../../assets/images/no-img.jpg" alt="No Image">`,
       layoutTemplates: { main2: '{preview} ' + ' {browse}' },
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
@@ -131,8 +141,8 @@ export class StoreProfileComponent  implements OnInit {
       deleteUrl: `${environment.apiUrl}StoreProfile/DeleteUploadFile`
     };
     if (this.model.photoPath) {
-      this.model.photoPath = this.imagePath(this.model.photoPath);
-      const img = `<img src='${this.model.photoPath}' class='file-preview-image' alt='Desert' title='Desert'>`;
+      // this.model.photoPath = this.imagePath(this.model.photoPath);
+      const img = `<img src='${this.imagePath(this.model.photoPath)}' class='file-preview-image' alt='Desert' title='Desert'>`;
       option.initialPreview = [img]
 
       const a = {
@@ -147,7 +157,6 @@ export class StoreProfileComponent  implements OnInit {
     $("#avatar-1").fileinput(option);;
     let that = this;
     $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
-      console.log('Key = ' + key);
       that.file = null;
       that.model.file = null;
       that.model.photoPath = null;
@@ -157,7 +166,49 @@ export class StoreProfileComponent  implements OnInit {
 
     });
   }
+  onRemove(event) {
+    console.log('onRemove',event)
+    this.listFile.splice(this.listFile.indexOf(event), 1);
+    this.removeImage()
+  }
+  removeImage() {
+    console.log(this.model)
+    this.service.deleteImage(this.model?.id || 0).subscribe(res => {}) 
+  }
+  onSelect(event) {
+    console.log('onSelect',event)
+    let fileSize = 0;
+    let length = 0;
+    if(this.listFile !== null) {
+      length = this.listFile.length;
+      this.listFile.forEach(item => {
+        fileSize += item.size;
+      });
+    }
+    // Kiểm tra tổng dung lượng của tất cả file import
+    if (event.addedFiles && event.addedFiles[0]) {
+      length += event.addedFiles.length;
+      if (length > 5) {
+        this.translate.get('You can upload 5 files images').subscribe(data => {
+          this.alertify.warning(data, true);
+        })
+        return;
+      }
 
+      event.addedFiles.forEach(element => {
+        fileSize += element.size;
+      });
+      if (fileSize > 26214400) {
+        this.translate.get("Sum all image file size upload can't more than 25M").subscribe(data => {
+          this.alertify.warning(data, true);
+        })
+      }
+      else {
+        this.listFile = []
+        this.listFile.push(...event.addedFiles);
+      }
+    }
+  }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {
       if (this.utilityService.checkExistHost(path)) {
@@ -186,7 +237,7 @@ export class StoreProfileComponent  implements OnInit {
         this.model.accountGuid = this.user.uid
         this.model.storeOpenTime = this.start_times
         this.model.storeCloseTime = this.end_times
-         this.model.file = this.file || [];
+         this.model.file = this.listFile || [];
          delete this.model['column'];
          delete this.model['index'];
          this.service.insertFormMobile(this.ToFormatModel(this.model)).subscribe(
@@ -220,7 +271,7 @@ export class StoreProfileComponent  implements OnInit {
        () => {
         this.model.createBy = this.user.id;
         this.model.updateBy = this.user.id;
-         this.model.file = this.file || [];
+         this.model.file = this.listFile || [];
          this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {

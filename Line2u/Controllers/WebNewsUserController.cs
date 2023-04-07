@@ -36,6 +36,12 @@ namespace Line2u.Controllers
         {
             return Ok(await _service.DeleteUploadFile(key));
         }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteUploadFileThumbnail([FromForm] decimal key)
+        {
+            return Ok(await _service.DeleteUploadFileThumbnail(key));
+        }
         [HttpPost]
         public async Task<ActionResult> AddAsync([FromBody] WebNewsUserDto model)
         {

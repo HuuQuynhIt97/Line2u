@@ -10,7 +10,6 @@ import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { MyCodeTypeDropdownlistComponent } from '../_component/my-checkbox/my-code-type-dropdownlist/my-code-type-dropdownlist.component';
 import { LeoCheckboxComponent } from '../_component/my-checkbox/leo-checkbox/leo-checkbox.component';
 
-
 @NgModule({
   imports: [
     DropDownListModule,

@@ -4,7 +4,7 @@
     <li class="breadcrumb-item active" aria-current="page">{{'User News' | translate}}</li>
   </ol>
 </nav>
-<app-back-previous-page></app-back-previous-page>
+<!-- <app-back-previous-page></app-back-previous-page> -->
 <div class="container">
   <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
     <p class="loading">Loading data...</p>
@@ -202,7 +202,55 @@
             />
           </div>
         </div> -->
-  
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordSex">{{ "NEW_IMAGE" | translate }}</label>
+          </div>
+          <div class="col-12 text-center">
+            
+            <div class="kv-avatar">
+              <div class="file-loading">
+                <input
+                  id="avatar-1"
+                  name="avatar-1"
+                  (change)="onFileChangeLogo($event)"
+                  type="file"
+                  required
+                />
+              </div>
+            </div>
+            <div class="kv-avatar-hint">
+              <small>{{ "Select file < 50 KB" | translate }}</small>
+            </div>
+    
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="landLordSex">{{ "NEW_THUMBNAIL" | translate }}</label>
+          </div>
+          <div class="col-12 text-center">
+            
+            <div class="kv-avatar2">
+              <div class="file-loading">
+                <input
+                  id="avatar-2"
+                  name="avatar-2"
+                  (change)="onFileChangeThumbnail($event)"
+                  type="file"
+                  required
+                />
+              </div>
+            </div>
+            <div class="kv-avatar2-hint">
+              <small>{{ "Select file < 50 KB" | translate }}</small>
+            </div>
+    
+          </div>
+        </div>
+
+
         <div class="col-12 mb-2">
           <label for="body">{{ "WebNews_Body" | translate }}</label>
   
@@ -212,25 +260,9 @@
         </div>
   
   
-  
-        <div class="col-12 text-center">
-  
-  
-          <div class="kv-avatar">
-            <div class="file-loading">
-              <input
-                id="avatar-1"
-                name="avatar-1"
-                (change)="onFileChangeLogo($event)"
-                type="file"
-                required
-              />
-            </div>
-          </div>
-          <div class="kv-avatar-hint">
-            <small>{{ "Select file < 5000 KB" | translate }}</small>
-          </div>
-        </div>
+
+
+        
   
         <!-- <div class="col-12">
           <label>{{ "WebNews_COMMENT" | translate }}</label>

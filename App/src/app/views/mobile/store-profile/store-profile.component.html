@@ -1,15 +1,26 @@
-<nav aria-label="breadcrumb" class="mobile-nav">
+<!-- <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
     <li class="breadcrumb-item"><a href="mobile/home">{{'Home' | translate}}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{'User Profile' | translate}}</li>
   </ol>
-</nav>
+</nav> -->
 <div class="wrapper">
-  <app-back-previous-page></app-back-previous-page>
   <div class="main-content" id="main-text">
-    <div class="row p-2">
-      <div class="col-12 text-center">
-        <div class="kv-avatar">
+    <div class="row">
+      <div class="col-md-12 col-sm-4">
+        <div class="form-group">
+          <div class="custom-dropzone" ngx-dropzone [accept]="'image/*'" [multiple]="false" (change)="onSelect($event)">
+            <ngx-dropzone-label>
+              <div>
+                <h2>{{"UPLOAD_IMAGE" | translate}}</h2>
+              </div>
+            </ngx-dropzone-label>
+            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of listFile" [file]="f"
+              [removable]="true" (removed)="onRemove(f)">
+            </ngx-dropzone-image-preview>
+          </div>
+        </div>  
+        <!-- <div class="kv-avatar">
           <div class="file-loading">
             <input
               id="avatar-1"
@@ -22,203 +33,203 @@
         </div>
         <div class="kv-avatar-hint">
           <small>{{ "Select file < 5000 KB" | translate }}</small>
-        </div>
+        </div> -->
       </div>
      
-      </div>
+    </div>
       
     
-      <div class="row p-2">
-    
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_NAME" | translate }}</label>
-            <span  style="color: red">(*)</span>
-            <input
-              [(ngModel)]="model.storeName"
-              name="storeName"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
-        </div>
-
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_TEL" | translate }}</label>
-            <input
-              [(ngModel)]="model.storeTel"
-              name="storeTel"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
-        </div>
-
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_EMAIL" | translate }}</label>
-            <input
-              [(ngModel)]="model.storeEmail"
-              name="storeEmail"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
-        </div>
-
-        
-    
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordName">{{ "STORE_ADDRESS" | translate }}</label>
-            <span  style="color: red">(*)</span>
-    
-            <input
-              [(ngModel)]="model.storeAddress"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
-        </div>
-
-        <div class="col-12">
-          <label for="body" style="font-weight: bold;">{{ "STORE_DESCRIPTION" | translate }}</label>
+    <div class="row p-2">
   
-          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
-          
-            </ejs-richtexteditor>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_NAME" | translate }}</label>
+          <span  style="color: red">(*)</span>
+          <input
+            [(ngModel)]="model.storeName"
+            name="storeName"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
         </div>
+      </div>
 
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_FACEBOOK_LINK" | translate }}</label>
-            <input
-              [(ngModel)]="model.facebook"
-              name="facebook"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_TEL" | translate }}</label>
+          <input
+            [(ngModel)]="model.storeTel"
+            name="storeTel"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
         </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_TWITTER_LINK" | translate }}</label>
-            <input
-              [(ngModel)]="model.twitter"
-              name="twitter"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_EMAIL" | translate }}</label>
+          <input
+            [(ngModel)]="model.storeEmail"
+            name="storeEmail"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
         </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_INSTAGRAM_LINK" | translate }}</label>
-            <input
-              [(ngModel)]="model.instagram"
-              name="instagram"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
+      </div>
+
+      
+  
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordName">{{ "STORE_ADDRESS" | translate }}</label>
+          <span  style="color: red">(*)</span>
+  
+          <input
+            [(ngModel)]="model.storeAddress"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
         </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_PINTEREST_LINK" | translate }}</label>
-            <input
-              [(ngModel)]="model.pinterest"
-              name="pinterest"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordNo">{{ "STORE_YOUTUBE_LINK" | translate }}</label>
-            <input
-              [(ngModel)]="model.youtube"
-              name="youtube"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-          </div>
-        </div>
+      </div>
+
+      <div class="col-12">
+        <label for="body" style="font-weight: bold;">{{ "STORE_DESCRIPTION" | translate }}</label>
+
+        <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
         
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordSex">{{ "SITE_OPEN_TIME" | translate }}</label>
-            <!-- <span  style="color: red">(*)</span> -->
-            <ejs-timepicker
-                locale='vi'
-                id="start_times"
-                format="HH:mm"
-                #ejTimePickers
-                [value]="start_times"
-                (change)="startTimesChange($event)"
-                >
-              </ejs-timepicker>
-           
-          </div>
+          </ejs-richtexteditor>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_FACEBOOK_LINK" | translate }}</label>
+          <input
+            [(ngModel)]="model.facebook"
+            name="facebook"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
         </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordSex">{{ "SITE_CLOSE_TIME" | translate }}</label>
-            <ejs-timepicker
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_TWITTER_LINK" | translate }}</label>
+          <input
+            [(ngModel)]="model.twitter"
+            name="twitter"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_INSTAGRAM_LINK" | translate }}</label>
+          <input
+            [(ngModel)]="model.instagram"
+            name="instagram"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_PINTEREST_LINK" | translate }}</label>
+          <input
+            [(ngModel)]="model.pinterest"
+            name="pinterest"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordNo">{{ "STORE_YOUTUBE_LINK" | translate }}</label>
+          <input
+            [(ngModel)]="model.youtube"
+            name="youtube"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordSex">{{ "SITE_OPEN_TIME" | translate }}</label>
+          <!-- <span  style="color: red">(*)</span> -->
+          <ejs-timepicker
               locale='vi'
               id="start_times"
               format="HH:mm"
               #ejTimePickers
-              [value]="end_times"
-              (change)="closeTimesChange($event)"
+              [value]="start_times"
+              (change)="startTimesChange($event)"
               >
             </ejs-timepicker>
-           
-          </div>
+          
         </div>
-    
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordSex">{{ "SITE_LOW_PRICE" | translate }}</label>
-            <input
-              [(ngModel)]="model.storeLowPrice"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-           
-          </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordSex">{{ "SITE_CLOSE_TIME" | translate }}</label>
+          <ejs-timepicker
+            locale='vi'
+            id="start_times"
+            format="HH:mm"
+            #ejTimePickers
+            [value]="end_times"
+            (change)="closeTimesChange($event)"
+            >
+          </ejs-timepicker>
+          
         </div>
-    
-        <div class="col-12">
-          <div class="form-group">
-            <label for="landLordSex">{{ "SITE_HIGHT_PRICE" | translate }}</label>
-            <input
-              [(ngModel)]="model.storeHightPrice"
-              name="storeHightPrice"
-              maxlength="200"
-              type="text"
-              class="form-control"
-            />
-           
-          </div>
+      </div>
+  
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordSex">{{ "SITE_LOW_PRICE" | translate }}</label>
+          <input
+            [(ngModel)]="model.storeLowPrice"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+          
         </div>
-     
-    
-        
+      </div>
+  
+      <div class="col-12">
+        <div class="form-group">
+          <label for="landLordSex">{{ "SITE_HIGHT_PRICE" | translate }}</label>
+          <input
+            [(ngModel)]="model.storeHightPrice"
+            name="storeHightPrice"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+          
+        </div>
       </div>
     
-      <div class="row p-2">
+  
+      
+    </div>
+    
+    <div class="row p-2">
         <div class="col-12">
         <button
           type="button"

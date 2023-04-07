@@ -83,11 +83,15 @@ export class StoreProfileService extends CURDService<StoreProfile> {
       }
     }
 
-    const file = model.file;
-    delete model.file;
+    // const file = model.file;
+    // delete model.file;
     const params = this.utilitiesService.ToFormData(model);
-    params.append("file", file);
-
+    // params.append("file", file);
+    if (model.file?.length > 0) {
+      for (var i = 0; i < model.file?.length; i++) {
+        params.append('file', model.file[i]);
+      }
+    }
     return this.http.put<OperationResult>(`${this.base}StoreProfile/updateFormMobile`, params).pipe(catchError(this.handleError));
   }
  
@@ -104,6 +108,10 @@ export class StoreProfileService extends CURDService<StoreProfile> {
 
   postRatingComment(key) {
     return this.http.post<any>(`${this.base}StoreProfile/AddRatingComment`, key);
+  }
+
+  deleteImage(key) {
+    return this.http.post(`${this.base}StoreProfile/DeleteUploadFile?key=${key}`,{});
   }
  
 }

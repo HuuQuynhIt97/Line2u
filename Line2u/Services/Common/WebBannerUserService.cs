@@ -35,6 +35,7 @@ namespace Line2u.Services
     public class WebBannerUserService : ServiceBase<WebBannerUser, WebBannerUserDto>, IWebBannerUserService, IScopeService
     {
         private readonly IRepositoryBase<WebBannerUser> _repo;
+        private readonly IRepositoryBase<WebNewsUser> _repoWebNewsUser;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
@@ -46,6 +47,7 @@ private readonly ILine2uLoggerService _logger;
 
         public WebBannerUserService(
             IRepositoryBase<WebBannerUser> repo,
+            IRepositoryBase<WebNewsUser> repoWebNewsUser,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
             IUnitOfWork unitOfWork,
@@ -59,6 +61,7 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoWebNewsUser = repoWebNewsUser;
             _repoCodeType = repoCodeType;
             _logger = logger;
             _currentEnvironment = currentEnvironment;
@@ -75,7 +78,7 @@ ISPService spService)
         }
         public async Task<object> GetByUserID(int userID)
         {
-            return await _repo.FindAll(x => x.CreateBy == userID)
+            return await _repoWebNewsUser.FindAll(x => x.CreateBy == userID)
               .ToListAsync();
         }
         public async Task<object> LoadData(DataManager data, string lang, int userID)

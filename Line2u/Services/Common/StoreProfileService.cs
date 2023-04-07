@@ -182,14 +182,33 @@ namespace Line2u.Services
             var avatarUniqueFileName = string.Empty;
             var avatarFolderPath = "FileUploads\\images\\store\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+            //if (model.File != null)
+            //{
+            //    IFormFile files = model.File.FirstOrDefault();
+            //    if (!files.IsNullOrEmpty())
+            //    {
+            //        avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+            //        model.PhotoPath = $"/FileUploads/images/store/avatar/{avatarUniqueFileName}";
+            //    }
+            //}
+            List<string> galleries = new List<string>();
             if (model.File != null)
             {
-                IFormFile files = model.File.FirstOrDefault();
-                if (!files.IsNullOrEmpty())
+                int id = 1;
+                model.File.ForEach(async item =>
                 {
-                    avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    model.PhotoPath = $"/FileUploads/images/store/avatar/{avatarUniqueFileName}";
-                }
+                    string roomPhoto = await fileExtension.WriteAsync(item, $"{uploadAvatarFolder}\\{string.Empty}");
+                    switch (id)
+                    {
+                        case 1:
+                            model.PhotoPath = $"/FileUploads/images/store/avatar/{roomPhoto}";
+                            break;
+                        default:
+                            break;
+                    }
+                    galleries.Add(roomPhoto);
+                    id++;
+                });
             }
             try
             {
@@ -230,26 +249,53 @@ namespace Line2u.Services
             FileExtension fileExtension = new FileExtension();
             var itemModel = await _repo.FindAll(x => x.AccountGuid == model.Guid).AsNoTracking().FirstOrDefaultAsync();
             var item = _mapper.Map<StoreProfile>(itemModel);
-            
+
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
             var avatarFolderPath = "FileUploads\\images\\store\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
 
+            //if (model.File != null)
+            //{
+            //    IFormFile filesAvatar = model.File.FirstOrDefault();
+            //    if (!filesAvatar.IsNullOrEmpty())
+            //    {
+            //        if (!item.PhotoPath.IsNullOrEmpty())
+            //            fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
+            //        avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+            //        item.PhotoPath = $"/FileUploads/images/store/avatar/{avatarUniqueFileName}";
+            //    }
+            //}
+
+            List<string> galleries = new List<string>();
             if (model.File != null)
             {
-                IFormFile filesAvatar = model.File.FirstOrDefault();
-                if (!filesAvatar.IsNullOrEmpty())
+                if (!item.PhotoPath.IsNullOrEmpty())
+                    fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
+
+                item.PhotoPath = null;
+
+                int id = 1;
+                model.File.ForEach(async file =>
                 {
-                    if (!item.PhotoPath.IsNullOrEmpty())
-                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
-                    avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    item.PhotoPath = $"/FileUploads/images/store/avatar/{avatarUniqueFileName}";
-                }
+                    string roomPhoto = await fileExtension.WriteAsync(file, $"{uploadAvatarFolder}\\{string.Empty}");
+                    switch (id)
+                    {
+                        case 1:
+                            item.PhotoPath = $"/FileUploads/images/room/image/{roomPhoto}";
+                            break;
+                        default:
+                            break;
+                    }
+                    galleries.Add(roomPhoto);
+                    id++;
+                });
             }
-
-
+            else
+            {
+                item.PhotoPath = string.Empty;
+            }
 
 
             try
