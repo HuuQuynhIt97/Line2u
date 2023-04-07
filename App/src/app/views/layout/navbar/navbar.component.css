@@ -8,7 +8,15 @@
 .header {
     background-color: #233b2e !important;
 } */
-
+/* .cat-name>a>span {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100px;
+    text-overflow: ellipsis;
+} */
+.cart-dropdown .cart-detail-box .card .card-body .cat-product-box .cat-product .delete-btn i {
+    font-size: 20px;
+}
 .header .right-side .user-details>a>span {
     white-space: nowrap;
     overflow: hidden;

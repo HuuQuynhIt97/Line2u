@@ -42,12 +42,12 @@
                     </p>
                     <div class="head-rating">
                         <div class="rating"> 
-                            <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" >
+                            <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
                                 <ng-template let-fill="fill" let-index="index">
                                     <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
                                 </ng-template>
                             </ngb-rating>
-                            <span class="text-light-black fs-12 rate-data">{{storeInfo.ratingCount}} {{'rating' | translate}}</span>
+                            <!-- <span class="text-light-black fs-12 rate-data">{{storeInfo.ratingCount}} {{'rating' | translate}}</span> -->
                         </div>
                         <div class="product-review">
                             
@@ -271,7 +271,7 @@
           </div>
           <div class="restaurent-rating mb-xl-20">
             <div class="star"> 
-                <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" >
+                <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
                     <ng-template let-fill="fill" let-index="index">
                         <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
                     </ng-template>
@@ -282,7 +282,7 @@
           <div class="u-line"></div>
         </div>
         <div class="col-md-12">
-            <div class="review-box" *ngIf="!isRatingComment">
+            <div class="review-box" *ngIf="!isRatingComment && isLogin">
                 <div class="review-user">
                     <div class="review-user-img">
                         <img 

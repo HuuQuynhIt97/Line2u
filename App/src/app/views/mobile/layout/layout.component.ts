@@ -122,7 +122,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   getStoreInfor() {
     let uid = this.user_infor?.uid || ''
     this.serviceStore.GetWithGuid(uid).subscribe(res => {
-      console.log(res)
       this.storeInfo = res;
     })
   }

@@ -44,7 +44,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
   @ViewChild('odsTemplate', {static:true}) public odsTemplate: any;
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
-  noImage = ImagePathConstants.NO_IMAGE;
+  noImage = ImagePathConstants.NO_IMAGE_QR;
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,

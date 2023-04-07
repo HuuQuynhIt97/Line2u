@@ -167,6 +167,8 @@ export class ImagePathConstants {
   public static NO_IMAGE_QR = '/assets/images/no-img.jpg';
   public static NO_IMAGE_COMPONENT = '/assets/images/pages/content-img-4.jpg';
   public static NO_IMAGE_ACTION_COMPONENT = '/assets/images/no-img.jpg';
+  public static LINE_PAY_IMAGE = '/assets/images/linepay.png';
+  public static CASH_PAY_IMAGE = '/assets/images/cashpay.png';
 }
 export class SystemConfigConst {
   public static Order_Amount = "ORDER_AMOUNT";

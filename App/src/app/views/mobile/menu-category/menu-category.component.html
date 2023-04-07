@@ -7,7 +7,9 @@
 <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
+<app-back-previous-page></app-back-previous-page>
 <div class="row">
+
 <div class="col-12">
   <div class="card main-card">
     <div class="card-body table-responsive p-0">
@@ -32,6 +34,7 @@
 
         (excelExportComplete)="excelExpComplete($event)"
       >
+    
         <e-columns>
           <e-column
             field="option"
@@ -141,16 +144,16 @@
         </div>
       </div> -->
 
-      <div class="col-12 mb-2">
+      <!-- <div class="col-12 mb-2">
         <label for="body">{{ "CATEGORY_Body" | translate }}</label>
 
         <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
         
           </ejs-richtexteditor>
-      </div>
+      </div> -->
 
 
-      <div class="col-12">
+      <!-- <div class="col-12">
         <label>{{ "CATEGORY_COMMENT" | translate }}</label>
         <div class="form-group">
           <textarea
@@ -160,7 +163,7 @@
             rows="4"
           ></textarea>
         </div>
-      </div>
+      </div> -->
     </div>
 
    

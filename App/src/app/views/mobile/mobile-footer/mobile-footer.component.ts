@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SysMenuService } from 'src/app/_core/_service/sys-menu.service';
-
+import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 @Component({
   selector: 'app-mobile-footer',
   templateUrl: './mobile-footer.component.html',
@@ -9,6 +9,8 @@ import { SysMenuService } from 'src/app/_core/_service/sys-menu.service';
 export class MobileFooterComponent implements OnInit {
   lang= this.capitalize(localStorage.getItem("lang"));
   menus: any;
+  CASH_IMAGE = ImagePathConstants.CASH_PAY_IMAGE;
+  LINE_PAY_IMAGE = ImagePathConstants.LINE_PAY_IMAGE;
   constructor(
     private sysMenu: SysMenuService,
   ) { }

@@ -1,7 +1,0 @@
-{
-    "/api/*": {
-        "target": "http://10.4.4.224:1002",
-        "secure": false,
-        "loglevel": "debug"
-    }
-}

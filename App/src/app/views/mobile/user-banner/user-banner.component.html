@@ -4,6 +4,7 @@
     <li class="breadcrumb-item active" aria-current="page">{{'User Banner' | translate}}</li>
   </ol>
 </nav>
+<app-back-previous-page></app-back-previous-page>
 <div class="container">
   <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
     <p class="loading">Loading data...</p>
@@ -79,6 +80,7 @@
   </div>
   
   </div>
+
   <ng-template #optionModal let-modal>
     <div class="modal-header my-modal">
       <h4 [ngbTooltip]="title" class="modal-title">
@@ -139,7 +141,7 @@
           </div>
         </div>
   
-        
+<!--         
         <div class="col-6">
           <div class="form-group">
             <label for="Start_Date">{{
@@ -186,7 +188,7 @@
               class="form-control"
             />
           </div>
-        </div>
+        </div> -->
   
         <div class="col-12 text-center">
           <div class="kv-avatar">
@@ -205,7 +207,7 @@
           </div>
         </div>
   
-        <div class="col-12">
+        <!-- <div class="col-12">
           <label>{{ "WebBanner_COMMENT" | translate }}</label>
           <div class="form-group">
             <textarea
@@ -215,7 +217,7 @@
               rows="4"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
   
      

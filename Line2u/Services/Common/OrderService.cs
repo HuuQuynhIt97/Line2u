@@ -34,7 +34,8 @@ namespace Line2u.Services
 
         Task<object> GetWebNews();
         Task<object> GetProducts(string id);
-        Task<object> GetTrackingOrderForStore(string id);
+        Task<object> GetTrackingOrderForStore(string id, DateTime min, DateTime max);
+        Task<object> GetTrackingOrderForStoreWithTime(DateTime min, DateTime max);
         Task<object> GetTrackingOrderUser(int id);
         Task<object> GetDetailOrder(string id);
         Task<object> GetWebPages();
@@ -440,7 +441,7 @@ ISPService spService)
             return result;
         }
 
-        public async Task<object> GetTrackingOrderForStore(string storeGuid)
+        public async Task<object> GetTrackingOrderForStore(string storeGuid, DateTime min, DateTime max)
         {
             var result = _repoOrderDetail.FindAll(o => o.StoreGuid == storeGuid).DistinctBy(o => o.OrderGuid).ToList();
             var list_data = new List<Order>();
@@ -451,7 +452,7 @@ ISPService spService)
                 list_data.Add(item_add);
             }
 
-            return list_data;
+            return list_data.Where(x => x.CreateDate.Value.Date >= min.Date && x.CreateDate.Value.Date <= max.Date).OrderByDescending(x => x.CreateDate);
         }
 
 
@@ -468,20 +469,9 @@ ISPService spService)
                           {
                               orderID = x.Guid,
                               list_product = getListProducts(y).Result
-                              //list_product = z.Select(o => new {
-                              //  o.ProductName,
-                              //  o.PhotoPath,
-                              //  price = y.Quantity * y.Price
-                              //})
                           }).DistinctBy(o => o.orderID).ToList();
 
-            var result2 = result.GroupBy(x => x.orderID)
-            //.Select(o => new
-            //{
-            //    orderID = o.First().orderID,
-            //    list_product = o.GroupBy(z => z.orderID),
-            //})
-            .ToList();
+            var result2 = result.GroupBy(x => x.orderID).ToList();
 
             return result;
         }
@@ -498,6 +488,7 @@ ISPService spService)
                 {
                     ProductName = item.ProductName,
                     PhotoPath = item.PhotoPath,
+                    Qty = product.Quantity,
                     Price = product.Quantity * product.Price
                 };
                     
@@ -518,22 +509,24 @@ ISPService spService)
             var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
             var products = await _repoProduct.FindAll().ToListAsync();
             var result = (from x in order
-                          join y in order_detail on x.Guid equals y.OrderGuid
-                          let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
+                          let y = order_detail.Where(o => o.OrderGuid == x.Guid).ToList()
                           select new
                           {
                               orderID = x.Guid,
-                              product_total_price = y.Quantity * y.Price,
-                              list_product = z.Select(o => new {
-                                  o.ProductName,
-                                  o.PhotoPath,
-                                  qty = y.Quantity,
-                                  price = y.Quantity * y.Price
-                              })
-                          }).ToList();
+                              order_date = x.CreateDate,
+                              order_table = string.IsNullOrEmpty(x.TableNo) ? "N/A" : x.TableNo,
+                              Pay_Method = x.PaymentType,
+                              product_total_price = x.TotalPrice,
+                              list_product = getListProducts(y).Result
+                          }).DistinctBy(o => o.orderID).FirstOrDefault();
 
 
             return result;
+        }
+
+        public async Task<object> GetTrackingOrderForStoreWithTime(DateTime min, DateTime max)
+        {
+            throw new NotImplementedException();
         }
     }
 }

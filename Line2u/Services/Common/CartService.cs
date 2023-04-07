@@ -526,7 +526,8 @@ ISPService spService)
                              y.ProductName,
                              ProductPrices = y.ProductPrice,
                              y.ProductPriceDiscount,
-                             y.ProductDescription
+                             ProductDescription = string.IsNullOrEmpty(y.ProductDescription) ? "" : y.ProductDescription
+
                          }).ToList();
             return result;
         }

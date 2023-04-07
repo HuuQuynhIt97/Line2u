@@ -158,7 +158,6 @@ export class NavbarMobileComponent implements OnInit {
   }
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
-      console.log('getProductsInCart', res)
       this.cartDetail = res
     })
   }

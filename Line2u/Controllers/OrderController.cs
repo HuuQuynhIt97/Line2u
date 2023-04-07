@@ -5,6 +5,7 @@ using Line2u.Services;
 using Syncfusion.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace Line2u.Controllers
 {
@@ -33,10 +34,11 @@ namespace Line2u.Controllers
             return Ok(await _service.GetTrackingOrderUser(id));
         }
 
+       
         [HttpGet]
-        public async Task<ActionResult> GetTrackingOrderForStore(string id)
+        public async Task<ActionResult> GetTrackingOrderForStore(string id , DateTime min, DateTime max)
         {
-            return Ok(await _service.GetTrackingOrderForStore(id));
+            return Ok(await _service.GetTrackingOrderForStore(id,min,max));
         }
         [HttpGet]
         public async Task<ActionResult> GetDetailOrder(string id)

@@ -7,6 +7,8 @@
 <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
+
+
 <div class="row">
 <div class="col-12">
   <div class="card main-card">
@@ -32,79 +34,146 @@
 
         (excelExportComplete)="excelExpComplete($event)"
       >
+      <ng-template #parentTemplate let-data>
+        <app-back-previous-page></app-back-previous-page>
+        <span style="color: transparent;"> | </span>
+        <ejs-daterangepicker (change)="deposit($event)" id="daterangepicker" #range [(value)]='value'  ></ejs-daterangepicker>
+        <span style="color: transparent;"> | </span>
+        <button (click)="refresh()" class="btn btn-info">
+          <i class="fa fa-retweet" aria-hidden="true"></i>
+        </button>
+        
+
+        
+      </ng-template>
         <e-columns>
           <e-column
             field="option"
             textAlign="Left"
-            headerTextAlign="Center"
-            width="80"
-            headerTextAlign="Center"
+            headerTextAlign="Left"
             [allowSorting]="false"
             [allowSearching]="false"
+            width="30"
             [allowGrouping]="false"
             [allowFiltering]="false"
             [allowEditing]="false"
             headerText="{{ 'OPTION' | translate }}"
           >
             <ng-template #template let-data>
-              <span (click)="delete(data.id)" class="delete-grid">
+              <!-- <span (click)="delete(data.id)" class="delete-grid">
                 <i class="fa fa-trash"></i>
               </span>
+              
               <span (click)="openModal(optionModal, data)" class="edit-grid">
                 <i class="fa fa-edit"></i>
-              </span>
+              </span> -->
+              <!-- <button (click)="delete(data.id)" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+              </button>
               <span style="color: transparent;"> | </span>
-              <span (click)="detail(data)" class="edit-grid">
+              <button (click)="openModal(optionModal, data)" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </button>
+              <span style="color: transparent;"> | </span> -->
+              <button (click)="detail(data)" class="btn btn-info">
+                <i class="fa fa-info-circle"></i> 
+              </button>
+              <!-- <span (click)="detail(data)" class="edit-grid">
                 <i class="fa fa-info-circle"></i>
-              </span>
+              </span> -->
             </ng-template>
           </e-column>
 
-          <e-column
+          <!-- <e-column
             field="id"
             [allowSearching]="false"
             textAlign="Left"
-            headerTextAlign="Center"
+            headerTextAlign="Left"
             [visible]="false"
             isPrimaryKey="true"
+            width="20"
             headerText="{{ 'ID' }}"
           >
-          </e-column>
+          </e-column> -->
 
+
+          <!-- <e-column
+            field="guid"
+            textAlign="Left"
+            width="100"
+            headerTextAlign="Center"
+            headerText="{{ 'ORDER_ID' | translate }}"
+          >
+          </e-column> -->
 
           <e-column
             field="guid"
             textAlign="Left"
-            headerTextAlign="Center"
-            [width]="120"
-            headerText="{{ 'ORDER' | translate }}"
+            style="white-space: break-spaces;"
+            width="100"
+            headerTextAlign="Left"
+            headerText="{{ 'ORDER_DATE' | translate }}"
           >
+          <ng-template #template let-data>
+            {{data.createDate | date: 'yyyy-MM-dd hh:mm a'}}
+          </ng-template>
+          
+          </e-column>
+
+          <!-- <e-column
+            field="guid"
+            width="100"
+            style="white-space: break-spaces;"
+            textAlign="Left"
+            headerTextAlign="Left"
+            headerText="{{ 'ORDER_TOTAL' | translate }}"
+          >
+          <ng-template #template let-data>
+           {{'Currency' | translate}} {{data.totalPrice}}
+          </ng-template>
+          
+          </e-column> -->
+
+          <e-column
+            field="guid"
+            textAlign="Left"
+            width="100"
+            style="white-space: break-spaces;"
+            headerTextAlign="Left"
+            headerText="{{ 'ORDER_TABLE' | translate }}"
+          >
+          <ng-template #template let-data>
+           {{data.tableNo !== null ? data.tableNo : 'N/A'}}
+          </ng-template>
+          
           </e-column>
 
           <e-column
-            field="customerName"
+            field="isPayment"
+            width="100"
+            style="white-space: break-spaces;"
             textAlign="Left"
-            headerTextAlign="Center"
-            [width]="120"
-            headerText="{{ 'ORDER_CUSTOMER' | translate }}"
-          >
-          </e-column>
-          <!-- <e-column
-            field="categoryName"
-            textAlign="Left"
-            headerTextAlign="Center"
-            [width]="120"
+            headerTextAlign="Left"
             headerText="{{ 'ORDER_STATUS' | translate }}"
           >
-          </e-column> -->
+          </e-column>
+          <e-column
+            field="paymentType"
+            textAlign="Left"
+            style="white-space: break-spaces;"
+            headerTextAlign="Left"
+            headerText="{{ 'ORDER_PAYMENT_METHOD' | translate }}"
+          >
+          </e-column>
         </e-columns>
       </ejs-grid>
     </div>
-    <!-- /.card-body -->
+
   </div>
 </div>
 
 </div>
+
 <ng-template #optionModal let-modal>
   <div class="modal-header my-modal">
     <h4 [ngbTooltip]="title" class="modal-title">
@@ -204,18 +273,7 @@
         </div>
       </div>
 
-      <div class="col-md-12">
-        <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "DELIVERY_STATUS" | translate }}</label>
-        <div class="form-group">
-          <label for="uid">{{ "DELIVERY_STATUS" | translate }}</label>
-          <app-my-code-type-dropdownlist
-            id="delivery-type-remote"
-            [codeType]="'Payment_Delivery'"
-            [(selectedValue)]="model.delivery"
-          >
-          </app-my-code-type-dropdownlist>
-        </div>
-      </div>
+  
 
      
     </div>

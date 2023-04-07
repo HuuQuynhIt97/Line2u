@@ -426,7 +426,7 @@ ISPService spService)
                                  o.CreateDate,
                                  o.Guid,
                                  o.PhotoPath,
-                                 o.ProductDescription, 
+                                 ProductDescription = string.IsNullOrEmpty(o.ProductDescription) ? "" : o.ProductDescription, 
                                  o.ProductName,
                                  o.ProductPrice,
                                  o.ProductPriceDiscount,

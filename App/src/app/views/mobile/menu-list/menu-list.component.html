@@ -4,6 +4,7 @@
     <li class="breadcrumb-item active" aria-current="page">{{'Products List' | translate}}</li>
   </ol>
 </nav>
+
 <div class="container">
   <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
     <p class="loading">Loading data...</p>
@@ -25,6 +26,8 @@
         [pageSettings]="pageSettings"
           >
           <ng-template #parentTemplate let-data>
+            <app-back-previous-page></app-back-previous-page>
+            <span style="color: transparent;"> | </span>
             <ejs-dropdownlist
               style="width: 200px"
               [fields]="categoryFields"

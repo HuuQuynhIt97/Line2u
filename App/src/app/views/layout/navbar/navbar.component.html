@@ -293,7 +293,7 @@
                 <a  href="javascript:void(0)" class="text-light-green fw-700"> <i class="fas fa-shopping-bag"></i>
                 <span class="user-alert-cart" *ngIf="count > 0">{{count}}</span>
                 </a>
-                <div id="cart-detail-box" class="cart-detail-box">
+                <div id="cart-detail-box" style="overflow-x: scroll;height: 600px;" class="cart-detail-box">
                   <div class="card">
                     <div class="card-header padding-15">{{'Your Order' | translate}}</div>
                     <div class="card-body no-padding">
@@ -301,7 +301,7 @@
                         <ng-container *ngFor="let item of cartDetail; let i=index">
                           <div class="cat-product-box">
                             <div class="cat-product">
-                              <div class="cat-name" style="width: 100%;">
+                              <div class="cat-name" style="width: 90%;white-space: break-spaces;">
                                 <a >
                                   <p class="text-light-green">
                                     <span class="text-dark-white">
@@ -313,7 +313,7 @@
                                   </span>
                                 </a>
                               </div>
-                              <div class="delete-btn">
+                              <div class="delete-btn" >
                                 <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
                                   <i class="fa fa-minus-circle" aria-hidden="true"></i>
                                 </a>

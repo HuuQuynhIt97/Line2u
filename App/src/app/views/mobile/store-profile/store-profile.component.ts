@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { ToolbarType } from '@syncfusion/ej2-richtexteditor';
 import { AlertifyService, UtilitiesService } from 'herr-core';
+import { ToastrService } from 'ngx-toastr';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { Landlord } from 'src/app/_core/_model/evse/model';
 import { StoreProfile, XAccount } from 'src/app/_core/_model/xaccount';
@@ -62,6 +63,7 @@ export class StoreProfileComponent  implements OnInit {
     private landlordService: LandlordService,
     private service: StoreProfileService,
     private alertify: AlertifyService,
+    private toast: ToastrService,
     public translate: TranslateService,
     public datePipe: DatePipe,
     public router: Router,
@@ -190,21 +192,21 @@ export class StoreProfileComponent  implements OnInit {
          this.service.insertFormMobile(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
-               this.alertify.success(this.alert.created_ok_msg);
+               this.toast.success(this.alert.created_ok_msg);
                this.loadDetail();
              } else {
                this.translate.get(res.message).subscribe((data: string) => {
-                 this.alertify.warning(data, true);
+                 this.toast.warning(data);
                });
              }
  
            },
            (error) => {
-             this.alertify.warning(this.alert.system_error_msg);
+             this.toast.warning(this.alert.system_error_msg);
            }
          );
        }, () => {
-         this.alertify.error(this.alert.cancelMessage);
+         this.toast.error(this.alert.cancelMessage);
        }
      );
  
@@ -222,18 +224,18 @@ export class StoreProfileComponent  implements OnInit {
          this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
-               this.alertify.success(this.alert.updated_ok_msg);
+               this.toast.success(this.alert.updated_ok_msg);
                this.loadDetail();
              } else {
-               this.alertify.warning(this.alert.system_error_msg);
+               this.toast.warning(this.alert.system_error_msg);
              }
            },
            (error) => {
-             this.alertify.warning(this.alert.system_error_msg);
+             this.toast.warning(this.alert.system_error_msg);
            }
          );
        }, () => {
-         this.alertify.error(this.alert.cancelMessage);
+         this.toast.error(this.alert.cancelMessage);
        }
      );
  

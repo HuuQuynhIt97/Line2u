@@ -4,6 +4,7 @@
     <li class="breadcrumb-item active" aria-current="page">{{'User News' | translate}}</li>
   </ol>
 </nav>
+<app-back-previous-page></app-back-previous-page>
 <div class="container">
   <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
     <p class="loading">Loading data...</p>
@@ -44,7 +45,7 @@
                     >
 
                     <div class="d-flex justify-content-start mt-2">
-                        <div style="width: 40%">
+                        <!-- <div style="width: 40%">
                           <div class="d-flex justify-content-start">
                             
                             <img
@@ -53,8 +54,8 @@
                             class="avatar"
                           />
                           </div>
-                        </div>
-                        <div style="width: 50%">
+                        </div> -->
+                        <div style="width: 100%">
                           <div class="d-flex justify-content-start">
                             <div style="width: 50%" >
                               <div style=" word-wrap: break-word;">&nbsp;&nbsp;{{data.createDate | date: "yyyy-MM-dd"}}</div>
@@ -95,7 +96,7 @@
     <div class="modal-body" id="option">
   
       <div class="row">
-        <div class="col-6">
+        <!-- <div class="col-6">
           <p style="color: red;" *ngIf="model.id > 0">{{ "/home/news-detail/" + model.id }}</p>
           <div class="form-group">
             <label for="engineerSex">{{ "WebNews_Type" | translate }}</label>
@@ -107,10 +108,10 @@
             >
             </app-code-type-dropdownlist>
           </div>
-        </div>
+        </div> -->
   
-        <div class="col-md-6">
-          <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "WebNews_Subject" | translate }}</label>
+        <div class="col-md-12">
+          <!-- <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "WebNews_Subject" | translate }}</label> -->
           <div class="form-group">
             <label for="uid">{{ "WebNews_Subject" | translate }}</label>
             <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span>
@@ -122,9 +123,20 @@
             />
           </div>
         </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="News_Date">{{
+              "News_Date" | translate
+            }}</label>
+            <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              [(ngModel)]="model.newsDate"
+            ></ejs-datepicker>
+          </div>
+        </div>
   
-  
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="form-group">
             <label for="uid">{{ "WebNews_Link" | translate }}</label>
             <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
@@ -138,18 +150,7 @@
           </div>
         </div>
   
-        <div class="col-6">
-          <div class="form-group">
-            <label for="News_Date">{{
-              "News_Date" | translate
-            }}</label>
-            <ejs-datepicker
-              locale="en-US"
-              format="yyyy/MM/dd"
-              [(ngModel)]="model.newsDate"
-            ></ejs-datepicker>
-          </div>
-        </div>
+        
   
   
         
@@ -189,9 +190,9 @@
               class="form-control"
             />
           </div>
-        </div>
+        </div> -->
         
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="form-group">
             <label for="status">{{ "WebNews_Status" | translate }}</label>
             <input
@@ -200,7 +201,7 @@
               class="form-control"
             />
           </div>
-        </div>
+        </div> -->
   
         <div class="col-12 mb-2">
           <label for="body">{{ "WebNews_Body" | translate }}</label>
@@ -231,7 +232,7 @@
           </div>
         </div>
   
-        <div class="col-12">
+        <!-- <div class="col-12">
           <label>{{ "WebNews_COMMENT" | translate }}</label>
           <div class="form-group">
             <textarea
@@ -241,7 +242,7 @@
               rows="4"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
   
      
@@ -289,7 +290,7 @@
       </button>
       <button
         type="submit"
-        [disabled]="!model.link"
+        [disabled]="!model.subject"
         (click)="save()"
         ngbTooltip="SAVE"
         class="btn btn-primary"

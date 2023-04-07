@@ -118,10 +118,10 @@ public initialGridLoad = true;
   loadDataCategory() {
     this.serviceMainCategory.getCategoryByUserID(this.user.uid).subscribe(res => {
       this.categoryData = res
-      this.categoryData.unshift({
-        id: 0,
-        guid: '',
-        categoryName: this.translate.instant('MOBILE_NO_ITEM_DATA') });
+      // this.categoryData.unshift({
+      //   id: 0,
+      //   guid: '',
+      //   categoryName: this.translate.instant('MOBILE_NO_ITEM_DATA') });
     })
   }
   loadLang() {

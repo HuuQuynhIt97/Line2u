@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { OrderService } from 'src/app/_core/_service/evse/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-cart-order-detail',
   templateUrl: './cart-order-detail.component.html',
@@ -17,6 +18,7 @@ export class CartOrderDetailComponent implements OnInit {
   constructor(
     private utilityService: UtilitiesService,
     private orderService: OrderService,
+    private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -25,14 +27,18 @@ export class CartOrderDetailComponent implements OnInit {
     this.orderGuid = this.route.snapshot.paramMap.get('id')
     this.getDetailOrder()
   }
+ 
   getDetailOrder() {
+    this.spinner.show()
     this.orderService.getDetailOrder(this.orderGuid).subscribe(res => {
       console.log(res)
       this.trackingData = res
+      this.spinner.hide()
     })
   }
   Back() {
-    this.router.navigate([`mobile/cart-order`]);
+    let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+    this.router.navigate([isLogin_Cus_url]);
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {

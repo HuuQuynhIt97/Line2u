@@ -1,6 +1,0 @@
-export * from  './farm.service'
-export * from  './area.service'
-export * from  './barn.service'
-export * from  './room.service'
-export * from  './pen.service'
-export * from  './culling-tank.service'

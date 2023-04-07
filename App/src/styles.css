@@ -5,6 +5,9 @@
 @import '../node_modules/@syncfusion/ej2-inputs/styles/bootstrap4.css';
 @import '../node_modules/@syncfusion/ej2-popups/styles/bootstrap4.css';
 
+@import '../node_modules/@syncfusion/ej2-angular-calendars/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/bootstrap4.css';
+
 
 @import '../node_modules/@syncfusion/ej2-calendars/styles/bootstrap4.css';
 @import '../node_modules/@syncfusion/ej2-navigations/styles/bootstrap4.css';
@@ -15,6 +18,9 @@
 @import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/bootstrap4.css';
 @import '../node_modules/@syncfusion/ej2-richtexteditor/styles/bootstrap4.css';
 @import '~@syncfusion/ej2-angular-schedule/styles/bootstrap4.css';
+
+
+
 
 .relative {
     position: relative;

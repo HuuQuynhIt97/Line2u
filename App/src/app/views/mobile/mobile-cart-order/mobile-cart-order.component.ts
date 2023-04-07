@@ -1,6 +1,6 @@
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalRef, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbModal, NgbModalRef, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
@@ -20,6 +20,8 @@ import { OrderService } from 'src/app/_core/_service/evse/order.service';
 import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 import { StoreProfile } from 'src/app/_core/_model/xaccount';
 import { Order } from 'src/app/_core/_model/evse/order';
+import { DateRangePickerComponent } from '@syncfusion/ej2-angular-calendars';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare let window:any;
 declare let $: any;
 
@@ -50,6 +52,8 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   user = JSON.parse(localStorage.getItem('user'))
+  @ViewChild("parentTemplate", { static: true })
+  public parentTemplate: any;
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,
@@ -61,6 +65,14 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
  };
  public initialGridLoad = true;
  storeInfo: StoreProfile = {} as StoreProfile;
+  hoveredDate: NgbDate | null = null;
+  @ViewChild('range')
+  public DateRange: DateRangePickerComponent;
+	fromDate: NgbDate | null;
+	toDate: NgbDate | null;
+  value: any;
+  startDate: any = new Date();
+  endDate: any = new Date();
   constructor(
     private service: MainCategoryService,
     public modalService: NgbModal,
@@ -71,18 +83,35 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
      private config: NgbTooltipConfig,
     public translate: TranslateService,
     private router: Router,
+    private spinner: NgxSpinnerService,
+    private calendar: NgbCalendar, 
+    public formatter: NgbDateParserFormatter,
     private utilityService: UtilitiesService,
 
   ) {
+    
 	    super(translate,environment.apiUrl);
       if (this.isAdmin === false) {
         config.disableTooltip = true;
       }
-
+      
     }
 
   ngOnInit() {
-  this.toolbarOptions = [ 'Search'];
+  // localStorage.setItem('startDate',this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
+  // localStorage.setItem('endDate',this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
+  const ischangeTime = localStorage.getItem('ischangeTime')
+  console.log(ischangeTime)
+  if( ischangeTime !== null || ischangeTime === 'true')
+  {
+    this.value = [new Date(localStorage.getItem('startDate')), new Date(localStorage.getItem('endDate'))];
+    this.startDate = this.datePipe.transform(this.value[0] || new Date(1970, 1, 1), 'yyyy/MM/dd');
+    this.endDate = this.datePipe.transform(this.value[1] || new Date(1970, 1, 1), 'yyyy/MM/dd');
+  }else {
+    this.value = [new Date(), new Date()];
+  }
+  console.log(this.value )
+  this.toolbarOptions = [{ template: this.parentTemplate }, 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -96,34 +125,58 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
     L10n.load(load);
     this.getStoreInfor()
     this.loadLang()
+    
+  }
+
+  deposit(args) {
+    if(args.isInteracted) {
+
+      this.value = this.DateRange.value;
+      this.startDate = this.datePipe.transform(this.value[0] || new Date(1970, 1, 1), 'yyyy/MM/dd');
+      this.endDate = this.datePipe.transform(this.value[1] || new Date(1970, 1, 1), 'yyyy/MM/dd');
+      localStorage.setItem('startDate',this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
+      localStorage.setItem('ischangeTime','true')
+      localStorage.setItem('endDate',this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
+      this.loadData()
+    }
+  }
+  refresh() {
+    this.value = [new Date(), new Date()];
+    this.startDate = this.datePipe.transform( new Date() || new Date(1970, 1, 1), 'yyyy/MM/dd');
+    this.endDate = this.datePipe.transform( new Date() || new Date(1970, 1, 1), 'yyyy/MM/dd');
+    localStorage.setItem('startDate',this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
+    localStorage.setItem('ischangeTime','false')
+    localStorage.setItem('endDate',this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
+    this.loadData()
   }
   tranformss(date) {
 
   }
   getStoreInfor() {
-    this.serviceStore.GetWithGuid(this.user.uid).subscribe(res => {
+    this.serviceStore.GetWithGuid(this.user?.uid).subscribe(res => {
       this.storeInfo = res;
-      console.log(res)
       this.loadData()
     })
   }
   detail(item) {
-    console.log(item)
+    const uri = this.router.url;
+    localStorage.setItem('isLogin_Cus',uri)
     this.router.navigate([`mobile/cart-order-detail/${item.guid}`]);
   }
   dataBound() {
-    if (this.initialGridLoad) {
-        this.initialGridLoad = false;
-        const pager = document.getElementsByClassName('e-gridpager');
-        let topElement;
-        if (this.grid.allowGrouping || this.grid.toolbar) {
-            topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
-                document.getElementsByClassName('e-toolbar');
-        } else {
-            topElement = document.getElementsByClassName('e-gridheader');
-        }
-        this.grid.element.insertBefore(pager[0], topElement[0]);
+  if (this.initialGridLoad) {
+      this.initialGridLoad = false;
+      const pager = document.getElementsByClassName('e-gridpager');
+      let topElement;
+      if (this.grid.allowGrouping || this.grid.toolbar) {
+          topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
+              document.getElementsByClassName('e-toolbar');
+      } else {
+          topElement = document.getElementsByClassName('e-gridheader');
+      }
+      this.grid.element.insertBefore(pager[0], topElement[0]);
     }
+  // this.grid.autoFitColumns();
 }
   loadLang() {
     this.translate.get('WebNews').subscribe( functionName => {
@@ -193,10 +246,13 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
 
   }
   loadData() {
+    this.spinner.show()
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
-    this.orderService.getTrackingOrderForStore(this.storeInfo.guid).subscribe(res => {
+    this.orderService.getTrackingOrderForStore(this.storeInfo?.guid,this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'),this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd')).subscribe(res => {
+      console.log(res)
       this.data = res
+      this.spinner.hide()
     })
     // this.data = new DataManager({
     //   url: `${this.baseUrl}MainCategory/LoadData?lang=${lang}&uid=${this.user.uid}`,
@@ -273,7 +329,6 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
       () => {
         delete this.model['column'];
         delete this.model['index'];
-        console.log(this.model)
         this.orderService.update(this.model).subscribe(
           (res) => {
             if (res.success === true) {

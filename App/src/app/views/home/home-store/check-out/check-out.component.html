@@ -215,8 +215,8 @@
                   <ng-container *ngFor="let item of cartDetail; let i=index">
                     <div class="cat-product-box">
                       <div class="cat-product">
-                        <div class="cat-name" style="width: 100%;">
-                          <a routerLink="/">
+                        <div class="cat-name" style="width: 90%; white-space: break-spaces;">
+                          <a href="javascript:void(0)">
                             <p class="text-light-green fw-700">
                               <span class="text-dark-white">{{item.quantity}}</span> 
                               {{item.productName}}
@@ -226,26 +226,26 @@
                           </a>
                         </div>
 
-                        <div class="delete-btn">
+                        <div class="delete-btn" style="font-size: 20px;">
                           <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
                             <i class="fa fa-minus-circle" aria-hidden="true"></i>
                           </a>
                         </div>
                         <span style="color: transparent;"> | </span>
-                        <div class="delete-btn">
+                        <div class="delete-btn" style="font-size: 20px;">
                           <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                           </a>
                         </div>
                         <span style="color: transparent;"> | </span>
-                        <div class="delete-btn">
+                        <div class="delete-btn" style="font-size: 20px;">
                           <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
                             <i class="far fa-trash-alt"></i>
                           </a>
                         </div>
                         <span style="color: transparent;"> | </span>
 
-                        <div class="price"> <a routerLink="/checkout" class="text-dark-white fw-500">
+                        <div class="price" style="font-size: 20px;"> <a routerLink="/checkout" class="text-dark-white fw-500">
                           ${{item.productPrice * item.quantity}}
                           </a>
                         </div>

@@ -46,6 +46,8 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   user = JSON.parse(localStorage.getItem('user'))
+  @ViewChild("parentTemplate", { static: true })
+public parentTemplate: any; 
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,

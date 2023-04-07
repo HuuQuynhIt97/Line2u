@@ -78,6 +78,9 @@ import { CartOrderDetailComponent } from './mobile-cart-order/cart-order-detail/
 import { Common2Module } from 'src/app/_core/commons/common2.module';
 import { NavbarMobileComponent } from './layout/navbar-mobile/navbar-mobile.component';
 import { Footer1Component } from '../layout/footer1/footer1.component';
+import { DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { BackPreviousPageComponent } from './back-previous-page/back-previous-page.component';
+
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -149,7 +152,8 @@ loadCldr(
     UserHelpComponent,
     MobileCartOrderComponent,
     CartOrderDetailComponent,
-    NavbarMobileComponent
+    NavbarMobileComponent,
+    BackPreviousPageComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
@@ -158,6 +162,7 @@ loadCldr(
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    DateRangePickerModule,
     NgxSpinnerModule,
     MobileRoutingModule,
     NgbModule,
