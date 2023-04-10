@@ -10,6 +10,7 @@ namespace Line2u.DTO
     {
         public decimal Id { get; set; }
         public string StoreName { get; set; }
+        public string CreateName { get; set; }
         public string StoreAddress { get; set; }
         public string StoreOpenTime { get; set; }
         public string StoreCloseTime { get; set; }
@@ -35,6 +36,7 @@ namespace Line2u.DTO
         public string AccountGuid { get; set; }
         public int RatingAVG { get; set; }
         public int RatingCount { get; set; }
+        public object bannerList { get; set; }
         public List<IFormFile> File { get; set; }
 
     }

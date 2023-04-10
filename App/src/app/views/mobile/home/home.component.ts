@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UtilitiesService } from 'herr-core';
@@ -28,6 +28,9 @@ export class HomeComponent implements OnInit {
   IsloadCategoryProductComponent: boolean = false
   IsloadBannerNewComponent: boolean = false
   IsloadPreviewComponent: boolean = false
+  @ViewChild('myButton1') myButton1 : ElementRef;
+  @ViewChild('myButton2') myButton2 : ElementRef;
+  @ViewChild('myButton3') myButton3 : ElementRef;
   constructor(
     public router: Router,
     private cookieService: CookieService,
@@ -38,6 +41,17 @@ export class HomeComponent implements OnInit {
     private service: XAccountService,
     private authService: AuthLandlordService
     ) {
+      this.dataService.currentMessage.subscribe((res: any) => {
+        if(res === 'nextStep2') {
+          this.trigger1Click()
+        }
+        // if(res === 'nextStep3') {
+        //   this.trigger2Click()
+        // }
+        // if(res === 'nextStep4') {
+        //   this.trigger3Click()
+        // }
+      })
      }
   ngOnInit() {
     this.loadDetail();
@@ -45,6 +59,21 @@ export class HomeComponent implements OnInit {
     JSON.parse(localStorage.getItem("user_landlord"))?.username || "Guest";
     this.configImage();
 
+  }
+  trigger1Click() {
+    let el: HTMLElement = this.myButton1.nativeElement as HTMLElement;
+    console.log(el)
+    setTimeout(()=> el.click(), 200);
+  }
+  trigger2Click() {
+    let el: HTMLElement = this.myButton2.nativeElement as HTMLElement;
+    console.log(el)
+    setTimeout(()=> el.click(), 200);
+  }
+  trigger3Click() {
+    let el: HTMLElement = this.myButton3.nativeElement as HTMLElement;
+    console.log(el)
+    setTimeout(()=> el.click(), 200);
   }
   loadCategoryProductComponent() {
     this.IsloadCategoryProductComponent = true;

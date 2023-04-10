@@ -20,9 +20,9 @@ namespace Line2u.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll(int start)
         {
-            return Ok(await _service.GetAll());
+            return Ok(await _service.GetAll(start));
         }
         [HttpPost]
         public async Task<ActionResult> AddAsync([FromBody] StoreProfilesDto model)

@@ -10,6 +10,7 @@ import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { FunctionUtility } from 'src/app/_core/_helper/function-utility';
 import { Landlord } from 'src/app/_core/_model/evse/model';
 import { StoreProfile, XAccount } from 'src/app/_core/_model/xaccount';
+import { DataService } from 'src/app/_core/_service/data.service';
 import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
 import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
@@ -70,7 +71,7 @@ export class StoreProfileComponent  implements OnInit {
     public translate: TranslateService,
     public datePipe: DatePipe,
     public router: Router,
-    
+    private dataService: DataService
 
     ) { }
   loadDetail() {
@@ -79,6 +80,7 @@ export class StoreProfileComponent  implements OnInit {
       this.service.GetWithGuid(guid).subscribe(x=> {
         if(x !== null) {
           this.model = x;
+          localStorage.setItem('store', JSON.stringify(x));
           let listFileImage: string[] = [];
           listFileImage.push(this.model.photoPath);
           console.log(listFileImage)
@@ -89,12 +91,27 @@ export class StoreProfileComponent  implements OnInit {
           this.start_times = x.storeOpenTime
           this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
           // this.configImage();
+          console.log(this.listFile)
         }else {
         }
       })
     }
     
   }
+
+  toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
 
   
   ngOnInit(): void {
@@ -227,66 +244,73 @@ export class StoreProfileComponent  implements OnInit {
     // this.update();
   }
   create() {
-    this.alertify.confirm4(
-       this.alert.yes_message,
-       this.alert.no_message,
-       this.alert.createTitle,
-       this.alert.createMessage,
-       () => {
-        this.model.createBy = this.user.id;
-        this.model.accountGuid = this.user.uid
-        this.model.storeOpenTime = this.start_times
-        this.model.storeCloseTime = this.end_times
-         this.model.file = this.listFile || [];
-         delete this.model['column'];
-         delete this.model['index'];
-         this.service.insertFormMobile(this.ToFormatModel(this.model)).subscribe(
-           (res) => {
-             if (res.success === true) {
-               this.toast.success(this.alert.created_ok_msg);
-               this.loadDetail();
-             } else {
-               this.translate.get(res.message).subscribe((data: string) => {
-                 this.toast.warning(data);
-               });
-             }
- 
-           },
-           (error) => {
-             this.toast.warning(this.alert.system_error_msg);
-           }
-         );
-       }, () => {
-         this.toast.error(this.alert.cancelMessage);
-       }
-     );
+    this.model.createBy = this.user.id;
+    this.model.accountGuid = this.user.uid
+    this.model.storeOpenTime = this.start_times
+    this.model.storeCloseTime = this.end_times
+    this.model.file = this.listFile || [];
+    delete this.model['column'];
+    delete this.model['index'];
+    this.service.insertFormMobile(this.ToFormatModel(this.model)).subscribe(
+      (res) => {
+        if (res.success === true) {
+        this.listFile = []
+          this.toast.success(this.alert.created_ok_msg);
+          this.loadDetail();
+          this.dataService.changeMessage('nextStep2')
+        } else {
+          this.translate.get(res.message).subscribe((data: string) => {
+            this.toast.warning(data);
+          });
+        }
+
+      },
+      (error) => {
+        this.toast.warning(this.alert.system_error_msg);
+      }
+    );
+    // this.alertify.confirm4(
+    //    this.alert.yes_message,
+    //    this.alert.no_message,
+    //    this.alert.createTitle,
+    //    this.alert.createMessage,
+    //    () => {
+        
+    //    }, () => {
+    //      this.toast.error(this.alert.cancelMessage);
+    //    }
+    //  );
  
    }
   update() {
-    this.alertify.confirm4(
-       this.alert.yes_message,
-       this.alert.no_message,
-       this.alert.updateTitle,
-       this.alert.updateMessage,
-       () => {
-        this.model.createBy = this.user.id;
-        this.model.updateBy = this.user.id;
-         this.model.file = this.listFile || [];
-         this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
-           (res) => {
-             if (res.success === true) {
-               this.toast.success(this.alert.updated_ok_msg);
-               this.loadDetail();
-             } else {
-               this.toast.warning(this.alert.system_error_msg);
-             }
-           },
-           (error) => {
-             this.toast.warning(this.alert.system_error_msg);
-           }
-         );
-       }, () => {
-         this.toast.error(this.alert.cancelMessage);
+    // this.alertify.confirm4(
+    //    this.alert.yes_message,
+    //    this.alert.no_message,
+    //    this.alert.updateTitle,
+    //    this.alert.updateMessage,
+    //    () => {
+       
+    //    }, () => {
+    //      this.toast.error(this.alert.cancelMessage);
+    //    }
+    //  );
+
+     this.model.createBy = this.user.id;
+     this.model.updateBy = this.user.id;
+     this.model.file = this.listFile || [];
+     this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
+       (res) => {
+         if (res.success === true) {
+         this.listFile = []
+           this.toast.success(this.alert.updated_ok_msg);
+           this.loadDetail();
+           this.dataService.changeMessage('nextStep2')
+         } else {
+           this.toast.warning(this.alert.system_error_msg);
+         }
+       },
+       (error) => {
+         this.toast.warning(this.alert.system_error_msg);
        }
      );
  

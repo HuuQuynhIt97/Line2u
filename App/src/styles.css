@@ -17,6 +17,7 @@
 @import '../node_modules/sweetalert2/dist/sweetalert2.min.css';
 @import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/bootstrap4.css';
 @import '../node_modules/@syncfusion/ej2-richtexteditor/styles/bootstrap4.css';
+@import "../node_modules/@syncfusion/ej2-image-editor/styles/bootstrap4.css";
 @import '~@syncfusion/ej2-angular-schedule/styles/bootstrap4.css';
 
 

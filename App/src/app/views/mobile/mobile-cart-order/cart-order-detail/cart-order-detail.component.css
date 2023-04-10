@@ -121,3 +121,14 @@
     border-color: #ff2b00;
     border-radius: 1px;
   } */
+
+@media (max-width: 576px) {
+  .checkout-product .img-name-value .product-img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
+ 
+hr {
+  border-top: 0 !important;
+}

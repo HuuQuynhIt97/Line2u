@@ -34,7 +34,7 @@ import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
 import { LinePayService } from 'src/app/_core/_service/evse/linePay.service';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-check-out',
   templateUrl: './check-out.component.html',
@@ -131,6 +131,7 @@ export class CheckOutComponent implements OnInit {
     private toastr: ToastrService,
     public modalService: NgbModal,
     private linePayService: LinePayService,
+    private _location: Location,
     private serviceCart: CartService
 
   ) { 
@@ -183,7 +184,12 @@ export class CheckOutComponent implements OnInit {
     // this.cartDetail = this.getLocalStore("cart_detail");
     
   }
-
+  BackToShoppping() {
+    this.router.navigate(['home'])
+  }
+  Back() {
+    this._location.back()
+  }
   deleteCart(item) {
     this.spinner.show()
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")

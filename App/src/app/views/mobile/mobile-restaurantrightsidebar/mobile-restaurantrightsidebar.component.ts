@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.s
   styleUrls: ['./mobile-restaurantrightsidebar.component.scss']
 })
 export class MobileRestaurantrightsidebarComponent implements OnInit {
-
+  @Input() data: any;
   count: any = 0;
   user = JSON.parse(localStorage.getItem('user'))
   totalPrice: number;
@@ -47,6 +47,7 @@ export class MobileRestaurantrightsidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('load data', this.data)
     this.getStoreInfor();
     this.cartCountTotal()
     this.cartAmountTotal()

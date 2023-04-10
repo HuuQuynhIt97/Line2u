@@ -61,11 +61,28 @@ export class OrderService extends CURDService<Order>  {
   getProducts(guid): Observable<any> {
     return this.http.get<any>(`${this.base}Order/getProducts?id=${guid}`, {});
   }
+
+  updateOrderDetail(model): Observable<any> {
+    return this.http.post<any>(`${this.base}Order/UpdateOrderDetail`, model);
+  }
+  minusOrderDetail(model): Observable<any> {
+    return this.http.post<any>(`${this.base}Order/MinusOrderDetail`, model);
+  }
+  deleteOrderDetail(model): Observable<any> {
+    return this.http.post<any>(`${this.base}Order/DeleteOrderDetail`, model);
+  }
   getTrackingOrderUser(guid): Observable<any> {
     return this.http.get<any>(`${this.base}Order/GetTrackingOrderUser?id=${guid}`, {});
   }
   getDetailOrder(guid): Observable<any> {
     return this.http.get<any>(`${this.base}Order/GetDetailOrder?id=${guid}`, {});
+  }
+
+  confirmOrder(guid): Observable<any> {
+    return this.http.post<any>(`${this.base}Order/ConfirmOrder?id=${guid}`, {});
+  }
+  cancelOrder(guid): Observable<any> {
+    return this.http.post<any>(`${this.base}Order/CancelOrder?id=${guid}`, {});
   }
   getTrackingOrderForStore(guid,min,max): Observable<any> {
     return this.http.get<any>(`${this.base}Order/GetTrackingOrderForStore?id=${guid}&min=${min}&max=${max}`, {});

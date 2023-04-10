@@ -15,9 +15,14 @@
     width: 150px;
     text-overflow: ellipsis;
 }
-.user-details .user-dropdown ul>li>a span.details {
+@media (max-width: 767px) {
+    .main-sec {
+      height: 50px !important;
+    }
+  }
+/* .user-details .user-dropdown ul>li>a span.details {
     word-wrap: break-word;
-}
+} */
 
 .user-dropdown .user-mobile-footer {
     display: flex;

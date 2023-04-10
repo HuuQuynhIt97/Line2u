@@ -101,7 +101,6 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
   // localStorage.setItem('startDate',this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
   // localStorage.setItem('endDate',this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
   const ischangeTime = localStorage.getItem('ischangeTime')
-  console.log(ischangeTime)
   if( ischangeTime !== null || ischangeTime === 'true')
   {
     this.value = [new Date(localStorage.getItem('startDate')), new Date(localStorage.getItem('endDate'))];
@@ -110,7 +109,6 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
   }else {
     this.value = [new Date(), new Date()];
   }
-  console.log(this.value )
   this.toolbarOptions = [{ template: this.parentTemplate }, 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
@@ -155,6 +153,7 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
   getStoreInfor() {
     this.serviceStore.GetWithGuid(this.user?.uid).subscribe(res => {
       this.storeInfo = res;
+      localStorage.setItem('store', JSON.stringify(res));
       this.loadData()
     })
   }
@@ -250,7 +249,6 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.orderService.getTrackingOrderForStore(this.storeInfo?.guid,this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'),this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd')).subscribe(res => {
-      console.log(res)
       this.data = res
       this.spinner.hide()
     })

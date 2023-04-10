@@ -1,0 +1,264 @@
+<ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div class="modal-header">
+  <h4 class="modal-title">{{'Add Item' | translate}} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- restaurent top -->
+  <!-- <div style="position: sticky !important;" class="page-banner p-relative smoothscroll" id="menu">
+    <swiper
+    [loop]="true"
+    [navigation]="true"
+    [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+    [pagination]="{ clickable: true, dynamicBullets: true }"
+    >
+        <ng-container  *ngFor="let item_banner of banners; let i = index">
+            <ng-template  swiperSlide>
+                <img 
+                style="cursor: pointer;"
+                [src]="imagePath(item_banner.thumbnail) "
+                sizes="(min-width:960px) calc(100vw - 352px),100vw"
+                class="img-fluid full-width" alt="banner">
+                   
+            </ng-template>
+        </ng-container>
+    </swiper>
+    </div> -->
+  <!-- restaurent top -->
+  <!-- restaurent details -->
+  <section class="restaurent-details  u-line">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="heading padding-tb-10">
+            <h3 class="text-light-black title fw-700 no-margin">{{storeInfo.storeName}}</h3>
+            <p class="text-light-black sub-title no-margin"  [innerHTML]="safeHtml(storeInfo.body)">
+              <!-- <span>
+                <a routerLink="/checkout" class="text-success">Change locations</a>
+                </span> -->
+            </p>
+            <div class="head-rating">
+              <div class="rating">
+                <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
+                <ng-template let-fill="fill" let-index="index">
+                  <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
+                </ng-template>
+                </ngb-rating>
+              </div>
+              <div class="product-review">
+              </div>
+            </div>
+          </div>
+          <div class="restaurent-logo">
+            <img 
+              [src]="imagePath(storeInfo.photoPath) "
+              class="img-fluid" 
+              alt="#">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- restaurent details -->
+  <!-- restaurent tab -->
+  <div class="restaurent-tabs u-line">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="restaurent-menu scrollnav">
+            <ul class="nav nav-pills">
+              <li class="nav-item"> <a class="nav-link active text-light-white fw-700" data-toggle="pill" href="#menu">{{'Menu'| translate}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="section-padding restaurent-meals bg-light-theme">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-1 col-lg-1">
+          <!-- <app-restaurantleftsidebar></app-restaurantleftsidebar>   -->
+        </div>
+        <div class="col-xl-8 col-lg-8">
+          <div class="row">
+            <div class="col-lg-12 restaurent-meal-head mb-md-40">
+              <ng-container *ngFor="let _products of products">
+                <ng-container *ngIf="_products?.list_product.length > 0; else elseTemplate">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="section-header-left">
+                        <h3 class="text-light-black header-title">
+                          <a class="card-link text-light-black no-margin" data-toggle="collapse" href="#collapseTwo">
+                          {{_products.category}}
+                          </a>
+                        </h3>
+                      </div>
+                    </div>
+                    <div id="collapseTwo" class="collapse show">
+                      <div class="card-body no-padding">
+                        <div class="row">
+                          <ng-container *ngFor="let item of _products?.list_product">
+                            <div class="col-lg-12">
+                              <div class="restaurent-product-list">
+                                <div class="restaurent-product-detail">
+                                  <div class="restaurent-product-left">
+                                    <div class="restaurent-product-title-box">
+                                      <div class="restaurent-product-box">
+                                        <div class="restaurent-product-title">
+                                          <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup">
+                                            <a href="javascript:void(0)" class="text-light-black fw-600">
+                                            {{item.productName}}
+                                            </a> 
+                                            <a  *ngIf="item.totalOrder > 0 && item.cartCreateBy === data?.order_By"
+                                              style="background-color: #e21b70;"
+                                              class="text-light-black fw-600" 
+                                              >
+                                            {{item.totalOrder}} x
+                                            </a>
+                                          </h6>
+                                          <p class="text-success fw-600 no-margin">${{item.productPrice}}</p>
+                                        </div>
+                                        <div class="restaurent-product-label">
+                                          <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
+                                            <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor">
+                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path>
+                                            </svg>
+                                          </span>
+                                          <span (click)="addToCart(item)" class="rectangle-tag bg-dark text-custom-white">
+                                            <svg  
+                                              aria-hidden="true" 
+                                              focusable="false" class="fl-white" 
+                                              width="16" height="16" 
+                                              xmlns="http://www.w3.org/2000/svg" 
+                                              xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                              viewBox="0 0 24 24">
+                                              <defs>
+                                                <path 
+                                                  d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" 
+                                                  fill="#ffffff"
+                                                  id="sIcPlus"></path>
+                                              </defs>
+                                              <use  xlink:href="#sIcPlus" fill-rule="evenodd"></use>
+                                            </svg>
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="restaurent-product-rating">
+                                        <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                            <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                            <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                            <span class="text-yellow"><i class="fas fa-star"></i></span>
+                                            <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                                        </div>
+                                        <div class="rating-text">
+                                            <p class="text-light-white fs-12 title">3845 ratings</p>
+                                        </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="restaurent-product-caption-box"> 
+                                      <span class="text-light-white" [innerHTML]="safeHtml(item.productDescription)">
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="restaurent-product-img">
+                                    <img 
+                                      [src]="imagePath(item.photoPath)"
+                                      class="img-fluid" alt="#">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #elseTemplate>
+                </ng-template>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+          <div class="sidebar">
+            <div class="cart-detail-box">
+              <div class="card">
+                <div class="card-header padding-15 fw-700">{{'Your Order' | translate}}</div>
+                <div class="card-body no-padding" id="scrollstyle-4">
+                  <ng-container *ngIf="cartDetail.length > 0; else elseTemplate">
+                    <ng-container *ngFor="let item of cartDetail; let i=index">
+                      <div class="cat-product-box">
+                        <div class="cat-product">
+                          <div class="cat-name" style="width: 100%;white-space: break-spaces">
+                            <a href="#">
+                              <p class="text-light-green fw-700">
+                                <span class="text-dark-white">
+                                {{item.qty}}
+                                </span> 
+                                {{item.productName}}
+                              </p>
+                              <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
+                              </span>
+                            </a>
+                          </div>
+                          <div class="delete-btn minus-circle" style="font-size: 20px;">
+                            <a  href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="fa fa-minus-circle" id="minus-circle" aria-hidden="true"></i>
+                            </a>
+                          </div>
+                          <span style="color: transparent;"> | </span>
+                          <div class="delete-btn" style="font-size: 20px;">
+                            <a  href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="fa fa-plus-circle" id="minus-circle" aria-hidden="true"></i>
+                            </a>
+                          </div>
+                          <span style="color: transparent;"> | </span>
+                          <div class="delete-btn" style="font-size: 20px;">
+                            <a  href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="far fa-trash-alt" id="minus-circle"></i>
+                            </a>
+                          </div>
+                          <span style="color: transparent;"> | </span>
+                          <div class="price"> <a href="#" class="text-dark-white fw-500">
+                            ${{item.price}}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="item-total">
+                      <div class="total-price border-0"> <span class="text-dark-white fw-700">{{'Items subtotal' | translate}}:</span>
+                        <span class="text-dark-white fw-700">${{totalPrice}}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #elseTemplate>
+                    <div class="item-total">
+                      <div class="empty-bag padding-15 fw-700"> <a href="#">{{'rightSidebar.EmptyBag' | translate}}</a>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- restaurent meals -->
+</div>
+<div class="modal-footer">
+  <div class="w-100">
+    <button type="button" (click)="activeModal.dismiss('Cross click')" class="btn btn-secondary mr-2 float-right">{{'Close' | translate }}</button>
+  </div>
+</div>
+<!-- <app-navbar-mobile></app-navbar-mobile> -->

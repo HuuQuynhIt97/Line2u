@@ -16,7 +16,7 @@
           <img  style="  display: block;
           width: 100%;
           height: 100%;
-          object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
+          object-fit: cover;" [src]="imagePath(item.photoPath)" [alt]="item.subject" loading="lazy" />
         </a>
         <div class="card-body">
           <p class="card-text">{{item.subject}}</p>

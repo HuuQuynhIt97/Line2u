@@ -1,0 +1,666 @@
+<ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<app-navbar></app-navbar>
+<div class="most-popular section-padding">
+  <div class="container-fluid">
+    <div class="row">
+      <aside class="col-lg-3 mb-md-40">
+        <div class="filter-sidebar mb-5">
+          <h4 class="text-light-black fw-600 title-2">
+            {{'Filters' | translate}}
+            <small class="fs-12">
+              <a (click)="clearFillter()" href="javascript:void(0)"  class="text-light-black fw-500">
+                {{'Clear all' | translate}}
+              </a>
+            </small>
+          </h4>
+          <div class="sidebar-tab">
+            <!-- <ul class="nav nav-pills mb-xl-20">
+              <li class="nav-item"> <a class="nav-link active" data-toggle="pill" href="#restaurents">Restaurants</a>
+              </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="pill" href="#caterings">Caterings</a>
+              </li>
+            </ul> -->
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="restaurents">
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="delivery-restaurents">
+                    <div class="filters">
+                      <div class="card">
+                        <div class="card-header"> <a class="card-link text-light-black fw-700 fs-16" data-toggle="collapse" href="#deliverycollapseTwo">
+                          {{'Rating' | translate}}
+                          </a>
+                        </div>
+                        <!-- <div id="deliverycollapseOne" class="collapse show">
+                          <div class="card-body">
+                            <form>
+                              <label class="custom-checkbox">
+                                <input type="checkbox" name="#"> 
+                                <span class="checkmark "></span> 1 <i class="fas fa-star text-yellow"></i> 
+                              </label>
+                              <label class="custom-checkbox">
+                                <input type="checkbox" name="#"> 
+                                <span class="checkmark "></span> 2 <i class="fas fa-star text-yellow"></i> 
+                              </label>
+                              <label class="custom-checkbox">
+                                <input type="checkbox" name="#"> 
+                                <span class="checkmark"></span> 3 <i class="fas fa-star text-yellow"></i> 
+                              </label>
+                              <label class="custom-checkbox">
+                                <input type="checkbox" name="#"> 
+                                <span class="checkmark"></span> 4 <i class="fas fa-star text-yellow"></i> 
+                              </label>
+                              <label class="custom-checkbox">
+                                <input type="checkbox" name="#"> 
+                                <span class="checkmark"></span> 5 <i class="fas fa-star text-yellow"></i> 
+                              </label>
+                            </form>
+                          </div>
+                        </div> -->
+                        <div id="deliverycollapseTwo" class="collapse show">
+                          <div class="card-body">
+                            <ngb-rating [rate]="selected" (rateChange)="rateChange($event)" [max]="5" (hover)="hovered=$event" (leave)="hovered=0" >
+                              <ng-template let-fill="fill" let-index="index">
+                                <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
+                              </ng-template>
+                            </ngb-rating>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div class="card">
+                        <div class="card-header"> <a class="card-link text-light-black fw-700 fs-16" data-toggle="collapse" href="#deliverycollapseThree">
+                          Price
+                          </a>
+                        </div>
+                        <div id="deliverycollapseThree" class="collapse show">
+                          <div class="card-body">
+                            <div class="rating">
+                              <button class="text-success">$</button>
+                              <button class="text-success">$$</button>
+                              <button class="text-success">$$$</button>
+                              <button class="text-success">$$$$</button>
+                              <button class="text-success">$$$$$</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+                    
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <div class="col-lg-9 browse-cat border-0">
+        <div class="row">
+         
+          <div class="col-12">
+            <div class="section-header-left">
+              <h3 class="text-light-black header-title title">{{'All Store' | translate}}</h3>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="near-offer-slider swiper-container  mb-xl-20">
+              <div class="row">
+                <ng-container *ngFor="let storeInfo of storeData; let i=index">
+                  <div class="col-md-4 col-lg-4 col-sm-12 padding-tb-10" (click)="orderNow(storeInfo)">
+                    <div class="swiper-slide">
+                      <div class="testimonial-wrapper">
+                        <div class="testimonial-box">
+                          <div class="testimonial-img p-relative">
+                            <ng-container *ngIf="storeInfo.bannerList.length > 0; else elseTemplate">
+                              <swiper
+                                [loop]="true"
+                                [navigation]="false"
+                                [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+                                [pagination]="{ clickable: true, dynamicBullets: true }"
+                                >
+                                  <ng-container  *ngFor="let item_banner of storeInfo.bannerList; let i = index">
+                                    <ng-template  swiperSlide>
+                                      <img 
+                                      style="cursor: pointer;width: 438px;height: 180px;"
+                                      [src]="imagePath(item_banner.thumbnail) "
+                                      class="img-fluid full-width" alt="testimonial-img">
+                                    </ng-template>
+                                  </ng-container>
+                              </swiper>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                              <a href="javascript:void(0)">
+                                <img src="assets/img/blog/438x180/shop-1.jpg"
+                                style="cursor: pointer;width: 438px;height: 180px;"
+                                class="img-fluid full-width" alt="testimonial-img">
+                              </a>
+                            </ng-template>
+                            
+                            <!-- <div class="overlay">
+                              <div class="brand-logo">
+                                <img 
+                                [src]="imagePath(storeInfo.photoPath) "
+                                class="img-fluid" alt="logo">
+                              </div>
+                            </div> -->
+                          </div>
+                          <div class="testimonial-caption padding-15">
+                            <h5 class="fw-600">
+                              <a href="javascript:void(0)" routerLink="/" class="text-light-black">
+                                {{storeInfo.storeName}}
+                              </a>
+                            </h5>
+                            <div class="testimonial-user-box">
+                              <img 
+                              [src]="imagePath(storeInfo.photoPath)"
+                              style="width: 40px !important; height: 40px;"
+                              class="rounded-circle" alt="#">
+                              <div class="testimonial-user-name">
+                                <p class="text-light-black fw-600">{{storeInfo.createName}}</p>
+                              </div>
+                            </div>
+                            <div class="ratings"> 
+                              <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
+                                <ng-template let-fill="fill" let-index="index">
+                                  <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
+                                </ng-template>
+                              </ngb-rating>
+                            </div>
+                            <!-- [innerHTML]="safeHtml(storeInfo.body)" -->
+                            <p class="text-light-black" >{{storeInfo.storeAddress}}</p>
+                            <a href="javascript:void(0)" (click)="orderNow(storeInfo)" class="btn-second btn-submit">{{'Order Now' | translate}}</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-12">
+            <div class="product-list-view">
+              <div class="product-list-info">
+                <div class="product-list-img">
+                  <a routerLink="/restaurant">
+                  <img src=" assets/img/restaurants/90x90/shop-6.jpg" class="img-fluid" alt="#">
+                  </a>
+                </div>
+              </div>
+              <div class="product-right-col">
+                <div class="product-list-details">
+                  <div class="product-list-title">
+                    <div class="product-info">
+                      <h6><a routerLink="/restaurant" class="text-light-black fw-600">Sigma Bagels</a></h6>
+                      <p class="text-light-white fs-12">American Bagels</p>
+                    </div>
+                  </div>
+                  <div class="product-detail-right-box">
+                    <div class="product-list-rating text-center">
+                      <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                      </div>
+                      <div class="rating-text">
+                        <p class="text-light-white fs-12">3845 ratings</p>
+                      </div>
+                    </div>
+                    <div class="product-list-tags"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                      10%
+                      </span>
+                      <span class="rectangle-tag bg-gradient-green text-custom-white">
+                      Trending
+                      </span>
+                    </div>
+                    <div class="product-price-icon"> <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                    </div>
+                    <div class="product-list-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                      <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                    </div>
+                    <div class="product-list-price">
+                      <div class="price">
+                        <h6 class="text-light-black no-margin">$0</h6>
+                        <span class="text-light-white">Minimum</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-list-bottom">
+                  <div class="product-list-type"> <span class="text-light-white new">New</span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/006-chili.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/005-chef.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/008-protein.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                    </span>
+                  </div>
+                  <div class="mob-tags-label"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                    10%
+                    </span>
+                    <span class="rectangle-tag bg-gradient-green text-custom-white">
+                    Trending
+                    </span>
+                    <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                  </div>
+                  <div class="product-list-time">
+                    <span class="circle-tag">
+                    <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                    </span>
+                    <ul>
+                      <li class="text-light-white">1.18 mi</li>
+                      <li class="text-light-white">30-40 mins</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="product-list-view">
+              <div class="product-list-info">
+                <div class="product-list-img">
+                  <a routerLink="/restaurant">
+                  <img src=" assets/img/restaurants/90x90/shop-1.jpg" class="img-fluid" alt="#">
+                  </a>
+                </div>
+              </div>
+              <div class="product-right-col">
+                <div class="product-list-details">
+                  <div class="product-list-title">
+                    <div class="product-info">
+                      <h6><a routerLink="/restaurant" class="text-light-black fw-600">Sunset Soup</a></h6>
+                      <p class="text-light-white fs-12">American Bagels</p>
+                    </div>
+                  </div>
+                  <div class="product-detail-right-box">
+                    <div class="product-list-rating text-center">
+                      <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                      </div>
+                      <div class="rating-text">
+                        <p class="text-light-white fs-12">3845 ratings</p>
+                      </div>
+                    </div>
+                    <div class="product-list-tags"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                      10%
+                      </span>
+                      <span class="rectangle-tag bg-gradient-green text-custom-white">
+                      Trending
+                      </span>
+                    </div>
+                    <div class="product-price-icon"> <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                    </div>
+                    <div class="product-list-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                      <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                    </div>
+                    <div class="product-list-price">
+                      <div class="price">
+                        <h6 class="text-light-black no-margin">$0</h6>
+                        <span class="text-light-white">Minimum</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-list-bottom">
+                  <div class="product-list-type"> <span class="text-light-white new">New</span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/006-chili.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/005-chef.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/008-protein.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                    </span>
+                  </div>
+                  <div class="mob-tags-label"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                    10%
+                    </span>
+                    <span class="rectangle-tag bg-gradient-green text-custom-white">
+                    Trending
+                    </span>
+                    <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                  </div>
+                  <div class="product-list-time">
+                    <span class="circle-tag">
+                    <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                    </span>
+                    <ul>
+                      <li class="text-light-white">1.18 mi</li>
+                      <li class="text-light-white">30-40 mins</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="product-list-view">
+              <div class="product-list-info">
+                <div class="product-list-img">
+                  <a routerLink="/restaurant">
+                  <img src=" assets/img/restaurants/90x90/shop-8.jpg" class="img-fluid" alt="#">
+                  </a>
+                </div>
+              </div>
+              <div class="product-right-col">
+                <div class="product-list-details">
+                  <div class="product-list-title">
+                    <div class="product-info">
+                      <h6><a routerLink="/restaurant" class="text-light-black fw-600">Crispy Chicky</a></h6>
+                      <p class="text-light-white fs-12">American Bagels</p>
+                    </div>
+                  </div>
+                  <div class="product-detail-right-box">
+                    <div class="product-list-rating text-center">
+                      <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                      </div>
+                      <div class="rating-text">
+                        <p class="text-light-white fs-12">3845 ratings</p>
+                      </div>
+                    </div>
+                    <div class="product-list-tags"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                      10%
+                      </span>
+                      <span class="rectangle-tag bg-gradient-green text-custom-white">
+                      Trending
+                      </span>
+                    </div>
+                    <div class="product-price-icon"> <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                    </div>
+                    <div class="product-list-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                      <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                    </div>
+                    <div class="product-list-price">
+                      <div class="price">
+                        <h6 class="text-light-black no-margin">$0</h6>
+                        <span class="text-light-white">Minimum</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-list-bottom">
+                  <div class="product-list-type"> <span class="text-light-white new">New</span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/006-chili.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/005-chef.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/008-protein.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                    </span>
+                  </div>
+                  <div class="mob-tags-label"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                    10%
+                    </span>
+                    <span class="rectangle-tag bg-gradient-green text-custom-white">
+                    Trending
+                    </span>
+                    <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                  </div>
+                  <div class="product-list-time">
+                    <span class="circle-tag">
+                    <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                    </span>
+                    <ul>
+                      <li class="text-light-white">1.18 mi</li>
+                      <li class="text-light-white">30-40 mins</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="product-list-view">
+              <div class="product-list-info">
+                <div class="product-list-img">
+                  <a routerLink="/restaurant">
+                  <img src="assets/img/restaurants/90x90/shop-1.jpg" class="img-fluid" alt="#">
+                  </a>
+                </div>
+              </div>
+              <div class="product-right-col">
+                <div class="product-list-details">
+                  <div class="product-list-title">
+                    <div class="product-info">
+                      <h6><a routerLink="/restaurant" class="text-light-black fw-600">Small Bites</a></h6>
+                      <p class="text-light-white fs-12">American Bagels</p>
+                    </div>
+                  </div>
+                  <div class="product-detail-right-box">
+                    <div class="product-list-rating text-center">
+                      <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                      </div>
+                      <div class="rating-text">
+                        <p class="text-light-white fs-12">3845 ratings</p>
+                      </div>
+                    </div>
+                    <div class="product-list-tags"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                      10%
+                      </span>
+                      <span class="rectangle-tag bg-gradient-green text-custom-white">
+                      Trending
+                      </span>
+                    </div>
+                    <div class="product-price-icon"> <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                    </div>
+                    <div class="product-list-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                      <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                    </div>
+                    <div class="product-list-price">
+                      <div class="price">
+                        <h6 class="text-light-black no-margin">$0</h6>
+                        <span class="text-light-white">Minimum</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-list-bottom">
+                  <div class="product-list-type"> <span class="text-light-white new">New</span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/006-chili.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/005-chef.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/008-protein.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                    </span>
+                  </div>
+                  <div class="mob-tags-label"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                    10%
+                    </span>
+                    <span class="rectangle-tag bg-gradient-green text-custom-white">
+                    Trending
+                    </span>
+                    <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                  </div>
+                  <div class="product-list-time">
+                    <span class="circle-tag">
+                    <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                    </span>
+                    <ul>
+                      <li class="text-light-white">1.18 mi</li>
+                      <li class="text-light-white">30-40 mins</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="product-list-view">
+              <div class="product-list-info">
+                <div class="product-list-img">
+                  <a routerLink="/restaurant">
+                  <img src=" assets/img/restaurants/90x90/shop-2.jpg" class="img-fluid" alt="#">
+                  </a>
+                </div>
+              </div>
+              <div class="product-right-col">
+                <div class="product-list-details">
+                  <div class="product-list-title">
+                    <div class="product-info">
+                      <h6><a routerLink="/restaurant" class="text-light-black fw-600">Sunset Pizza</a></h6>
+                      <p class="text-light-white fs-12">American Bagels</p>
+                    </div>
+                  </div>
+                  <div class="product-detail-right-box">
+                    <div class="product-list-rating text-center">
+                      <div class="ratings"> <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star"></i></span>
+                        <span class="text-yellow"><i class="fas fa-star-half-alt"></i></span>
+                      </div>
+                      <div class="rating-text">
+                        <p class="text-light-white fs-12">3845 ratings</p>
+                      </div>
+                    </div>
+                    <div class="product-list-tags"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                      10%
+                      </span>
+                      <span class="rectangle-tag bg-gradient-green text-custom-white">
+                      Trending
+                      </span>
+                    </div>
+                    <div class="product-price-icon"> <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                      <span class="text-success fs-16">$</span>
+                    </div>
+                    <div class="product-list-label"> <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                      <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                    </div>
+                    <div class="product-list-price">
+                      <div class="price">
+                        <h6 class="text-light-black no-margin">$0</h6>
+                        <span class="text-light-white">Minimum</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-list-bottom">
+                  <div class="product-list-type"> <span class="text-light-white new">New</span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/004-leaf.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/006-chili.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/005-chef.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/008-protein.svg" alt="tag">
+                    </span>
+                    <span class="text-custom-white square-tag">
+                    <img src="assets/img/svg/009-lemon.svg" alt="tag">
+                    </span>
+                  </div>
+                  <div class="mob-tags-label"> <span class="text-custom-white rectangle-tag bg-gradient-red">
+                    10%
+                    </span>
+                    <span class="rectangle-tag bg-gradient-green text-custom-white">
+                    Trending
+                    </span>
+                    <span class="rectangle-tag bg-gradient-red text-custom-white">Label</span>
+                    <span class="rectangle-tag bg-dark text-custom-white">Combo</span>
+                  </div>
+                  <div class="product-list-time">
+                    <span class="circle-tag">
+                    <img src="assets/img/svg/013-heart-1.svg" alt="tag">
+                    </span>
+                    <ul>
+                      <li class="text-light-white">1.18 mi</li>
+                      <li class="text-light-white">30-40 mins</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="custom-pagination">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" routerLink="/listview" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li class="page-item"><a class="page-link" routerLink="/listview">1</a>
+                  </li>
+                  <li class="page-item active"><a class="page-link" routerLink="/listview">2</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" routerLink="/listview">3</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" routerLink="/listview" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer2></app-footer2>

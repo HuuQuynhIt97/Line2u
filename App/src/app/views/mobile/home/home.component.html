@@ -33,14 +33,14 @@
                 <ul class="step-steps steps-2">
                   <li class="add-res-tab active" id="stepbtn1"> <a href="javascript:void(0)" class="add-res-tab">{{'General Info' | translate}}</a>
                   </li>
-                  <li (click)="loadCategoryProductComponent()" class="add-res-tab" id="stepbtn2"> <a href="javascript:void(0)"  class="add-res-tab">{{'Category & Product' | translate}}</a>
+                  <li (click)="loadCategoryProductComponent()" #myButton1 class="add-res-tab" id="stepbtn2"> <a href="javascript:void(0)"  class="add-res-tab">{{'Category & Product' | translate}}</a>
                   </li>
-                  <li (click)="loadBannerNewComponent()" class="add-res-tab" id="stepbtn3"> <a href="javascript:void(0) " (click)="loadBannerNewComponent()" class="add-res-tab">{{'Banner & News' | translate}}</a>
+                  <li (click)="loadBannerNewComponent()" #myButton2 class="add-res-tab" id="stepbtn3"> <a href="javascript:void(0) " (click)="loadBannerNewComponent()" class="add-res-tab">{{'Banner & News' | translate}}</a>
                   </li>
-                  <li (click)="loadPreviewComponent()" class="add-res-tab" id="stepbtn4"> <a href="javascript:void(0)" (click)="loadPreviewComponent()" class="add-res-tab">{{'Preview' | translate}}</a>
+                  <li (click)="loadPreviewComponent()" #myButton3 class="add-res-tab" id="stepbtn4"> <a href="javascript:void(0)" (click)="loadPreviewComponent()" class="add-res-tab">{{'Preview' | translate}}</a>
                   </li>
                 </ul>
-                <!-- <div class="step-footer">
+                <div class="step-footer">
                   <button class="btn-first white-btn none" id="prev-1">Previous</button>
                   <button class="btn-first white-btn none" id="prev-2">Previous</button>
                   <button class="btn-first white-btn none" id="prev-3">Previous</button>
@@ -48,7 +48,7 @@
                   <button class="btn-first white-btn none" id="next-2">Next</button>
                   <button class="btn-first white-btn none" id="next-3">Next</button>
                   <button class="btn-first white-btn none" id="finish-1">Finish</button>
-                </div> -->
+                </div>
               </div>
               <div class="col-xl-8 col-lg-7">
                 <div class="step-content">
@@ -62,10 +62,15 @@
                           </div>
                         </div>
                         <app-store-profile></app-store-profile>
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="u-line mb-xl-20"></div>
-                          </div>
+                        
+                        <div class="step-footer">
+                          <button class="btn-first white-btn none" id="prev-1">Previous</button>
+                          <button class="btn-first white-btn none" id="prev-2">Previous</button>
+                          <button class="btn-first white-btn none" id="prev-3">Previous</button>
+                          <button class="btn-first white-btn" id="next-1">Next</button>
+                          <button class="btn-first white-btn none" id="next-2">Next</button>
+                          <button class="btn-first white-btn none" id="next-3">Next</button>
+                          <button class="btn-first white-btn none" id="finish-1">Finish</button>
                         </div>
                       </form>
                     </div>

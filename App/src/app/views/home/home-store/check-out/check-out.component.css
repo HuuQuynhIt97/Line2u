@@ -1,6 +1,10 @@
 /* @media (max-width: 576px) {
 } */
-
+.primary-btn {
+    color: #fff;
+    background-color: #285fa7;
+    border-color: #285fa7;
+}
 .payment
 {
     border:1px solid #f2f2f2;

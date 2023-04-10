@@ -124,6 +124,7 @@ import { HomeStoreComponent } from '../home/home-store/home-store.component';
 import { HomeStoreMobilePreviewComponent } from './home-store-mobile-preview/home-store-mobile-preview.component';
 import { SwiperModule } from 'swiper/angular';
 import { MobileRestaurantrightsidebarComponent } from './mobile-restaurantrightsidebar/mobile-restaurantrightsidebar.component';
+import { HomeStoreAddMoreComponent } from './home-store-add-more/home-store-add-more.component';
 @NgModule({
   declarations: [
     MobileComponent,
@@ -158,7 +159,8 @@ import { MobileRestaurantrightsidebarComponent } from './mobile-restaurantrights
     NavbarMobileComponent,
     BackPreviousPageComponent,
     HomeStoreMobilePreviewComponent,
-    MobileRestaurantrightsidebarComponent
+    MobileRestaurantrightsidebarComponent,
+    HomeStoreAddMoreComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     

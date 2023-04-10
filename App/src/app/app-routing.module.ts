@@ -23,6 +23,7 @@ import { P500Component } from './views/p500/p500.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { AuthGuard } from './_core/_guards/auth.guard';
 import { SelectivePreloadingStrategyService } from './_core/_preloading/selective-preloading-strategy.service';
+import { ListAllStoreComponent } from './views/home/list-all-store/list-all-store.component';
 
 const routes: Routes = [
   // App routes goes here here
@@ -183,6 +184,13 @@ const routes: Routes = [
     component: ShopCartComponent,
     data: {
       title: 'Shop Cart'
+    }
+  },
+  {
+    path: 'home/list-all-store',
+    component: ListAllStoreComponent,
+    data: {
+      title: 'List all store'
     }
   },
   {

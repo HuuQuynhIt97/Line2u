@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService } from 'herr-core';
+import { AlertifyService, UtilitiesService } from 'herr-core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { DashboardService } from 'src/app/_core/_service/dashboard.service';
@@ -14,7 +14,8 @@ import { WebNewsService } from 'src/app/_core/_service/evse/web-news.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from 'src/app/_core/_service/data.service';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
-
+import { ImagePathConstants } from 'src/app/_core/_constants';
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-news-detail',
   templateUrl: './news-detail.component.html',
@@ -42,13 +43,18 @@ export class NewsDetailComponent implements OnInit {
   banners= [];
   news: any;
   logo: any;
+  noImage = ImagePathConstants.NO_IMAGE_QR;
+  noImage_Comment = ImagePathConstants.NO_IMAGE_HEADER_IMAGE;
+  apiHost = environment.apiUrl.replace('/api/', '');
   constructor(
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
     private webNewsService: WebNewsService,
     private webNewsUserService: WebNewsUserService,
     private translate: TranslateService,
+    private utilityService: UtilitiesService,
     private dataService: DataService,
+    private _location: Location,
     private route: ActivatedRoute,
     private alertify: AlertifyService,
     public sanitizer: DomSanitizer,
@@ -69,12 +75,21 @@ export class NewsDetailComponent implements OnInit {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
-    
-    
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
-   
+  }
+  imagePath(path) {
+    if (path !== null && this.utilityService.checkValidImage(path)) {
+      if (this.utilityService.checkExistHost(path)) {
+        return path;
+      }
+      return this.apiHost + path;
+    }
+    return this.noImage;
+  }
+  BackToShoppping() {
+    this._location.back()
   }
   safeHtml(html) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
@@ -193,5 +208,7 @@ export class NewsDetailComponent implements OnInit {
   capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  
 
 }

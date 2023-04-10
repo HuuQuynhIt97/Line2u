@@ -25,6 +25,7 @@ using Dapper;
 using isRock.LineBot;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using Syncfusion.JavaScript.Models;
+using Syncfusion.JavaScript.DataVisualization.Models.Diagram;
 
 namespace Line2u.Services
 {
@@ -39,7 +40,7 @@ namespace Line2u.Services
         Task<object> GetRatingAndComment(string guid);
         Task<bool> CheckRatingAndComment(string guid, int userId);
         Task<object> GetInforByStoreName(string name);
-        Task<object> GetAll();
+        Task<object> GetAll(int start);
 
         Task<object> UploadAvatarForMobile(IFormFile file, decimal key);
 
@@ -49,6 +50,7 @@ namespace Line2u.Services
     {
         private readonly ISPService _repoSp;
         private readonly IRepositoryBase<StoreProfile> _repo;
+        private readonly IRepositoryBase<WebNewsUser> _repoWebNewsUser;
         private readonly IRepositoryBase<StoreRatingComment> _repoRatingComment;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccountPermission> _repoXAccountPermission;
@@ -68,6 +70,7 @@ namespace Line2u.Services
 
         public StoreProfileService(
             IRepositoryBase<StoreProfile> repo,
+            IRepositoryBase<WebNewsUser> repoWebNewsUser,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
             IRepositoryBase<StoreRatingComment> repoRatingComment,
@@ -90,6 +93,7 @@ namespace Line2u.Services
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoWebNewsUser = repoWebNewsUser;
             _repoCodeType = repoCodeType;
             _repoXAccount = repoXAccount;
             _repoRatingComment = repoRatingComment;
@@ -445,12 +449,60 @@ namespace Line2u.Services
             return result;
         }
 
+        public async Task<object> GetAll(int start)
+        {
+            var store = await _repo.FindAll().ToListAsync();
+            var datasource = (from item in store
+                             let RatingCount = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count()
+                              let  RatingAVG = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count() > 0 ?
+                              _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Sum(y => int.Parse(y.Rating)) : 0
+                              let banner = _repoWebNewsUser.FindAll(o => o.CreateBy == item.CreateBy).ToList()
+                              let create_name = _repoXAccount.FindAll(o => o.AccountId == item.CreateBy).FirstOrDefault()
+                              select new StoreProfilesDto
+                              {
+                                  Id = item.Id,
+                                  AccountGuid = item.AccountGuid,
+                                  Body = item.Body,
+                                  Comment = item.Comment,
+                                  CreateBy = item.CreateBy,
+                                  CreateDate = item.CreateDate,
+                                  Facebook = item.Facebook,
+                                  Instagram = item.Instagram,
+                                  Youtube = item.Youtube,
+                                  Twitter = item.Twitter,
+                                  Pinterest = item.Pinterest,
+                                  PhotoPath = item.PhotoPath,
+                                  StoreAddress = item.StoreAddress,
+                                  StoreCloseTime = item.StoreCloseTime,
+                                  StoreOpenTime = item.StoreOpenTime,
+                                  StoreEmail = item.StoreEmail,
+                                  StoreTel = item.StoreTel,
+                                  StoreHightPrice = item.StoreHightPrice,
+                                  StoreLowPrice = item.StoreLowPrice,
+                                  StoreName = item.StoreName,
+                                  Guid = item.Guid,
+                                  CreateName = create_name != null ? create_name.AccountName : "N/A",
+                                  Status = item.Status,
+                                  UpdateBy = item.UpdateBy,
+                                  UpdateDate = item.UpdateDate,
+                                  RatingCount = RatingCount,
+                                  bannerList = banner,
+                                  RatingAVG = RatingCount > 0 ? RatingAVG / RatingCount : 0
+                              }).ToList();
+            if (start > 0)
+            {
+                datasource = datasource.Where(x => x.RatingAVG == start).ToList();
+            }
+            {
 
+            }
+            return datasource;
+        }
         public async Task<object> GetProfileMobile(string key)
         {
             var query = from x in _repo.FindAll(x => x.Status == 1 && x.Guid == key)
-                        select new
-                        {
+            select new
+            {
                             AccountGuid = x.Guid,
                             x.PhotoPath,
                         };
@@ -526,10 +578,7 @@ namespace Line2u.Services
             return _repo.FindAll(o => o.AccountGuid == guid).FirstOrDefault();
         }
 
-        public async Task<object> GetAll()
-        {
-            return await _repo.FindAll().ToListAsync();
-        }
+        
 
         public async Task<object> GetInforByStoreName(string name)
         {

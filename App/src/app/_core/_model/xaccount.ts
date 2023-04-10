@@ -86,6 +86,7 @@ export interface StoreProfile {
   ratingAVG: number;
   updateBy: number;
   storeName: string | null;
+  createName: string | null
   storeTel: string | null;
   storeEmail: string | null;
   facebook: string | null;
@@ -104,4 +105,5 @@ export interface StoreProfile {
   guid: string;
   accountGuid: string;
   file: any;
+  bannerList: any;
 }

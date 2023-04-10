@@ -34,6 +34,12 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetProductsInCartOrderEdit(string accountGuid)
+        {
+            return Ok(await _service.GetProductsInCart(accountGuid));
+        }
+
+        [HttpGet]
         public async Task<ActionResult> CartAmountTotal(string accountGuid)
         {
             return Ok(await _service.CartAmountTotal(accountGuid));

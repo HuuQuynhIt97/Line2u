@@ -13,11 +13,12 @@
   margin: 0;
   white-space: break-spaces;
   font-size: 10px;
+  vertical-align: top ;
 }
 
 
 .e-headertext {
-  font-size: 10px !important;
+  font-size: 8px !important;
 }
 
 .e-grid .e-rowcell {

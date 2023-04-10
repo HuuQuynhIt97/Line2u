@@ -30,6 +30,9 @@ namespace Line2u.Services
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(OrderDto model);
+        Task<OperationResult> UpdateOrderDetail(OrderDetailDto model);
+        Task<OperationResult> MinusOrderDetail(OrderDetailDto model);
+        Task<OperationResult> DeleteOrderDetail(OrderDetailDto model);
         Task<OperationResult> UpdateFormAsync(OrderDto model);
 
         Task<object> GetWebNews();
@@ -38,6 +41,8 @@ namespace Line2u.Services
         Task<object> GetTrackingOrderForStoreWithTime(DateTime min, DateTime max);
         Task<object> GetTrackingOrderUser(int id);
         Task<object> GetDetailOrder(string id);
+        Task<OperationResult> ConfirmOrder(string id);
+        Task<OperationResult> CancelOrder(string id);
         Task<object> GetWebPages();
         
     }
@@ -488,6 +493,7 @@ ISPService spService)
                 {
                     ProductName = item.ProductName,
                     PhotoPath = item.PhotoPath,
+                    item.ProductDescription,
                     Qty = product.Quantity,
                     Price = product.Quantity * product.Price
                 };
@@ -514,6 +520,7 @@ ISPService spService)
                           {
                               orderID = x.Guid,
                               order_date = x.CreateDate,
+                              order_By = x.AccountId.ToInt(),
                               order_table = string.IsNullOrEmpty(x.TableNo) ? "N/A" : x.TableNo,
                               Pay_Method = x.PaymentType,
                               product_total_price = x.TotalPrice,
@@ -527,6 +534,198 @@ ISPService spService)
         public async Task<object> GetTrackingOrderForStoreWithTime(DateTime min, DateTime max)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<OperationResult> ConfirmOrder(string id)
+        {
+            var model = await _repo.FindAll(o => o.Guid == id).FirstOrDefaultAsync();
+            var item = _mapper.Map<Order>(model);
+            item.IsPayment = "Paid";
+            _repo.Update(item);
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<OperationResult> CancelOrder(string id)
+        {
+            var model = await _repo.FindAll(o => o.Guid == id).FirstOrDefaultAsync();
+            var item = _mapper.Map<Order>(model);
+            item.IsPayment = "Cancel";
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<OperationResult> UpdateOrderDetail(OrderDetailDto model)
+        {
+            var check_item = _repoOrderDetail.FindAll(o => o.ProductGuid == model.ProductGuid
+            && o.StoreGuid == model.StoreGuid
+            && o.AccountId == model.AccountId
+            && o.OrderGuid == model.OrderGuid
+            && o.CreateDate.Value.Date == model.CreateDate.Value.Date
+            ).FirstOrDefault();
+            if (check_item != null)
+            {
+                check_item.Quantity = check_item.Quantity + 1;
+                _repoOrderDetail.Update(check_item);
+                // update order detail
+
+                var order = _repo.FindAll(o => o.Guid == model.OrderGuid).FirstOrDefault();
+                order.TotalPrice = order.TotalPrice + model.Price;
+                _repo.Update(order);
+            }
+            else
+            {
+                var item = _mapper.Map<OrderDetail>(model);
+                item.Id = 0;
+                item.Status = StatusConstants.Default;
+                _repoOrderDetail.Add(item);
+                // update order detail
+                var order = _repo.FindAll(o => o.Guid == model.OrderGuid).FirstOrDefault();
+                order.TotalPrice = order.TotalPrice + model.Price;
+                _repo.Update(order);
+            }
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.AddSuccess,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Create,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<OperationResult> MinusOrderDetail(OrderDetailDto model)
+        {
+            var check_item = _repoOrderDetail.FindAll(o => o.ProductGuid == model.ProductGuid
+            && o.StoreGuid == model.StoreGuid
+            && o.AccountId == model.AccountId
+            && o.OrderGuid == model.OrderGuid
+            && o.CreateDate.Value.Date == model.CreateDate.Value.Date
+            ).FirstOrDefault();
+            if (check_item != null)
+            {
+                check_item.Quantity = check_item.Quantity;
+                _repoOrderDetail.Update(check_item);
+
+                // update order detail
+                var order = _repo.FindAll(o => o.Guid == model.OrderGuid).FirstOrDefault();
+                order.TotalPrice = order.TotalPrice - model.Price;
+                _repo.Update(order);
+            }
+            
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.AddSuccess,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Create,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<OperationResult> DeleteOrderDetail(OrderDetailDto model)
+        {
+            var check_item = _repoOrderDetail.FindAll(o => o.ProductGuid == model.ProductGuid
+            && o.StoreGuid == model.StoreGuid
+            && o.AccountId == model.AccountId
+            && o.OrderGuid == model.OrderGuid
+            && o.CreateDate.Value.Date == model.CreateDate.Value.Date
+            ).FirstOrDefault();
+            if (check_item != null)
+            {
+                _repoOrderDetail.Remove(check_item);
+
+                // update order detail
+                var order = _repo.FindAll(o => o.Guid == model.OrderGuid).FirstOrDefault();
+                order.TotalPrice = order.TotalPrice - (model.Price * model.Quantity);
+                _repo.Update(order);
+            }
+           
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.AddSuccess,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Create,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
         }
     }
 }

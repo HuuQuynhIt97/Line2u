@@ -5,6 +5,7 @@ using Line2u.Services;
 using Syncfusion.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace Line2u.Controllers
 {
@@ -82,6 +83,12 @@ namespace Line2u.Controllers
         public async Task<ActionResult> GetProducts(string id,string cusGuid)
         {
             return Ok(await _service.GetProducts(id, cusGuid));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetProductsOrderEdit(string id, int cusId, DateTime date,string orderId)
+        {
+            return Ok(await _service.GetProductsOrderEdit(id, cusId, date, orderId));
         }
 
         [HttpGet]

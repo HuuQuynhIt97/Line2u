@@ -1,37 +1,4 @@
-<!-- <div class="container">
-  <article class="card">
-      <header class="card-header"> {{'label.MyOrders_Tracking' | translate}} </header>
-      <ng-container *ngFor="let item of trackingData; let i=index">
-        <div class="card-body">
-            <h6>{{'label.OrderID' | translate}}: {{item.orderID}}</h6>
-            <hr>
-            <ul class="row">
-              <ng-container *ngFor="let item_product of item.list_product; let i=index">
-                <li class="col-md-4">
-                    <figure class="itemside mb-3">
-                        <div class="aside">
-                          <img 
-                          [src]="imagePath(item_product.photoPath) "
-                          class="img-sm border">
-                        </div>
-                        <figcaption class="info align-self-center">
-                            <p class="title">{{item_product.productName}}</p> 
-                            <span class="title">{{'label.qty' | translate}}: {{item_product.qty}} </span>
-                            <span class="text-muted">${{item_product.price}} </span>
-                        </figcaption>
-                    </figure>
-                </li>
 
-              </ng-container>
-              
-            </ul>
-            <hr>
-        </div>
-      </ng-container>
-      
-    <a style="cursor: pointer;" (click)="Back()" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> {{'Back' | translate}}</a>
-  </article>
-</div> -->
 
 <ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
@@ -44,6 +11,18 @@
         <button (click)="Back()" class="btn btn-success full-width">
           <i class="fa fa-chevron-left" aria-hidden="true"></i>
           {{'Back' | translate}}
+        </button>
+      </div>
+      <div class="col-3">
+        
+      </div>
+      <div class="col-3">
+        
+      </div>
+      <div class="col-3">
+        <button (click)="addMoreOrder()" class="btn btn-success full-width">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          {{'Order.Edit' | translate}}
         </button>
       </div>
     </div>
@@ -103,6 +82,23 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">
+        <button (click)="orderConfirm()" class="btn btn-success full-width">
+          {{'Order.Confirm' | translate}}
+        </button>
+      </div>
+    </div>
+
+    <hr style="color: transparent;">
+    <div class="row">
+      <div class="col-12">
+        <button (click)="orderCancel()" class="btn btn-primary full-width">
+          {{'Order.Cancel' | translate}}
+        </button>
       </div>
     </div>
   </div>

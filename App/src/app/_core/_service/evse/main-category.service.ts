@@ -63,4 +63,8 @@ export class MainCategoryService extends CURDService<MainCategory> {
     return this.http.get<any>(`${this.base}MainCategory/getProducts?id=${store_guid}&cusGuid=${cus_guid}`, {});
   }
 
+  getProductsOrderEdit(store_guid,cus_guid,date,orderId): Observable<any> {
+    return this.http.get<any>(`${this.base}MainCategory/GetProductsOrderEdit?id=${store_guid}&cusId=${cus_guid}&date=${date}&orderId=${orderId}`, {});
+  }
+
 }

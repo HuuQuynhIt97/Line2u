@@ -17,6 +17,7 @@ export interface Order {
     guid: string;
     accountId: number;
     productGuid: string;
+    orderGuid: string;
     storeGuid: string;
     customerName: string;
     customerAddress: string;
@@ -28,4 +29,5 @@ export interface Order {
     tableNo: string;
     quantity: number;
     products: any;
+    price: any;
 }

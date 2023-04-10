@@ -38,8 +38,6 @@ export class NavbarComponent implements OnInit {
   languageData = [
     { id: "Tw", name: "Tw" },
     { id: "En", name: "En" },
-    // { id: "Cn", name: "Cn" },
-    // { id: "Vi", name: "Vi" },
   ];
   currentTime
   user = JSON.parse(localStorage.getItem('user'))

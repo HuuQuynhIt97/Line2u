@@ -21,8 +21,8 @@ export class StoreProfileService extends CURDService<StoreProfile> {
   GetWithGuid(key) {
     return this.http.get<any>(`${this.base}StoreProfile/GetWithGuid?guid=${key}`, {});
   }
-  GetAll() {
-    return this.http.get<any>(`${this.base}StoreProfile/GetAll`, {});
+  getAllByFillterStart(start) {
+    return this.http.get<any>(`${this.base}StoreProfile/GetAll?start=${start}`, {});
   }
  
   insertForm(model: StoreProfile): Observable<OperationResult> {
@@ -49,10 +49,15 @@ export class StoreProfileService extends CURDService<StoreProfile> {
         }
       }
     }
-    const file = model.file;
-    delete model.file;
+    // const file = model.file;
+    // delete model.file;
     const params = this.utilitiesService.ToFormData(model);
-    params.append("file", file);
+    if (model.file?.length > 0) {
+      for (var i = 0; i < model.file?.length; i++) {
+        params.append('file', model.file[i]);
+      }
+    }
+    // params.append("file", file);
     return this.http.post<OperationResult>(`${this.base}StoreProfile/AddForm`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: StoreProfile): Observable<OperationResult> {

@@ -110,7 +110,7 @@
             field="guid"
             textAlign="Left"
             style="white-space: break-spaces;"
-            width="100"
+            width="80"
             headerTextAlign="Left"
             headerText="{{ 'ORDER_DATE' | translate }}"
           >
@@ -120,10 +120,10 @@
           
           </e-column>
 
-          <!-- <e-column
+          <e-column
             field="guid"
-            width="100"
-            style="white-space: break-spaces;"
+            width="50"
+            style="white-space: break-spaces; "
             textAlign="Left"
             headerTextAlign="Left"
             headerText="{{ 'ORDER_TOTAL' | translate }}"
@@ -132,13 +132,13 @@
            {{'Currency' | translate}} {{data.totalPrice}}
           </ng-template>
           
-          </e-column> -->
+          </e-column>
 
           <e-column
             field="guid"
             textAlign="Left"
-            width="100"
-            style="white-space: break-spaces;"
+            width="50"
+            style="white-space: break-spaces; vertical-align: top;"
             headerTextAlign="Left"
             headerText="{{ 'ORDER_TABLE' | translate }}"
           >
@@ -150,15 +150,25 @@
 
           <e-column
             field="isPayment"
-            width="100"
+            width="50"
             style="white-space: break-spaces;"
             textAlign="Left"
             headerTextAlign="Left"
             headerText="{{ 'ORDER_STATUS' | translate }}"
           >
+          <ng-template #template let-data>
+            
+            
+            <span *ngIf="data.isPayment === 'Paid'" class="badge badge-success">{{data.isPayment | translate}}</span>
+            <span *ngIf="data.isPayment === 'Unpaid'" class="badge badge-danger">{{data.isPayment | translate}}</span>
+            <span *ngIf="data.isPayment === 'Cancel'" class="badge badge-dark">{{data.isPayment | translate}}</span>
+            
+          </ng-template>
+          
           </e-column>
           <e-column
             field="paymentType"
+            width="80"
             textAlign="Left"
             style="white-space: break-spaces;"
             headerTextAlign="Left"

@@ -40,10 +40,23 @@ namespace Line2u.Controllers
         {
             return Ok(await _service.GetTrackingOrderForStore(id,min,max));
         }
+
         [HttpGet]
         public async Task<ActionResult> GetDetailOrder(string id)
         {
             return Ok(await _service.GetDetailOrder(id));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ConfirmOrder(string id)
+        {
+            return Ok(await _service.ConfirmOrder(id));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CancelOrder(string id)
+        {
+            return Ok(await _service.CancelOrder(id));
         }
 
         [HttpGet]
@@ -65,6 +78,24 @@ namespace Line2u.Controllers
         public async Task<ActionResult> AddAsync([FromBody] OrderDto model)
         {
             return StatusCodeResult(await _service.AddAsync(model));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateOrderDetail([FromBody] OrderDetailDto model)
+        {
+            return StatusCodeResult(await _service.UpdateOrderDetail(model));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> MinusOrderDetail([FromBody] OrderDetailDto model)
+        {
+            return StatusCodeResult(await _service.MinusOrderDetail(model));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteOrderDetail([FromBody] OrderDetailDto model)
+        {
+            return StatusCodeResult(await _service.DeleteOrderDetail(model));
         }
 
         [HttpPut]
