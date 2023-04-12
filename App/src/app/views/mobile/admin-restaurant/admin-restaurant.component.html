@@ -1,0 +1,180 @@
+<ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div class="most-popular section-padding">
+  <div class="container-fluid">
+    <div class="row">
+      <aside class="col-lg-3 mb-md-40">
+        <div class="filter-sidebar mb-5">
+          <h4 class="text-light-black fw-600 title-2">
+            {{'Filters' | translate}}
+            <small class="fs-12">
+              <a (click)="clearFillter()" href="javascript:void(0)"  class="text-light-black fw-500">
+                {{'Clear all' | translate}}
+              </a>
+            </small>
+
+            <small class="fs-12">
+              <span style="cursor: pointer;font-size: 10px;"  class="badge badge-success" (click)="adminAddStore()" href="javascript:void(0)"  >
+                <i class="fa fa-plus" aria-hidden="true"></i> {{'Admin.addStore.label' | translate}} 
+              </span>
+            </small>
+          </h4>
+          <div class="sidebar-tab">
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="restaurents">
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="delivery-restaurents">
+                    <div class="filters">
+                      <div class="card">
+                        <div class="card-header"> <a class="card-link text-light-black fw-700 fs-16" data-toggle="collapse" href="#deliverycollapseTwo">
+                          {{'Rating' | translate}}
+                          </a>
+                        </div>
+                        <div id="deliverycollapseTwo" class="collapse show">
+                          <div class="card-body">
+                            <ngb-rating [rate]="selected" (rateChange)="rateChange($event)" [max]="5" (hover)="hovered=$event" (leave)="hovered=0" >
+                            <ng-template let-fill="fill" let-index="index">
+                              <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
+                            </ng-template>
+                            </ngb-rating>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="restaurents">
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="delivery-restaurents">
+                    <div class="filters">
+                      <div class="card">
+                        <div class="card-header"> <a class="card-link text-light-black fw-700 fs-16" data-toggle="collapse" href="#deliverycollapseTwo">
+                          {{'ListAllStore_Localtion.label' | translate}}
+                          </a>
+                        </div>
+                        <div id="deliverycollapseTwo" class="collapse show">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-lg-6 mb-md-40">
+                                {{'Home.County.label.filter' | translate}}
+                                <ejs-dropdownlist
+                                [fields]="storeCountyFields"
+                                [allowFiltering]="true"
+                                #county_dropdown
+                                [(ngModel)]="countyId"
+                                (change)="countyChange($event)"
+                                placeholder="{{'StoreProfile_SelectCounty' | translate}}"
+                                [dataSource]="countyData"
+                                >
+                                </ejs-dropdownlist>
+                              </div>
+                              <div class="col-lg-6 mb-md-40">
+                                {{'Home.TownShip.label.filter' | translate}}
+                                <ejs-dropdownlist
+                                [fields]="storeTownShipFields"
+                                [allowFiltering]="true"
+                                #townShip_dropdown
+                                (change)="townShipChange($event)"
+                                [(ngModel)]="townShipId"
+                                placeholder="{{'StoreProfile_SelectTownShip' | translate}}"
+                                [dataSource]="townshipData"
+                                >
+                                </ejs-dropdownlist>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <div class="col-lg-9 browse-cat border-0">
+        <div class="row">
+          <div class="col-12">
+            <div class="section-header-left">
+              <h3 class="text-light-black header-title title">{{'All Store' | translate}}</h3>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="near-offer-slider swiper-container  mb-xl-20">
+              <div class="row">
+                <ng-container *ngFor="let storeInfo of storeData; let i=index">
+                  <div class="col-md-4 col-lg-4 col-sm-12 padding-tb-10" (click)="orderNow(storeInfo)">
+                    <div class="swiper-slide">
+                      <div class="testimonial-wrapper">
+                        <div class="testimonial-box">
+                          <div class="testimonial-img p-relative">
+                            <ng-container *ngIf="storeInfo.bannerList.length > 0; else elseTemplate">
+                              <swiper
+                              [loop]="true"
+                              [navigation]="false"
+                              [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+                              [pagination]="{ clickable: true, dynamicBullets: true }"
+                              >
+                              <ng-container  *ngFor="let item_banner of storeInfo.bannerList; let i = index">
+                                <ng-template  swiperSlide>
+                                  <img 
+                                    style="cursor: pointer;width: 438px;height: 180px;"
+                                    [src]="imagePath(item_banner.thumbnail) "
+                                    class="img-fluid full-width" alt="testimonial-img">
+                                </ng-template>
+                              </ng-container>
+                              </swiper>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                              <a href="javascript:void(0)">
+                              <img src="assets/img/blog/438x180/shop-1.jpg"
+                                style="cursor: pointer;width: 438px;height: 180px;"
+                                class="img-fluid full-width" alt="testimonial-img">
+                              </a>
+                            </ng-template>
+                          </div>
+                          <div class="testimonial-caption padding-15">
+                            <h5 class="fw-600">
+                              <a href="javascript:void(0)" (click)="orderNow(storeInfo)" class="text-light-black">
+                              {{storeInfo.storeName}}
+                              </a>
+                            </h5>
+                            <div class="testimonial-user-box">
+                              <img 
+                                [src]="imagePath(storeInfo.photoPath)"
+                                style="width: 40px !important; height: 40px;"
+                                class="rounded-circle" alt="#">
+                              <div class="testimonial-user-name">
+                                <p class="text-light-black fw-600">{{storeInfo.createName}}</p>
+                              </div>
+                            </div>
+                            <div class="ratings">
+                              <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
+                              <ng-template let-fill="fill" let-index="index">
+                                <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
+                              </ng-template>
+                              </ngb-rating>
+                            </div>
+                            <!-- [innerHTML]="safeHtml(storeInfo.body)" -->
+                            <p class="text-light-black" >{{storeInfo.storeAddress}}</p>
+                            <a href="javascript:void(0)" (click)="orderNow(storeInfo)" class="btn-second btn-submit">{{'Admin.UpdateStore.label' | translate}}</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer2></app-footer2>

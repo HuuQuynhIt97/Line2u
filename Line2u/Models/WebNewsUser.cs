@@ -23,6 +23,7 @@ namespace Line2u.Models
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }
+        public decimal? StoreId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Guid { get; set; }

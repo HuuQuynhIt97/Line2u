@@ -30,6 +30,8 @@ import { AuthService } from 'src/app/_core/_service/auth.service';
 import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
+import { DisplayTextModel, QRCodeGenerator } from '@syncfusion/ej2-angular-barcode-generator';
+import { TextBoxComponent } from '@syncfusion/ej2-angular-inputs';
 
 @Component({
   selector: 'app-home-store-mobile-preview',
@@ -56,6 +58,14 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
   banners= [];
   news: any;
   logo: any;
+  @ViewChild('barcode')
+  public barcode: QRCodeGenerator;
+  @ViewChild('displayText')
+  public displayText: TextBoxComponent;
+  public displayTextMethod: DisplayTextModel = {
+    visibility: false
+  };
+  public qrcode = '';
   storeInfo: StoreProfile = {} as StoreProfile;
   cartModel: Cart = {} as Cart;
   mainCategory: any 
@@ -155,6 +165,57 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
     this.cartAmountTotal()
     this.cartCountTotal();
    
+  }
+  printData() {
+    this.qrcode = this.apiHost + `/home/store/${this.storeInfo.storeName}/${this.storeId}`
+    const printContent = document.getElementById('qrcode');
+    const WindowPrt = window.open('', '_blank', 'left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0');
+    // WindowPrt.document.write(printContent.innerHTML);
+    WindowPrt.document.write(`
+    <html>
+      <head>
+      </head>
+      <style>
+        * {
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+        }
+        .content {
+          page-break-after: always;
+          clear: both;
+        }
+        .content .qrcode {
+          float:center;
+          width: 500px;
+          margin-top: 10px;
+          padding: 0;
+          margin-left: 0px;
+        }
+        
+        @page {
+          size: 2.65 1.20 in;
+          page-break-after: always;
+          margin: 0;
+        }
+        @media print {
+          html, body {
+            width: 90mm; // Chi co nhan millimeter
+          }
+        }
+      </style>
+      <body onload="window.print(); window.close()">
+      <div class='content'>
+        <div class='qrcode'>
+         ${printContent.innerHTML}
+         </div>
+      </div>
+      </body>
+    </html>
+    `);
+    WindowPrt.document.close();
+    // WindowPrt.focus();
+    // WindowPrt.print();
+    // WindowPrt.close();
   }
   cancelComment() {
     this.comment = ''

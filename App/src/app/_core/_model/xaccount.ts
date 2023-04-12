@@ -104,6 +104,17 @@ export interface StoreProfile {
   comment: string;
   guid: string;
   accountGuid: string;
+  countyId: string;
+  townShipId: string;
   file: any;
   bannerList: any;
+  multiStores: any;
+}
+
+export interface StoreTable {
+  id: number;
+  storeId: number;
+  tableNumber: string;
+  guid: string;
+  
 }

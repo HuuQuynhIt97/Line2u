@@ -208,19 +208,19 @@
                               </span>
                             </a>
                           </div>
-                          <div class="delete-btn minus-circle" style="font-size: 20px;">
+                          <div (click)="deleteCart(item)" class="delete-btn minus-circle" style="font-size: 20px;">
                             <a  href="javascript:void(0)" class="text-dark-white"> 
                             <i class="fa fa-minus-circle" id="minus-circle" aria-hidden="true"></i>
                             </a>
                           </div>
                           <span style="color: transparent;"> | </span>
-                          <div class="delete-btn" style="font-size: 20px;">
+                          <div (click)="addToCart(item)" class="delete-btn" style="font-size: 20px;">
                             <a  href="javascript:void(0)" class="text-dark-white"> 
                             <i class="fa fa-plus-circle" id="minus-circle" aria-hidden="true"></i>
                             </a>
                           </div>
                           <span style="color: transparent;"> | </span>
-                          <div class="delete-btn" style="font-size: 20px;">
+                          <div (click)="removeCart(item)" class="delete-btn" style="font-size: 20px;">
                             <a  href="javascript:void(0)" class="text-dark-white"> 
                             <i class="far fa-trash-alt" id="minus-circle"></i>
                             </a>

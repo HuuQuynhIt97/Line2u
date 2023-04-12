@@ -29,6 +29,7 @@ import { Products } from 'src/app/_core/_model/evse/products';
 import { AuthService } from 'src/app/_core/_service/auth.service';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
+import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 SwiperCore.use([
   Navigation,
   Pagination,
@@ -84,6 +85,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   user = JSON.parse(localStorage.getItem('user'))
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE_QR;
+  countyId: string = ''
+  townShipId: string = ''
+  countyData: any
+  storeCountyFields: object = { text: 'countyName', value: 'countyId' };
+  storeTownShipFields: object = { text: 'townshipName', value: 'townshipId' };
+  townshipData: any
+  @ViewChild('county_dropdown')
+  public county_dropdown: DropDownListComponent;
+
+  @ViewChild('townShip_dropdown')
+  public townShip_dropdown: DropDownListComponent;
   constructor(
     private spinner: NgxSpinnerService,
     private webBannerService: WebBannerService,
@@ -102,6 +114,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
+    this.getCountyTownShip()
     this.loadStoreData()
     this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
     if (this.authService.loggedIn()) {
@@ -114,6 +127,87 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.getMenu();
     this.loadLogoData();
     this.loadBannerData();
+  }
+  countyChange(args) {
+    console.log('countyChange', args)
+    if(args.isInteracted) {
+      this.countyId = args.value
+      this.townShipId = ''
+      this.townShip_dropdown.value = null;
+      this.getAllTownShipByCounty();
+      this.getAllStoreByCountyAndTownShip()
+    }
+  }
+  clearFillter() {
+    this.county_dropdown.value = null;
+    this.townShip_dropdown.value = null;
+    this.countyId = ''
+    this.townShipId = ''
+    this.loadStoreData()
+  }
+  townShipChange(args) {
+    console.log('townShipChange', args)
+    if(args.isInteracted) {
+      this.townShipId = args.value
+      this.getAllStoreByCountyAndTownShip()
+      this.getAllTownShipByCounty();
+    }
+  }
+  async getCountyTownShip() {
+    await this.getAllCounty()
+    // await this.getAllTownShip()
+  }
+  getAllCounty() {
+    return new Promise((result, rej) => {
+      this.serviceStore.getAllCounty().subscribe(
+        (res: any) => {
+          this.countyData  = res
+          console.log('countyData', 3)
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+    
+  }
+  getAllTownShip() {
+    return new Promise((result, rej) => {
+      this.serviceStore.getAllTowship().subscribe(
+        (res: any) => {
+          this.townshipData  = res
+          console.log('townshipData', 1)
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+   
+  }
+
+  getAllTownShipByCounty() {
+    return new Promise((result, rej) => {
+      this.serviceStore.getTowshipByCounty(this.countyId).subscribe(
+        (res: any) => {
+          this.townshipData  = res
+          console.log('getTowshipByCounty', this.townshipData)
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+ 
+  }
+  getAllStoreByCountyAndTownShip() {
+    this.serviceStore.getAllStoreByCountyAndTownShip(this.countyId, this.townShipId,0).subscribe(x=> {
+      console.log('store', x)
+      this.store = x;
+    })
   }
   toggleBanner(){
     this.closeBanner = !this.closeBanner;
@@ -268,7 +362,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       console.log('store', x)
       this.store = x;
     })
-    
+  }
+
+  gotoShop(item) {
+    localStorage.setItem('store', JSON.stringify(item));
+    this.router.navigate([`home/store/${item.storeName}/${item.id}`])
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {

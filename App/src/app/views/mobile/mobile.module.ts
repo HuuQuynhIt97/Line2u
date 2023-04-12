@@ -125,6 +125,14 @@ import { HomeStoreMobilePreviewComponent } from './home-store-mobile-preview/hom
 import { SwiperModule } from 'swiper/angular';
 import { MobileRestaurantrightsidebarComponent } from './mobile-restaurantrightsidebar/mobile-restaurantrightsidebar.component';
 import { HomeStoreAddMoreComponent } from './home-store-add-more/home-store-add-more.component';
+import { BarcodeGeneratorAllModule,  } from '@syncfusion/ej2-angular-barcode-generator';
+import { QRCodeGeneratorAllModule } from '@syncfusion/ej2-angular-barcode-generator';
+import { AdminAddRestaurantComponent } from './admin-add-restaurant/admin-add-restaurant.component';
+import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
+import { Footer2Component } from '../layout/footer2/footer2.component';
+import { AdminUpdateRestaurantComponent } from './admin-add-restaurant/admin-update-restaurant/admin-update-restaurant.component';
+import { StoreTableComponent } from './store-table/store-table.component';
+
 @NgModule({
   declarations: [
     MobileComponent,
@@ -160,15 +168,20 @@ import { HomeStoreAddMoreComponent } from './home-store-add-more/home-store-add-
     BackPreviousPageComponent,
     HomeStoreMobilePreviewComponent,
     MobileRestaurantrightsidebarComponent,
-    HomeStoreAddMoreComponent
+    HomeStoreAddMoreComponent,
+    AdminAddRestaurantComponent,
+    AdminUpdateRestaurantComponent,
+    StoreTableComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
   ],
   imports: [
     CommonModule,
+    BarcodeGeneratorAllModule,
     NgxDropzoneModule,
     FormsModule,
+    QRCodeGeneratorAllModule,
     ReactiveFormsModule,
     DateRangePickerModule,
     NgxSpinnerModule,

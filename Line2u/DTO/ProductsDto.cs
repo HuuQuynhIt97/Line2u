@@ -20,6 +20,7 @@ namespace Line2u.DTO
         public int? Quantity { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
+        public decimal? StoreId { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }

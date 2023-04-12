@@ -98,7 +98,8 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     LandlordBankActionComponent,
     LandlordDetailComponent,
     LandlordDeviceComponent,
-    LandlordDeviceActionComponent
+    LandlordDeviceActionComponent,
+  
   ]
 })
 export class EvseModule {

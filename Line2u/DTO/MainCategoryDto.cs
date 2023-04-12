@@ -16,6 +16,7 @@ namespace Line2u.DTO
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
+        public decimal? StoreId { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
         public string AccountUid { get; set; }

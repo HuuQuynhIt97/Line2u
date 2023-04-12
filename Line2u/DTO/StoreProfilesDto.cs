@@ -34,10 +34,13 @@ namespace Line2u.DTO
         public decimal? Status { get; set; }
         public string Guid { get; set; }
         public string AccountGuid { get; set; }
+        public string TownShipId { get; set; }
+        public string CountyId { get; set; }
         public int RatingAVG { get; set; }
         public int RatingCount { get; set; }
         public object bannerList { get; set; }
         public List<IFormFile> File { get; set; }
+        public List<object> MultiStores { get; set; }
 
     }
 }

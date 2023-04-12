@@ -85,7 +85,7 @@ export class OrderTrackingComponent implements OnInit {
   orderModel: Order = {} as Order;
   isOpenDropdown: boolean = false
   paymentType: any = '1';
-  trackingData: any;
+  trackingData: any = [];
   @HostListener("window:scroll", [])onWindowScroll() {
     //.scrollTop
     if(window.pageYOffset > 500) {
@@ -143,20 +143,15 @@ export class OrderTrackingComponent implements OnInit {
     var storeId = this.route.snapshot.paramMap.get('id')
     this.getStoreInfor() 
     this.lang = this.capitalize(localStorage.getItem("lang"));
-    // this.getMenu();
     this.loadLogoData();
     this.getUserCheckoutInfo();
     this.getTrackingOrderUser()
-    // this.dataService.pushCart('load cart')
-    const cartDetail = this.getLocalStore("cart_detail");
-    this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
-    this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
-    this.cartDetail = this.getLocalStore("cart_detail");
+    
   }
   getTrackingOrderUser() {
-    this.orderService.getTrackingOrderUser(this.user.id).subscribe(res => {
-      console.log(res)
+    this.orderService.getTrackingOrderUser(this.user.id).subscribe((res: any) => {
       this.trackingData = res
+      console.log(this.trackingData)
     })
   }
   changeMethod(args) {

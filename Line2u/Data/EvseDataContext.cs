@@ -73,8 +73,244 @@ namespace Line2u.Data
 
         public virtual DbSet<StoreRatingComment> StoreRatingComments { get; set; }
 
+        public virtual DbSet<County> Counties { get; set; }
+        public virtual DbSet<Township> Townships { get; set; }
+
+        public virtual DbSet<StoreProfileUser> StoreProfileUsers { get; set; }
+        public virtual DbSet<StoreTable> StoreTables { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<StoreTable>(entity =>
+            {
+                entity.ToTable("StoreTable");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("STORE_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.TableNumber)
+                    .HasColumnName("TABLE_NUMBER")
+                    .HasMaxLength(200);
+            });
+            modelBuilder.Entity<StoreProfileUser>(entity =>
+            {
+
+                entity.ToTable("StoreProfileUser");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccountId)
+                    .HasColumnName("ACCOUNT_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("STORE_ID")
+                    .HasColumnType("numeric(18, 0)");
+            });
+
+            modelBuilder.Entity<Township>(entity =>
+            {
+                entity.ToTable("TOWNSHIP");
+
+                entity.Property(e => e.TownshipId)
+                    .HasColumnName("TOWNSHIP_ID")
+                    .HasMaxLength(60)
+                    .HasComment("鄉鎮市區代號");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1)
+                    .HasComment("刪除旗標；Y -刪除,N - 未刪除");
+
+                entity.Property(e => e.Cmt)
+                    .HasColumnName("CMT")
+                    .HasMaxLength(255)
+                    .HasComment("備註");
+
+                entity.Property(e => e.CountyId)
+                    .HasColumnName("COUNTY_ID")
+                    .HasMaxLength(60)
+                    .HasComment("縣市代號");
+
+                entity.Property(e => e.CountyIdOld)
+                    .HasColumnName("COUNTY_ID_OLD")
+                    .HasMaxLength(60)
+                    .HasComment("舊縣市ID");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment("建立人員");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("建立日期");
+
+                entity.Property(e => e.MlsId)
+                    .HasColumnName("MLS_ID")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TownshipName)
+                    .HasColumnName("TOWNSHIP_NAME")
+                    .HasMaxLength(255)
+                    .HasComment("鄉鎮區名稱");
+
+                entity.Property(e => e.TownshipNameOld)
+                    .HasColumnName("TOWNSHIP_NAME_OLD")
+                    .HasMaxLength(255)
+                    .HasComment("舊行政區名稱");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment("更新人員");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("更新日期");
+            });
+            modelBuilder.Entity<County>(entity =>
+            {
+                entity.ToTable("COUNTY");
+
+                entity.Property(e => e.CountyId)
+                    .HasColumnName("COUNTY_ID")
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasComment("縣市代號");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1)
+                    .HasComment("刪除旗標；Y -刪除,N - 未刪除");
+
+                entity.Property(e => e.Cmt)
+                    .HasColumnName("CMT")
+                    .HasMaxLength(255)
+                    .HasComment("備註");
+
+                entity.Property(e => e.CountyName)
+                    .HasColumnName("COUNTY_NAME")
+                    .HasMaxLength(255)
+                    .HasComment("縣市名稱");
+
+                entity.Property(e => e.CountyNameOld)
+                    .HasColumnName("COUNTY_NAME_OLD")
+                    .HasMaxLength(255)
+                    .HasComment("舊縣市名稱");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment(" 建立人員");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("建立日期");
+
+                entity.Property(e => e.SigningId)
+                    .HasColumnName("SIGNING_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment(" 更新人員");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment(" 更新日期");
+            });
+
+            modelBuilder.Entity<Township>(entity =>
+            {
+                entity.ToTable("TOWNSHIP");
+
+                entity.Property(e => e.TownshipId)
+                    .HasColumnName("TOWNSHIP_ID")
+                    .HasMaxLength(60)
+                    .HasComment("鄉鎮市區代號");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1)
+                    .HasComment("刪除旗標；Y -刪除,N - 未刪除");
+
+                entity.Property(e => e.Cmt)
+                    .HasColumnName("CMT")
+                    .HasMaxLength(255)
+                    .HasComment("備註");
+
+                entity.Property(e => e.CountyId)
+                    .HasColumnName("COUNTY_ID")
+                    .HasMaxLength(60)
+                    .HasComment("縣市代號");
+
+                entity.Property(e => e.CountyIdOld)
+                    .HasColumnName("COUNTY_ID_OLD")
+                    .HasMaxLength(60)
+                    .HasComment("舊縣市ID");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment("建立人員");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("建立日期");
+
+                entity.Property(e => e.MlsId)
+                    .HasColumnName("MLS_ID")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TownshipName)
+                    .HasColumnName("TOWNSHIP_NAME")
+                    .HasMaxLength(255)
+                    .HasComment("鄉鎮區名稱");
+
+                entity.Property(e => e.TownshipNameOld)
+                    .HasColumnName("TOWNSHIP_NAME_OLD")
+                    .HasMaxLength(255)
+                    .HasComment("舊行政區名稱");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment("更新人員");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("更新日期");
+            });
 
             modelBuilder.Entity<StoreRatingComment>(entity =>
             {
@@ -379,6 +615,11 @@ namespace Line2u.Data
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
 
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("Store_ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
                 entity.Property(e => e.AccountUid)
                     .HasColumnName("Account_UID")
                     .HasMaxLength(40);
@@ -423,6 +664,11 @@ namespace Line2u.Data
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("Store_ID")
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
 
@@ -532,6 +778,15 @@ namespace Line2u.Data
                 entity.Property(e => e.StoreAddress)
                     .HasColumnName("STORE_ADDRESS")
                     .HasMaxLength(200);
+
+                entity.Property(e => e.CountyId)
+                   .HasColumnName("COUNTY_ID")
+                   .HasMaxLength(500);
+
+                entity.Property(e => e.TownShipId)
+                   .HasColumnName("TOWNSHIP_ID")
+                   .HasMaxLength(500);
+
                 entity.Property(e => e.StoreTel)
                     .HasColumnName("STORE_TEL")
                     .HasMaxLength(200);
@@ -719,6 +974,11 @@ namespace Line2u.Data
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("Store_ID")
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
 
@@ -2944,7 +3204,7 @@ namespace Line2u.Data
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-           public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             //Tự động cập nhật ngày giờ thêm mới và chỉnh sửa
             AutoAddDateTracking();
@@ -2970,7 +3230,6 @@ namespace Line2u.Data
                     {
                         SetValueProperty(ref changedOrAddedItem, "UpdateDate", "UpdateBy");
                         SetDeleteValueProperty(ref changedOrAddedItem);
-
 
                     }
                 }

@@ -77,6 +77,11 @@
                         </li>
                         <li class="nav-item"> <a class="nav-link text-light-white fw-700" data-toggle="pill" href="#review">{{'Reviews' | translate}}</a>
                         </li>
+                        <li class="nav-item"> 
+                            <a href="javascript:void(0)" (click)="printData()" class="nav-link text-green-white fw-700" data-toggle="pill" >
+                                {{'Home.Review.QRCode.label' | translate}}
+                            </a>
+                        </li>
                         <!-- <li class="nav-item"> <a class="nav-link text-light-white fw-700" data-toggle="pill" href="#mapgallery">Map & Gallery</a>
                         </li> -->
                     </ul>
@@ -84,6 +89,14 @@
                         <img src="assets/img/svg/013-heart-1.svg" alt="tag">
                     </div> -->
                 </div>
+            </div>
+            <div class="col-md-4 text-left">
+                <div class='center '>
+                    <ejs-qrcodegenerator style="display: block;" id='qrcode' #barcode
+                    width="100px" height="130px" [displayText]='displayTextMethod' mode="SVG" [value]="qrcode">
+                    </ejs-qrcodegenerator>
+                </div>
+                <div><label>Name:</label> {{'name'}}</div>
             </div>
         </div>
     </div>

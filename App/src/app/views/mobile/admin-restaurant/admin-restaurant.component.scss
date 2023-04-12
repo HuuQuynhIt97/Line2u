@@ -1,0 +1,26 @@
+
+i .bi-star {
+    font-size: 1.5rem;
+    // padding-right: 0.1rem;
+}
+.filled {
+    color: #ffb41e;
+}
+.low {
+    color: #00000059;
+}
+.filled.low {
+    color: #ffb41e;
+}
+p.text-light-black {
+    white-space: nowrap;
+    overflow: hidden;
+    width: auto;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 767px) {
+    .title-2 small {
+        display: flex;
+    }
+}

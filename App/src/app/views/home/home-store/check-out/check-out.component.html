@@ -192,11 +192,11 @@
               <div class="check"><i class="fa fa-check" aria-hidden="true"></i></div>
            </div>
            <div class="content">
-              <h1>{{'Payment Success' | translate}} !</h1>
-              <p>{{'Your Order.PaymentSuccess' | translate}} {{orderID}} {{'Your Order.PaymentSuccess2' | translate}} </p>
-              <a href="/home">{{'Continue Shopping' | translate}}</a> 
+              <h1>{{'Checkout.PaymentSuccess.label' | translate}} !</h1>
+              <p>{{'Your Order.PaymentSuccess' | translate}} {{orderID}} {{'Checkout.YourOrder.PaymentSuccess2' | translate}} </p>
+              <a href="/home">{{'Checkout.ContinueShopping.label' | translate}}</a> 
               <span style="color: transparent;">|</span> 
-              <a href="home/store/order-tracking">{{'My Order' | translate}}</a>
+              <a href="home/store/order-tracking">{{'Checkout.MyOrder.label' | translate}}</a>
            </div>
            
         </div>
@@ -208,7 +208,7 @@
             <div class="cart-detail-box">
               <div class="card">
                 <div class="card-header padding-15 fw-700">
-                  {{'Your order from' | translate}}
+                  {{'Checkout.YourOrderfrom.label' | translate}}
                   <p class="text-light-white no-margin fw-500">{{modelAccount.accountName}}</p>
                 </div>
                 <div class="card-body no-padding" id="scrollstyle-4">
@@ -223,6 +223,11 @@
                             </p>
                             <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
                             </span>
+                            <div class="delete-btn" style="font-size: 20px;">
+                              <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                                <i class="far fa-trash-alt"></i>
+                              </a>
+                            </div>
                           </a>
                         </div>
 
@@ -231,16 +236,10 @@
                             <i class="fa fa-minus-circle" aria-hidden="true"></i>
                           </a>
                         </div>
-                        <span style="color: transparent;"> | </span>
+                        <span style="color: transparent;"> ||| </span>
                         <div class="delete-btn" style="font-size: 20px;">
                           <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                          </a>
-                        </div>
-                        <span style="color: transparent;"> | </span>
-                        <div class="delete-btn" style="font-size: 20px;">
-                          <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
-                            <i class="far fa-trash-alt"></i>
                           </a>
                         </div>
                         <span style="color: transparent;"> | </span>
@@ -254,7 +253,7 @@
                   </ng-container>
                 </div>
                 <div class="card-footer p-0 modify-order">
-                  <a routerLink="/" class="total-amount"> <span class="text-custom-white fw-700">{{'TOTAL' | translate}}</span>
+                  <a routerLink="/" class="total-amount"> <span class="text-custom-white fw-700">{{'Checkout.TOTAL.label' | translate}}</span>
                   <span class="text-custom-white fw-700">${{totalPrice}}</span>
                   </a>
                 </div>
@@ -281,14 +280,14 @@
             <div class="row">
               <div class="col-12">
                 <div class="payment-sec">
-                  <div class="section-header-left">
+                  <!-- <div class="section-header-left">
                     <h3 class="text-light-black header-title">{{'Payment' | translate}}</h3>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <div class="col-12">
                       <div id="accordion">
                         <div class="payment-option-tab">
-                          <ul class="nav nav-tabs">
+                          <!-- <ul class="nav nav-tabs">
                           
                             <li class="nav-item"> 
                               <a class="nav-link fw-600 active" data-toggle="tab" href="#cash">{{'Cash' | translate}}</a>
@@ -296,7 +295,7 @@
                             <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#newcreditcard">{{'Line Pay' | translate}}</a>
                             </li>
                           
-                          </ul>
+                          </ul> -->
                           <div class="tab-content">
                             <div class="tab-pane fade" id="newcreditcard">
                               <div class="row">
@@ -318,7 +317,7 @@
                               </p>
                             </div>
                             <div class="tab-pane active" id="cash">
-                              <div class="col-md-12">
+                              <!-- <div class="col-md-12">
                                 <div class="form-group">
                                   <label class="text-light-white fw-700">{{'Table.No' | translate}}</label>
                                   <span  style="color: red">(*)</span>
@@ -329,14 +328,14 @@
                                   <span  style="color: red">(*)</span>
                                   <input type="text" [(ngModel)]="cashMoney" name="cashMoney" class="form-control form-control-submit" placeholder="NT $123....">
                                 </div>
+                              </div> -->
+                              <div class="form-group">
+                                <button type="submit" (click)="saveOrder(CASH)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Checkout.PlaceYourOrder.label' | translate}}</button>
                               </div>
                               <div class="form-group">
-                                <button type="submit" (click)="saveOrder(CASH)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Place Your Order' | translate}}</button>
+                                <button type="submit" (click)="Back()" class="btn-first primary-btn text-custom-white full-width fw-500">{{'Checkout.Back.button' | translate}}</button>
                               </div>
-                              <div class="form-group">
-                                <button type="submit" (click)="Back()" class="btn-first primary-btn text-custom-white full-width fw-500">{{'BACK' | translate}}</button>
-                              </div>
-                              <p class="text-center text-light-black no-margin">By placing your order, you agree to {{'line2u' | translate}} <a href="javascript:void(0)">terms of use</a> and <a href="javascript:void(0)">privacy agreement</a>
+                              <p class="text-center text-light-black no-margin">By placing your order, you agree to {{'Checkout.line2u' | translate}} <a href="javascript:void(0)">terms of use</a> and <a href="javascript:void(0)">privacy agreement</a>
                               </p>
                             </div>
                           </div>

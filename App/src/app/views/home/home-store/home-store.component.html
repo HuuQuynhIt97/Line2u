@@ -134,12 +134,13 @@
                                                                                         {{item.productName}}
                                                                                     </a> 
 
-                                                                                    <a  *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id"
+                                                                                    <!-- <a  *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id"
                                                                                         style="background-color: #e21b70;"
                                                                                         class="text-light-black fw-600" 
                                                                                         >
                                                                                         {{item.totalOrder}} x
-                                                                                    </a>
+                                                                                    </a> -->
+                                                                                    <span style="font-size: 15px;" class="badge badge-danger" *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id" >{{item.totalOrder}} x</span>
                                                                                 </h6>
                                                                                 <p class="text-success fw-600 no-margin">${{item.productPrice}}</p>
                                                                             </div>

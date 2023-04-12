@@ -5,6 +5,7 @@ export interface MainCategory {
     comment: string;
     createDate: string | null;
     createBy: number | null;
+    storeId: number | null;
     updateDate: string | null;
     updateBy: number | null;
     photoPath: string;

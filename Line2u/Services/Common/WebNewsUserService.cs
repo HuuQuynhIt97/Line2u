@@ -24,6 +24,7 @@ namespace Line2u.Services
     public interface IWebNewsUserService : IServiceBase<WebNewsUser, WebNewsUserDto>
     {
         Task<object> LoadData(DataManager data, string lang, int userID);
+        Task<object> LoadDataAdmin(DataManager data, string lang, int userID, int storeId);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
@@ -497,6 +498,55 @@ ISPService spService)
         {
             return await _repo.FindAll(x => x.CreateBy == userID)
              .ToListAsync();
+        }
+
+        public async Task<object> LoadDataAdmin(DataManager data, string lang, int userID, int storeId)
+        {
+            var datasource = (from a in _repo.FindAll(x => x.CreateBy == userID && x.StoreId == storeId && x.Status == 1)
+                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.WebNews_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
+                              from t in ab.DefaultIfEmpty()
+
+                              select new WebNewsDto
+                              {
+                                  Id = a.Id,
+                                  Type = a.Type,
+                                  SortId = a.SortId,
+                                  Subject = a.Subject,
+                                  PhotoPath = a.PhotoPath,
+                                  Thumbnail = a.Thumbnail,
+                                  StartDate = a.StartDate,
+                                  EndDate = a.EndDate,
+                                  Link = a.Link,
+                                  Body = a.Body,
+                                  Comment = a.Comment,
+                                  NewsDate = a.NewsDate,
+                                  CreateDate = a.CreateDate,
+                                  CreateBy = a.CreateBy,
+                                  UpdateDate = a.UpdateDate,
+                                  UpdateBy = a.UpdateBy,
+                                  CancelFlag = a.CancelFlag,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                  TypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
+                              }).OrderByDescending(x => x.Id).AsQueryable();
+
+            var count = await datasource.CountAsync();
+            if (data.Where != null) // for filtering
+                datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
+            if (data.Sorted != null)//for sorting
+                datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
+            if (data.Search != null)
+                datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
+            count = await datasource.CountAsync();
+            if (data.Skip >= 0)//for paging
+                datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
+            if (data.Take > 0)//for paging
+                datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
+            return new
+            {
+                Result = await datasource.ToListAsync(),
+                Count = count
+            };
         }
     }
 }

@@ -80,6 +80,12 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetCategoryByUserIDAndStore(string id,int storeId)
+        {
+            return Ok(await _service.GetCategoryByUserIDAndStore(id, storeId));
+        }
+
+        [HttpGet]
         public async Task<ActionResult> GetProducts(string id,string cusGuid)
         {
             return Ok(await _service.GetProducts(id, cusGuid));
@@ -113,6 +119,15 @@ namespace Line2u.Controllers
         {
 
             var data = await _service.LoadData(request, lang, uid);
+            return Ok(data);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> LoadDataAdmin([FromBody] DataManager request, string lang, string uid,int storeId)
+        {
+
+            var data = await _service.LoadDataAdmin(request, lang, uid, storeId);
             return Ok(data);
         }
     }

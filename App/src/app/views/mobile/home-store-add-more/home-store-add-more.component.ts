@@ -145,7 +145,6 @@ export class HomeStoreAddMoreComponent implements OnInit {
   
   ngOnInit() {
     console.log(this.data)
-    console.log(this.data.order_By)
     if (this.authService.loggedIn()) {
       this.isLogin = true
       this.username = this.user.accountName
@@ -164,13 +163,12 @@ export class HomeStoreAddMoreComponent implements OnInit {
   }
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
-      this.cartDetail = res
+      // this.cartDetail = res
     })
   }
   getDetailOrder() {
     this.orderService.getDetailOrder(this.data?.orderID).subscribe(res => {
       console.log('getDetailOrder',res)
-      // this.trackingData = res
       this.cartDetail = res.list_product
       this.totalPrice = res.product_total_price
     })
@@ -273,7 +271,7 @@ export class HomeStoreAddMoreComponent implements OnInit {
       this.totalPrice = res
     })
   }
-  removeCart(item: Products) {
+  deleteCart(item) {
     this.orderDetailModel.accountId = this.data?.order_By
     this.orderDetailModel.createBy = this.data?.order_By
     this.orderDetailModel.quantity = item.totalOrder
@@ -287,15 +285,31 @@ export class HomeStoreAddMoreComponent implements OnInit {
       this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
       this.getDetailOrder();
     })
-    // if(this.orderDetailModel.quantity === 0) {
-    // }
-    // else {
-    //   this.orderService.minusOrderDetail(this.orderDetailModel).subscribe(res => {
-    //     this.toast.success(this.translate.instant('_Success'))
-    //     this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
-    //     this.getDetailOrder();
-    //   })
-    // }
+  }
+  removeCart(item: Products) {
+    this.orderDetailModel.accountId = this.data?.order_By
+    this.orderDetailModel.createBy = this.data?.order_By
+    this.orderDetailModel.quantity = item.totalOrder - 1
+    this.orderDetailModel.productGuid = item.guid
+    this.orderDetailModel.storeGuid = this.storeInfo.guid
+    this.orderDetailModel.orderGuid = this.data?.orderID
+    this.orderDetailModel.price = item.productPrice
+    this.orderDetailModel.createDate = this.datePipe.transform( this.data?.order_date || new Date(1970, 1, 1), 'yyyy/MM/dd')
+    if(this.orderDetailModel.quantity === 0) {
+      this.orderDetailModel.quantity = item.totalOrder
+      this.orderService.deleteOrderDetail(this.orderDetailModel).subscribe(res => {
+        this.toast.success(this.translate.instant('_Success'))
+        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+        this.getDetailOrder();
+      })
+    }
+    else {
+      this.orderService.minusOrderDetail(this.orderDetailModel).subscribe(res => {
+        this.toast.success(this.translate.instant('_Success'))
+        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+        this.getDetailOrder();
+      })
+    }
     // this.orderService.updateOrderDetail(this.orderDetailModel).subscribe(res => {
     //   this.toast.success(this.translate.instant('_Success'))
     //   this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
@@ -329,7 +343,6 @@ export class HomeStoreAddMoreComponent implements OnInit {
     // }
   }
   addToCart(item: Products) {
-    console.log('addCart', item)
     this.orderDetailModel.accountId = this.data?.order_By
     this.orderDetailModel.createBy = this.data?.order_By
     this.orderDetailModel.quantity = 1
@@ -472,7 +485,6 @@ export class HomeStoreAddMoreComponent implements OnInit {
   }
   getProducts(store_guid, cus_guid){
     this.serviceMainCategory.getProductsOrderEdit(store_guid,this.data?.order_By,this.datePipe.transform( this.data?.order_date || new Date(1970, 1, 1), 'yyyy/MM/dd'),this.data?.orderID).subscribe(res => {
-      console.log(res)
       this.products = res
     })
   }

@@ -150,6 +150,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NavbarAdminComponent } from './views/layout/navbarAdmin/navbarAdmin.component';
 import { DateAgoPipe } from './_core/pipes/date-ago.pipe';
 import { ListAllStoreComponent } from './views/home/list-all-store/list-all-store.component';
+import { AdminRestaurantComponent } from './views/mobile/admin-restaurant/admin-restaurant.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -193,7 +194,8 @@ if (!lang) {
     RestaurantrightsidebarComponent,
     RestaurantleftsidebarComponent,
     NavbarAdminComponent,
-    ListAllStoreComponent
+    ListAllStoreComponent,
+    AdminRestaurantComponent
 
   ],
   imports: [

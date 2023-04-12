@@ -24,6 +24,7 @@ namespace Line2u.Services
     public interface IProductsService : IServiceBase<Product, ProductsDto>
     {
         Task<object> LoadData(DataManager data, string lang,string uid);
+        Task<object> LoadDataAdmin(DataManager data, string lang,string uid,int storeId);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
@@ -86,7 +87,7 @@ ISPService spService)
         }
         public async Task<object> LoadData(DataManager data, string lang, string uid)
         {
-            var datasource =  _repo.FindAll(o => o.AccountUid == uid).OrderByDescending(x => x.Id).AsQueryable();
+            var datasource =  _repo.FindAll(o => o.AccountUid == uid && o.Status == 1).OrderByDescending(x => x.Id).AsQueryable();
 
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
@@ -458,6 +459,29 @@ ISPService spService)
                               })
                           }).ToList();
             return result;
+        }
+
+        public async Task<object> LoadDataAdmin(DataManager data, string lang, string uid, int storeId)
+        {
+            var datasource = _repo.FindAll(o => o.AccountUid == uid && o.StoreId == storeId && o.Status == 1).OrderByDescending(x => x.Id).AsQueryable();
+
+            var count = await datasource.CountAsync();
+            if (data.Where != null) // for filtering
+                datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
+            if (data.Sorted != null)//for sorting
+                datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
+            if (data.Search != null)
+                datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
+            count = await datasource.CountAsync();
+            if (data.Skip >= 0)//for paging
+                datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
+            if (data.Take > 0)//for paging
+                datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
+            return new
+            {
+                Result = await datasource.ToListAsync(),
+                Count = count
+            };
         }
     }
 }

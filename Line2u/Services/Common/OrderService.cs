@@ -20,6 +20,7 @@ using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
 using Org.BouncyCastle.Crypto;
 using static Line2u.Constants.SP;
+using OpenAI_API.Embedding;
 
 namespace Line2u.Services
 {
@@ -49,6 +50,7 @@ namespace Line2u.Services
     public class OrderService : ServiceBase<Order, OrderDto>, IOrderService, IScopeService
     {
         private readonly IRepositoryBase<Order> _repo;
+        private readonly IRepositoryBase<StoreProfile> _repoStoreProfile;
         private readonly IRepositoryBase<Product> _repoProduct;
         private readonly IRepositoryBase<Cart> _repoCart;
         private readonly IRepositoryBase<OrderDetail> _repoOrderDetail;
@@ -64,6 +66,7 @@ private readonly ILine2uLoggerService _logger;
 
         public OrderService(
             IRepositoryBase<Order> repo,
+            IRepositoryBase<StoreProfile> repoStoreProfile,
             IRepositoryBase<Cart> repoCart,
             IRepositoryBase<Product> repoProduct,
             IRepositoryBase<OrderDetail> repoOrderDetail,
@@ -81,6 +84,7 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoStoreProfile = repoStoreProfile;
             _repoCart = repoCart;
             _repoProduct = repoProduct;
             _repoOrderDetail = repoOrderDetail;
@@ -460,41 +464,149 @@ ISPService spService)
             return list_data.Where(x => x.CreateDate.Value.Date >= min.Date && x.CreateDate.Value.Date <= max.Date).OrderByDescending(x => x.CreateDate);
         }
 
-
         public async Task<object> GetTrackingOrderUser(int accountId)
         {
             var order = await _repo.FindAll(o => o.AccountId == accountId.ToString()).ToListAsync();
             var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
             var products = await _repoProduct.FindAll().ToListAsync();
+            var store = await _repoStoreProfile.FindAll().ToListAsync();
             var result = (from x in order
                           let y = order_detail.Where(o => o.OrderGuid == x.Guid).ToList()
-                          //in order_detail on x.Guid equals y.OrderGuid
-                          //let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
                           select new
                           {
                               orderID = x.Guid,
-                              list_product = getListProducts(y).Result
-                          }).DistinctBy(o => o.orderID).ToList();
+                              orderDate = x.CreateDate,
+                              orderPayment = x.PaymentType,
+                              orderTotal = x.TotalPrice,
+                              list_store = getListStoreTrackingOrderUser(y).Result
+                          }).DistinctBy(o => o.orderID).OrderByDescending(o => o.orderDate).ToList();
 
-            var result2 = result.GroupBy(x => x.orderID).ToList();
 
             return result;
         }
 
-        private async Task<object> getListProducts(List<OrderDetail> data)
+        //public async Task<object> GetThuDataChoTrucCuTo(int accountId)
+        //{
+
+        //    var data = data.DistinctBy(sa => sa.FundNumber).ToList();
+        //    var result = (from x in data
+        //                  let AcceptedCharges = data.Where(o => o.FundNumber == x.FundNumber && o.acceptedStatus.Equals(o..StatusDescription)).ToList()
+        //                  select new
+        //                  {
+        //                      FundNumber = x.Key,
+        //                      AcceptedCharges = AcceptedCharges.sum(sa => sa.PreEnrolledCharges)
+        //                  }).ToList();
+
+
+        //    return result;
+        //}
+        //var result = await data
+        //        .GroupBy(sa => sa.FundNumber)
+        //        .Select(g => new SpecialAssessmentSummaryDto
+        //        {
+        //            FundNumber = g.Key,
+        //            AcceptedCharges = g.Where(sa => acceptedStatus.Equals(sa.StatusDescription)).Sum(sa => sa.PreEnrolledCharges),
+        //            AcceptedRecords = g.Count(sa => acceptedStatus.Equals(sa.StatusDescription)),
+        //            RejectedRecords = g.Count(sa => !acceptedStatus.Equals(sa.StatusDescription))
+        //        })
+
+        private async Task<object> getListStoreTrackingOrderUser(List<OrderDetail> data)
+        {
+            var products = _repoProduct.FindAll().ToList();
+            var store = await _repoStoreProfile.FindAll().ToListAsync();
+            var list = new List<object>();
+            foreach (var product in data.DistinctBy(o => o.StoreGuid))
+            {
+                var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
+                var list_order_detail_by_store = _repoOrderDetail.FindAll(x => x.StoreGuid == product.StoreGuid && x.OrderGuid == product.OrderGuid).ToList();
+                var storeProfile = store.Where(o => o.Guid == product.StoreGuid).FirstOrDefault();
+                var item_add = new
+                {
+                    
+                    storeName = storeProfile != null ? storeProfile.StoreName : "N/A",
+                    list_products = getListProductsTrackingOrderUser(list_order_detail_by_store).Result
+                
+                };
+
+                list.Add(item_add);
+            }
+
+            return list;
+        }
+
+        private async Task<object> getListProductsTrackingOrderUser(List<OrderDetail> data)
         {
             var products = _repoProduct.FindAll().ToList();
             var list = new List<object>();
             foreach (var product in data)
             {
                 var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
-
                 var item_add = new
                 {
                     ProductName = item.ProductName,
                     PhotoPath = item.PhotoPath,
                     item.ProductDescription,
+                    item.Id,
+                    productPrice = product.Price,
+                    Guid = item.Guid,
                     Qty = product.Quantity,
+                    totalOrder = product.Quantity,
+                    Price = product.Quantity * product.Price
+                };
+
+                list.Add(item_add);
+            }
+
+            return list;
+        }
+        //public async Task<object> GetTrackingOrderUser(int accountId)
+        //{
+        //    var order = await _repo.FindAll(o => o.AccountId == accountId.ToString()).ToListAsync();
+        //    var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
+        //    var products = await _repoProduct.FindAll().ToListAsync();
+        //    var store = await _repoStoreProfile.FindAll().ToListAsync();
+        //    var result = (from x in order
+        //                  join y in order_detail on x.Guid equals y.OrderGuid
+        //                  let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
+        //                  let storeProfile = store.Where(o => o.Guid == y.StoreGuid).FirstOrDefault()
+        //                  select new
+        //                  {
+        //                      orderID = x.Guid,
+        //                      orderDate = x.CreateDate,
+        //                      storeName = storeProfile != null ? storeProfile.StoreName : "N/A",
+        //                      orderPayment = x.PaymentType,
+        //                      orderTotal = y.Quantity * y.Price,
+        //                      list_product = z.Select(o => new {
+        //                          o.ProductName,
+        //                          o.PhotoPath,
+        //                          price = y.Quantity * y.Price,
+        //                          qty = y.Quantity
+        //                      })
+        //                  }).OrderByDescending(x => x.orderDate).ToList();
+
+
+        //    return result;
+        //}
+        private async Task<object> getListProducts(List<OrderDetail> data)
+        {
+            var products = _repoProduct.FindAll().ToList();
+            var store = await _repoStoreProfile.FindAll().ToListAsync();
+            var list = new List<object>();
+            foreach (var product in data)
+            {
+                var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
+                var storeProfile = store.Where(o => o.Guid == product.StoreGuid).FirstOrDefault();
+                var item_add = new
+                {
+                    ProductName = item.ProductName,
+                    PhotoPath = item.PhotoPath,
+                    item.ProductDescription,
+                    item.Id,
+                    storeName = storeProfile != null ? storeProfile.StoreName : "N/A",
+                    productPrice = product.Price,
+                    Guid = item.Guid,
+                    Qty = product.Quantity,
+                    totalOrder = product.Quantity,
                     Price = product.Quantity * product.Price
                 };
                     
@@ -616,7 +728,7 @@ ISPService spService)
                 var item = _mapper.Map<OrderDetail>(model);
                 item.Id = 0;
                 item.Status = StatusConstants.Default;
-                _repoOrderDetail.Add(item);
+                _repoOrderDetail.Update(item);
                 // update order detail
                 var order = _repo.FindAll(o => o.Guid == model.OrderGuid).FirstOrDefault();
                 order.TotalPrice = order.TotalPrice + model.Price;
@@ -655,7 +767,7 @@ ISPService spService)
             ).FirstOrDefault();
             if (check_item != null)
             {
-                check_item.Quantity = check_item.Quantity;
+                check_item.Quantity = model.Quantity;
                 _repoOrderDetail.Update(check_item);
 
                 // update order detail

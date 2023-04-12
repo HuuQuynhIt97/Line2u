@@ -34,17 +34,6 @@
   <ng-container  *ngFor="let item of news; let i = index">
     <ng-template  swiperSlide>
       
-      <!-- <div class="card shadow-sm" style="width: 125px; height: 125px;">
-        <img  
-        [style.width]="sysConf?.LineConfigImageWith + '!important'"
-        [style.height]="'100%' + '!important'"
-        style="  display: block;
-        object-fit: cover;"
-        class="rounded-circle"
-        [src]="imagePath(item.photoPath)" loading="lazy" />
-        <p class="card-text text-center">{{item.storeName}}</p>
-        
-      </div> -->
       <div class="swiper-slide">
         <a style="cursor: pointer;" class="categories" (click)="gotoShop(item)">
           <div class="icon text-custom-white bg-light-green ">

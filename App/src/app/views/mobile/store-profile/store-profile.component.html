@@ -4,6 +4,9 @@
     <li class="breadcrumb-item active" aria-current="page">{{'User Profile' | translate}}</li>
   </ol>
 </nav> -->
+<ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
 <div class="wrapper">
   <div class="main-content" id="main-text">
     <div class="row">
@@ -94,6 +97,61 @@
             type="text"
             class="form-control"
           />
+        </div>
+      </div>
+
+      <div class="col-12" *ngIf="isAdmin">
+        <div class="form-group">
+          <label for="landLordName">{{ "STORE_ACCESS" | translate }}</label>
+          <span  style="color: red">(*)</span>
+  
+          <ejs-multiselect
+              id="site"
+              [showDropDownIcon]="true"
+              [(ngModel)]="sites"
+              (ngModelChange)="onChangePermission()"
+              [dataSource]="siteData"
+              placeholder="{{ 'CHOOSE_ACCOUNT' | translate }}"
+              [fields]="siteFields"
+              (filtering)="onFiltering($event)"
+              [mode]="'Box'"
+            >
+          </ejs-multiselect>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="landLordName">{{ "STORE_COUNTY" | translate }}</label>
+          <span  style="color: red">(*)</span>
+  
+          <ejs-dropdownlist
+              [fields]="storeCountyFields"
+              [allowFiltering]="true"
+              #toolbar_dropdown
+              [(ngModel)]="model.countyId"
+              (change)="countyChange($event)"
+              placeholder="{{'StoreProfile_SelectCounty' | translate}}"
+              [dataSource]="countyData"
+            >
+          </ejs-dropdownlist>
+        </div>
+      </div>
+
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="landLordName">{{ "STORE_TOWNSHIP" | translate }}</label>
+          <span  style="color: red">(*)</span>
+          <ejs-dropdownlist
+              [fields]="storeTownShipFields"
+              [allowFiltering]="true"
+              #toolbar_dropdown
+              [(ngModel)]="model.townShipId"
+              placeholder="{{'StoreProfile_SelectTownShip' | translate}}"
+              [dataSource]="townshipData"
+            >
+          </ejs-dropdownlist>
         </div>
       </div>
 
@@ -224,8 +282,6 @@
           
         </div>
       </div>
-    
-  
       
     </div>
     
@@ -240,7 +296,7 @@
         </button> -->
         <button
           type="submit"
-          [disabled]="!model.storeName"
+          [disabled]="!model.storeName || !model.countyId || !model.townShipId"
           (click)="save()"
           class="btn btn-primary float-right"
         >

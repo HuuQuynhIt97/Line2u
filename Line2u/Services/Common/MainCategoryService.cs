@@ -24,8 +24,10 @@ namespace Line2u.Services
     public interface IMainCategoryService : IServiceBase<MainCategory, MainCategoryDto>
     {
         Task<object> LoadData(DataManager data, string lang,string uid);
+        Task<object> LoadDataAdmin(DataManager data, string lang,string uid, int storeId);
         Task<object> GetByGuid(string guid);
         Task<object> GetCategoryByUserID(string id);
+        Task<object> GetCategoryByUserIDAndStore(string id, int storeId);
         Task<object> GetProducts(string id,string cusGuid);
         Task<object> GetProductsOrderEdit(string id,int cusId, DateTime date,string orderId);
         Task<object> GetAudit(object id);
@@ -92,7 +94,7 @@ ISPService spService)
         }
         public async Task<object> LoadData(DataManager data, string lang, string uid)
         {
-            var datasource =  _repo.FindAll(o => o.AccountUid == uid)
+            var datasource =  _repo.FindAll(o => o.AccountUid == uid && o.Status == 1)
                               .OrderByDescending(x => x.Id).AsQueryable();
 
             var count = await datasource.CountAsync();
@@ -593,6 +595,35 @@ ISPService spService)
                               }).ToList()
                           }).Where(o => o.list_product.Count > 0).ToList();
             return result;
+        }
+
+        public async Task<object> GetCategoryByUserIDAndStore(string store_account_Guid, int storeId)
+        {
+            return await _repo.FindAll(o => o.AccountUid == store_account_Guid && o.StoreId == storeId && o.Status == 1).ToListAsync();
+        }
+
+        public async Task<object> LoadDataAdmin(DataManager data, string lang, string uid, int storeId)
+        {
+            var datasource = _repo.FindAll(o => o.AccountUid == uid && o.StoreId == storeId && o.Status == 1)
+                              .OrderByDescending(x => x.Id).AsQueryable();
+
+            var count = await datasource.CountAsync();
+            if (data.Where != null) // for filtering
+                datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
+            if (data.Sorted != null)//for sorting
+                datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
+            if (data.Search != null)
+                datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
+            count = await datasource.CountAsync();
+            if (data.Skip >= 0)//for paging
+                datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
+            if (data.Take > 0)//for paging
+                datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
+            return new
+            {
+                Result = await datasource.ToListAsync(),
+                Count = count
+            };
         }
     }
 }

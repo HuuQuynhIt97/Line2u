@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { ToolbarType } from '@syncfusion/ej2-richtexteditor';
 import { AlertifyService, UtilitiesService } from 'herr-core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { FunctionUtility } from 'src/app/_core/_helper/function-utility';
@@ -14,6 +16,7 @@ import { DataService } from 'src/app/_core/_service/data.service';
 import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
 import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
+import { Query } from '@syncfusion/ej2-data';
 declare let $: any;
 import { environment } from 'src/environments/environment';
 @Component({
@@ -28,10 +31,15 @@ export class StoreProfileComponent  implements OnInit {
   model: StoreProfile = {} as StoreProfile;
   file
   fileQR
+  countyData: any
+  townshipData: any
+  storeCountyFields: object = { text: 'countyName', value: 'countyId' };
+  storeTownShipFields: object = { text: 'townshipName', value: 'townshipId' };
   baseUrl = environment.apiUrl;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   user = JSON.parse(localStorage.getItem('user'))
+  store: any
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,
@@ -61,41 +69,123 @@ export class StoreProfileComponent  implements OnInit {
     no_message: this.translate.instant(MessageConstants.NO_MSG),
   };
   listFile: File[] = [];
+  userAccount: any[];
+  permissionData: [] = [];
+  public onFiltering: any = (e: FilteringEventArgs) => {
+    let query = new Query();
+    //frame the query based on search string with filter type.
+    query = (e.text != "") ? query.where("name", "contains ", e.text, true) : query;
+    //pass the filter data source, filter query to updateData method.
+    e.updateData(this.permissionData, query);
+  };
+  siteData: any
+  siteFields: object = { text: 'accountName', value: 'accountId' };
+  sites: any[];
+  isAdmin = JSON.parse(localStorage.getItem('user'))?.uid === 'admin';
   constructor(
     private utilityService: UtilitiesService,
     private landlordService: LandlordService,
     private service: StoreProfileService,
+    private serviceAccount: XAccountService,
     private alertify: AlertifyService,
+    private route: ActivatedRoute,
     private functionUtility: FunctionUtility,
     private toast: ToastrService,
     public translate: TranslateService,
     public datePipe: DatePipe,
+    private spin: NgxSpinnerService,
     public router: Router,
     private dataService: DataService
 
     ) { }
+
   loadDetail() {
+    this.spin.show()
     const guid = this.user.uid;
     if (guid) {
-      this.service.GetWithGuid(guid).subscribe(x=> {
-        if(x !== null) {
-          this.model = x;
-          localStorage.setItem('store', JSON.stringify(x));
-          let listFileImage: string[] = [];
-          listFileImage.push(this.model.photoPath);
-          console.log(listFileImage)
-          listFileImage = listFileImage.filter(item => item !== null);
-          if (listFileImage?.length > 0) {
-            this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
+      return new Promise((result, rej) => {
+        this.service.GetWithGuid(guid).subscribe(
+          (x: any) => {
+            if(x !== null) {
+              this.model = x;
+              console.log('loadDetail', x)
+              localStorage.setItem('store', JSON.stringify(x));
+              let listFileImage: string[] = [];
+              listFileImage.push(this.model.photoPath);
+              listFileImage = listFileImage.filter(item => item !== null);
+              if (listFileImage?.length > 0) {
+                this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
+              }
+              this.start_times = x.storeOpenTime
+              this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
+              this.spin.hide()
+            }else {
+            }
+            result(result);
+          },
+          (error) => {
+            rej(error);
           }
-          this.start_times = x.storeOpenTime
-          this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
-          // this.configImage();
-          console.log(this.listFile)
-        }else {
-        }
-      })
+        );
+      });
+      // this.service.GetWithGuid(guid).subscribe(x=> {
+      //   if(x !== null) {
+      //     this.model = x;
+      //     localStorage.setItem('store', JSON.stringify(x));
+      //     let listFileImage: string[] = [];
+      //     listFileImage.push(this.model.photoPath);
+      //     listFileImage = listFileImage.filter(item => item !== null);
+      //     if (listFileImage?.length > 0) {
+      //       this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
+      //     }
+      //     this.start_times = x.storeOpenTime
+      //     this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
+      //   }else {
+      //   }
+      // })
     }
+    
+  }
+
+  loadDetailAdmin() {
+    this.spin.show()
+    return new Promise((result, rej) => {
+      this.service.getById(this.store).subscribe(
+        async (x: any) => {
+          if(x !== null) {
+            this.sites = [];
+            this.model.multiStores = {
+              sites: this.sites
+            }
+            this.model = x;
+            console.log('loadDetailAdmin', x)
+            localStorage.setItem('store', JSON.stringify(x));
+
+            let listFileImage: string[] = [];
+            listFileImage.push(this.model.photoPath);
+            const sites = await this.service.getMultiUserAccessStore(this.model.createBy,this.model.id).toPromise();
+            console.log(sites)
+            this.sites = sites || [];
+            this.model.multiStores = {
+              stores: this.sites
+            }
+            listFileImage = listFileImage.filter(item => item !== null);
+            if (listFileImage?.length > 0) {
+              this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
+            }
+            this.start_times = x.storeOpenTime
+            this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
+            this.spin.hide()
+          }else {
+          }
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+    
     
   }
 
@@ -115,11 +205,95 @@ export class StoreProfileComponent  implements OnInit {
 
   
   ngOnInit(): void {
-    this.loadDetail();
-    // this.configImage();
-    // this.configImageQR();
+    this.getAllAccount()
+    this.store = this.route.snapshot.paramMap.get('id')
+    this.getCountyTownShip()
+  }
+  getAllAccount(){
+    this.service.getAllAccountAccess().subscribe(res => {
+      this.siteData = res
+      console.log(this.siteData)
+    })
   }
 
+  
+  onChangePermission() {
+    this.model.multiStores = {
+      stores: this.sites
+    }
+  }
+  async getCountyTownShip() {
+    if(this.user.uid === 'admin' && this.store !== null) {
+      await this.getAllCounty()
+      await this.getAllTownShip()
+      await this.loadDetailAdmin()
+    }else if (this.user.uid === 'admin' && this.store === null) {
+      await this.getAllCounty()
+      await this.getAllTownShip()
+    }
+    else {
+      await this.getAllCounty()
+      await this.getAllTownShip()
+      await this.loadDetail()
+    }
+  }
+
+  countyChange(args) {
+    if(args.isInteracted) {
+      this.model.countyId = args.value
+      this.getAllTownShipByCounty();
+    }
+  }
+  getAllCounty() {
+    return new Promise((result, rej) => {
+      this.service.getAllCounty().subscribe(
+        (res: any) => {
+          this.countyData  = res
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+    // this.service.getAllCounty().subscribe(res => {
+    //   this.countyData  = res
+    // })
+  }
+  getAllTownShip() {
+    return new Promise((result, rej) => {
+      this.service.getAllTowship().subscribe(
+        (res: any) => {
+          this.townshipData  = res
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+    // this.service.getAllTowship().subscribe(res => {
+    //   this.townshipData  = res
+    //   console.log('getAllTownShip', this.townshipData)
+    // })
+  }
+
+  getAllTownShipByCounty() {
+    return new Promise((result, rej) => {
+      this.service.getTowshipByCounty(this.model.countyId).subscribe(
+        (res: any) => {
+          this.townshipData  = res
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+    // this.service.getTowshipByCounty(this.model.countyId).subscribe(res => {
+    //   this.townshipData  = res
+    // })
+  }
   startTimesChange(args) {
     this.model.storeOpenTime = args.text
     this.start_times = args.text
@@ -184,16 +358,13 @@ export class StoreProfileComponent  implements OnInit {
     });
   }
   onRemove(event) {
-    console.log('onRemove',event)
     this.listFile.splice(this.listFile.indexOf(event), 1);
     this.removeImage()
   }
   removeImage() {
-    console.log(this.model)
     this.service.deleteImage(this.model?.id || 0).subscribe(res => {}) 
   }
   onSelect(event) {
-    console.log('onSelect',event)
     let fileSize = 0;
     let length = 0;
     if(this.listFile !== null) {
@@ -237,9 +408,19 @@ export class StoreProfileComponent  implements OnInit {
   }
   save() {
     if (this.model.id > 0) {
-      this.update();
+      if(this.isAdmin) {
+        this.updateAdmin();
+      }else {
+
+        this.update();
+      }
     } else {
-      this.create();
+      if(this.isAdmin) {
+        this.createAdmin();
+      }else {
+
+        this.create();
+      }
     }
     // this.update();
   }
@@ -269,31 +450,9 @@ export class StoreProfileComponent  implements OnInit {
         this.toast.warning(this.alert.system_error_msg);
       }
     );
-    // this.alertify.confirm4(
-    //    this.alert.yes_message,
-    //    this.alert.no_message,
-    //    this.alert.createTitle,
-    //    this.alert.createMessage,
-    //    () => {
-        
-    //    }, () => {
-    //      this.toast.error(this.alert.cancelMessage);
-    //    }
-    //  );
  
    }
   update() {
-    // this.alertify.confirm4(
-    //    this.alert.yes_message,
-    //    this.alert.no_message,
-    //    this.alert.updateTitle,
-    //    this.alert.updateMessage,
-    //    () => {
-       
-    //    }, () => {
-    //      this.toast.error(this.alert.cancelMessage);
-    //    }
-    //  );
 
      this.model.createBy = this.user.id;
      this.model.updateBy = this.user.id;
@@ -315,7 +474,58 @@ export class StoreProfileComponent  implements OnInit {
      );
  
  
+  }
+  createAdmin() {
+    this.model.createBy = this.user.id;
+    this.model.accountGuid = this.user.uid
+    this.model.storeOpenTime = this.start_times
+    this.model.storeCloseTime = this.end_times
+    this.model.file = this.listFile || [];
+    delete this.model['column'];
+    delete this.model['index'];
+    this.service.insertFormAdmin(this.ToFormatModel(this.model)).subscribe(
+      (res) => {
+        if (res.success === true) {
+        this.listFile = []
+          this.toast.success(this.alert.created_ok_msg);
+          this.loadDetailAdmin();
+          this.dataService.changeMessage('nextStep2')
+        } else {
+          this.translate.get(res.message).subscribe((data: string) => {
+            this.toast.warning(data);
+          });
+        }
+
+      },
+      (error) => {
+        this.toast.warning(this.alert.system_error_msg);
+      }
+    );
+ 
    }
+  updateAdmin() {
+
+     this.model.createBy = this.user.id;
+     this.model.updateBy = this.user.id;
+     this.model.file = this.listFile || [];
+     this.service.updateFormAdmin(this.ToFormatModel(this.model)).subscribe(
+       (res) => {
+         if (res.success === true) {
+         this.listFile = []
+           this.toast.success(this.alert.updated_ok_msg);
+           this.loadDetailAdmin();
+           this.dataService.changeMessage('nextStep2')
+         } else {
+           this.toast.warning(this.alert.system_error_msg);
+         }
+       },
+       (error) => {
+         this.toast.warning(this.alert.system_error_msg);
+       }
+     );
+ 
+ 
+  }
    ToFormatModel(model: any) {
      for (let key in model) {
        let value = model[key];

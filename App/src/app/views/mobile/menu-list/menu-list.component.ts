@@ -22,6 +22,8 @@ import { Browser } from '@syncfusion/ej2-base';
 import { ProductsService } from 'src/app/_core/_service/evse/products.service';
 import { MainCategoryService } from 'src/app/_core/_service/evse/main-category.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DataService } from 'src/app/_core/_service/data.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-menu-list',
   templateUrl: './menu-list.component.html',
@@ -31,7 +33,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class MenuListComponent extends BaseComponent implements OnInit {
 
   user = JSON.parse(localStorage.getItem('user'))
-  isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
+  isAdmin = JSON.parse(localStorage.getItem('user'))?.uid === 'admin';
   data: DataManager;
   modalReference: NgbModalRef;
   active = "Detail"
@@ -57,23 +59,28 @@ export class MenuListComponent extends BaseComponent implements OnInit {
         'Formats', 'Alignments', 'NumberFormatList', 'BulletFormatList',
         'Outdent', 'Indent', '|', 'ClearFormat',
         'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
-};
-@ViewChild("parentTemplate", { static: true })
-public parentTemplate: any;
-public initialGridLoad = true;
+    };
+  @ViewChild("parentTemplate", { static: true })
+  public parentTemplate: any;
+  public initialGridLoad = true;
 
   categoryData: any;
   categoryFields: object = { text: 'categoryName', value: 'guid' };
   $CategoryFilter: any;
+  store: any;
+  storeInfo = JSON.parse(localStorage.getItem('store'))
   constructor(
     private service: ProductsService,
     private serviceMainCategory: MainCategoryService,
     public modalService: NgbModal,
+    private route: ActivatedRoute,
     private alertify: AlertifyService,
+    private toast: ToastrService,
     private datePipe: DatePipe,
     private spinner: NgxSpinnerService,
      private config: NgbTooltipConfig,
     public translate: TranslateService,
+    public dataService: DataService,
     private utilityService: UtilitiesService,
 
   ) {
@@ -82,10 +89,17 @@ public initialGridLoad = true;
         config.disableTooltip = true;
       }
 
+      this.dataService.currentMessage.subscribe((res: any) => {
+        if(res === 'load products') {
+          this.loadAllData()
+        }
+      })
+
     }
 
   ngOnInit() {
-  this.toolbarOptions = [ 'Add',{ template: this.parentTemplate }, 'Search'];
+    this.store = this.route.snapshot.paramMap.get('id')
+    this.toolbarOptions = [ 'Add',{ template: this.parentTemplate }, 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -97,31 +111,39 @@ public initialGridLoad = true;
       }
     };
     L10n.load(load);
-    this.loadData();
-    this.loadDataCategory()
+    this.loadAllData()
     this.loadLang()
   }
+  loadAllData() {
+    if(this.user.uid === 'admin') {
+      if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
+        this.loadDataAdmin()
+        this.loadDataCategoryAdmin()
+      }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
+        this.spinner.hide()
+      }
+      else {
+        this.loadDataCategory()
+        this.loadData();
+      }
+    }else {
+      this.loadDataCategory()
+      this.loadData();
+    }
+  }
   dataBound() {
-    // if (this.initialGridLoad) {
-    //     this.initialGridLoad = false;
-    //     const pager = document.getElementsByClassName('e-gridpager');
-    //     let topElement;
-    //     if (this.grid.allowGrouping || this.grid.toolbar) {
-    //         topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
-    //             document.getElementsByClassName('e-toolbar');
-    //     } else {
-    //         topElement = document.getElementsByClassName('e-gridheader');
-    //     }
-    //     this.grid.element.insertBefore(pager[0], topElement[0]);
-    // }
+    
 }
   loadDataCategory() {
-    this.serviceMainCategory.getCategoryByUserID(this.user.uid).subscribe(res => {
+    this.serviceMainCategory.getCategoryByUserID(this.storeInfo.accountGuid).subscribe(res => {
       this.categoryData = res
-      // this.categoryData.unshift({
-      //   id: 0,
-      //   guid: '',
-      //   categoryName: this.translate.instant('MOBILE_NO_ITEM_DATA') });
+    
+    })
+  }
+  loadDataCategoryAdmin() {
+    this.serviceMainCategory.getCategoryByUserIDAndStore(this.user.uid,this.store).subscribe(res => {
+      this.categoryData = res
+    
     })
   }
   loadLang() {
@@ -207,7 +229,18 @@ public initialGridLoad = true;
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
-      url: `${this.baseUrl}Products/LoadData?lang=${lang}&uid=${this.user.uid}`,
+      url: `${this.baseUrl}Products/LoadData?lang=${lang}&uid=${this.storeInfo.accountGuid}`,
+      adaptor: new UrlAdaptor,
+      headers: [{ authorization: `Bearer ${accessToken}` }]
+    });
+    this.spinner.hide()
+  }
+
+  loadDataAdmin() {
+    const accessToken = localStorage.getItem('token');
+    const lang = localStorage.getItem('lang');
+    this.data = new DataManager({
+      url: `${this.baseUrl}Products/LoadDataAdmin?lang=${lang}&uid=${this.user.uid}&storeId=${this.store}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });
@@ -223,22 +256,29 @@ public initialGridLoad = true;
         this.service.delete(id).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.deleted_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.deleted_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+                this.loadDataCategoryAdmin();
+              }else {
+                this.loadData();
+                this.loadDataCategory()
+              }
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
-          (err) => this.alertify.warning(this.alert.system_error_msg)
+          (err) => this.toast.warning(this.alert.system_error_msg)
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
 
       }
     );
 
   }
   create() {
+    let storeId = JSON.parse(localStorage.getItem('store'))?.id
    this.alertify.confirm4(
       this.alert.yes_message,
       this.alert.no_message,
@@ -247,32 +287,40 @@ public initialGridLoad = true;
       () => {
         this.model.createBy = this.user.id;
         this.model.accountUid = this.user.uid;
+        this.model.storeId = storeId;
         this.model.file = this.file || [];
         delete this.model['column'];
         delete this.model['index'];
         this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.created_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.created_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+                this.loadDataCategoryAdmin();
+              }else {
+                this.loadData();
+                this.loadDataCategory()
+              }
               this.modalReference.dismiss();
 
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
 
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
 
   }
   update() {
+    let storeId = JSON.parse(localStorage.getItem('store'))?.id
    this.alertify.confirm4(
       this.alert.yes_message,
       this.alert.no_message,
@@ -281,24 +329,31 @@ public initialGridLoad = true;
       () => {
         this.model.updateBy = this.user.id;
         this.model.file = this.file || [];
+        this.model.storeId = storeId;
         delete this.model['column'];
         delete this.model['index'];
         this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.updated_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.updated_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+                this.loadDataCategoryAdmin();
+              }else {
+                this.loadData();
+                this.loadDataCategory()
+              }
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
 

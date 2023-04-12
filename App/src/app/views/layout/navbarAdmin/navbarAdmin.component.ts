@@ -158,7 +158,6 @@ export class NavbarAdminComponent implements OnInit {
   }
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
-      console.log('getProductsInCart', res)
       this.cartDetail = res
     })
   }
@@ -246,35 +245,36 @@ export class NavbarAdminComponent implements OnInit {
     });
   }
   navigate(data) {
-    const functionCode = data.functionCode;
-    if (functionCode === 'Report'&& data.level === 2) {
-      return;
-    }
-    if (functionCode === 'Report'&& data.level === 3) {
-      return this.router.navigate([data.url])
-    }
-    const functions = JSON.parse(localStorage.getItem('functions')) || [];
-    const permissions = functions.includes(functionCode);
-    if(permissions) {
-      if (data.url) {
-        return  this.router.navigate([data.url])
-      }
-    } else {
-      this.alertify.errorBackToLogin(this.translate.instant("Access-denied"), this.translate.instant("Back to login"), () => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh-token');
-        localStorage.removeItem('login-event');
-        localStorage.removeItem('functions');
-        localStorage.removeItem('menuItem');
-        localStorage.removeItem('farmGuid');
-        localStorage.removeItem('menus');
-        this.router.navigate(['/login']);
-      }, true, () => {
-        return;
-      });
-      return;
-    }
+    return  this.router.navigate([data.url])
+    // const functionCode = data.functionCode;
+    // if (functionCode === 'Report'&& data.level === 2) {
+    //   return;
+    // }
+    // if (functionCode === 'Report'&& data.level === 3) {
+    //   return this.router.navigate([data.url])
+    // }
+    // const functions = JSON.parse(localStorage.getItem('functions')) || [];
+    // const permissions = functions.includes(functionCode);
+    // if(permissions) {
+    //   if (data.url) {
+    //     return  this.router.navigate([data.url])
+    //   }
+    // } else {
+    //   this.alertify.errorBackToLogin(this.translate.instant("Access-denied"), this.translate.instant("Back to login"), () => {
+    //     localStorage.removeItem('user');
+    //     localStorage.removeItem('token');
+    //     localStorage.removeItem('refresh-token');
+    //     localStorage.removeItem('login-event');
+    //     localStorage.removeItem('functions');
+    //     localStorage.removeItem('menuItem');
+    //     localStorage.removeItem('farmGuid');
+    //     localStorage.removeItem('menus');
+    //     this.router.navigate(['/login']);
+    //   }, true, () => {
+    //     return;
+    //   });
+    //   return;
+    // }
   }
   getMenu() {
     this.spinner.show();

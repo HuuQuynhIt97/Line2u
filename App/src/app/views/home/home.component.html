@@ -44,10 +44,98 @@
 </section>
 <!-- slider -->
 
+
 <!-- Browse by category -->
 <section class="browse-cat u-line section-padding">
   <div class="container">
       <div class="row">
+          <!-- <div class="col-12">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 mb-md-40">
+                        <h4 class="text-light-black fw-600 title-2">
+                            {{'Filters' | translate}}
+                            <small class="fs-12">
+                                <a (click)="clearFillter()" href="javascript:void(0)"  class="text-light-black fw-500">
+                                {{'Clear all' | translate}}
+                                </a>
+                            </small>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 mb-md-40">
+                        {{'Home.County.label.filter' | translate}}
+                        <ejs-dropdownlist
+                            [fields]="storeCountyFields"
+                            [allowFiltering]="true"
+                            #county_dropdown
+                            [(ngModel)]="countyId"
+                            (change)="countyChange($event)"
+                            placeholder="{{'StoreProfile_SelectCounty' | translate}}"
+                            [dataSource]="countyData"
+                            >
+                        </ejs-dropdownlist>
+                    </div>
+                
+                    <div class="col-lg-4 mb-md-40">
+                        {{'Home.TownShip.label.filter' | translate}}
+                        <ejs-dropdownlist
+                            [fields]="storeTownShipFields"
+                            [allowFiltering]="true"
+                            #townShip_dropdown
+                            (change)="townShipChange($event)"
+                            [(ngModel)]="townShipId"
+                            placeholder="{{'StoreProfile_SelectTownShip' | translate}}"
+                            [dataSource]="townshipData"
+                            >
+                        </ejs-dropdownlist>
+                    </div>
+                </div>
+            </div>
+          </div> -->
+          <div class="col-12">
+            <div class="section-header-left">
+                <h3 class="text-light-black fw-600 title-2">
+                    {{'Filters' | translate}}
+                    <small class="fs-12">
+                        <a (click)="clearFillter()" href="javascript:void(0)"  class="text-light-black fw-500">
+                        {{'Clear all' | translate}}
+                        </a>
+                    </small>
+                </h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-md-40">
+                    {{'Home.County.label.filter' | translate}}
+                    <ejs-dropdownlist
+                        [fields]="storeCountyFields"
+                        [allowFiltering]="true"
+                        #county_dropdown
+                        [(ngModel)]="countyId"
+                        (change)="countyChange($event)"
+                        placeholder="{{'StoreProfile_SelectCounty' | translate}}"
+                        [dataSource]="countyData"
+                        >
+                    </ejs-dropdownlist>
+                </div>
+            
+                <div class="col-lg-4 mb-md-40">
+                    {{'Home.TownShip.label.filter' | translate}}
+                    <ejs-dropdownlist
+                        [fields]="storeTownShipFields"
+                        [allowFiltering]="true"
+                        #townShip_dropdown
+                        (change)="townShipChange($event)"
+                        [(ngModel)]="townShipId"
+                        placeholder="{{'StoreProfile_SelectTownShip' | translate}}"
+                        [dataSource]="townshipData"
+                        >
+                    </ejs-dropdownlist>
+                </div>
+            </div>
+            <hr style="border-top: 0;">
+        </div>
           <div class="col-12">
               <div class="section-header-left">
                   <h3 class="text-light-black header-title title">{{'Store list.label' | translate}} 
@@ -60,12 +148,27 @@
               </div>
           </div>
           <div class="col-12">
-              <app-home-store-list></app-home-store-list>
-              <!-- <div class="category-slider swiper-container">
-                <div class="swiper-wrapper">
-                </div>
-                  
-              </div> -->
+              <!-- <app-home-store-list></app-home-store-list> -->
+              <swiper
+                [slidesPerView]="isMobileBrowser ? 2 : 8"
+                [navigation]="true"
+                [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+                [pagination]="{ clickable: true, dynamicBullets: true }"
+                >
+                <ng-container  *ngFor="let item of store; let i = index">
+                    <ng-template  swiperSlide>
+                    
+                    <div class="swiper-slide">
+                        <a style="cursor: pointer;" class="categories" (click)="gotoShop(item)">
+                        <div class="icon text-custom-white bg-light-green ">
+                            <img [src]="imagePath(item.photoPath)" class="rounded-circle"
+                                alt="categories">
+                        </div> <span class="text-light-black cat-name">{{item.storeName}} </span>
+                        </a>
+                    </div>
+                    </ng-template>
+                </ng-container>
+                </swiper>
           </div>
       </div>
   </div>

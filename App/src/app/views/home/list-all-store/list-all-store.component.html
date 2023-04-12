@@ -91,6 +91,57 @@
                 </div>
               </div>
             </div>
+
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="restaurents">
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="delivery-restaurents">
+                    <div class="filters">
+                      <div class="card">
+                        <div class="card-header"> <a class="card-link text-light-black fw-700 fs-16" data-toggle="collapse" href="#deliverycollapseTwo">
+                          {{'ListAllStore_Localtion.label' | translate}}
+                          </a>
+                        </div>
+                        <div id="deliverycollapseTwo" class="collapse show">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-lg-6 mb-md-40">
+                                  {{'Home.County.label.filter' | translate}}
+                                  <ejs-dropdownlist
+                                      [fields]="storeCountyFields"
+                                      [allowFiltering]="true"
+                                      #county_dropdown
+                                      [(ngModel)]="countyId"
+                                      (change)="countyChange($event)"
+                                      placeholder="{{'StoreProfile_SelectCounty' | translate}}"
+                                      [dataSource]="countyData"
+                                      >
+                                  </ejs-dropdownlist>
+                              </div>
+                          
+                              <div class="col-lg-6 mb-md-40">
+                                  {{'Home.TownShip.label.filter' | translate}}
+                                  <ejs-dropdownlist
+                                      [fields]="storeTownShipFields"
+                                      [allowFiltering]="true"
+                                      #townShip_dropdown
+                                      (change)="townShipChange($event)"
+                                      [(ngModel)]="townShipId"
+                                      placeholder="{{'StoreProfile_SelectTownShip' | translate}}"
+                                      [dataSource]="townshipData"
+                                      >
+                                  </ejs-dropdownlist>
+                              </div>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </aside>

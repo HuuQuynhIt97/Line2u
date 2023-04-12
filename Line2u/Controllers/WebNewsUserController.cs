@@ -102,6 +102,15 @@ namespace Line2u.Controllers
             var data = await _service.LoadData(request, lang,userID);
             return Ok(data);
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> LoadDataAdmin([FromBody] DataManager request, string lang, int userID,int storeId)
+        {
+
+            var data = await _service.LoadDataAdmin(request, lang, userID, storeId);
+            return Ok(data);
+        }
         [HttpGet]
         public async Task<ActionResult> GetByUserID(int userID)
         {

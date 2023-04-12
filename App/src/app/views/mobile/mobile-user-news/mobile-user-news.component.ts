@@ -15,6 +15,7 @@ import { WebNewsService } from 'src/app/_core/_service/evse/web-news.service';
 import { ToolbarService, LinkService, ImageService, TableService, HtmlEditorService, ToolbarType } from '@syncfusion/ej2-angular-richtexteditor';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { WebNewsUserService } from 'src/app/_core/_service/evse/web-news-user.service';
+import { ToastrService } from 'ngx-toastr';
 declare let window:any;
 declare let $: any;
 
@@ -26,8 +27,9 @@ declare let $: any;
 })
 export class MobileUserNewsComponent extends BaseComponent implements OnInit{
   user = JSON.parse(localStorage.getItem('user'))
+  storeInfo = JSON.parse(localStorage.getItem('store'))
   public initialGridLoad = true;
-  isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
+  isAdmin = JSON.parse(localStorage.getItem('user'))?.uid === 'admin';
   data: DataManager;
   modalReference: NgbModalRef;
   active = "Detail"
@@ -55,13 +57,16 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
         'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
 };
   fileThumbnail: any;
+  store: any;
   constructor(
     private service: WebNewsUserService,
     public modalService: NgbModal,
     private alertify: AlertifyService,
+    private toast: ToastrService,
     private datePipe: DatePipe,
      private config: NgbTooltipConfig,
     public translate: TranslateService,
+    private route: ActivatedRoute,
     private utilityService: UtilitiesService,
 
   ) {
@@ -73,6 +78,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     }
 
   ngOnInit() {
+    this.store = this.route.snapshot.paramMap.get('id')
   this.toolbarOptions = [ 'Add', 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
@@ -85,7 +91,19 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       }
     };
     L10n.load(load);
-    this.loadData();
+    if(this.user.uid === 'admin') {
+      if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
+        this.loadDataAdmin()
+      }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
+      }
+      
+      else {
+  
+        this.loadData();
+      }
+    }else {
+      this.loadData();
+    }
     this.loadLang()
   }
   loadLang() {
@@ -99,7 +117,6 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
  
   // life cycle ejs-grid
   toolbarClick(args) {
-    console.log(args.item.id)
       switch (args.item.id) {
         case 'grid_add':
           args.cancel = true;
@@ -124,7 +141,16 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
-      url: `${this.baseUrl}WebNewsUser/LoadData?lang=${lang}&userID=${this.user.id}`,
+      url: `${this.baseUrl}WebNewsUser/LoadData?lang=${lang}&userID=${this.storeInfo.createBy}`,
+      adaptor: new UrlAdaptor,
+      headers: [{ authorization: `Bearer ${accessToken}` }]
+    });
+  }
+  loadDataAdmin() {
+    const accessToken = localStorage.getItem('token');
+    const lang = localStorage.getItem('lang');
+    this.data = new DataManager({
+      url: `${this.baseUrl}WebNewsUser/LoadDataAdmin?lang=${lang}&userID=${this.user.id}&storeId=${this.store}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });
@@ -139,22 +165,27 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
         this.service.delete(id).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.deleted_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.deleted_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+              }else {
+                this.loadData();
+              }
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
-          (err) => this.alertify.warning(this.alert.system_error_msg)
+          (err) => this.toast.warning(this.alert.system_error_msg)
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
 
       }
     );
 
   }
   create() {
+    let storeId = JSON.parse(localStorage.getItem('store'))?.id
    this.alertify.confirm4(
       this.alert.yes_message,
       this.alert.no_message,
@@ -162,6 +193,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       this.alert.createMessage,
       () => {
         this.model.createBy = this.user.id;
+        this.model.storeId = storeId;
         this.model.file = this.file || [];
         this.model.fileThumnail = this.fileThumbnail || [];
         delete this.model['column'];
@@ -169,26 +201,31 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
         this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.created_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.created_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+              }else {
+                this.loadData();
+              }
               this.modalReference.dismiss();
 
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
 
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
 
   }
   update() {
+    let storeId = JSON.parse(localStorage.getItem('store'))?.id
    this.alertify.confirm4(
       this.alert.yes_message,
       this.alert.no_message,
@@ -197,25 +234,30 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       () => {
         this.model.updateBy = this.user.id;
         this.model.file = this.file || [];
+        this.model.storeId = storeId;
         this.model.fileThumnail = this.fileThumbnail || [];
         delete this.model['column'];
         delete this.model['index'];
         this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.updated_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.updated_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+              }else {
+                this.loadData();
+              }
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       }, () => {
-        this.alertify.error(this.alert.cancelMessage);
+        this.toast.error(this.alert.cancelMessage);
       }
     );
 

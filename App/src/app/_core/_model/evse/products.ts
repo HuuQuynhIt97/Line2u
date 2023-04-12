@@ -10,6 +10,7 @@ export interface Products {
     comment: string;
     createDate: string | null;
     createBy: number | null;
+    storeId: number | null;
     updateDate: string | null;
     updateBy: number | null;
     status: number | null;

@@ -25,6 +25,12 @@ export class HomeStoreListComponent implements OnInit {
   baseUrl = environment.apiUrlImage;
   sysConf: any;
   isMobileBrowser: boolean = false
+  countyId: string = null
+  townShipId: string = null
+  countyData: any
+  storeCountyFields: object = { text: 'countyName', value: 'countyId' };
+  storeTownShipFields: object = { text: 'townshipName', value: 'townshipId' };
+  townshipData: any
   constructor(
     private service: StoreProfileService,
     private utilityService: UtilitiesService,
@@ -35,6 +41,7 @@ export class HomeStoreListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStoreData();
+    this.getCountyTownShip()
     this.sysConf = JSON.parse(localStorage.getItem('sysConf'))
   }
   imagePath(path) {
@@ -51,6 +58,78 @@ export class HomeStoreListComponent implements OnInit {
       this.news = x;
     })
     
+  }
+
+  countyChange(args) {
+    console.log('countyChange', args)
+    if(args.isInteracted) {
+      this.countyId = args.value
+      this.getAllTownShipByCounty();
+      this.getAllStoreByCountyAndTownShip()
+    }
+  }
+  townShipChange(args) {
+    console.log('townShipChange', args)
+    if(args.isInteracted) {
+      this.townShipId = args.value
+      this.getAllTownShipByCounty();
+    }
+  }
+  async getCountyTownShip() {
+    await this.getAllCounty()
+    await this.getAllTownShip()
+  }
+  getAllCounty() {
+    return new Promise((result, rej) => {
+      this.service.getAllCounty().subscribe(
+        (res: any) => {
+          this.countyData  = res
+          console.log('countyData', 3)
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+    
+  }
+  getAllTownShip() {
+    return new Promise((result, rej) => {
+      this.service.getAllTowship().subscribe(
+        (res: any) => {
+          this.townshipData  = res
+          console.log('townshipData', 1)
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+   
+  }
+
+  getAllTownShipByCounty() {
+    return new Promise((result, rej) => {
+      this.service.getTowshipByCounty(this.countyId).subscribe(
+        (res: any) => {
+          this.townshipData  = res
+          console.log('getTowshipByCounty', this.townshipData)
+          result(result);
+        },
+        (error) => {
+          rej(error);
+        }
+      );
+    });
+ 
+  }
+  getAllStoreByCountyAndTownShip() {
+    this.service.getAllStoreByCountyAndTownShip(this.countyId, this.townShipId,0).subscribe(x=> {
+      console.log('store', x)
+      this.news = x;
+    })
   }
   gotoShop(item) {
     localStorage.setItem('store', JSON.stringify(item));

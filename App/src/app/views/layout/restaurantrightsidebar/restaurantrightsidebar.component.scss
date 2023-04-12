@@ -3,3 +3,18 @@
     color: rgb(180, 20, 20);
 }
 
+.sidebar .cart-detail-box>.card .card-header, .sidebar .cart-detail-box>.card .card-footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+    left: 0;
+    background: #28A743 !important;
+    border-radius: 10px;
+    right: 0;
+}
+
+.green-btns:hover {
+    border-color: #28A743;
+    color: #28A743;
+}
+

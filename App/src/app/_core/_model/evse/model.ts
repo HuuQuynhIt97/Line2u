@@ -231,6 +231,7 @@ export interface WebNews {
     cancelFlag: string;
     createDate: string | null;
     createBy: number | null;
+    storeId: number | null;
     updateDate: string | null;
     updateBy: number | null;
     status: number | null;
@@ -255,6 +256,7 @@ export interface WebNewsUser {
     cancelFlag: string;
     createDate: string | null;
     createBy: number | null;
+    storeId: number | null;
     updateDate: string | null;
     updateBy: number | null;
     status: number | null;

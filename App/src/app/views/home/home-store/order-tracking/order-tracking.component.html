@@ -1,48 +1,97 @@
 <ngx-spinner [fullScreen]="true" type="square-jelly-box" size="medium">
   <p class="loading">Loading data...</p>
 </ngx-spinner>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <app-navbar></app-navbar>
 
-<div class="container">
-  <article class="card">
-      <header class="card-header"> {{'label.MyOrders_Tracking' | translate}} </header>
-      <ng-container *ngFor="let item of trackingData; let i=index">
-        <div class="card-body">
-            <h6>{{'label.OrderID' | translate}}: {{item.orderID}}</h6>
-            <!-- <div class="track">
-                <div class="step"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{'label.Order_confirmed' | translate}}</span> </div>
-                <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> {{'label.Picked_by_courier' | translate}}</span> </div>
-                <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> {{'label.On_the_way' | translate}} </span> </div>
-                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">{{'label.Ready_for_pickup' | translate}}</span> </div>
-            </div> -->
-            <hr>
-            <ul class="row">
-              <ng-container *ngFor="let item_product of item.list_product; let i=index">
-                <li class="col-md-4">
-                    <figure class="itemside mb-3">
-                        <div class="aside">
-                          <img 
-                          [src]="imagePath(item_product.photoPath) "
-                          class="img-sm border">
-                        </div>
-                        <figcaption class="info align-self-center">
-                            <p class="title">{{item_product.productName}}</p> 
-                            <span class="text-muted">${{item_product.price}} </span>
-                        </figcaption>
-                    </figure>
-                </li>
-
-              </ng-container>
-              
-            </ul>
-            <hr>
+<section class="checkout-page section-padding bg-light-theme">
+  <div class="container">
+    <div class="row">
+      <!--  -->
+      <ng-container *ngIf="trackingData?.length === 0; else elseTemplate">
+        
+        <div  class="col-md-12 mx-auto mt-5">
+          <div class="payment">
+             <div class="payment_header">
+                <div class="check"><i class="fa fa-check" aria-hidden="true"></i></div>
+             </div>
+             <div class="content">
+                <h1>{{'Tracking.Empty.label' | translate}} !</h1>
+                <a href="/home">{{'Tracking.ContinueShopping.label' | translate}}</a> 
+             </div>
+             
+          </div>
         </div>
       </ng-container>
+      <ng-template #elseTemplate>
+        <ng-container *ngFor="let item of trackingData; let i=index">
+          <div class="col-md-12 padding-tb-10">
+            <div class="recipt-sec padding-20 ">
+              <div class="recipt-name title u-line full-width mb-xl-20">
+                <div class="recipt-name-box">
+                  <h5 class="text-light-black fw-600 mb-2">
+                    {{'Your.Order.label' | translate}}
+                    <span class="text-light-black">#{{item.orderID}}</span>
+                  </h5>
+                    <p class="title text-light-white">
+                      {{item.orderDate | date:'MMM d, y, h:mm a'}}
+                    </p>
+                </div>
+              </div>
+              <div class="u-line mb-xl-20">
+                <ng-container *ngFor="let item_store of item.list_store; let i=index">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p class="title text-light-white">
+                        <span class="text-light-black">{{item_store.storeName}} </span> 
+                        <span class="badge badge-danger">
+                          {{'Tracking.store' | translate}}
+                        </span>
+                      </p>
+                    </div>
+                    <div class="col-lg-12">
+                      <ng-container *ngFor="let item_product of item_store.list_products; let y=index">
+                        <div class="checkout-product">
+                          <div class="img-name-value">
+                            <div class="product-img">
+                              <a routerLink="/orderdetails">
+                                <img [src]="imagePath(item_product.photoPath)" style="width: 100px;height: 100px;" alt="#">
+                              </a>
+                            </div>
+                            <div class="product-value"> <span class="text-light-white">{{item_product.qty}}</span>
+                            </div>
+                            <div class="product-name"> <span><a routerLink="/orderdetails" class="text-light-white">{{item_product.productName}}</a></span>
+                            </div>
+                          </div>
+                          <div class="price"> <span class="text-light-white">${{item_product.price}}</span>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </ng-container>
+                
+              </div>
+              <div class="row">
+                <div class="col-lg-7">
+                 
+                </div>
+                <div class="col-lg-5">
+                
+                  <div class="total-price padding-tb-10">
+                    <h5 class="title text-light-black fw-700">{{'Tracking.Total.lable' | translate}}: <span>${{item.orderTotal}}</span></h5>
+                  </div>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-template>
       
-    <a href="#" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> {{'Back to Home' | translate}}</a>
-  </article>
-</div>
+    </div>
+  </div>
+</section>
+
+
+<app-footer2></app-footer2>

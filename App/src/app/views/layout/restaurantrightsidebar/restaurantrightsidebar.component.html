@@ -44,6 +44,11 @@
                           </p>
                         <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
                         </span>
+                        <div class="delete-btn" style="font-size: 20px;">
+                          <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                            <i class="far fa-trash-alt" id="minus-circle"></i>
+                          </a>
+                        </div>
                       </a>
                     </div>
                     <div class="delete-btn minus-circle" style="font-size: 20px;">
@@ -51,19 +56,14 @@
                         <i class="fa fa-minus-circle" id="minus-circle" aria-hidden="true"></i>
                       </a>
                     </div>
-                    <span style="color: transparent;"> | </span>
+                    <span style="color: transparent;"> ||| </span>
                     <div class="delete-btn" style="font-size: 20px;">
                       <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
                         <i class="fa fa-plus-circle" id="minus-circle" aria-hidden="true"></i>
                       </a>
                     </div>
-                    <span style="color: transparent;"> | </span>
-                    <div class="delete-btn" style="font-size: 20px;">
-                      <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
-                        <i class="far fa-trash-alt" id="minus-circle"></i>
-                      </a>
-                    </div>
-                    <span style="color: transparent;"> | </span>
+                    <span style="color: transparent;"> ||| </span>
+                    
                     <div class="price"> <a href="#" class="text-dark-white fw-500">
                         ${{item.productPrice * item.quantity}}
                       </a>
@@ -90,8 +90,9 @@
          
         </div>
         <div class="card-footer padding-15"> 
-          <a (click)="openCart()" style="cursor: pointer;" class="btn-first green-btn text-custom-white full-width fw-500">
+          <a (click)="openCart()" style="cursor: pointer;color: white;" class="btn-first green-btns  full-width fw-500">
           {{'rightSidebar.ProceedToCheckout.label' | translate}}
+          <a style="float: right;color: white;">Total: ${{totalPrice}}</a>
           </a>
         </div>
       </div>

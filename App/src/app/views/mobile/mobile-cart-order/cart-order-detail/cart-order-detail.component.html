@@ -28,7 +28,6 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <!-- recipt -->
         <div class="recipt-sec padding-20">
           <div class="u-line mb-xl-20">
             <div class="row">
@@ -36,7 +35,7 @@
                 <h5 class="text-light-black fw-600 title">{{'Order Table' | translate}}: {{trackingData?.order_table}}
                   <span>
                     <a href="javascript:void(0)" class="fs-12">{{'Print recipt' | translate}}</a></span></h5>
-                <p class="title text-light-white">{{trackingData?.order_date | date:'MMM d, y, h:mm a'}} <span class="text-light-black">Order #{{trackingData?.orderID}}</span>
+                <p class="title text-light-white">{{trackingData?.order_date | date:'MMM d, y, h:mm a'}} <span class="text-light-black">{{'Cart.Detail.Order.label' | translate}} #{{trackingData?.orderID}}</span>
                 </p>
               </div>
               <div class="col-lg-12">

@@ -1,0 +1,140 @@
+<!-- <app-mobile-cart-order></app-mobile-cart-order> -->
+
+<section class="register-restaurent-sec section-padding bg-light-theme">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="sidebar-tabs main-box padding-20 mb-md-40">
+          <div id="add-restaurent-tab" class="step-app">
+            <div class="row">
+              <div class="col-xl-4 col-lg-5">
+                <button (click)="Back()" class="btn btn-success full-width ">
+                  {{'Back.Admin.Add.Restaurant.label' | translate}}
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="sidebar-tabs main-box padding-20 mb-md-40">
+          <div id="add-restaurent-tab" class="step-app">
+            <div class="row">
+              <div class="col-xl-4 col-lg-5 mb-md-40">
+
+                <ul class="step-steps steps-1">
+                  <li class="stepbtn active" id="step1">
+                    <a href="javascript:void(0)" > <span class="number"></span>
+                    <span class="step-name">{{'General Info' | translate}}</span>
+                    </a>
+                  </li>
+                  <li class="stepbtn" id="step2">
+                    <a (click)="loadCategoryProductComponent();" href="javascript:void(0)"> <span class="number"></span>
+                    <span class="step-name">{{'Category & Product' | translate}}</span>
+                    </a>
+                  </li>
+                  <li class="stepbtn" id="step3">
+                    <a href="javascript:void(0)" (click)="loadBannerNewComponent()" > <span class="number"></span>
+                    <span class="step-name">{{'Banner & News' | translate}}</span>
+                    </a>
+                  </li>
+                  <li class="stepbtn" id="step4">
+                    <a href="javascript:void(0)" (click)="loadPreviewComponent()"> <span class="number"></span>
+                    <span class="step-name">{{'Preview' | translate}}</span>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="step-steps steps-2">
+                  <li class="add-res-tab active" id="stepbtn1"> <a href="javascript:void(0)" class="add-res-tab">{{'General Info' | translate}}</a>
+                  </li>
+                  <li (click)="loadCategoryProductComponent()" #myButton1 class="add-res-tab" id="stepbtn2"> <a href="javascript:void(0)"  class="add-res-tab">{{'Category & Product' | translate}}</a>
+                  </li>
+                  <li (click)="loadBannerNewComponent()" #myButton2 class="add-res-tab" id="stepbtn3"> <a href="javascript:void(0) " (click)="loadBannerNewComponent()" class="add-res-tab">{{'Banner & News' | translate}}</a>
+                  </li>
+                  <li (click)="loadPreviewComponent()" #myButton3 class="add-res-tab" id="stepbtn4"> <a href="javascript:void(0)" (click)="loadPreviewComponent()" class="add-res-tab">{{'Preview' | translate}}</a>
+                  </li>
+                </ul>
+                <div class="step-footer">
+                  <button class="btn-first white-btn none" id="prev-1">Previous</button>
+                  <button class="btn-first white-btn none" id="prev-2">Previous</button>
+                  <button class="btn-first white-btn none" id="prev-3">Previous</button>
+                  <button class="btn-first white-btn" id="next-1">Next</button>
+                  <button class="btn-first white-btn none" id="next-2">Next</button>
+                  <button class="btn-first white-btn none" id="next-3">Next</button>
+                  <button class="btn-first white-btn none" id="finish-1">Finish</button>
+                </div>
+              </div>
+              <div class="col-xl-8 col-lg-7">
+                <div class="step-content">
+
+                  <div class="step-tab-panel active" id="steppanel1">
+                    <div class="general-sec">
+                      <form>
+                        <div class="row">
+                          <div class="col-12">
+                            <h5 class="text-light-black fw-700">{{'General Information' | translate}}</h5>
+                          </div>
+                        </div>
+                        <app-store-profile></app-store-profile>
+                        
+                        <div class="step-footer">
+                          <button class="btn-first white-btn none" id="prev-1">Previous</button>
+                          <button class="btn-first white-btn none" id="prev-2">Previous</button>
+                          <button class="btn-first white-btn none" id="prev-3">Previous</button>
+                          <button class="btn-first white-btn" id="next-1">Next</button>
+                          <button class="btn-first white-btn none" id="next-2">Next</button>
+                          <button class="btn-first white-btn none" id="next-3">Next</button>
+                          <button class="btn-first white-btn none" id="finish-1">Finish</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div class="step-tab-panel" id="steppanel2">
+                    <div class="package-sec">
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                          <div class="package-box main-box mb-lg-20">
+                            <app-menu-category *ngIf="IsloadCategoryProductComponent"></app-menu-category>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                          <div class="package-box main-box">
+                           <app-menu-list *ngIf="IsloadCategoryProductComponent"></app-menu-list>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="step-tab-panel" id="steppanel3">
+                    <div class="payment-sec">
+                      <div class="section-header-left">
+                        <h3 class="text-light-black header-title">{{'Banner & News' | translate}}</h3>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <app-mobile-user-news *ngIf="IsloadBannerNewComponent"></app-mobile-user-news>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="step-tab-panel" id="steppanel4">
+                    <div class="thankmsg-sec">
+                      <app-home-store-mobile-preview *ngIf="IsloadPreviewComponent"></app-home-store-mobile-preview>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+</section>

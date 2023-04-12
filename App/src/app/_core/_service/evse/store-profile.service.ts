@@ -21,6 +21,26 @@ export class StoreProfileService extends CURDService<StoreProfile> {
   GetWithGuid(key) {
     return this.http.get<any>(`${this.base}StoreProfile/GetWithGuid?guid=${key}`, {});
   }
+  getMultiUserAccessStore(accountId,storeId) {
+    return this.http.get<any>(`${this.base}StoreProfile/getMultiUserAccessStore?accountId=${accountId}&storeId=${storeId}`, {});
+  }
+  getAllAccountAccess() {
+    return this.http.get<any>(`${this.base}StoreProfile/getAllAccountAccess`, {});
+  }
+
+  getTowshipByCounty(key) {
+    return this.http.get<any>(`${this.base}StoreProfile/GetTowshipByCounty?CountyID=${key}`, {});
+  }
+
+  getAllCounty() {
+    return this.http.get<any>(`${this.base}StoreProfile/getAllCounty`, {});
+  }
+  getAllStoreByCountyAndTownShip(countyID,townShipID,star) {
+    return this.http.get<any>(`${this.base}StoreProfile/GetAllStoreByCountyAndTownShip?countyID=${countyID}&townShipID=${townShipID}&star=${star}`, {});
+  }
+  getAllTowship() {
+    return this.http.get<any>(`${this.base}StoreProfile/GetAllTowship`, {});
+  }
   getAllByFillterStart(start) {
     return this.http.get<any>(`${this.base}StoreProfile/GetAll?start=${start}`, {});
   }
@@ -40,6 +60,7 @@ export class StoreProfileService extends CURDService<StoreProfile> {
     params.append("file", file);
     return this.http.post<OperationResult>(`${this.base}StoreProfile/AddForm`, params).pipe(catchError(this.handleError));
   }
+
   insertFormMobile(model: StoreProfile): Observable<OperationResult> {
     for (const key in model) {
       if (Object.prototype.hasOwnProperty.call(model, key)) {
@@ -52,6 +73,7 @@ export class StoreProfileService extends CURDService<StoreProfile> {
     // const file = model.file;
     // delete model.file;
     const params = this.utilitiesService.ToFormData(model);
+   
     if (model.file?.length > 0) {
       for (var i = 0; i < model.file?.length; i++) {
         params.append('file', model.file[i]);
@@ -59,6 +81,34 @@ export class StoreProfileService extends CURDService<StoreProfile> {
     }
     // params.append("file", file);
     return this.http.post<OperationResult>(`${this.base}StoreProfile/AddForm`, params).pipe(catchError(this.handleError));
+  }
+
+  insertFormAdmin(model: StoreProfile): Observable<OperationResult> {
+    for (const key in model) {
+      if (Object.prototype.hasOwnProperty.call(model, key)) {
+        let item = model[key];
+        if (item instanceof Date) {
+          model[key] = `${(item as Date).toLocaleDateString()} ${(item as Date).toLocaleTimeString('en-GB')}`
+        }
+      }
+    }
+    // const file = model.file;
+    // delete model.file;
+    const sites = model.multiStores;
+    delete model.multiStores;
+    const params = this.utilitiesService.ToFormData(model);
+    if (sites?.stores.length > 0) {
+      for (var i = 0; i < sites?.stores.length; i++) {
+        params.append('MultiStores', sites.stores[i]);
+      }
+    }
+    if (model.file?.length > 0) {
+      for (var i = 0; i < model.file?.length; i++) {
+        params.append('file', model.file[i]);
+      }
+    }
+    // params.append("file", file);
+    return this.http.post<OperationResult>(`${this.base}StoreProfile/AddFormAdmin`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: StoreProfile): Observable<OperationResult> {
     for (const key in model) {
@@ -87,17 +137,46 @@ export class StoreProfileService extends CURDService<StoreProfile> {
         }
       }
     }
-
+ 
     // const file = model.file;
     // delete model.file;
     const params = this.utilitiesService.ToFormData(model);
     // params.append("file", file);
+  
     if (model.file?.length > 0) {
       for (var i = 0; i < model.file?.length; i++) {
         params.append('file', model.file[i]);
       }
     }
     return this.http.put<OperationResult>(`${this.base}StoreProfile/updateFormMobile`, params).pipe(catchError(this.handleError));
+  }
+
+  updateFormAdmin(model: StoreProfile): Observable<OperationResult> {
+    for (const key in model) {
+      if (Object.prototype.hasOwnProperty.call(model, key)) {
+        let item = model[key];
+        if (item instanceof Date) {
+          model[key] = `${(item as Date).toLocaleDateString()} ${(item as Date).toLocaleTimeString('en-GB')}`
+        }
+      }
+    }
+    const sites = model.multiStores;
+    delete model.multiStores;
+    // const file = model.file;
+    // delete model.file;
+    const params = this.utilitiesService.ToFormData(model);
+    // params.append("file", file);
+    if (sites?.stores.length > 0) {
+      for (var i = 0; i < sites?.stores.length; i++) {
+        params.append('MultiStores', sites.stores[i]);
+      }
+    }
+    if (model.file?.length > 0) {
+      for (var i = 0; i < model.file?.length; i++) {
+        params.append('file', model.file[i]);
+      }
+    }
+    return this.http.put<OperationResult>(`${this.base}StoreProfile/UpdateFormAdmin`, params).pipe(catchError(this.handleError));
   }
  
   getProfile(key) {
@@ -113,6 +192,17 @@ export class StoreProfileService extends CURDService<StoreProfile> {
 
   postRatingComment(key) {
     return this.http.post<any>(`${this.base}StoreProfile/AddRatingComment`, key);
+  }
+
+  getAllStoreTable(key) {
+    return this.http.get<any>(`${this.base}StoreProfile/GetAllStoreTable?storeId=${key}`);
+  }
+
+  addTable(key) {
+    return this.http.post<any>(`${this.base}StoreProfile/AddStoreTable`, key);
+  }
+  updateTable(key) {
+    return this.http.post<any>(`${this.base}StoreProfile/UpdateStoreTable`, key);
   }
 
   deleteImage(key) {

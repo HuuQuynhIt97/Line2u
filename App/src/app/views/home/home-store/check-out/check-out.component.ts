@@ -279,8 +279,6 @@ export class CheckOutComponent implements OnInit {
     }
   }
   validateCashOut(method) {
-    console.log(method)
-    console.log(this.cashMoney)
     if (method === this.CASH) {
       if (this.table === null || this.table === undefined || this.table === '') {
         this.toastr.warning(this.translate.instant('Please input table'));
@@ -306,7 +304,7 @@ export class CheckOutComponent implements OnInit {
     if(this.cartDetail.length === 0) {
       return this.toastr.error(this.translate.instant('CART_EMPTY'));
     }else {
-      if (this.validateCashOut(method) == false) return;
+      // if (this.validateCashOut(method) == false) return;
       this.setLocalStore('totalPrice', this.totalPrice)
       this.orderModel.totalPrice = this.totalPrice
       this.orderModel.createBy = this.user.id
@@ -318,8 +316,8 @@ export class CheckOutComponent implements OnInit {
       this.orderModel.storeGuid = this.storeInfo.guid
       this.orderModel.products = this.cartDetail
       this.orderModel.paymentType = method
-      this.orderModel.tableNo = this.table
-      this.orderModel.cashReceived = this.cashMoney || 0
+      this.orderModel.tableNo = this.table || "0"
+      this.orderModel.cashReceived = this.totalPrice || 0
       this.orderModel.isPayment = 'Unpaid'
       this.orderModel.delivery = 'Pending'
       // const products = this.cartDetail.map((item: any) => {
@@ -357,7 +355,6 @@ export class CheckOutComponent implements OnInit {
       // })
 
       this.orderService.add(this.orderModel).subscribe(res => {
-        console.log(res)
         this.toastr.success(this.translate.instant('Order_Success'))
         this.paymentSuccess = true
         this.orderID = res.data.guid
@@ -369,7 +366,6 @@ export class CheckOutComponent implements OnInit {
   }
   confrimLinePay(transactionId,orderId,data){
     this.linePayService.confirmPayment(transactionId,orderId,data).subscribe((res: any) => {
-      console.log(res)
       if(res.returnCode === '0000') {
         this.toastr.success(this.translate.instant('Order_Success'))
         this.dataService.changeMessage('load cart')

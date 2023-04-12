@@ -245,7 +245,7 @@
                     </ul>
                     <div class="user-footer"> 
                       <span class="text-light-black">
-                      Not {{username}}?
+                      {{'Not.label' | translate}} {{username}}?
                       </span>
                       <a style="cursor: pointer;" (click)="logOutUser()">{{'SIGN_OUT' | translate}}</a>
                     </div>
@@ -290,10 +290,10 @@
                 
               </div> -->
               <div class="cart-btn cart-dropdown">
-                <a  href="javascript:void(0)" class="text-light-green fw-700"> <i class="fas fa-shopping-bag"></i>
+                <a (click)="checkOut()" href="javascript:void(0)" class="text-light-green fw-700"> <i class="fas fa-shopping-bag"></i>
                 <span class="user-alert-cart" *ngIf="count > 0">{{count}}</span>
                 </a>
-                <div id="cart-detail-box" style="overflow-x: scroll;height: 600px;" class="cart-detail-box">
+                <!-- <div id="cart-detail-box" style="overflow-x: scroll;height: 600px;" class="cart-detail-box">
                   <div class="card">
                     <div class="card-header padding-15">{{'Your Order' | translate}}</div>
                     <div class="card-body no-padding">
@@ -368,7 +368,7 @@
                       </a>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
               </div>
               

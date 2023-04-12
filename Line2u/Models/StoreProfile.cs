@@ -10,6 +10,8 @@ namespace Line2u.Models
         public decimal Id { get; set; }
         public string StoreName { get; set; }
         public string StoreAddress { get; set; }
+        public string TownShipId { get; set; }
+        public string CountyId { get; set; }
         public string StoreTel { get; set; }
         public string StoreEmail { get; set; }
         public string Facebook { get; set; }

@@ -12,6 +12,10 @@ import { ContractComponent } from './contract/contract.component';
 import { WebBannerComponent } from './web-banner/web-banner.component';
 import { WebNewsComponent } from './web-news/web-news.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { AdminRestaurantComponent } from '../mobile/admin-restaurant/admin-restaurant.component';
+import { AdminAddRestaurantComponent } from '../mobile/admin-add-restaurant/admin-add-restaurant.component';
+import { AdminUpdateRestaurantComponent } from '../mobile/admin-add-restaurant/admin-update-restaurant/admin-update-restaurant.component';
+
 
 const routes: Routes = [
   {
@@ -23,6 +27,27 @@ const routes: Routes = [
       functionCode: 'Google Map'
     },
   //  canActivate: [AuthGuard]
+  },
+  {
+    path: 'line2u/restaurant',
+    component: AdminRestaurantComponent,
+    data: {
+      title: 'Restaurant',
+    },
+  },
+  {
+    path: 'line2u/add-restaurant',
+    component: AdminAddRestaurantComponent,
+    data: {
+      title: 'Add restaurant',
+    },
+  },
+  {
+    path: 'line2u/update-restaurant/:id',
+    component: AdminUpdateRestaurantComponent,
+    data: {
+      title: 'Add update restaurant',
+    },
   },
   {
   path: 'line2u/home',

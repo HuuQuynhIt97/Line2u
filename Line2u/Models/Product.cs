@@ -18,6 +18,7 @@ namespace Line2u.Models
         public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
+        public decimal? StoreId { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }

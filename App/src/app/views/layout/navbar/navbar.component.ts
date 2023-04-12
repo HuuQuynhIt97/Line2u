@@ -233,7 +233,7 @@ export class NavbarComponent implements OnInit {
     }else {
       const uri = this.router.url;
       localStorage.setItem('isLogin_Cus',uri)
-    // this.router.navigate([`home/store/shop-cart/check-out/payment`])
+    this.router.navigate([`home/store/shop-cart/check-out/payment`])
     }
     
   }

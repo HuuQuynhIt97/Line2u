@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   noImage = ImagePathConstants.NO_IMAGE_QR;
   apiHost = environment.apiUrl.replace('/api/', '');
   IsloadCategoryProductComponent: boolean = false
+  IsloadStoreTableComponent: boolean = false
   IsloadBannerNewComponent: boolean = false
   IsloadPreviewComponent: boolean = false
   @ViewChild('myButton1') myButton1 : ElementRef;
@@ -77,6 +78,7 @@ export class HomeComponent implements OnInit {
   }
   loadCategoryProductComponent() {
     this.IsloadCategoryProductComponent = true;
+    this.IsloadStoreTableComponent = true;
   }
   loadBannerNewComponent() {
     this.IsloadBannerNewComponent = true

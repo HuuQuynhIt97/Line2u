@@ -16,6 +16,8 @@ import { ToolbarService, LinkService, ImageService, TableService, HtmlEditorServ
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { MainCategoryService } from 'src/app/_core/_service/evse/main-category.service';
 import { MainCategory } from 'src/app/_core/_model/evse/mainCategory';
+import { DataService } from 'src/app/_core/_service/data.service';
+import { ToastrService } from 'ngx-toastr';
 declare let window:any;
 declare let $: any;
 
@@ -27,7 +29,7 @@ declare let $: any;
 })
 export class MenuCategoryComponent extends BaseComponent implements OnInit {
 
-  isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
+  isAdmin = JSON.parse(localStorage.getItem('user'))?.uid === 'admin';
   data: DataManager;
   modalReference: NgbModalRef;
   active = "Detail"
@@ -46,8 +48,10 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   user = JSON.parse(localStorage.getItem('user'))
+  storeInfo = JSON.parse(localStorage.getItem('store'))
   @ViewChild("parentTemplate", { static: true })
-public parentTemplate: any; 
+ 
+  public parentTemplate: any; 
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,
@@ -58,10 +62,14 @@ public parentTemplate: any;
         'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
  };
  public initialGridLoad = true;
+  store: any;
   constructor(
     private service: MainCategoryService,
     public modalService: NgbModal,
     private alertify: AlertifyService,
+    private toast: ToastrService,
+    private dataService: DataService,
+    private route: ActivatedRoute,
     private datePipe: DatePipe,
      private config: NgbTooltipConfig,
     public translate: TranslateService,
@@ -76,7 +84,8 @@ public parentTemplate: any;
     }
 
   ngOnInit() {
-  this.toolbarOptions = ['Add', 'Search'];
+    this.store = this.route.snapshot.paramMap.get('id')
+    this.toolbarOptions = ['Add', 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -88,22 +97,24 @@ public parentTemplate: any;
       }
     };
     L10n.load(load);
-    this.loadData();
+    console.log(this.user.uid === this.storeInfo.accountGuid )
+    if(this.user.uid === 'admin') {
+      if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
+        this.loadDataAdmin()
+      }else if ((this.user.uid === this.storeInfo.accountGuid && this.store === null)) {
+      }
+      else {
+  
+        this.loadData();
+      }
+
+    }else {
+      this.loadData();
+    }
     this.loadLang()
   }
   dataBound() {
-    // if (this.initialGridLoad) {
-    //     this.initialGridLoad = false;
-    //     const pager = document.getElementsByClassName('e-gridpager');
-    //     let topElement;
-    //     if (this.grid.allowGrouping || this.grid.toolbar) {
-    //         topElement = this.grid.allowGrouping ? document.getElementsByClassName('e-groupdroparea') :
-    //             document.getElementsByClassName('e-toolbar');
-    //     } else {
-    //         topElement = document.getElementsByClassName('e-gridheader');
-    //     }
-    //     this.grid.element.insertBefore(pager[0], topElement[0]);
-    // }
+   
 }
   loadLang() {
     this.translate.get('WebNews').subscribe( functionName => {
@@ -176,7 +187,17 @@ public parentTemplate: any;
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
-      url: `${this.baseUrl}MainCategory/LoadData?lang=${lang}&uid=${this.user.uid}`,
+      url: `${this.baseUrl}MainCategory/LoadData?lang=${lang}&uid=${this.storeInfo.accountGuid}`,
+      adaptor: new UrlAdaptor,
+      headers: [{ authorization: `Bearer ${accessToken}` }]
+    });
+  }
+
+  loadDataAdmin() {
+    const accessToken = localStorage.getItem('token');
+    const lang = localStorage.getItem('lang');
+    this.data = new DataManager({
+      url: `${this.baseUrl}MainCategory/LoadDataAdmin?lang=${lang}&uid=${this.storeInfo.accountGuid}&storeId=${this.store}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });
@@ -191,13 +212,18 @@ public parentTemplate: any;
         this.service.delete(id).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.deleted_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.deleted_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+              }else {
+
+                this.loadData();
+              }
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
-          (err) => this.alertify.warning(this.alert.system_error_msg)
+          (err) => this.toast.warning(this.alert.system_error_msg)
         );
       }, () => {
         this.alertify.error(this.alert.cancelMessage);
@@ -207,6 +233,7 @@ public parentTemplate: any;
 
   }
   create() {
+    let storeId = JSON.parse(localStorage.getItem('store'))?.id
    this.alertify.confirm4(
       this.alert.yes_message,
       this.alert.no_message,
@@ -215,23 +242,31 @@ public parentTemplate: any;
       () => {
         this.model.accountUid = this.user.uid
         this.model.createBy = this.user.id;
+        this.model.storeId = storeId;
         this.model.file = this.file || [];
         delete this.model['column'];
         delete this.model['index'];
         this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.created_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.created_ok_msg);
+              console.log(this.isAdmin)
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+              }else {
+
+                this.loadData();
+              }
+              this.dataService.changeMessage('load products')
               this.modalReference.dismiss();
 
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
 
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       }, () => {
@@ -241,6 +276,7 @@ public parentTemplate: any;
 
   }
   update() {
+    let storeId = JSON.parse(localStorage.getItem('store'))?.id
    this.alertify.confirm4(
       this.alert.yes_message,
       this.alert.no_message,
@@ -250,18 +286,25 @@ public parentTemplate: any;
         this.model.file = this.file || [];
         delete this.model['column'];
         delete this.model['index'];
+        this.model.storeId = storeId;
         this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
           (res) => {
             if (res.success === true) {
-              this.alertify.success(this.alert.updated_ok_msg);
-              this.loadData();
+              this.toast.success(this.alert.updated_ok_msg);
+              if(this.isAdmin) {
+                this.loadDataAdmin();
+              }else {
+
+                this.loadData();
+              }
+              this.dataService.changeMessage('load products')
               this.modalReference.dismiss();
             } else {
-              this.alertify.warning(this.alert.system_error_msg);
+              this.toast.warning(this.alert.system_error_msg);
             }
           },
           (error) => {
-            this.alertify.warning(this.alert.system_error_msg);
+            this.toast.warning(this.alert.system_error_msg);
           }
         );
       }, () => {
