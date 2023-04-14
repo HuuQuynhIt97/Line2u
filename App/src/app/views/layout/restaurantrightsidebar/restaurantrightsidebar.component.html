@@ -44,11 +44,12 @@
                           </p>
                         <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
                         </span>
-                        <div class="delete-btn" style="font-size: 20px;">
-                          <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
-                            <i class="far fa-trash-alt" id="minus-circle"></i>
+                        <div class="delete-btn" style="font-size: 20px;float: right;">
+                          <a (click)="deleteCart(item)" style="font-size: 15px;"  href="javascript:void(0)" class="text-dark-white text-right"> 
+                            {{'Cart.Remove.label' | translate}}
                           </a>
                         </div>
+            
                       </a>
                     </div>
                     <div class="delete-btn minus-circle" style="font-size: 20px;">

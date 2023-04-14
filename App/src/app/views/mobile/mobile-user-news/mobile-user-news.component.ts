@@ -91,19 +91,19 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       }
     };
     L10n.load(load);
-    if(this.user.uid === 'admin') {
-      if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
-        this.loadDataAdmin()
-      }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
-      }
+    this.loadDataAdmin()
+    // if(this.user.uid === 'admin') {
+    //   if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
+    //   }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
+    //   }
       
-      else {
+    //   else {
   
-        this.loadData();
-      }
-    }else {
-      this.loadData();
-    }
+    //     this.loadData();
+    //   }
+    // }else {
+    //   this.loadData();
+    // }
     this.loadLang()
   }
   loadLang() {

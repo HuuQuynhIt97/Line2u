@@ -180,6 +180,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'home/store/:storeName/:id/:tableId/device',
+    component: HomeStoreComponent,
+    data: {
+      title: 'Home Store'
+    }
+  },
+  {
     path: 'home/store/shop-cart',
     component: ShopCartComponent,
     data: {

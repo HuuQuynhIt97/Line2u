@@ -306,6 +306,10 @@ export class CheckOutComponent implements OnInit {
     }else {
       // if (this.validateCashOut(method) == false) return;
       this.setLocalStore('totalPrice', this.totalPrice)
+      let table = localStorage.getItem('table')
+      if(table !== null) {
+        this.table = table
+      }
       this.orderModel.totalPrice = this.totalPrice
       this.orderModel.createBy = this.user.id
       this.orderModel.customerName = this.modelAccount.accountName
@@ -354,13 +358,12 @@ export class CheckOutComponent implements OnInit {
       //   }
       // })
 
-      this.orderService.add(this.orderModel).subscribe(res => {
-        this.toastr.success(this.translate.instant('Order_Success'))
-        this.paymentSuccess = true
-        this.orderID = res.data.guid
-        this.dataService.changeMessage('load cart')
-        // this.router.navigate([`home/store/order-tracking`])
-      })
+      // this.orderService.add(this.orderModel).subscribe(res => {
+      //   this.toastr.success(this.translate.instant('Order_Success'))
+      //   this.paymentSuccess = true
+      //   this.orderID = res.data.guid
+      //   this.dataService.changeMessage('load cart')
+      // })
       
     }
   }

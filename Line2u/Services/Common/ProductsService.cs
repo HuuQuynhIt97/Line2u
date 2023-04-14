@@ -463,7 +463,7 @@ ISPService spService)
 
         public async Task<object> LoadDataAdmin(DataManager data, string lang, string uid, int storeId)
         {
-            var datasource = _repo.FindAll(o => o.AccountUid == uid && o.StoreId == storeId && o.Status == 1).OrderByDescending(x => x.Id).AsQueryable();
+            var datasource = _repo.FindAll(o => o.StoreId == storeId && o.Status == 1).OrderByDescending(x => x.Id).AsQueryable();
 
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering

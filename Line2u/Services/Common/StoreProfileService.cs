@@ -46,6 +46,7 @@ namespace Line2u.Services
         Task<bool> CheckRatingAndComment(string guid, int userId);
         Task<object> GetInforByStoreName(string name);
         Task<object> GetAll(int start);
+        Task<object> GetAllStoreForCusBoss(int start, int accountId);
         Task<object> GetMultiUserAccessStore(int accountId,int storeId);
         Task<object> GetAllAccountAccess();
         Task<object> GetAllCounty();
@@ -227,26 +228,15 @@ namespace Line2u.Services
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
 
-
-                //// add account site
-                //var account_store = new List<StoreProfileUser>();
-                //if (model.MultiStores != null)
-                //{
-                //    foreach (var item_store in model.MultiStores)
-                //    {
-                //        var item_add = new StoreProfileUser
-                //        {
-                //            StoreId = item.Id,
-                //            AccountId = item_store.ToDecimal()
-                //        };
-                //        account_store.Add(item_add);
-                            
-                //    };
-                   
-                //}
-                // _repoStoreProfileUser.AddRange(account_store);
-                //await _unitOfWork.SaveChangeAsync();
+                var item_add = new StoreProfileUser
+                {
+                    StoreId = item.Id,
+                    AccountId = item.CreateBy.ToDecimal()
+                };
                
+                _repoStoreProfileUser.Add(item_add);
+                await _unitOfWork.SaveChangeAsync();
+
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -1059,6 +1049,84 @@ namespace Line2u.Services
         {
             var data = await _repoStoreTable.FindAll(x => x.StoreId == storeId).ToListAsync();
             return data;
+        }
+
+        public async Task<object> GetAllStoreForCusBoss(int start, int accountId)
+        {
+            var store = new List<StoreProfile>();
+            var query = await _repoStoreProfileUser.FindAll(x => x.AccountId == accountId).Select(x => x.StoreId.ToDecimal()).ToListAsync();
+            if (query.Count == 0)
+            {
+                query = _repo.FindAll(x => x.CreateBy == accountId && x.Status == 1).Select(x => x.Id).ToList();
+            }else
+            {
+               var query_tamp = _repo.FindAll(x => x.CreateBy == accountId && x.Status == 1).Select(x => x.Id).FirstOrDefault();
+                if (query_tamp != null)
+                {
+                    query.Add(query_tamp);
+                }
+            }
+            foreach (var item in query.DistinctBy(x => x))
+            {
+                var _store = _repo.FindByID(item);
+                if (_store != null)
+                {
+                    store.Add(_store);
+                }
+
+            }
+            var accountModal = _repoXAccount.FindAll().ToList();
+            //var store = await _repo.FindAll().ToListAsync();
+            var datasource = (from item in store
+                              join y in _repoStoreProfileUser.FindAll() on item.Id equals y.StoreId into listuserProfile
+                              let createName = listuserProfile.Select(x =>
+                                accountModal.Where(o => o.AccountId == x.AccountId).FirstOrDefault() != null ? accountModal.Where(o => o.AccountId == x.AccountId).FirstOrDefault().AccountName : null)
+                              let RatingCount = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count()
+                              let RatingAVG = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count() > 0 ?
+                              _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Sum(y => int.Parse(y.Rating)) : 0
+                              let banner = _repoWebNewsUser.FindAll(o => o.StoreId == null ? o.CreateBy == item.CreateBy : o.CreateBy == item.CreateBy && o.StoreId == item.Id).ToList()
+                              let create_name = _repoXAccount.FindAll(o => o.AccountId == item.CreateBy).FirstOrDefault()
+                              select new StoreProfilesDto
+                              {
+                                  Id = item.Id,
+                                  CountyId = item.CountyId,
+                                  TownShipId = item.TownShipId,
+                                  AccountGuid = item.AccountGuid,
+                                  Body = item.Body,
+                                  Comment = item.Comment,
+                                  CreateBy = item.CreateBy,
+                                  CreateDate = item.CreateDate,
+                                  Facebook = item.Facebook,
+                                  Instagram = item.Instagram,
+                                  Youtube = item.Youtube,
+                                  Twitter = item.Twitter,
+                                  Pinterest = item.Pinterest,
+                                  PhotoPath = item.PhotoPath,
+                                  StoreAddress = item.StoreAddress,
+                                  StoreCloseTime = item.StoreCloseTime,
+                                  StoreOpenTime = item.StoreOpenTime,
+                                  StoreEmail = item.StoreEmail,
+                                  StoreTel = item.StoreTel,
+                                  StoreHightPrice = item.StoreHightPrice,
+                                  StoreLowPrice = item.StoreLowPrice,
+                                  StoreName = item.StoreName,
+                                  Guid = item.Guid,
+                                  CreateName = String.Join(" , ", createName.Where(x => !String.IsNullOrEmpty(x))),
+                                  Status = item.Status,
+                                  UpdateBy = item.UpdateBy,
+                                  UpdateDate = item.UpdateDate,
+                                  RatingCount = RatingCount,
+                                  bannerList = banner,
+                                  RatingAVG = RatingCount > 0 ? RatingAVG / RatingCount : 0
+                              }).ToList();
+            if (start > 0)
+            {
+                datasource = datasource.Where(x => x.RatingAVG == start).ToList();
+            }
+            {
+
+            }
+            return datasource;
         }
     }
 }

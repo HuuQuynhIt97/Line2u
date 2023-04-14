@@ -17,6 +17,7 @@ export class BasicAuthInterceptor implements HttpInterceptor {
         //   }
         const pathname = document.location.pathname;
         if (pathname.indexOf('mobile') !== -1) {
+            const table = localStorage.getItem('table')
             const token_login = localStorage.getItem('token');
             const token = localStorage.getItem('token_landlord');
             if (token && token !== 'undefined') {

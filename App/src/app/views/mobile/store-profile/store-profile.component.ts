@@ -223,19 +223,19 @@ export class StoreProfileComponent  implements OnInit {
     }
   }
   async getCountyTownShip() {
-    if(this.user.uid === 'admin' && this.store !== null) {
-      await this.getAllCounty()
-      await this.getAllTownShip()
-      await this.loadDetailAdmin()
-    }else if (this.user.uid === 'admin' && this.store === null) {
-      await this.getAllCounty()
-      await this.getAllTownShip()
-    }
-    else {
-      await this.getAllCounty()
-      await this.getAllTownShip()
-      await this.loadDetail()
-    }
+    await this.getAllCounty()
+    await this.getAllTownShip()
+    await this.loadDetailAdmin()
+    // if(this.user.uid === 'admin' && this.store !== null) {
+    // }else if (this.user.uid === 'admin' && this.store === null) {
+    //   await this.getAllCounty()
+    //   await this.getAllTownShip()
+    // }
+    // else {
+    //   await this.getAllCounty()
+    //   await this.getAllTownShip()
+    //   await this.loadDetail()
+    // }
   }
 
   countyChange(args) {
@@ -437,7 +437,7 @@ export class StoreProfileComponent  implements OnInit {
         if (res.success === true) {
         this.listFile = []
           this.toast.success(this.alert.created_ok_msg);
-          this.loadDetail();
+          this.loadDetailAdmin();
           this.dataService.changeMessage('nextStep2')
         } else {
           this.translate.get(res.message).subscribe((data: string) => {
@@ -462,7 +462,7 @@ export class StoreProfileComponent  implements OnInit {
          if (res.success === true) {
          this.listFile = []
            this.toast.success(this.alert.updated_ok_msg);
-           this.loadDetail();
+           this.loadDetailAdmin();
            this.dataService.changeMessage('nextStep2')
          } else {
            this.toast.warning(this.alert.system_error_msg);
@@ -504,8 +504,6 @@ export class StoreProfileComponent  implements OnInit {
  
    }
   updateAdmin() {
-
-     this.model.createBy = this.user.id;
      this.model.updateBy = this.user.id;
      this.model.file = this.listFile || [];
      this.service.updateFormAdmin(this.ToFormatModel(this.model)).subscribe(

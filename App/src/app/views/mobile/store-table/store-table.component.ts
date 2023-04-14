@@ -1,5 +1,5 @@
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
@@ -7,7 +7,7 @@ import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
 import { BaseComponent, UtilitiesService } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, DefaultUrlSerializer, UrlSerializer } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { WebNews } from 'src/app/_core/_model/evse/model';
@@ -21,6 +21,8 @@ import { ToastrService } from 'ngx-toastr';
 import { StoreProfileService } from 'src/app/_core/_service/evse/store-profile.service';
 import { StoreTable } from 'src/app/_core/_model/xaccount';
 import { DisplayTextModel } from '@syncfusion/ej2-angular-barcode-generator';
+import { WINDOW } from 'src/app/_core/_helper/windowProvider';
+import { SafeUrl } from '@angular/platform-browser';
 declare let window:any;
 declare let $: any;
 
@@ -69,8 +71,9 @@ export class StoreTableComponent extends BaseComponent implements OnInit {
 };
  public initialGridLoad = true;
   store: any;
-  public qrcode = '';
+  public qrcode = 'Initial QR code data string';
   storeId = JSON.parse(localStorage.getItem('store'))?.id
+  public qrCodeDownloadLink: SafeUrl = "";
   constructor(
     private service: MainCategoryService,
     private serviceStore: StoreProfileService,
@@ -108,7 +111,6 @@ export class StoreTableComponent extends BaseComponent implements OnInit {
     };
     
     L10n.load(load);
-    console.log(this.user.uid === this.storeInfo.accountGuid )
     if(this.user.uid === 'admin') {
       
     }else {
@@ -120,59 +122,51 @@ export class StoreTableComponent extends BaseComponent implements OnInit {
   dataBound() {
    
 }
-printData(data) {
-  // this.qrcode = this.apiHost + `/home/store/${this.storeInfo.storeName}/${this.storeId}/${data.tableNumber}`
-  let link = `/home/store/${this.storeInfo.storeName}/${this.storeId}/${data.tableNumber}`
-  this.qrcode = this.apiHost + `/home/store/${this.storeInfo.storeName}/${this.storeId}/${data.tableNumber}`
-  // this.qrcode = `https://line2you.com/mobile/home`;
+private convertBase64ToBlob(Base64Image: any) {
+  // SPLIT INTO TWO PARTS
+  const parts = Base64Image.split(';base64,');
+  // HOLD THE CONTENT TYPE
+  const imageType = parts[0].split(':')[1];
+  // DECODE BASE64 STRING
+  const decodedData = window.atob(parts[1]);
+  // CREATE UNIT8ARRAY OF SIZE SAME AS ROW DATA LENGTH
+  const uInt8Array = new Uint8Array(decodedData.length);
+  // INSERT ALL CHARACTER CODE INTO UINT8ARRAY
+  for (let i = 0; i < decodedData.length; ++i) {
+    uInt8Array[i] = decodedData.charCodeAt(i);
+  }
+  // RETURN BLOB IMAGE AFTER CONVERSION
+  return new Blob([uInt8Array], { type: imageType });
+}
+onChangeURL(url: SafeUrl) {
+  console.log('onChangeURL',url)
+  this.qrCodeDownloadLink = url;
+}
+printData(data,parent) {
+  var hostname = window.location.host;
+  var protocol = window.location.protocol;
+  let host = protocol + hostname
+  let link = `/home/store/${this.storeInfo.storeName}/${this.storeId}/${data.tableNumber}/device`
+  let link1 = `${host}${link}`
+  this.qrcode = link1
   console.log(this.qrcode)
-  setTimeout(() => {
-    const printContent = document.getElementById('qrcode');
-    const WindowPrt = window.open('', '_blank', 'left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0');
-    WindowPrt.document.write(`
-    <html>
-      <head>
-      </head>
-      <style>
-      * {
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-    }
-    .content {
-      page-break-after: always;
-      clear: both;
-    }
-    .content .qrcode {
-      float:left;
-      width: 100px;
-      margin-top: 10px;
-      padding: 0;
-      margin-left: 0px;
-    }
-    
-    @page {
-      size: 2.65 1.20 in;
-      page-break-after: always;
-      margin: 0;
-    }
-    @media print {
-      html, body {
-        width: 90mm; // Chi co nhan millimeter
-      }
-    }
-      </style>
-      <body onload="window.print(); window.close()">
-      <div class='content'>
-        <div class='qrcode'>
-         ${printContent.innerHTML}
-         </div>
-         
-      </div>
-      </body>
-    </html>
-    `);
-    WindowPrt.document.close();
-  }, 300);
+ // fetches base 64 date from image
+ setTimeout(() => {
+   const parentElement = parent.qrcElement.nativeElement.querySelector("img").src;
+   let blobData = this.convertBase64ToBlob(parentElement);
+  
+   if (window.navigator && window.navigator.msSaveOrOpenBlob) { //IE
+     window.navigator.msSaveOrOpenBlob(blobData, 'Qrcode');
+   } else { // chrome
+     const blob = new Blob([blobData], { type: "image/png" });
+     const url = window.URL.createObjectURL(blob);
+     // window.open(url);
+     const link = document.createElement('a');
+     link.href = url;
+     link.download = 'Qrcode';
+     link.click();
+   }
+ }, 300);
   
 }
   loadLang() {
@@ -246,7 +240,6 @@ printData(data) {
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.serviceStore.getAllStoreTable(this.store).subscribe(res => {
-      console.log(res)
       this.data = res
     })
     // this.data = new DataManager({
@@ -304,7 +297,6 @@ printData(data) {
       (res) => {
         if (res.success === true) {
           this.toast.success(this.alert.created_ok_msg);
-          console.log(this.isAdmin)
           this.loadData();
           this.modalReference.dismiss();
 

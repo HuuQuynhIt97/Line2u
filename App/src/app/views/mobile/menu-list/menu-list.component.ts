@@ -115,21 +115,23 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     this.loadLang()
   }
   loadAllData() {
-    if(this.user.uid === 'admin') {
-      if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
-        this.loadDataAdmin()
-        this.loadDataCategoryAdmin()
-      }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
-        this.spinner.hide()
-      }
-      else {
-        this.loadDataCategory()
-        this.loadData();
-      }
-    }else {
-      this.loadDataCategory()
-      this.loadData();
-    }
+    this.loadDataAdmin()
+    this.loadDataCategoryAdmin()
+    // if(this.user.uid === 'admin') {
+    //   if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
+    //     this.loadDataAdmin()
+    //     this.loadDataCategoryAdmin()
+    //   }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
+    //     this.spinner.hide()
+    //   }
+    //   else {
+    //     this.loadDataCategory()
+    //     this.loadData();
+    //   }
+    // }else {
+    //   this.loadDataCategory()
+    //   this.loadData();
+    // }
   }
   dataBound() {
     
@@ -257,13 +259,13 @@ export class MenuListComponent extends BaseComponent implements OnInit {
           (res) => {
             if (res.success === true) {
               this.toast.success(this.alert.deleted_ok_msg);
-              if(this.isAdmin) {
-                this.loadDataAdmin();
-                this.loadDataCategoryAdmin();
-              }else {
-                this.loadData();
-                this.loadDataCategory()
-              }
+              this.loadDataAdmin();
+              this.loadDataCategoryAdmin();
+              // if(this.isAdmin) {
+              // }else {
+              //   this.loadData();
+              //   this.loadDataCategory()
+              // }
             } else {
               this.toast.warning(this.alert.system_error_msg);
             }
@@ -295,13 +297,13 @@ export class MenuListComponent extends BaseComponent implements OnInit {
           (res) => {
             if (res.success === true) {
               this.toast.success(this.alert.created_ok_msg);
-              if(this.isAdmin) {
-                this.loadDataAdmin();
-                this.loadDataCategoryAdmin();
-              }else {
-                this.loadData();
-                this.loadDataCategory()
-              }
+              this.loadDataAdmin();
+              this.loadDataCategoryAdmin();
+              // if(this.isAdmin) {
+              // }else {
+              //   this.loadData();
+              //   this.loadDataCategory()
+              // }
               this.modalReference.dismiss();
 
             } else {
@@ -336,13 +338,13 @@ export class MenuListComponent extends BaseComponent implements OnInit {
           (res) => {
             if (res.success === true) {
               this.toast.success(this.alert.updated_ok_msg);
-              if(this.isAdmin) {
-                this.loadDataAdmin();
-                this.loadDataCategoryAdmin();
-              }else {
-                this.loadData();
-                this.loadDataCategory()
-              }
+              this.loadDataAdmin();
+              this.loadDataCategoryAdmin();
+              // if(this.isAdmin) {
+              // }else {
+              //   this.loadData();
+              //   this.loadDataCategory()
+              // }
               this.modalReference.dismiss();
             } else {
               this.toast.warning(this.alert.system_error_msg);

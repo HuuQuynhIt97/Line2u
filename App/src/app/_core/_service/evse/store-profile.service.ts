@@ -44,6 +44,10 @@ export class StoreProfileService extends CURDService<StoreProfile> {
   getAllByFillterStart(start) {
     return this.http.get<any>(`${this.base}StoreProfile/GetAll?start=${start}`, {});
   }
+
+  getAllStoreForCusBoss(start,accountId) {
+    return this.http.get<any>(`${this.base}StoreProfile/GetAllStoreForCusBoss?start=${start}&accountId=${accountId}`, {});
+  }
  
   insertForm(model: StoreProfile): Observable<OperationResult> {
     for (const key in model) {

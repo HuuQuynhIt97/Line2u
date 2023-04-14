@@ -147,6 +147,11 @@ export class HomeStoreComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
+    var tableId = this.route.snapshot.paramMap.get('tableId')
+    if(tableId !== null) {
+      localStorage.setItem('table',tableId)
+    }
+    console.log(tableId)
     this.getStoreInfor(storeId) 
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();

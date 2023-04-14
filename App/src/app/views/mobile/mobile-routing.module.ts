@@ -28,6 +28,7 @@ import { UserHelpComponent } from './user-help/user-help.component';
 import { UserContactComponent } from './user-contact/user-contact.component';
 import { MobileCartOrderComponent } from './mobile-cart-order/mobile-cart-order.component';
 import { CartOrderDetailComponent } from './mobile-cart-order/cart-order-detail/cart-order-detail.component';
+import { HomeBossUpdateRestaurantComponent } from './home/home-boss-update-restaurant/home-boss-update-restaurant.component';
 
 const routes: Routes = [
   {
@@ -58,11 +59,19 @@ const routes: Routes = [
           title: 'Menu Category'
         }
       },
+
       {
         path: 'products-list',
         component: MenuListComponent,
         data: {
           title: 'Products List'
+        }
+      },
+      {
+        path: 'home-boss-update/:id',
+        component: HomeBossUpdateRestaurantComponent,
+        data: {
+          title: 'Home Boss restaurant'
         }
       },
       {

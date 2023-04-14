@@ -88,7 +88,7 @@
         >
           <ng-template #template let-data>
            
-            <span (click)="printData(data)" class="edit-grid">
+            <span (click)="printData(data,parentsss)" class="edit-grid">
               <i class="fa fa-qrcode" aria-hidden="true"></i>
             </span>
           </ng-template>
@@ -101,11 +101,11 @@
 </div>
 <div class="col-md-4 text-left" style="visibility: hidden;">
   <div class='center '>
-      <ejs-qrcodegenerator style="display: block;" id='qrcode' #barcode
-      width="100px" height="130px" [displayText]='displayTextMethod' mode="SVG" [value]="qrcode">
-      </ejs-qrcodegenerator>
+    <qrcode #parentsss alt="A custom alt attribute" [elementType]="'img'"  [qrdata]="qrcode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+      <!-- <ejs-qrcodegenerator style="display: block;" id='qrcode' #barcode
+      width="200px" height="200px" [displayText]='displayTextMethod' mode="SVG" [value]="qrcode">
+      </ejs-qrcodegenerator> -->
   </div>
-  <div><label>Name:</label> {{'name'}}</div>
 </div>
 </div>
 <ng-template #optionModal let-modal>

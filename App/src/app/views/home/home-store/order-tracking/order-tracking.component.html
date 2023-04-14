@@ -29,10 +29,10 @@
             <div class="recipt-sec padding-20 ">
               <div class="recipt-name title u-line full-width mb-xl-20">
                 <div class="recipt-name-box">
-                  <h5 class="text-light-black fw-600 mb-2">
-                    {{'Your.Order.label' | translate}}
-                    <span class="text-light-black">#{{item.orderID}}</span>
-                  </h5>
+                  <h6 class="title text-light-white">
+                    {{'Your.Order.label' | translate}} #{{item.orderID}}
+                    <!-- <span class="text-light-black"></span> -->
+                  </h6>
                     <p class="title text-light-white">
                       {{item.orderDate | date:'MMM d, y, h:mm a'}}
                     </p>
@@ -43,9 +43,9 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <p class="title text-light-white">
-                        <span class="text-light-black">{{item_store.storeName}} </span> 
+                        <!-- <span class="text-light-black">{{item_store.storeName}} </span>  -->
                         <span class="badge badge-danger">
-                          {{'Tracking.store' | translate}}
+                          {{item_store.storeName}}
                         </span>
                       </p>
                     </div>
@@ -79,7 +79,7 @@
                 <div class="col-lg-5">
                 
                   <div class="total-price padding-tb-10">
-                    <h5 class="title text-light-black fw-700">{{'Tracking.Total.lable' | translate}}: <span>${{item.orderTotal}}</span></h5>
+                    <h6 class="title text-light-white">{{'Tracking.Total.lable' | translate}}: <span>${{item.orderTotal}}</span></h6>
                   </div>
                 </div>
                

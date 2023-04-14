@@ -98,19 +98,19 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
     };
     L10n.load(load);
     console.log(this.user.uid === this.storeInfo.accountGuid )
-    if(this.user.uid === 'admin') {
-      if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
-        this.loadDataAdmin()
-      }else if ((this.user.uid === this.storeInfo.accountGuid && this.store === null)) {
-      }
-      else {
+    this.loadDataAdmin()
+    // if(this.user.uid === 'admin') {
+    //   if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
+    //   }else if ((this.user.uid === this.storeInfo.accountGuid && this.store === null)) {
+    //   }
+    //   else {
   
-        this.loadData();
-      }
+    //     this.loadData();
+    //   }
 
-    }else {
-      this.loadData();
-    }
+    // }else {
+    //   this.loadData();
+    // }
     this.loadLang()
   }
   dataBound() {
@@ -213,12 +213,12 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
           (res) => {
             if (res.success === true) {
               this.toast.success(this.alert.deleted_ok_msg);
-              if(this.isAdmin) {
-                this.loadDataAdmin();
-              }else {
+              this.loadDataAdmin();
+              // if(this.isAdmin) {
+              // }else {
 
-                this.loadData();
-              }
+              //   this.loadData();
+              // }
             } else {
               this.toast.warning(this.alert.system_error_msg);
             }
@@ -251,12 +251,12 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
             if (res.success === true) {
               this.toast.success(this.alert.created_ok_msg);
               console.log(this.isAdmin)
-              if(this.isAdmin) {
-                this.loadDataAdmin();
-              }else {
-
-                this.loadData();
-              }
+              // if(this.isAdmin) {
+              // }else {
+                
+              //   this.loadData();
+              // }
+              this.loadDataAdmin();
               this.dataService.changeMessage('load products')
               this.modalReference.dismiss();
 
@@ -291,12 +291,12 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
           (res) => {
             if (res.success === true) {
               this.toast.success(this.alert.updated_ok_msg);
-              if(this.isAdmin) {
-                this.loadDataAdmin();
-              }else {
+              this.loadDataAdmin();
+              // if(this.isAdmin) {
+              // }else {
 
-                this.loadData();
-              }
+              //   this.loadData();
+              // }
               this.dataService.changeMessage('load products')
               this.modalReference.dismiss();
             } else {

@@ -5,9 +5,9 @@ if (ip === '10.4.4.224') {
 }
 export const lineConfig = {
   authorizeUrl: 'https://access.line.me/oauth2/v2.1/authorize',
-  client_id: '1654240194',
+  client_id: '1657897673',
   client_secret: 'a347ba7169bfaa6b2d09e385ef2bec4a',
-  redirect_uri: `http://${ip}:58/api/Line/Callback`,
+  redirect_uri: `https://www.line2you.com/api/Line/Callback`,
   state: 'NO_STATE',
 
   notifyAuthorizeUrl: 'https://notify-bot.line.me/oauth/authorize',

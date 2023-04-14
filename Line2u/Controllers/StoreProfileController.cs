@@ -30,6 +30,12 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetAllStoreForCusBoss(int start, int accountId)
+        {
+            return Ok(await _service.GetAllStoreForCusBoss(start, accountId));
+        }
+
+        [HttpGet]
         public async Task<ActionResult> GetAllAccountAccess()
         {
             return Ok(await _service.GetAllAccountAccess());

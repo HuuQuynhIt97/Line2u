@@ -132,7 +132,9 @@ import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.co
 import { Footer2Component } from '../layout/footer2/footer2.component';
 import { AdminUpdateRestaurantComponent } from './admin-add-restaurant/admin-update-restaurant/admin-update-restaurant.component';
 import { StoreTableComponent } from './store-table/store-table.component';
-
+import { QRCodeModule } from 'angularx-qrcode';
+import { WINDOW_PROVIDERS } from 'src/app/_core/_helper/windowProvider';
+import { HomeBossUpdateRestaurantComponent } from './home/home-boss-update-restaurant/home-boss-update-restaurant.component';
 @NgModule({
   declarations: [
     MobileComponent,
@@ -171,13 +173,15 @@ import { StoreTableComponent } from './store-table/store-table.component';
     HomeStoreAddMoreComponent,
     AdminAddRestaurantComponent,
     AdminUpdateRestaurantComponent,
-    StoreTableComponent
+    StoreTableComponent,
+    HomeBossUpdateRestaurantComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
   ],
   imports: [
     CommonModule,
+    QRCodeModule,
     BarcodeGeneratorAllModule,
     NgxDropzoneModule,
     FormsModule,

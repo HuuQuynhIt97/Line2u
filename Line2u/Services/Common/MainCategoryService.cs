@@ -599,7 +599,7 @@ ISPService spService)
 
         public async Task<object> GetCategoryByUserIDAndStore(string store_account_Guid, int storeId)
         {
-            return await _repo.FindAll(o => o.AccountUid == store_account_Guid && o.StoreId == storeId && o.Status == 1).ToListAsync();
+            return await _repo.FindAll(o => o.StoreId == storeId && o.Status == 1).ToListAsync();
         }
 
         public async Task<object> LoadDataAdmin(DataManager data, string lang, string uid, int storeId)
