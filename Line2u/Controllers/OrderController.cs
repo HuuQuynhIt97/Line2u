@@ -42,9 +42,9 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetDetailOrder(string id)
+        public async Task<ActionResult> GetDetailOrder(string id,string storeGuid)
         {
-            return Ok(await _service.GetDetailOrder(id));
+            return Ok(await _service.GetDetailOrder(id, storeGuid));
         }
 
         [HttpPost]

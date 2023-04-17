@@ -46,10 +46,26 @@ export class ProductsService extends CURDService<Products> {
         }
       }
     }
+    // const productSize = model.productSize;
+    // const productOption = model.productOption;
 
+    // delete model.productSize
+    // delete model.productOption
     const file = model.file;
     delete model.file;
     const params = this.utilitiesService.ToFormData(model);
+
+    // if (productSize.length > 0) {
+    //   for (var i = 0; i < productSize.length; i++) {
+    //     params.append('ProductSize', productSize[i]);
+    //   }
+    // }
+
+    // if (productOption.length > 0) {
+    //   for (var i = 0; i < productOption.length; i++) {
+    //     params.append('ProductOption', productOption[i]);
+    //   }
+    // }
     params.append("file", file);
 
     return this.http.put<OperationResult>(`${this.base}Products/updateForm`, params).pipe(catchError(this.handleError));
@@ -59,6 +75,13 @@ export class ProductsService extends CURDService<Products> {
   }
   getWebNews(): Observable<any> {
     return this.http.get<any>(`${this.base}Products/GetWebNews`, {});
+  }
+  addSize(model): Observable<any> {
+    return this.http.post<any>(`${this.base}Products/AddSize`, model);
+  }
+
+  addOption(model): Observable<any> {
+    return this.http.post<any>(`${this.base}Products/addOption`, model);
   }
   getWebPages(): Observable<any> {
     return this.http.get<any>(`${this.base}Products/GetWebPages`, {});

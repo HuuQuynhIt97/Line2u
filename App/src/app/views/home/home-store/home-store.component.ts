@@ -302,7 +302,33 @@ export class HomeStoreComponent implements OnInit {
       }
     }
   }
-  addToCart(item: Products) {
+  minusPrdetail() {
+    console.log('minusPrdetail')
+    if(this.cartModel.quantity  === 0)
+    {
+      return;
+    }else {
+      this.cartModel.quantity = this.cartModel.quantity - 1
+    }
+  }
+  plusPrdetail() {
+    console.log('plusPrdetail')
+    this.cartModel.quantity = this.cartModel.quantity + 1
+  }
+  addCartPrdetail() {
+    console.log(this.cartModel)
+    this.serviceCart.add(this.cartModel).subscribe(res => {
+      this.toast.success(this.translate.instant('Add_To_Cart_Success'))
+      this.cartCountTotal()
+      this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+      this.dataService.changeMessage('load cart')
+      this.cartAmountTotal();
+      this.modalReference.dismiss();
+      this.spinner.hide()
+    })
+  }
+  addToCart(item, modal) {
+
     this.spinner.show()
     this.isOpenDropdown = false
     let isLogin_Cus = localStorage.getItem("isLogin_Cus")
@@ -315,6 +341,9 @@ export class HomeStoreComponent implements OnInit {
       });
       // this.alertify.warning(this.translate.instant('YOU_MUST_LOGIN_FIRST'),true)
     }else {
+      this.title = this.translate.instant('Product_Details')
+      this.cartModel = {...item}
+      this.modalReference = this.modalService.open(modal, {size: 'xl',backdrop: 'static'});
       this.cartModel.accountUid = this.user.uid
       this.cartModel.createBy = this.user.id
       this.cartModel.quantity = 1
@@ -322,14 +351,23 @@ export class HomeStoreComponent implements OnInit {
       this.cartModel.storeGuid = item.storeGuid
       this.cartModel.productId = item.id
       this.cartModel.productPrice = item.productPrice
-      this.serviceCart.add(this.cartModel).subscribe(res => {
-        this.toast.success(this.translate.instant('Add_To_Cart_Success'))
-        this.cartCountTotal()
-        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
-        this.dataService.changeMessage('load cart')
-        this.cartAmountTotal();
-        this.spinner.hide()
-      })
+      if(item.cartId > 0) {
+        this.cartModel.productSizeAdd = item.productSizeAdd
+        this.cartModel.productOptionAdd = item.productOptionAdd
+      }
+      console.log('Products',item)
+      console.log(this.cartModel)
+      this.spinner.hide()
+      // this.serviceCart.add(this.cartModel).subscribe(res => {
+      //   this.toast.success(this.translate.instant('Add_To_Cart_Success'))
+      //   this.cartCountTotal()
+      //   this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+      //   this.dataService.changeMessage('load cart')
+      //   this.cartAmountTotal();
+      //   this.spinner.hide()
+      // })
+
+
       // let cart: Products[] = [];
       // cart = this.getLocalStore("cart_detail");
       // if(cart.length === 0) {

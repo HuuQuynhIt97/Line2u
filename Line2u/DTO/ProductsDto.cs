@@ -29,6 +29,27 @@ namespace Line2u.DTO
         public string Delivery { get; set; }
         public string accountUid { get; set; }
         public string storeGuid { get; set; }
+        public decimal? ProductSizeAdd { get; set; }
+        public decimal? ProductOptionAdd { get; set; }
+    
         public List<IFormFile> File { get; set; }
+
+        public partial class ProductSizeModel
+        {
+            public decimal Id { get; set; }
+            public decimal? ProductId { get; set; }
+            public string Size { get; set; }
+            public string Guid { get; set; }
+            public string Price { get; set; }
+        }
+
+        public partial class ProductOptionModel
+        {
+            public decimal Id { get; set; }
+            public decimal? ProductId { get; set; }
+            public string Topping { get; set; }
+            public string Guid { get; set; }
+            public string Price { get; set; }
+        }
     }
 }

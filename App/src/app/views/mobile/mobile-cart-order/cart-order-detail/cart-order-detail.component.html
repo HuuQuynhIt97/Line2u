@@ -52,7 +52,7 @@
                       <div class="product-name"> <span><a href="javascript:void(0)" class="text-light-white">{{item_product.productName}}</a></span>
                       </div>
                     </div>
-                    <div class="price"> <span class="text-light-white">${{item_product.price}}</span>
+                    <div class="price"> <span class="text-light-white">${{item_product.price + (item_product.productSize * item_product.qty) + (item_product.productOption * item_product.qty)}}</span>
                     </div>
                   </div>
                 </ng-container>
@@ -69,12 +69,12 @@
               </div>
             </div>
             <div class="col-lg-5">
-              <div class="price-table u-line">
+              <!-- <div class="price-table u-line">
                 <div class="item"> <span class="text-light-white">{{'Item subtotal' | translate}}:</span>
                   <span class="text-light-white">${{trackingData?.product_total_price}}</span>
                 </div>
                
-              </div>
+              </div> -->
               <div class="total-price padding-tb-10">
                 <h5 class="title text-light-black fw-700">{{'Total' | translate}}: <span>${{trackingData?.product_total_price}}</span></h5>
               </div>

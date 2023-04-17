@@ -26,4 +26,8 @@ export interface Products {
     cartId: number
     totalOrder: number
     storeGuid: string
+    productSize: any
+    productSizeAdd: any
+    productOption: any
+    productOptionAdd: any
 }

@@ -79,8 +79,61 @@ namespace Line2u.Data
         public virtual DbSet<StoreProfileUser> StoreProfileUsers { get; set; }
         public virtual DbSet<StoreTable> StoreTables { get; set; }
 
+        public virtual DbSet<ProductOption> ProductOptions { get; set; }
+        public virtual DbSet<ProductSize> ProductSizes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<ProductOption>(entity =>
+            {
+                entity.ToTable("ProductOption");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("PRODUCT_ID")
+                    .HasColumnType("numeric(18, 0)");
+                entity.Property(e => e.Price)
+                  .HasColumnName("Price")
+                  .HasMaxLength(200);
+
+                entity.Property(e => e.Topping).HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<ProductSize>(entity =>
+            {
+                entity.ToTable("ProductSize");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("PRODUCT_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Size)
+                    .HasColumnName("SIZE")
+                    .HasMaxLength(40);
+                entity.Property(e => e.Price)
+                   .HasColumnName("Price")
+                   .HasMaxLength(200);
+            });
 
             modelBuilder.Entity<StoreTable>(entity =>
             {
@@ -417,6 +470,14 @@ namespace Line2u.Data
                     .HasColumnName("PRODUCT_PRICE")
                     .HasMaxLength(200);
 
+                entity.Property(e => e.ProductSize)
+                    .HasColumnName("PRODUCT_SIZE")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.ProductOption)
+                   .HasColumnName("PRODUCT_OPTION")
+                   .HasColumnType("numeric(18, 0)");
+
                 entity.Property(e => e.UpdateBy)
                     .HasColumnName("UPDATE_BY")
                     .HasColumnType("numeric(18, 0)");
@@ -535,6 +596,13 @@ namespace Line2u.Data
                 entity.Property(e => e.ProductGuid)
                     .HasColumnName("PRODUCT_GUID")
                     .HasMaxLength(40);
+                entity.Property(e => e.ProductSize)
+                    .HasColumnName("PRODUCT_SIZE")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.ProductOption)
+                   .HasColumnName("PRODUCT_OPTION")
+                   .HasColumnType("numeric(18, 0)");
 
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
 
@@ -737,7 +805,12 @@ namespace Line2u.Data
                     .HasColumnName("ID")
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
-
+                entity.Property(e => e.Longitude)
+                                    .HasColumnName("Longitude")
+                                    .HasMaxLength(20);
+                entity.Property(e => e.Latitude)
+                                    .HasColumnName("Latitude")
+                                    .HasMaxLength(20);
                 entity.Property(e => e.AccountGuid)
                     .HasColumnName("Account_GUID")
                     .HasMaxLength(40);

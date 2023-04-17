@@ -29,6 +29,7 @@ import { UserContactComponent } from './user-contact/user-contact.component';
 import { MobileCartOrderComponent } from './mobile-cart-order/mobile-cart-order.component';
 import { CartOrderDetailComponent } from './mobile-cart-order/cart-order-detail/cart-order-detail.component';
 import { HomeBossUpdateRestaurantComponent } from './home/home-boss-update-restaurant/home-boss-update-restaurant.component';
+import { HomeBossCartComponent } from './home/home-boss-cart/home-boss-cart.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,21 @@ const routes: Routes = [
       },
       {
         path: 'cart-order',
+        component: MobileCartOrderComponent,
+        data: {
+          title: 'Cart Order'
+        }
+      },
+      {
+        path: 'home-boss/cart-order',
+        component: HomeBossCartComponent,
+        data: {
+          title: 'Home Boss Cart Order'
+        }
+      },
+
+      {
+        path: 'home-boss/cart-order/:id',
         component: MobileCartOrderComponent,
         data: {
           title: 'Cart Order'

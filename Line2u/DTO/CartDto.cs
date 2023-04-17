@@ -22,6 +22,8 @@ namespace Line2u.DTO
         public string StoreGuid { get; set; }
         public decimal? IsCheckout { get; set; }
         public string TableNo { get; set; }
+        public decimal? productSizeAdd { get; set; }
+        public decimal? productOptionAdd { get; set; }
         public decimal? CashReceived { get; set; }
     }
 }

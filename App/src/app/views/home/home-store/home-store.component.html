@@ -148,7 +148,7 @@
                                                                                 <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
                                                                                     <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
                                                                                 </span>
-                                                                                <span (click)="addToCart(item)" class="rectangle-tag bg-dark text-custom-white">
+                                                                                <span (click)="addToCart(item,productQuickModal)" class="rectangle-tag bg-dark text-custom-white">
                                                                                     <svg  
                                                                                         aria-hidden="true" 
                                                                                         focusable="false" class="fl-white" 
@@ -361,9 +361,158 @@
       </div>
     </div>
 </section>
-<!-- restaurent reviews -->
 
-<!-- offer near -->
-<!-- offer near -->
+<ng-template #productQuickModal let-modal>
+    <div class="modal-header my-modal">
+      <h4 [ngbTooltip]="title" class="modal-title">
+        <i class="fas fa-plus"></i> {{ title | translate }}
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" id="option">
+        <div class="pd-wrap">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div id="slider" class="owl-carousel product-slider">
+                    <div class="item">
+                      <img 
+                      [src]="imagePath(cartModel?.photoPath)" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="product-dtl">
+                    <div class="product-info">
+                      <div class="product-name">{{cartModel?.productName}}</div>
+                      <!-- <div class="reviews-counter">
+                        <div class="rate">
+                          <input type="radio" id="star5" name="rate" value="5" checked />
+                          <label for="star5" title="text">5 stars</label>
+                          <input type="radio" id="star4" name="rate" value="4" checked />
+                          <label for="star4" title="text">4 stars</label>
+                          <input type="radio" id="star3" name="rate" value="3" checked />
+                          <label for="star3" title="text">3 stars</label>
+                          <input type="radio" id="star2" name="rate" value="2" />
+                          <label for="star2" title="text">2 stars</label>
+                          <input type="radio" id="star1" name="rate" value="1" />
+                          <label for="star1" title="text">1 star</label>
+                        </div>
+                        <span>3 Reviews</span>
+                      </div> -->
+                        <div class="product-price-discount">
+                            <span>${{cartModel?.productPriceDiscount}}</span>
+                            <span class="line-through">
+                                ${{cartModel?.productPrice}}
+                            </span>
+                        </div>
+                    </div>
+                    <p 
+                    style="white-space: break-spaces;word-break: break-all;"
+                    
+                    [innerHTML]="safeHtml(cartModel?.productDescription)">
+
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="size" style="word-break: break-all;">{{'Product_Detail_Size' | translate}}</label>
+                        <select id="size" name="size" [(ngModel)]="cartModel.productSizeAdd" class="form-control">
+                            <ng-container *ngFor="let item_prSize of cartModel?.productSize">
+                                <option [value]="item_prSize.id">{{item_prSize.size}}</option>
+                            </ng-container>
+                            
+                          <!-- <option>M</option>
+                          <option>L</option>
+                          <option>XL</option> -->
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="color" style="word-break: break-all;">{{'Product_Detail_Topping' | translate}}</label>
+                        <select id="color" [(ngModel)]="cartModel.productOptionAdd" name="color" class="form-control">
+                            <ng-container *ngFor="let item_prOption of cartModel?.productOption">
+                                <option [value]="item_prOption.id">{{item_prOption.topping}}</option>
+                            </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="product-count">
+                      <label for="size">{{'Product_Detail_Quantity' | translate}}</label>
+                      <form action="#" class="display-flex">
+                        <div class="qtyminus" (click)="minusPrdetail()">-</div>
+                        <input type="text" name="quantity" [(ngModel)]="cartModel.quantity" class="qty">
+                        <div class="qtyplus" (click)="plusPrdetail()">+</div>
+                      </form>
+                      <a href="javascript:void(0)" (click)="addCartPrdetail()" class="round-black-btn">{{'Add to Cart' | translate}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+  
+    <!-- <div class="modal-footer">
+      <div class="mr-auto" *ngIf="model?.id > 0">
+        <p>
+          <span class="mr-2">
+            <span class="my-font-weight-bold">{{ "Create by" | translate }}</span>
+            : {{ audit?.createBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Create date time" | translate
+            }}</span>
+            : {{ audit?.createDate }}</span
+          >
+        </p>
+        <p>
+          <span class="mr-2"
+            ><span class="my-font-weight-bold">{{
+              "Update by" | translate
+            }}</span>
+            : {{ audit?.updateBy }}</span
+          >
+          <span
+            ><span class="my-font-weight-bold">{{
+              "Update date time" | translate
+            }}</span>
+            : {{ audit?.updateDate }}</span
+          >
+        </p>
+      </div>
+      <span *ngIf="!(model.id > 0)" class="my-note mr-auto">
+        {{ "Note: (*) is a required field" | translate }}
+      </span>
+      <button
+        type="button"
+        class="btn btn-light"
+        ngbTooltip="CLOSE"
+        (click)="modal.close('Close click')"
+      >
+        {{ "CLOSE" | translate }}
+      </button>
+      <button
+        type="submit"
+        [disabled]="!model.productName 
+        || !model.categoryGuid
+        || !model.productPrice
+        "
+        (click)="save()"
+        ngbTooltip="SAVE"
+        class="btn btn-primary"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div> -->
+  </ng-template>
 
 <app-footer2></app-footer2>
+
+

@@ -15,7 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[StoreTable]",
+         "Name": "[dbo].[ProductOption]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductSize]",
          "ObjectType": 0
       }
    ],

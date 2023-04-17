@@ -18,6 +18,8 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
+using Syncfusion.JavaScript.Models;
+using static Line2u.DTO.ProductsDto;
 
 namespace Line2u.Services
 {
@@ -30,8 +32,10 @@ namespace Line2u.Services
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(ProductsDto model);
         Task<OperationResult> UpdateFormAsync(ProductsDto model);
+        Task<OperationResult> AddSize(List<ProductSizeModel> model);
+        Task<OperationResult> AddOption(List<ProductOptionModel> model);
 
-           Task<object> GetWebNews();
+        Task<object> GetWebNews();
         Task<object> GetProducts(string id, string cusGuid);
         Task<object> GetWebPages();
         
@@ -39,6 +43,8 @@ namespace Line2u.Services
     public class ProductsService : ServiceBase<Product, ProductsDto>, IProductsService, IScopeService
     {
         private readonly IRepositoryBase<Product> _repo;
+        private readonly IRepositoryBase<ProductSize> _repoProductSize;
+        private readonly IRepositoryBase<ProductOption> _repoProductOption;
         private readonly IRepositoryBase<MainCategory> _repoMainCategory;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<Cart> _repoCart;
@@ -53,6 +59,8 @@ private readonly ILine2uLoggerService _logger;
 
         public ProductsService(
             IRepositoryBase<Product> repo,
+            IRepositoryBase<ProductSize> repoProductSize,
+            IRepositoryBase<ProductOption> repoProductOption,
             IRepositoryBase<MainCategory> repoMainCategory,
              IRepositoryBase<Cart> repoCart,
             IRepositoryBase<StoreProfile> repoStoreProfile,
@@ -69,6 +77,8 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoProductSize = repoProductSize;
+            _repoProductOption = repoProductOption;
             _repoCart = repoCart;
             _repoStoreProfile = repoStoreProfile;
             _repoMainCategory = repoMainCategory;
@@ -83,7 +93,36 @@ ISPService spService)
         }
         public async Task<object> GetByGuid(string guid)
         {
-            return await _repo.FindAll(x => x.CategoryGuid == guid).ToListAsync();
+            var product_size = _repoProductSize.FindAll();
+            var product_option = _repoProductOption.FindAll();
+            var product = _repo.FindAll(x => x.CategoryGuid == guid);
+
+            var datasource = (from x in product
+                              let product_sizes = product_size.Where(o => o.ProductId == x.Id).ToList()
+                              let product_options = product_option.Where(o => o.ProductId == x.Id).ToList()
+                              select new
+                              {
+                                  x.Id,
+                                  x.ProductName,
+                                  x.ProductDescription,
+                                  x.PhotoPath,
+                                  x.CreateBy,
+                                  x.CreateDate,
+                                  x.Status,
+                                  x.ProductPrice,
+                                  x.ProductPriceDiscount,
+                                  x.StoreId,
+                                  x.UpdateBy,
+                                  x.UpdateDate,
+                                  x.Guid,
+                                  x.AccountUid,
+                                  x.Body,
+                                  x.Comment,
+                                  x.CategoryGuid,
+                                  ProductSize = product_sizes,
+                                  ProductOption = product_options
+                              }).OrderByDescending(x => x.Id).ToList();
+            return datasource;
         }
         public async Task<object> LoadData(DataManager data, string lang, string uid)
         {
@@ -265,6 +304,8 @@ ISPService spService)
                     model.PhotoPath = $"/FileUploads/images/Products/avatar/{avatarUniqueFileName}";
                 }
             }
+
+           
             try
             {
                 var item = _mapper.Map<Product>(model);
@@ -272,12 +313,13 @@ ISPService spService)
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
 
+
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = MessageReponse.AddSuccess,
                     Success = true,
-                    Data = model
+                    Data = item
                 };
             }
             catch (Exception ex)
@@ -298,11 +340,9 @@ ISPService spService)
     
         public async Task<OperationResult> UpdateFormAsync(ProductsDto model)
         {
-
             FileExtension fileExtension = new FileExtension();
            
             var item = _mapper.Map<Product>(model);
-
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
@@ -321,11 +361,13 @@ ISPService spService)
                 }
             }
 
+
+            
             try
             {
 
-                _repo.Update(item);
-                await _unitOfWork.SaveChangeAsync();
+                //_repo.Update(item);
+                //await _unitOfWork.SaveChangeAsync();
 
                 operationResult = new OperationResult
                 {
@@ -351,7 +393,7 @@ ISPService spService)
             return operationResult;
         }
 
-
+       
         public async Task<object> DeleteUploadFile(decimal key)
         {
             try
@@ -463,7 +505,34 @@ ISPService spService)
 
         public async Task<object> LoadDataAdmin(DataManager data, string lang, string uid, int storeId)
         {
-            var datasource = _repo.FindAll(o => o.StoreId == storeId && o.Status == 1).OrderByDescending(x => x.Id).AsQueryable();
+            var product_size = _repoProductSize.FindAll();
+            var product_option = _repoProductOption.FindAll();
+            var product = _repo.FindAll(o => o.StoreId == storeId && o.Status == 1);
+            var datasource = (from x in product
+                             let product_sizes = product_size.Where(o => o.ProductId == x.Id).ToList()
+                             let product_options = product_option.Where(o => o.ProductId == x.Id).ToList()
+                             select new
+                             {
+                                 x.Id,
+                                 x.ProductName,
+                                 x.ProductDescription,
+                                 x.PhotoPath,
+                                 x.CreateBy,
+                                 x.CreateDate,
+                                 x.Status,
+                                 x.ProductPrice,
+                                 x.ProductPriceDiscount,
+                                 x.StoreId,
+                                 x.UpdateBy,
+                                 x.UpdateDate,
+                                 x.Guid,
+                                 x.AccountUid,
+                                 x.Body,
+                                 x.Comment,
+                                 x.CategoryGuid,
+                                 ProductSize = product_sizes,
+                                 ProductOption = product_options
+                             }).OrderByDescending(x => x.Id).AsQueryable();
 
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
@@ -482,6 +551,130 @@ ISPService spService)
                 Result = await datasource.ToListAsync(),
                 Count = count
             };
+        }
+
+        public async Task<OperationResult> AddSize(List<ProductSizeModel> model)
+        {
+            // add product size
+            var pr_size = new List<ProductSize>();
+            if (model.Count > 0)
+            {
+
+                foreach (var item in model)
+                {
+
+                    // xoa product size
+                    var item_productSize_del = _repoProductSize.FindAll(o => o.ProductId == item.ProductId).ToList();
+
+                    if (item_productSize_del.Count > 0)
+                    {
+                        _repoProductSize.RemoveMultiple(item_productSize_del);
+                        await _unitOfWork.SaveChangeAsync();
+                    }
+
+                    
+
+                    var item_add = new ProductSize
+                    {
+                        ProductId = item.ProductId,
+                        Size = item.Size,
+                        Price = item.Price
+                    };
+                    pr_size.Add(item_add);
+                    
+                 
+                }
+            }
+
+
+            try
+            {
+
+                //_repo.Update(item);
+                _repoProductSize.AddRange(pr_size);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+
+        }
+
+        public async Task<OperationResult> AddOption(List<ProductOptionModel> model)
+        {
+            // add product size
+            var pr_size = new List<ProductOption>();
+            if (model.Count > 0)
+            {
+
+                foreach (var item in model)
+                {
+
+                    // xoa product size
+                    var item_productSize_del = _repoProductOption.FindAll(o => o.ProductId == item.ProductId).ToList();
+
+                    if (item_productSize_del.Count > 0)
+                    {
+                        _repoProductOption.RemoveMultiple(item_productSize_del);
+                        await _unitOfWork.SaveChangeAsync();
+                    }
+
+
+
+                    var item_add = new ProductOption
+                    {
+                        ProductId = item.ProductId,
+                        Topping = item.Topping,
+                        Price = item.Price
+                    };
+                    pr_size.Add(item_add);
+
+
+                }
+            }
+
+
+            try
+            {
+
+                //_repo.Update(item);
+                _repoProductOption.AddRange(pr_size);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = Line2uLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+
         }
     }
 }

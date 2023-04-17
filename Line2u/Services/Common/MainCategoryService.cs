@@ -29,7 +29,7 @@ namespace Line2u.Services
         Task<object> GetCategoryByUserID(string id);
         Task<object> GetCategoryByUserIDAndStore(string id, int storeId);
         Task<object> GetProducts(string id,string cusGuid);
-        Task<object> GetProductsOrderEdit(string id,int cusId, DateTime date,string orderId);
+        Task<object> GetProductsOrderEdit(int id,int cusId, DateTime date,string orderId);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(MainCategoryDto model);
@@ -42,6 +42,8 @@ namespace Line2u.Services
     public class MainCategoryService : ServiceBase<MainCategory, MainCategoryDto>, IMainCategoryService, IScopeService
     {
         private readonly IRepositoryBase<MainCategory> _repo;
+        private readonly IRepositoryBase<ProductSize> _repoProductSize;
+        private readonly IRepositoryBase<ProductOption> _repoProductOption;
         private readonly IRepositoryBase<Cart> _repoCart;
         private readonly IRepositoryBase<OrderDetail> _repoOrderDetail;
         private readonly IRepositoryBase<StoreProfile> _repoStoreProfile;
@@ -57,6 +59,8 @@ private readonly ILine2uLoggerService _logger;
 
         public MainCategoryService(
             IRepositoryBase<MainCategory> repo,
+            IRepositoryBase<ProductSize> repoProductSize,
+            IRepositoryBase<ProductOption> repoProductOption,
             IRepositoryBase<Cart> repoCart,
             IRepositoryBase<OrderDetail> repoOrderDetail,
             IRepositoryBase<StoreProfile> repoStoreProfile,
@@ -74,6 +78,8 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoProductSize = repoProductSize;
+            _repoProductOption = repoProductOption;
             _repoOrderDetail = repoOrderDetail;
             _repoCart = repoCart;
             _repoStoreProfile = repoStoreProfile;
@@ -416,6 +422,8 @@ ISPService spService)
             var category = await _repo.FindAll(o => o.AccountUid == store_account_Guid).ToListAsync();
             var storeGuid = _repoStoreProfile.FindAll(o => o.AccountGuid == store_account_Guid).FirstOrDefault().Guid;
             var products = await _repoProduct.FindAll().ToListAsync();
+            var product_size = _repoProductSize.FindAll();
+            var product_option = _repoProductOption.FindAll();
             var result = (from x in category
                          let y = products.Where(o => o.CategoryGuid == x.Guid).ToList()
                          select new
@@ -470,6 +478,39 @@ ISPService spService)
                                  && z.Status == 1
                                  && z.AccountUid == cusGuid
                                  && z.IsCheckout == 0).FirstOrDefault().Id : 0,
+
+                                 ProductSizeAdd = _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.AccountUid == cusGuid
+                                 && z.Status == 1
+                                 && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.Status == 1
+                                 && z.AccountUid == cusGuid
+                                 && z.IsCheckout == 0).FirstOrDefault().ProductSize : null,
+
+                                 ProductOptionAdd = _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.AccountUid == cusGuid
+                                 && z.Status == 1
+                                 && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.Status == 1
+                                 && z.AccountUid == cusGuid
+                                 && z.IsCheckout == 0).FirstOrDefault().ProductOption : null,
+
+                                 Quantity = _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.AccountUid == cusGuid
+                                 && z.Status == 1
+                                 && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.Status == 1
+                                 && z.AccountUid == cusGuid
+                                 && z.IsCheckout == 0).FirstOrDefault().Quantity : 1,
+
+                                 ProductSize = product_size.Where(z => z.ProductId == o.Id).ToList(),
+                                 ProductOption = product_option.Where(z => z.ProductId == o.Id).ToList()
                              }).ToList()
                          }).Where(o => o.list_product.Count > 0 ).ToList();
             return result;
@@ -539,10 +580,12 @@ ISPService spService)
             return result;
         }
 
-        public async Task<object> GetProductsOrderEdit(string store_account_Guid, int cusId, DateTime date , string orderId)
+        public async Task<object> GetProductsOrderEdit(int storeId, int cusId, DateTime date , string orderId)
         {
-            var category = await _repo.FindAll(o => o.AccountUid == store_account_Guid).ToListAsync();
-            var storeGuid = _repoStoreProfile.FindAll(o => o.AccountGuid == store_account_Guid).FirstOrDefault().Guid;
+            var product_size = _repoProductSize.FindAll();
+            var product_option = _repoProductOption.FindAll();
+            var category = await _repo.FindAll(o => o.StoreId == storeId).ToListAsync();
+            var storeGuid = _repoStoreProfile.FindByID(storeId.ToDecimal()).Guid;
             var products = await _repoProduct.FindAll().ToListAsync();
             var result = (from x in category
                           let y = products.Where(o => o.CategoryGuid == x.Guid).ToList()
@@ -572,26 +615,57 @@ ISPService spService)
                                   z.ProductGuid == o.Guid
                                   && z.CreateBy == cusId
                                   && z.OrderGuid == orderId
-                                  && z.CreateDate.Value.Date == date.Date).FirstOrDefault() != null 
+                                  ).FirstOrDefault() != null 
                                   ? _repoOrderDetail.FindAll(z =>
                                   z.ProductGuid == o.Guid
                                   && z.OrderGuid == orderId
                                   && z.CreateBy == cusId
-                                  && z.CreateDate.Value.Date == date.Date).FirstOrDefault().Quantity : 0,
+                                  ).FirstOrDefault().Quantity : 0,
 
                                   storeGuid = storeGuid,
 
                                   cartCreateBy = _repoOrderDetail.FindAll(z =>
                                   z.ProductGuid == o.Guid && z.OrderGuid == orderId
                                   && z.CreateBy == cusId
-                                  && z.CreateDate.Value.Date == date.Date
                                   ).FirstOrDefault() != null ? _repoOrderDetail.FindAll(z =>
                                   z.ProductGuid == o.Guid && z.OrderGuid == orderId
                                   && z.CreateBy == cusId
-                                  && z.CreateDate.Value.Date == date.Date
                                   ).FirstOrDefault().CreateBy : 0,
 
-                                 
+                                  ProductSizeAdd = _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.CreateBy == cusId
+                                 && z.Status == 1
+                                 && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                 z.ProductGuid == o.Guid
+                                 && z.Status == 1
+                                 && z.CreateBy == cusId
+                                 && z.IsCheckout == 0).FirstOrDefault().ProductSize : null,
+
+                                  ProductOptionAdd = _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.CreateBy == cusId
+                                  && z.Status == 1
+                                  && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.Status == 1
+                                  && z.CreateBy == cusId
+                                  && z.IsCheckout == 0).FirstOrDefault().ProductOption : null,
+
+                                  Quantity = _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.CreateBy == cusId
+                                  && z.Status == 1
+                                  && z.IsCheckout == 0).FirstOrDefault() != null ? _repoCart.FindAll(z =>
+                                  z.ProductGuid == o.Guid
+                                  && z.Status == 1
+                                  && z.CreateBy == cusId
+                                  && z.IsCheckout == 0).FirstOrDefault().Quantity : 1,
+
+                                  ProductSize = product_size.Where(z => z.ProductId == o.Id).ToList(),
+                                  ProductOption = product_option.Where(z => z.ProductId == o.Id).ToList()
+
+
                               }).ToList()
                           }).Where(o => o.list_product.Count > 0).ToList();
             return result;

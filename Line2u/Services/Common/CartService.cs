@@ -21,6 +21,7 @@ using Syncfusion.JavaScript.DataSources;
 using Org.BouncyCastle.Crypto;
 using static Line2u.Constants.SP;
 using Microsoft.AspNetCore.Mvc;
+using Syncfusion.JavaScript.Models;
 
 namespace Line2u.Services
 {
@@ -49,6 +50,8 @@ namespace Line2u.Services
     public class CartService : ServiceBase<Cart, CartDto>, ICartService, IScopeService
     {
         private readonly IRepositoryBase<Cart> _repo;
+        private readonly IRepositoryBase<ProductSize> _repoProductSize;
+        private readonly IRepositoryBase<ProductOption> _repoProductOption;
         private readonly IRepositoryBase<Product> _repoProduct;
         private readonly IRepositoryBase<OrderDetail> _repoOrderDetail;
         private readonly IRepositoryBase<MainCategory> _repoMainCategory;
@@ -63,6 +66,8 @@ private readonly ILine2uLoggerService _logger;
 
         public CartService(
             IRepositoryBase<Cart> repo,
+             IRepositoryBase<ProductSize> repoProductSize,
+            IRepositoryBase<ProductOption> repoProductOption,
             IRepositoryBase<Product> repoProduct,
             IRepositoryBase<OrderDetail> repoOrderDetail,
             IRepositoryBase<MainCategory> repoMainCategory,
@@ -79,6 +84,8 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoProductSize = repoProductSize;
+            _repoProductOption = repoProductOption;
             _repoProduct = repoProduct;
             _repoOrderDetail = repoOrderDetail;
             _repoMainCategory = repoMainCategory;
@@ -124,16 +131,22 @@ ISPService spService)
             && o.AccountUid == model.AccountUid
             && o.Status == 1
             && o.IsCheckout == 0
+            && o.ProductSize == model.productSizeAdd
+            && o.ProductOption == model.productOptionAdd
             ).FirstOrDefault();
             if (check_item != null)
             {
                 check_item.Quantity = check_item.Quantity + 1;
+                //check_item.ProductSize = model.productSizeAdd;
+                //check_item.ProductOption = model.productOptionAdd;
                 _repo.Update(check_item);
             }
             else
             {
                 var item = _mapper.Map<Cart>(model);
                 item.Id = 0;
+                item.ProductSize = model.productSizeAdd;
+                item.ProductOption = model.productOptionAdd;
                 item.Status = StatusConstants.Default;
                 item.IsCheckout = StatusConstants.Default_2;
                 _repo.Add(item);
@@ -504,6 +517,8 @@ ISPService spService)
         {
             var temp_1 = await _repo.FindAll(x => x.AccountUid == accountGuid && x.IsCheckout == 0 && x.Status == 1).ToListAsync();
             var temp_2 = await _repoProduct.FindAll().ToListAsync();
+            var product_size = _repoProductSize.FindAll();
+            var product_option = _repoProductOption.FindAll();
             var result = (from x in temp_1
                          join y in temp_2 on x.ProductGuid equals y.Guid
                          select new
@@ -525,8 +540,15 @@ ISPService spService)
                              y.PhotoPath,
                              y.ProductName,
                              ProductPrices = y.ProductPrice,
+                             ProductSize = product_size.Where(o => o.Id == x.ProductSize).FirstOrDefault() != null 
+                             ? product_size.Where(o => o.Id == x.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
+
+                             ProductOption = product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault() != null
+                             ? product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                              y.ProductPriceDiscount,
-                             ProductDescription = string.IsNullOrEmpty(y.ProductDescription) ? "" : y.ProductDescription
+                             ProductDescription = string.IsNullOrEmpty(y.ProductDescription) ? "" : y.ProductDescription,
+                             ProductSizeAdd = x.ProductSize,
+                             ProductOptionAdd = x.ProductOption
 
                          }).ToList();
             return result;
@@ -534,15 +556,36 @@ ISPService spService)
 
         public async Task<double> CartAmountTotal(string accountGuid)
         {
-            
-            var item = await _repo.FindAll(x => 
+            var pro_size = _repoProductSize.FindAll().ToList();
+            var pro_option = _repoProductOption.FindAll().ToList();
+            var item_tamp = _repo.FindAll(x => 
             x.AccountUid == accountGuid 
             && x.IsCheckout == 0
             && x.Status == 1
-            ).SumAsync(o => Convert.ToDouble(o.ProductPrice) * o.Quantity);
-            return item ?? 0;
-        }
+            ).Select(x => new
+            {
+                x.ProductPrice,
+                x.Quantity,
+                x.ProductSize,
+                x.ProductOption
+                
+            }).ToList();
 
+            var item = item_tamp.Select(x => new
+            {
+                x.ProductPrice,
+                x.Quantity,
+                productSize = pro_size.Where(z => z.Id == x.ProductSize).FirstOrDefault() != null
+                ? pro_size.Where(z => z.Id == x.ProductSize).FirstOrDefault().Price : "0",
+
+                productOption = pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault() != null
+                ? pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault().Price : "0",
+
+            }).ToList();
+            var resutl = item.Sum(o => (Convert.ToDouble(o.ProductPrice) + Convert.ToDouble(o.productSize) + Convert.ToDouble(o.productOption)) * o.Quantity);
+            return resutl ?? 0;
+        }
+       
         public async Task<object> CartAmountTotal2(string accountGuid)
         {
             var item_tamp = _repo.FindAll(x => x.AccountUid == accountGuid && x.IsCheckout == 0).Select(o => new

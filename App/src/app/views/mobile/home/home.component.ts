@@ -219,6 +219,10 @@ export class HomeComponent implements OnInit {
       this.getAllStoreByCountyAndTownShip()
     }
   }
+  Back() {
+    let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+    this.router.navigate([isLogin_Cus_url]);
+  }
   adminAddStore() {
     const uri = this.router.url;
     localStorage.setItem('isLogin_Cus',uri)

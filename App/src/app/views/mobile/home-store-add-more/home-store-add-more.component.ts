@@ -158,7 +158,7 @@ export class HomeStoreAddMoreComponent implements OnInit {
     this.loadLogoData();
     // this.cartAmountTotal()
     // this.cartCountTotal();
-    this.getDetailOrder()
+   
    
   }
   getProductsInCart() {
@@ -167,7 +167,7 @@ export class HomeStoreAddMoreComponent implements OnInit {
     })
   }
   getDetailOrder() {
-    this.orderService.getDetailOrder(this.data?.orderID).subscribe(res => {
+    this.orderService.getDetailOrder(this.data?.orderID, this.storeInfo.guid).subscribe(res => {
       console.log('getDetailOrder',res)
       this.cartDetail = res.list_product
       this.totalPrice = res.product_total_price
@@ -282,7 +282,8 @@ export class HomeStoreAddMoreComponent implements OnInit {
     this.orderDetailModel.createDate = this.datePipe.transform( this.data?.order_date || new Date(1970, 1, 1), 'yyyy/MM/dd')
     this.orderService.deleteOrderDetail(this.orderDetailModel).subscribe(res => {
       this.toast.success(this.translate.instant('_Success'))
-      this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+      this.dataService.changeMessage('load orderDetail')
+      this.getProducts(this.storeInfo.id,this.user?.uid)
       this.getDetailOrder();
     })
   }
@@ -299,7 +300,8 @@ export class HomeStoreAddMoreComponent implements OnInit {
       this.orderDetailModel.quantity = item.totalOrder
       this.orderService.deleteOrderDetail(this.orderDetailModel).subscribe(res => {
         this.toast.success(this.translate.instant('_Success'))
-        this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+        this.getProducts(this.storeInfo.id,this.user?.uid)
+        this.dataService.changeMessage('load orderDetail')
         this.getDetailOrder();
       })
     }
@@ -307,6 +309,7 @@ export class HomeStoreAddMoreComponent implements OnInit {
       this.orderService.minusOrderDetail(this.orderDetailModel).subscribe(res => {
         this.toast.success(this.translate.instant('_Success'))
         this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+        this.dataService.changeMessage('load orderDetail')
         this.getDetailOrder();
       })
     }
@@ -353,7 +356,8 @@ export class HomeStoreAddMoreComponent implements OnInit {
     this.orderDetailModel.createDate = this.datePipe.transform( this.data?.order_date || new Date(1970, 1, 1), 'yyyy/MM/dd')
     this.orderService.updateOrderDetail(this.orderDetailModel).subscribe(res => {
       this.toast.success(this.translate.instant('_Success'))
-      this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
+      this.getProducts(this.storeInfo.id,this.user?.uid)
+      this.dataService.changeMessage('load orderDetail')
       this.getDetailOrder();
     })
   }
@@ -471,7 +475,8 @@ export class HomeStoreAddMoreComponent implements OnInit {
       // console.log(res)
       this.storeInfo = res;
       // this.getCategoryOfStore(this.storeInfo.accountGuid)
-      this.getProducts(this.storeInfo.accountGuid , this.user?.uid)
+      this.getProducts(this.storeInfo.id , this.user?.uid)
+      this.getDetailOrder()
       // this.loadBannerData()
       // this.loadNewData()
       // this.getRatingComment()

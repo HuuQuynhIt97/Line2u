@@ -38,6 +38,8 @@ namespace Line2u.DTO
         public string CountyId { get; set; }
         public int RatingAVG { get; set; }
         public int RatingCount { get; set; }
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
         public object bannerList { get; set; }
         public List<IFormFile> File { get; set; }
         public List<object> MultiStores { get; set; }

@@ -94,7 +94,7 @@ namespace Line2u.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetProductsOrderEdit(string id, int cusId, DateTime date,string orderId)
+        public async Task<ActionResult> GetProductsOrderEdit(int id, int cusId, DateTime date,string orderId)
         {
             return Ok(await _service.GetProductsOrderEdit(id, cusId, date, orderId));
         }

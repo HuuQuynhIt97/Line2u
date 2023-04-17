@@ -1,5 +1,5 @@
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
@@ -24,6 +24,12 @@ import { MainCategoryService } from 'src/app/_core/_service/evse/main-category.s
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DataService } from 'src/app/_core/_service/data.service';
 import { ToastrService } from 'ngx-toastr';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'app-menu-list',
   templateUrl: './menu-list.component.html',
@@ -63,12 +69,27 @@ export class MenuListComponent extends BaseComponent implements OnInit {
   @ViewChild("parentTemplate", { static: true })
   public parentTemplate: any;
   public initialGridLoad = true;
-
   categoryData: any;
   categoryFields: object = { text: 'categoryName', value: 'guid' };
   $CategoryFilter: any;
   store: any;
   storeInfo = JSON.parse(localStorage.getItem('store'))
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredFruits: Observable<string[]>;
+  productSize: string[] = [];
+  productOption: string[] = [];
+  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+
+  @ViewChild('fruitInput', {static: false}) fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  formArraySize:FormArray = new FormArray([]);
+  formArrayOption:FormArray = new FormArray([]);
   constructor(
     private service: ProductsService,
     private serviceMainCategory: MainCategoryService,
@@ -95,6 +116,10 @@ export class MenuListComponent extends BaseComponent implements OnInit {
         }
       })
 
+      // this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+      //   startWith(null),
+      //   map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+
     }
 
   ngOnInit() {
@@ -114,6 +139,74 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     this.loadAllData()
     this.loadLang()
   }
+
+  getFormGroup(data) {
+    data = data || ({} as any);
+    return new FormGroup({
+      name: new FormControl(data.name,Validators.required),
+      price: new FormControl(data.price),
+    });
+  }
+
+  getFormGroupOption(data) {
+    data = data || ({} as any);
+    return new FormGroup({
+      name: new FormControl(data.name,Validators.required),
+      price: new FormControl(data.price),
+    });
+  }
+  addSize(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.model.productSize.push(value.trim());
+    }
+    if (input) {
+      input.value = '';
+    }
+    this.fruitCtrl.setValue(null);
+  }
+
+  addOption(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.model.productOption.push(value.trim());
+    }
+    if (input) {
+      input.value = '';
+    }
+    this.fruitCtrl.setValue(null);
+  }
+
+  removeSize(fruit: string): void {
+    const index = this.model.productSize.indexOf(fruit);
+    if (index >= 0) {
+      this.model.productSize.splice(index, 1);
+    }
+  }
+
+  removeOption(fruit: string): void {
+    const index = this.model.productOption.indexOf(fruit);
+    if (index >= 0) {
+      this.model.productOption.splice(index, 1);
+    }
+  }
+
+  selectedSize(event: MatAutocompleteSelectedEvent): void {
+    this.productSize.push(event.option.viewValue);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+
+  selectedOption(event: MatAutocompleteSelectedEvent): void {
+    this.productOption.push(event.option.viewValue);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+  
   loadAllData() {
     this.loadDataAdmin()
     this.loadDataCategoryAdmin()
@@ -182,7 +275,6 @@ export class MenuListComponent extends BaseComponent implements OnInit {
   }
   loadDataProductWithCategory(value){
     this.service.getByGuid(value).subscribe(res => {
-      console.log(res)
       this.data = res
       this.spinner.hide()
     })
@@ -235,6 +327,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });
+    
     this.spinner.hide()
   }
 
@@ -281,84 +374,125 @@ export class MenuListComponent extends BaseComponent implements OnInit {
   }
   create() {
     let storeId = JSON.parse(localStorage.getItem('store'))?.id
-   this.alertify.confirm4(
-      this.alert.yes_message,
-      this.alert.no_message,
-      this.alert.createTitle,
-      this.alert.createMessage,
-      () => {
-        this.model.createBy = this.user.id;
-        this.model.accountUid = this.user.uid;
-        this.model.storeId = storeId;
-        this.model.file = this.file || [];
-        delete this.model['column'];
-        delete this.model['index'];
-        this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
-          (res) => {
-            if (res.success === true) {
-              this.toast.success(this.alert.created_ok_msg);
-              this.loadDataAdmin();
-              this.loadDataCategoryAdmin();
-              // if(this.isAdmin) {
-              // }else {
-              //   this.loadData();
-              //   this.loadDataCategory()
-              // }
-              this.modalReference.dismiss();
+    this.model.createBy = this.user.id;
+    this.model.accountUid = this.user.uid;
+    this.model.storeId = storeId;
+    this.model.file = this.file || [];
+    delete this.model['column'];
+    delete this.model['index'];
+    this.model.productSize = this.formArraySize.value
+    this.model.productOption = this.formArrayOption.value
+    this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
+      (res) => {
+        if (res.success === true) {
 
-            } else {
-              this.toast.warning(this.alert.system_error_msg);
+          const productSizeModel = this.model.productSize.map(item => {
+            return {
+              Size: item.name,
+              ProductId: res.data.id,
+              Price: item.price
             }
+          })
+      
+          const productOptionModel = this.model.productOption.map(item => {
+            return {
+              Topping: item.name,
+              ProductId: res.data.id,
+              Price: item.price
+            }
+          }) 
+          this.addProSize(productSizeModel)
+          this.addProOption(productOptionModel)
+          this.toast.success(this.alert.created_ok_msg);
+          this.loadDataAdmin();
+          this.loadDataCategoryAdmin();
+          this.modalReference.dismiss();
 
-          },
-          (error) => {
-            this.toast.warning(this.alert.system_error_msg);
-          }
-        );
-      }, () => {
-        this.toast.error(this.alert.cancelMessage);
+        } else {
+          this.toast.warning(this.alert.system_error_msg);
+        }
+
+      },
+      (error) => {
+        this.toast.warning(this.alert.system_error_msg);
       }
     );
+  //  this.alertify.confirm4(
+  //     this.alert.yes_message,
+  //     this.alert.no_message,
+  //     this.alert.createTitle,
+  //     this.alert.createMessage,
+  //     () => {
+        
+  //     }, () => {
+  //       this.toast.error(this.alert.cancelMessage);
+  //     }
+  //   );
 
+  }
+  addProSize(model) {
+    this.service.addSize(model).subscribe(res => {})
+  }
+  addProOption(model) {
+    this.service.addOption(model).subscribe(res => {})
   }
   update() {
     let storeId = JSON.parse(localStorage.getItem('store'))?.id
-   this.alertify.confirm4(
-      this.alert.yes_message,
-      this.alert.no_message,
-      this.alert.updateTitle,
-      this.alert.updateMessage,
-      () => {
-        this.model.updateBy = this.user.id;
-        this.model.file = this.file || [];
-        this.model.storeId = storeId;
-        delete this.model['column'];
-        delete this.model['index'];
-        this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
-          (res) => {
-            if (res.success === true) {
-              this.toast.success(this.alert.updated_ok_msg);
-              this.loadDataAdmin();
-              this.loadDataCategoryAdmin();
-              // if(this.isAdmin) {
-              // }else {
-              //   this.loadData();
-              //   this.loadDataCategory()
-              // }
-              this.modalReference.dismiss();
-            } else {
-              this.toast.warning(this.alert.system_error_msg);
-            }
-          },
-          (error) => {
-            this.toast.warning(this.alert.system_error_msg);
-          }
-        );
-      }, () => {
-        this.toast.error(this.alert.cancelMessage);
+    this.model.updateBy = this.user.id;
+    this.model.file = this.file || [];
+    this.model.storeId = storeId;
+    delete this.model['column'];
+    delete this.model['index'];
+    this.model.productSize = this.formArraySize.value
+    this.model.productOption = this.formArrayOption.value
+    const productSizeModel = this.model.productSize.map(item => {
+      return {
+        Size: item.name,
+        ProductId: this.model.id,
+        Price: item.price
+      }
+    })
+    console.log(productSizeModel)
+
+    const productOptionModel = this.model.productOption.map(item => {
+      return {
+        Topping: item.name,
+        ProductId: this.model.id,
+        Price: item.price
+      }
+    })
+    this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
+      (res) => {
+        if (res.success === true) {
+          this.addProSize(productSizeModel)
+          this.addProOption(productOptionModel)
+          this.toast.success(this.alert.updated_ok_msg);
+          this.loadDataAdmin();
+          this.loadDataCategoryAdmin();
+          this.modalReference.dismiss();
+          this.formArraySize = new FormArray([])
+          this.formArrayOption = new FormArray([])
+          
+        } else {
+          this.toast.warning(this.alert.system_error_msg);
+        }
+      },
+      (error) => {
+        this.toast.warning(this.alert.system_error_msg);
+        
       }
     );
-
+  //  this.alertify.confirm4(
+  //     this.alert.yes_message,
+  //     this.alert.no_message,
+  //     this.alert.updateTitle,
+  //     this.alert.updateMessage,
+  //     () => {
+        
+  //     }, () => {
+  //       this.toast.error(this.alert.cancelMessage);
+  //     }
+  //   );
 
   }
   ToFormatModel(model: any) {
@@ -389,10 +523,25 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     }
   }
   openModal(template, data = {} as Products) {
-    console.log(data)
+    this.formArraySize = new FormArray([])
     if (data?.id > 0) {
       this.model = {...data};
       this.getAudit(this.model.id);
+      this.model.productSize.map(item => {
+        let items = new FormGroup({
+          name: new FormControl(item.size,Validators.required),
+          price: new FormControl(item.price),
+        });
+        this.formArraySize.push(items)
+      })
+
+      this.model.productOption.map(item => {
+        let items = new FormGroup({
+          name: new FormControl(item.topping,Validators.required),
+          price: new FormControl(item.price),
+        });
+        this.formArrayOption.push(items)
+      })
       this.title = 'Edit_Model';
     } else {
       this.model.id = 0;
@@ -400,7 +549,14 @@ export class MenuListComponent extends BaseComponent implements OnInit {
       this.title = 'Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
-   this.configImage();
+    this.modalReference.result.then((result) => {
+      this.formArraySize = new FormArray([])
+      this.formArrayOption = new FormArray([])
+      }, (reason) => {
+      this.formArraySize = new FormArray([])
+      this.formArrayOption = new FormArray([])
+    });
+    this.configImage();
   }
   configImage(id="avatar-1") {
     const option = {
@@ -439,7 +595,6 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     $("#avatar-1").fileinput(option);;
     let that = this;
     $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
-      console.log('Key = ' + key);
       that.file = null;
       that.model.file = null;
       that.model.photoPath = null;

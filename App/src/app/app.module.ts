@@ -200,6 +200,7 @@ if (!lang) {
   ],
   imports: [
     BrowserModule,
+    // TagInputModule,
     Common2Module,
     BrowserAnimationsModule,
     AppRoutingModule,

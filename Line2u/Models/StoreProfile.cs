@@ -33,6 +33,8 @@ namespace Line2u.Models
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
         public string AccountGuid { get; set; }
     }
 }

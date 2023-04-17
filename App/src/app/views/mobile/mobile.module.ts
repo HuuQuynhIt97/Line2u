@@ -135,6 +135,12 @@ import { StoreTableComponent } from './store-table/store-table.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { WINDOW_PROVIDERS } from 'src/app/_core/_helper/windowProvider';
 import { HomeBossUpdateRestaurantComponent } from './home/home-boss-update-restaurant/home-boss-update-restaurant.component';
+import { HomeBossCartComponent } from './home/home-boss-cart/home-boss-cart.component';
+import { MaterialModule } from './material.module';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 @NgModule({
   declarations: [
     MobileComponent,
@@ -174,7 +180,8 @@ import { HomeBossUpdateRestaurantComponent } from './home/home-boss-update-resta
     AdminAddRestaurantComponent,
     AdminUpdateRestaurantComponent,
     StoreTableComponent,
-    HomeBossUpdateRestaurantComponent
+    HomeBossUpdateRestaurantComponent,
+    HomeBossCartComponent
     // CoreDirectivesModule
     // ChatBoxDirective
     
@@ -182,6 +189,10 @@ import { HomeBossUpdateRestaurantComponent } from './home/home-boss-update-resta
   imports: [
     CommonModule,
     QRCodeModule,
+    // MatFormFieldModule,
+    // MatAutocompleteModule,
+    // MatChipsModule,
+    MaterialModule,
     BarcodeGeneratorAllModule,
     NgxDropzoneModule,
     FormsModule,

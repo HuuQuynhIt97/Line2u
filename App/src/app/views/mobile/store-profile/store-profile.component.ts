@@ -108,7 +108,6 @@ export class StoreProfileComponent  implements OnInit {
           (x: any) => {
             if(x !== null) {
               this.model = x;
-              console.log('loadDetail', x)
               localStorage.setItem('store', JSON.stringify(x));
               let listFileImage: string[] = [];
               listFileImage.push(this.model.photoPath);
@@ -158,13 +157,11 @@ export class StoreProfileComponent  implements OnInit {
               sites: this.sites
             }
             this.model = x;
-            console.log('loadDetailAdmin', x)
             localStorage.setItem('store', JSON.stringify(x));
 
             let listFileImage: string[] = [];
             listFileImage.push(this.model.photoPath);
             const sites = await this.service.getMultiUserAccessStore(this.model.createBy,this.model.id).toPromise();
-            console.log(sites)
             this.sites = sites || [];
             this.model.multiStores = {
               stores: this.sites
@@ -212,7 +209,6 @@ export class StoreProfileComponent  implements OnInit {
   getAllAccount(){
     this.service.getAllAccountAccess().subscribe(res => {
       this.siteData = res
-      console.log(this.siteData)
     })
   }
 
@@ -272,10 +268,7 @@ export class StoreProfileComponent  implements OnInit {
         }
       );
     });
-    // this.service.getAllTowship().subscribe(res => {
-    //   this.townshipData  = res
-    //   console.log('getAllTownShip', this.townshipData)
-    // })
+   
   }
 
   getAllTownShipByCounty() {

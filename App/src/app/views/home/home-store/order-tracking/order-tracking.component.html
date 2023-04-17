@@ -29,11 +29,11 @@
             <div class="recipt-sec padding-20 ">
               <div class="recipt-name title u-line full-width mb-xl-20">
                 <div class="recipt-name-box">
-                  <h6 class="title text-light-white">
+                  <h6 class="title text-light-white"  style="font-size: 10px;">
                     {{'Your.Order.label' | translate}} #{{item.orderID}}
                     <!-- <span class="text-light-black"></span> -->
                   </h6>
-                    <p class="title text-light-white">
+                    <p class="title text-light-white" style="font-size: 10px;">
                       {{item.orderDate | date:'MMM d, y, h:mm a'}}
                     </p>
                 </div>
@@ -63,7 +63,7 @@
                             <div class="product-name"> <span><a routerLink="/orderdetails" class="text-light-white">{{item_product.productName}}</a></span>
                             </div>
                           </div>
-                          <div class="price"> <span class="text-light-white">${{item_product.price}}</span>
+                          <div class="price"> <span class="text-light-white">${{item_product.price + (item_product.productSize * item_product.qty) + (item_product.productOption * item_product.qty)}}</span>
                           </div>
                         </div>
                       </ng-container>

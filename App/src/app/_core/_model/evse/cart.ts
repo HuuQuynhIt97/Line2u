@@ -18,5 +18,10 @@ export interface Cart {
     productName: string;
     productPrices: string;
     productPriceDiscount: string;
+    productDescription: string;
     quantity: number;
+    productSize: any;
+    productSizeAdd: any;
+    productOption: any;
+    productOptionAdd: any;
 }

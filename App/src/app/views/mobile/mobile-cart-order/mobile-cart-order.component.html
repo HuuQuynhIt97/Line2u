@@ -60,51 +60,12 @@
             headerText="{{ 'OPTION' | translate }}"
           >
             <ng-template #template let-data>
-              <!-- <span (click)="delete(data.id)" class="delete-grid">
-                <i class="fa fa-trash"></i>
-              </span>
-              
-              <span (click)="openModal(optionModal, data)" class="edit-grid">
-                <i class="fa fa-edit"></i>
-              </span> -->
-              <!-- <button (click)="delete(data.id)" class="btn btn-danger">
-                <i class="fa fa-trash"></i>
-              </button>
-              <span style="color: transparent;"> | </span>
-              <button (click)="openModal(optionModal, data)" class="btn btn-warning">
-                <i class="fa fa-edit"></i>
-              </button>
-              <span style="color: transparent;"> | </span> -->
               <button (click)="detail(data)" class="btn btn-info">
                 <i class="fa fa-info-circle"></i> 
               </button>
-              <!-- <span (click)="detail(data)" class="edit-grid">
-                <i class="fa fa-info-circle"></i>
-              </span> -->
             </ng-template>
           </e-column>
 
-          <!-- <e-column
-            field="id"
-            [allowSearching]="false"
-            textAlign="Left"
-            headerTextAlign="Left"
-            [visible]="false"
-            isPrimaryKey="true"
-            width="20"
-            headerText="{{ 'ID' }}"
-          >
-          </e-column> -->
-
-
-          <!-- <e-column
-            field="guid"
-            textAlign="Left"
-            width="100"
-            headerTextAlign="Center"
-            headerText="{{ 'ORDER_ID' | translate }}"
-          >
-          </e-column> -->
 
           <e-column
             field="guid"

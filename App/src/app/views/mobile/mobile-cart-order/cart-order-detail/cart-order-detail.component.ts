@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HomeStoreAddMoreComponent } from '../../home-store-add-more/home-store-add-more.component';
+import { DataService } from 'src/app/_core/_service/data.service';
 @Component({
   selector: 'app-cart-order-detail',
   templateUrl: './cart-order-detail.component.html',
@@ -19,6 +20,7 @@ export class CartOrderDetailComponent implements OnInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE_QR;
   orderGuid: string;
+  storeInfo = JSON.parse(localStorage.getItem('store'))
   alert = {
     updateMessage: this.translate.instant(MessageConstants.UPDATE_MESSAGE),
     updateTitle: this.translate.instant(MessageConstants.UPDATE_TITLE),
@@ -45,9 +47,17 @@ export class CartOrderDetailComponent implements OnInit {
     private toast: ToastrService,
     private translate: TranslateService,
     private route: ActivatedRoute,
+    private dataService: DataService,
     public modalService: NgbModal,
     private router: Router,
-  ) { }
+  ) {
+
+    this.dataService.currentMessage.subscribe((res: any) => {
+      if(res === 'load orderDetail') {
+        this.getDetailOrder()
+      }
+    })
+   }
 
   ngOnInit() {
     this.orderGuid = this.route.snapshot.paramMap.get('id')
@@ -76,7 +86,7 @@ export class CartOrderDetailComponent implements OnInit {
   }
   getDetailOrder() {
     this.spinner.show()
-    this.orderService.getDetailOrder(this.orderGuid).subscribe(res => {
+    this.orderService.getDetailOrder(this.orderGuid,this.storeInfo?.guid).subscribe(res => {
       this.trackingData = res
       this.spinner.hide()
     })

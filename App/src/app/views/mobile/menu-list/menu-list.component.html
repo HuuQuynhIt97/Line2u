@@ -145,7 +145,6 @@
         </div>
   
         <div class="col-md-6">
-          <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "PRODUCT_NAME" | translate }}</label>
           <div class="form-group">
             <label for="uid">{{ "PRODUCT_NAME" | translate }}</label>
             <input
@@ -162,7 +161,6 @@
           <div class="form-group">
             <label for="uid">{{ "PRODUCT_PRICE" | translate }}</label>
             <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
-            <!-- <span ngbTooltip="( Text length <= 200 )" class="max-length"> ( {{"Text length"| translate }} <= 50 )</span> -->
             <input
               [(ngModel)]="model.productPrice"
               maxlength="200"
@@ -184,6 +182,91 @@
             />
           </div>
         </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="uid">{{ "PRODUCT_SIZE" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <br>
+            <button class="btn btn-primary btn-sm" (click)="formArraySize.push(getFormGroup(null))">Add</button>
+            <div [formGroup]="formArraySize">
+              <div *ngFor="let group of formArraySize.controls; let i = index" [formGroup]="group">
+                <input class="form-control" placeholder="S,M,L....." formControlName="name" />
+                  <span *ngIf="group.get('name').invalid && group.get('name').touched" style="color: red" >*</span
+                >
+                <input class="form-control" placeholder="price....." formControlName="price" />
+                <button class="btn btn-warning btn-sm" (click)="formArraySize.removeAt(i)">Remove</button>
+              </div>
+            </div>
+            <!-- <mat-form-field class="example-chip-list">
+              <mat-chip-list #chipListSize aria-label="Fruit selection">
+                <mat-chip
+                  *ngFor="let fruit of model.productSize"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  (removed)="removeSize(fruit)">
+                  {{fruit}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input
+                  placeholder="Input size..."
+                  #fruitInput
+                  [formControl]="fruitCtrl"
+                  [matChipInputFor]="chipListSize"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="addSize($event)">
+              </mat-chip-list>
+            </mat-form-field> -->
+            <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedSize($event)">
+              <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                {{fruit}}
+              </mat-option>
+            </mat-autocomplete> -->
+          </div>
+         
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="uid">{{ "PRODUCT_OPTION" | translate }}</label>
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <!-- <mat-form-field class="example-chip-list">
+              <mat-chip-list #chipListOption aria-label="Fruit selection">
+                <mat-chip
+                  *ngFor="let fruit of model.productOption"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  (removed)="removeOption(fruit)">
+                  {{fruit}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input
+                  placeholder="Input Option..."
+                  #fruitInput
+                  [formControl]="fruitCtrl"
+                  [matChipInputFor]="chipListOption"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="addOption($event)">
+              </mat-chip-list>
+              
+            </mat-form-field> -->
+            <br>
+            <button class="btn btn-primary btn-sm" (click)="formArrayOption.push(getFormGroupOption(null))">Add</button>
+            <div [formGroup]="formArrayOption">
+              <div *ngFor="let group of formArrayOption.controls; let i = index" [formGroup]="group">
+                <input class="form-control" placeholder="Topping....." formControlName="name" />
+                  <span *ngIf="group.get('name').invalid && group.get('name').touched" style="color: red" >*</span
+                >
+                <input class="form-control" placeholder="price....." formControlName="price" />
+                <button class="btn btn-warning btn-sm" (click)="formArrayOption.removeAt(i)">Remove</button>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="allfarm">{{

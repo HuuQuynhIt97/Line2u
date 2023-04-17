@@ -97,7 +97,6 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
       }
     };
     L10n.load(load);
-    console.log(this.user.uid === this.storeInfo.accountGuid )
     this.loadDataAdmin()
     // if(this.user.uid === 'admin') {
     //   if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
@@ -250,7 +249,6 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
           (res) => {
             if (res.success === true) {
               this.toast.success(this.alert.created_ok_msg);
-              console.log(this.isAdmin)
               // if(this.isAdmin) {
               // }else {
                 
@@ -391,7 +389,6 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
     $("#avatar-1").fileinput(option);;
     let that = this;
     $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
-      console.log('Key = ' + key);
       that.file = null;
       that.model.file = null;
       that.model.photoPath = null;

@@ -64,7 +64,7 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
         'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
  };
  public initialGridLoad = true;
- storeInfo: StoreProfile = {} as StoreProfile;
+//  storeInfo: StoreProfile = {} as StoreProfile;
   hoveredDate: NgbDate | null = null;
   @ViewChild('range')
   public DateRange: DateRangePickerComponent;
@@ -73,6 +73,8 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
   value: any;
   startDate: any = new Date();
   endDate: any = new Date();
+  storeGuid: string;
+  storeInfo = JSON.parse(localStorage.getItem('store'))
   constructor(
     private service: MainCategoryService,
     public modalService: NgbModal,
@@ -85,6 +87,7 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
     private router: Router,
     private spinner: NgxSpinnerService,
     private calendar: NgbCalendar, 
+    private route: ActivatedRoute,
     public formatter: NgbDateParserFormatter,
     private utilityService: UtilitiesService,
 
@@ -98,18 +101,18 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
     }
 
   ngOnInit() {
-  // localStorage.setItem('startDate',this.datePipe.transform(this.startDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
-  // localStorage.setItem('endDate',this.datePipe.transform(this.endDate || new Date(1970, 1, 1), 'yyyy/MM/dd'))
-  const ischangeTime = localStorage.getItem('ischangeTime')
-  if( ischangeTime !== null || ischangeTime === 'true')
-  {
-    this.value = [new Date(localStorage.getItem('startDate')), new Date(localStorage.getItem('endDate'))];
-    this.startDate = this.datePipe.transform(this.value[0] || new Date(1970, 1, 1), 'yyyy/MM/dd');
-    this.endDate = this.datePipe.transform(this.value[1] || new Date(1970, 1, 1), 'yyyy/MM/dd');
-  }else {
-    this.value = [new Date(), new Date()];
-  }
-  this.toolbarOptions = [{ template: this.parentTemplate }, 'Search'];
+    this.storeGuid = this.route.snapshot.paramMap.get('id')
+    console.log(this.storeGuid)
+    const ischangeTime = localStorage.getItem('ischangeTime')
+    if( ischangeTime !== null || ischangeTime === 'true')
+    {
+      this.value = [new Date(localStorage.getItem('startDate')), new Date(localStorage.getItem('endDate'))];
+      this.startDate = this.datePipe.transform(this.value[0] || new Date(1970, 1, 1), 'yyyy/MM/dd');
+      this.endDate = this.datePipe.transform(this.value[1] || new Date(1970, 1, 1), 'yyyy/MM/dd');
+    }else {
+      this.value = [new Date(), new Date()];
+    }
+    this.toolbarOptions = [{ template: this.parentTemplate }, 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -121,7 +124,7 @@ export class MobileCartOrderComponent extends BaseComponent implements OnInit {
       }
     };
     L10n.load(load);
-    this.getStoreInfor()
+    this.loadData()
     this.loadLang()
     
   }

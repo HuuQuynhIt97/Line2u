@@ -5,6 +5,10 @@ using Line2u.Services;
 using Syncfusion.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using static Line2u.DTO.ProductsDto;
 
 namespace Line2u.Controllers
 {
@@ -56,15 +60,44 @@ namespace Line2u.Controllers
         [HttpPost]
         public async Task<ActionResult> AddFormAsync([FromForm] ProductsDto model)
         {
+
+            var producSize = Request.Form["ProductSize"];
+           
+            //model.ProductSize.AddRange(producSize);
+
+            var producOption = Request.Form["ProductOption"];
+            //model.ProductSize.AddRange(producOption);
+
             return Ok(await _service.AddFormAsync(model));
         }
 
         [HttpPut]
         public async Task<ActionResult> UpdateFormAsync([FromForm] ProductsDto model)
         {
+
+            var producSize = Request.Form["ProductSize"];
+            
+            //model.ProductSize.AddRange(producSize);
+
+            var producOption = Request.Form["ProductOption"];
+            //model.ProductOption.AddRange(producOption);
+
             return Ok(await _service.UpdateFormAsync(model));
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddSize(List<ProductSizeModel> model)
+        {
+
+            return Ok(await _service.AddSize(model));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddOption(List<ProductOptionModel> model)
+        {
+
+            return Ok(await _service.AddOption(model));
+        }
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync(decimal id)
         {

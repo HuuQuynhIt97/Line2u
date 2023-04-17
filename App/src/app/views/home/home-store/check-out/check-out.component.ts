@@ -99,7 +99,7 @@ export class CheckOutComponent implements OnInit {
       this.selectedIndex =  -1
     }
  }
- table: string
+ table: string = localStorage.getItem('table')
  CASH: string = 'Cash'
  LINE_PAY: string = 'Line Pay'
  cashMoney: number = 0
@@ -324,6 +324,13 @@ export class CheckOutComponent implements OnInit {
       this.orderModel.cashReceived = this.totalPrice || 0
       this.orderModel.isPayment = 'Unpaid'
       this.orderModel.delivery = 'Pending'
+      console.log(this.cartDetail)
+      this.orderService.add(this.orderModel).subscribe(res => {
+        this.toastr.success(this.translate.instant('Order_Success'))
+        this.paymentSuccess = true
+        this.orderID = res.data.guid
+        this.dataService.changeMessage('load cart')
+      })
       // const products = this.cartDetail.map((item: any) => {
       //     return {
       //       name: item.productName,
@@ -357,13 +364,6 @@ export class CheckOutComponent implements OnInit {
       //     return window.location.assign(res.info.paymentUrl.web)
       //   }
       // })
-
-      // this.orderService.add(this.orderModel).subscribe(res => {
-      //   this.toastr.success(this.translate.instant('Order_Success'))
-      //   this.paymentSuccess = true
-      //   this.orderID = res.data.guid
-      //   this.dataService.changeMessage('load cart')
-      // })
       
     }
   }
@@ -389,6 +389,7 @@ export class CheckOutComponent implements OnInit {
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
       this.cartDetail = res
+      console.log('getProductsInCart', this.cartDetail)
       this.spinner.hide()
     })
   }

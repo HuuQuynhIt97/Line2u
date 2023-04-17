@@ -74,8 +74,8 @@ export class OrderService extends CURDService<Order>  {
   getTrackingOrderUser(guid): Observable<any> {
     return this.http.get<any>(`${this.base}Order/GetTrackingOrderUser?id=${guid}`, {});
   }
-  getDetailOrder(guid): Observable<any> {
-    return this.http.get<any>(`${this.base}Order/GetDetailOrder?id=${guid}`, {});
+  getDetailOrder(guid,storeGuid): Observable<any> {
+    return this.http.get<any>(`${this.base}Order/GetDetailOrder?id=${guid}&storeGuid=${storeGuid}`, {});
   }
 
   confirmOrder(guid): Observable<any> {

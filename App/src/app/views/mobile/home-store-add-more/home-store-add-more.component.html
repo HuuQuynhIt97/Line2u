@@ -227,7 +227,7 @@
                           </div>
                           <span style="color: transparent;"> | </span>
                           <div class="price"> <a href="#" class="text-dark-white fw-500">
-                            ${{item.price}}
+                            ${{(item.productPrice * item.qty) + (item.qty * item.productSize) + (item.qty * item.productOption)}}
                             </a>
                           </div>
                         </div>

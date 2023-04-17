@@ -41,7 +41,7 @@ namespace Line2u.Services
         Task<object> GetTrackingOrderForStore(string id, DateTime min, DateTime max);
         Task<object> GetTrackingOrderForStoreWithTime(DateTime min, DateTime max);
         Task<object> GetTrackingOrderUser(int id);
-        Task<object> GetDetailOrder(string id);
+        Task<object> GetDetailOrder(string id,string storeGuid);
         Task<OperationResult> ConfirmOrder(string id);
         Task<OperationResult> CancelOrder(string id);
         Task<object> GetWebPages();
@@ -50,6 +50,8 @@ namespace Line2u.Services
     public class OrderService : ServiceBase<Order, OrderDto>, IOrderService, IScopeService
     {
         private readonly IRepositoryBase<Order> _repo;
+        private readonly IRepositoryBase<ProductSize> _repoProductSize;
+        private readonly IRepositoryBase<ProductOption> _repoProductOption;
         private readonly IRepositoryBase<StoreProfile> _repoStoreProfile;
         private readonly IRepositoryBase<Product> _repoProduct;
         private readonly IRepositoryBase<Cart> _repoCart;
@@ -66,6 +68,8 @@ private readonly ILine2uLoggerService _logger;
 
         public OrderService(
             IRepositoryBase<Order> repo,
+             IRepositoryBase<ProductSize> repoProductSize,
+            IRepositoryBase<ProductOption> repoProductOption,
             IRepositoryBase<StoreProfile> repoStoreProfile,
             IRepositoryBase<Cart> repoCart,
             IRepositoryBase<Product> repoProduct,
@@ -84,6 +88,8 @@ ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
+            _repoProductSize = repoProductSize;
+            _repoProductOption = repoProductOption;
             _repoStoreProfile = repoStoreProfile;
             _repoCart = repoCart;
             _repoProduct = repoProduct;
@@ -142,6 +148,8 @@ ISPService spService)
                         Price = item_products.ProductPrice.ToDecimal(),
                         Quantity = item_products.Quantity,
                         ProductGuid = item_products.ProductGuid,
+                        ProductSize = item_products.ProductSizeAdd,
+                        ProductOption = item_products.ProductOptionAdd,
                         PendingStatus  = true,
                         AccountId = model.AccountId,
                         StoreGuid = item_products.storeGuid,
@@ -541,6 +549,8 @@ ISPService spService)
             foreach (var product in data)
             {
                 var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
+                var pro_size = _repoProductSize.FindAll().ToList();
+                var pro_option = _repoProductOption.FindAll().ToList();
                 var item_add = new
                 {
                     ProductName = item.ProductName,
@@ -551,6 +561,11 @@ ISPService spService)
                     Guid = item.Guid,
                     Qty = product.Quantity,
                     totalOrder = product.Quantity,
+                    ProductSize = pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault() != null
+                             ? pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
+
+                    ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
+                             ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                     Price = product.Quantity * product.Price
                 };
 
@@ -589,6 +604,8 @@ ISPService spService)
         //}
         private async Task<object> getListProducts(List<OrderDetail> data)
         {
+            var pro_size = _repoProductSize.FindAll().ToList();
+            var pro_option = _repoProductOption.FindAll().ToList();
             var products = _repoProduct.FindAll().ToList();
             var store = await _repoStoreProfile.FindAll().ToListAsync();
             var list = new List<object>();
@@ -604,6 +621,11 @@ ISPService spService)
                     item.Id,
                     storeName = storeProfile != null ? storeProfile.StoreName : "N/A",
                     productPrice = product.Price,
+                    ProductSize = pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault() != null
+                             ? pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
+
+                    ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
+                             ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                     Guid = item.Guid,
                     Qty = product.Quantity,
                     totalOrder = product.Quantity,
@@ -621,13 +643,14 @@ ISPService spService)
             return list;
         }
 
-        public async Task<object> GetDetailOrder(string id)
+        public async Task<object> GetDetailOrder(string id, string storeGuid)
         {
+           
             var order = await _repo.FindAll(o => o.Guid == id).ToListAsync();
             var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
             var products = await _repoProduct.FindAll().ToListAsync();
             var result = (from x in order
-                          let y = order_detail.Where(o => o.OrderGuid == x.Guid).ToList()
+                          let y = order_detail.Where(o => o.OrderGuid == x.Guid && o.StoreGuid == storeGuid).ToList()
                           select new
                           {
                               orderID = x.Guid,

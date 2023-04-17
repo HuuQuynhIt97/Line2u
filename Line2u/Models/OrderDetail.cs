@@ -22,6 +22,8 @@ namespace Line2u.Models
         public string AccountId { get; set; }
         public string OrderGuid { get; set; }
         public string ProductGuid { get; set; }
+        public decimal? ProductSize { get; set; }
+        public decimal? ProductOption { get; set; }
         public string StoreGuid { get; set; }
     }
 }
