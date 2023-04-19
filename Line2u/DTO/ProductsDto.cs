@@ -30,7 +30,7 @@ namespace Line2u.DTO
         public string accountUid { get; set; }
         public string storeGuid { get; set; }
         public decimal? ProductSizeAdd { get; set; }
-        public decimal? ProductOptionAdd { get; set; }
+        public string ProductOptionAdd { get; set; }
     
         public List<IFormFile> File { get; set; }
 

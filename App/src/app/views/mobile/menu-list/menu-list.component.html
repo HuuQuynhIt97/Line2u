@@ -11,11 +11,11 @@
   </ngx-spinner>
   <div class="row">
   <div class="col-12">
-    
+
     <div class="card main-card">
       <div class="card-body table-responsive p-0">
         <ejs-grid
-        #grid 
+        #grid
         id='grid'
         [toolbar]="toolbarOptions"
         [dataSource]='data'
@@ -63,7 +63,7 @@
                     <div class="d-flex justify-content-start mt-2">
                         <div style="width: 40%">
                           <div class="d-flex justify-content-start">
-                            
+
                             <img
                             width="100%"
                             [src]="imagePath(data.photoPath)"
@@ -84,7 +84,7 @@
                                   <p>{{data.productPrice}}$</p>
                                 </div>
                               </div>
-                             
+
                               <div style=" word-wrap: break-word;">&nbsp;&nbsp;&nbsp;&nbsp;{{data.comment}}</div>
                             </div>
                           </div>
@@ -101,7 +101,7 @@
       <!-- /.card-body -->
     </div>
   </div>
-  
+
   </div>
   <ng-template #optionModal let-modal>
     <div class="modal-header my-modal">
@@ -118,7 +118,7 @@
       </button>
     </div>
     <div class="modal-body" id="option">
-  
+
       <div class="row">
         <div class="col-12">
           <div class="form-group">
@@ -143,7 +143,7 @@
             </app-code-type-dropdownlist> -->
           </div>
         </div>
-  
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="uid">{{ "PRODUCT_NAME" | translate }}</label>
@@ -155,8 +155,8 @@
             />
           </div>
         </div>
-  
-  
+
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="uid">{{ "PRODUCT_PRICE" | translate }}</label>
@@ -169,7 +169,7 @@
             />
           </div>
         </div>
-  
+
         <div class="col-12">
           <div class="form-group">
             <label for="uid">{{ "PRODUCT_PRICE_DISCOUNT" | translate }}</label>
@@ -224,7 +224,7 @@
               </mat-option>
             </mat-autocomplete> -->
           </div>
-         
+
         </div>
 
         <div class="col-12">
@@ -250,7 +250,7 @@
                   [matChipInputAddOnBlur]="addOnBlur"
                   (matChipInputTokenEnd)="addOption($event)">
               </mat-chip-list>
-              
+
             </mat-form-field> -->
             <br>
             <button class="btn btn-primary btn-sm" (click)="formArrayOption.push(getFormGroupOption(null))">Add</button>
@@ -264,7 +264,7 @@
               </div>
             </div>
           </div>
-         
+
         </div>
 
         <div class="col-md-6">
@@ -277,7 +277,7 @@
             <!-- <ejs-checkbox [(ngModel)]="model.status"></ejs-checkbox> -->
           </div>
         </div>
-  
+
         <!-- <div class="col-md-6">
           <div class="form-group">
             <label for="status">{{ "PRODUCT_STATUS" | translate }}</label>
@@ -288,20 +288,20 @@
             />
           </div>
         </div> -->
-  
+
         <div class="col-12 mb-2">
           <label for="body">{{ "PRODUCT_DESCRIPTION" | translate }}</label>
-  
+
           <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.productDescription'>
-          
+
             </ejs-richtexteditor>
         </div>
-  
-  
-  
+
+
+
         <div class="col-12 text-center">
-  
-  
+
+
           <div class="kv-avatar">
             <div class="file-loading">
               <input
@@ -317,7 +317,7 @@
             <small>{{ "Select file < 5000 KB" | translate }}</small>
           </div>
         </div>
-  
+
         <div class="col-12">
           <label>{{ "PRODUCT_COMMENT" | translate }}</label>
           <div class="form-group">
@@ -330,10 +330,10 @@
           </div>
         </div>
       </div>
-  
-     
+
+
   </div>
-  
+
     <div class="modal-footer">
       <div class="mr-auto" *ngIf="model?.id > 0">
         <p>
@@ -376,10 +376,9 @@
       </button>
       <button
         type="submit"
-        [disabled]="!model.productName 
+        [disabled]="!model.productName
         || !model.categoryGuid
         || !model.productPrice
-        
         "
         (click)="save()"
         ngbTooltip="SAVE"
@@ -389,5 +388,5 @@
       </button>
     </div>
   </ng-template>
-  
+
 </div>

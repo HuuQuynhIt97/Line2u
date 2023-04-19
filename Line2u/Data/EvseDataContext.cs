@@ -476,7 +476,7 @@ namespace Line2u.Data
 
                 entity.Property(e => e.ProductOption)
                    .HasColumnName("PRODUCT_OPTION")
-                   .HasColumnType("numeric(18, 0)");
+                   .HasMaxLength(200);
 
                 entity.Property(e => e.UpdateBy)
                     .HasColumnName("UPDATE_BY")
@@ -602,7 +602,7 @@ namespace Line2u.Data
 
                 entity.Property(e => e.ProductOption)
                    .HasColumnName("PRODUCT_OPTION")
-                   .HasColumnType("numeric(18, 0)");
+                   .HasMaxLength(200);
 
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
 

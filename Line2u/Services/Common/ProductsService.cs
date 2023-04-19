@@ -366,8 +366,8 @@ ISPService spService)
             try
             {
 
-                //_repo.Update(item);
-                //await _unitOfWork.SaveChangeAsync();
+                _repo.Update(item);
+                await _unitOfWork.SaveChangeAsync();
 
                 operationResult = new OperationResult
                 {

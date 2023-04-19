@@ -15,13 +15,13 @@
     >
         <ng-container  *ngFor="let item_banner of banners; let i = index">
             <ng-template  swiperSlide>
-                <img 
+                <img
                 style="cursor: pointer;"
                 (click)="detailNewBanner(item_banner)"
                 [src]="imagePath(item_banner.thumbnail) "
                 sizes="(min-width:960px) calc(100vw - 352px),100vw"
                 class="img-fluid full-width" alt="banner">
-                   
+
             </ng-template>
         </ng-container>
     </swiper>
@@ -41,7 +41,7 @@
                         </span> -->
                     </p>
                     <div class="head-rating">
-                        <div class="rating"> 
+                        <div class="rating">
                             <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
                                 <ng-template let-fill="fill" let-index="index">
                                     <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
@@ -50,14 +50,14 @@
                             <!-- <span class="text-light-black fs-12 rate-data">{{storeInfo.ratingCount}} {{'rating' | translate}}</span> -->
                         </div>
                         <div class="product-review">
-                            
+
                         </div>
                     </div>
                 </div>
                 <div class="restaurent-logo">
-                    <img 
+                    <img
                     [src]="imagePath(storeInfo.photoPath) "
-                    class="img-fluid" 
+                    class="img-fluid"
                     alt="#">
                 </div>
             </div>
@@ -132,11 +132,11 @@
                                                                                 <h6 class="mb-2" data-toggle="modal" data-target="#restaurent-popup">
                                                                                     <a href="javascript:void(0)" class="text-light-black fw-600">
                                                                                         {{item.productName}}
-                                                                                    </a> 
+                                                                                    </a>
 
                                                                                     <!-- <a  *ngIf="item.totalOrder > 0 && item.cartCreateBy === user?.id"
                                                                                         style="background-color: #e21b70;"
-                                                                                        class="text-light-black fw-600" 
+                                                                                        class="text-light-black fw-600"
                                                                                         >
                                                                                         {{item.totalOrder}} x
                                                                                     </a> -->
@@ -144,21 +144,21 @@
                                                                                 </h6>
                                                                                 <p class="text-success fw-600 no-margin">${{item.productPrice}}</p>
                                                                             </div>
-                                                                            <div class="restaurent-product-label"> 
+                                                                            <div class="restaurent-product-label">
                                                                                 <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
                                                                                     <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
                                                                                 </span>
                                                                                 <span (click)="addToCart(item,productQuickModal)" class="rectangle-tag bg-dark text-custom-white">
-                                                                                    <svg  
-                                                                                        aria-hidden="true" 
-                                                                                        focusable="false" class="fl-white" 
-                                                                                        width="16" height="16" 
-                                                                                        xmlns="http://www.w3.org/2000/svg" 
-                                                                                        xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                                                                    <svg
+                                                                                        aria-hidden="true"
+                                                                                        focusable="false" class="fl-white"
+                                                                                        width="16" height="16"
+                                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
                                                                                         viewBox="0 0 24 24">
                                                                                             <defs>
-                                                                                                <path 
-                                                                                                d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z" 
+                                                                                                <path
+                                                                                                d="M13 4v7h7v2h-7.001L13 20h-2l-.001-7H4v-2h7V4h2z"
                                                                                                 fill="#ffffff"
                                                                                                 id="sIcPlus"></path>
                                                                                             </defs>
@@ -179,13 +179,13 @@
                                                                             </div>
                                                                         </div> -->
                                                                     </div>
-                                                                    <div class="restaurent-product-caption-box"> 
+                                                                    <div class="restaurent-product-caption-box">
                                                                         <span class="text-light-white" [innerHTML]="safeHtml(item.productDescription)">
                                                                         </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="restaurent-product-img">
-                                                                    <img 
+                                                                    <img
                                                                     [src]="imagePath(item.photoPath)"
                                                                     class="img-fluid" alt="#">
                                                                 </div>
@@ -193,26 +193,26 @@
                                                         </div>
                                                     </div>
                                                 </ng-container>
-                                                
-                                             
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </ng-container>
                             <ng-template #elseTemplate>
-                                
+
                             </ng-template>
-                            
-                            
+
+
                         </ng-container>
-                        
-                        
+
+
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-3">
-                <app-restaurantrightsidebar></app-restaurantrightsidebar> 
+                <app-restaurantrightsidebar></app-restaurantrightsidebar>
             </div>
         </div>
     </div>
@@ -271,7 +271,7 @@
             <h3 class="text-light-black header-title title">{{'Reviews for' | translate}} {{storeInfo.storeName}}</h3>
           </div>
           <div class="restaurent-rating mb-xl-20">
-            <div class="star"> 
+            <div class="star">
                 <ngb-rating [(rate)]="storeInfo.ratingAVG" [max]="5" [readonly]="true" >
                     <ng-template let-fill="fill" let-index="index">
                         <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
@@ -286,24 +286,24 @@
             <div class="review-box" *ngIf="!isRatingComment && isLogin">
                 <div class="review-user">
                     <div class="review-user-img">
-                        <img 
+                        <img
                         [src]="imagePathCustome(userImage)"
                         style="width: 30px !important;"
                         class="rounded-circle" alt="userimg">
                         <div class="reviewer-name">
-                            <p class="text-light-black fw-600">{{username}} 
+                            <p class="text-light-black fw-600">{{username}}
                             </p>
                         </div>
                     </div>
-                    
+
                 </div>
-                <div class="ratings"> 
+                <div class="ratings">
                     <ngb-rating [(rate)]="selected" [max]="5" (hover)="hovered=$event" (leave)="hovered=0">
                         <ng-template let-fill="fill" let-index="index">
                             <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
                         </ng-template>
                     </ngb-rating>
-                   
+
                     <span style="color: transparent;"> | </span>
                     <span style="color: red" class="text-light-black fs-12 rate-data">{{'your rating'}} (*)</span>
                 </div>
@@ -323,7 +323,7 @@
                     </div>
                 </div>
                 <!-- <p class="text-light-black">Delivery was fast and friendly. Food was not great especially the salad. Will not be ordering from again. Too many options to settle for this place.</p> -->
-                
+
             </div>
             <ng-container *ngFor="let item_comment of ratingCommentData; let i=index">
                 <div class="review-box">
@@ -332,7 +332,7 @@
                     <img [src]="imagePathCustome(item_comment.comment_Picture)"
                     style="width: 30px !important;" class="rounded-circle" alt="#">
                     <div class="reviewer-name">
-                        <p class="text-light-black fw-600">{{item_comment.comment_By}} 
+                        <p class="text-light-black fw-600">{{item_comment.comment_By}}
                         </p>
                     </div>
                     </div>
@@ -341,22 +341,22 @@
                     </span>
                     </div>
                 </div>
-                <div class="ratings"> 
+                <div class="ratings">
                     <ngb-rating [(rate)]="item_comment.comment_Rating" [max]="5" >
                         <ng-template let-fill="fill" let-index="index">
                             <i class="fas fa-star" [class.filled]="fill === 100" [class.low]="index < 5"></i>
                         </ng-template>
                     </ngb-rating>
-                    
+
                     <span class="ml-2 text-light-white">{{item_comment.comment_Date | dateAgo}}</span>
                 </div>
                 <p class="text-light-black">
-                    {{item_comment.comment}} 
+                    {{item_comment.comment}}
                 </p>
-                
+
                 </div>
             </ng-container>
-            
+
         </div>
       </div>
     </div>
@@ -383,7 +383,7 @@
                 <div class="col-md-6">
                   <div id="slider" class="owl-carousel product-slider">
                     <div class="item">
-                      <img 
+                      <img
                       [src]="imagePath(cartModel?.photoPath)" />
                     </div>
                   </div>
@@ -414,32 +414,60 @@
                             </span>
                         </div>
                     </div>
-                    <p 
+                    <p
                     style="white-space: break-spaces;word-break: break-all;"
-                    
+
                     [innerHTML]="safeHtml(cartModel?.productDescription)">
 
                     </p>
                     <div class="row">
-                      <div class="col-md-6">
-                        <label for="size" style="word-break: break-all;">{{'Product_Detail_Size' | translate}}</label>
-                        <select id="size" name="size" [(ngModel)]="cartModel.productSizeAdd" class="form-control">
+                      <div class="col-md-12" *ngIf="cartModel?.productSize.length > 0">
+                        <!-- <label for="size" style="word-break: break-all;">{{'Product_Detail_Size' | translate}}</label> -->
+                        <h6 class="sizes">{{'Product_Detail_Size' | translate}}:
+
+                          <ejs-chiplist id="chip-choice"  (click)="chipSizeclick($event)" selection="Single" cssClass="e-outline" >
+                            <e-chips>
+                              <ng-container *ngFor="let item_prSize of cartModel?.productSize; let i=index">
+                                <!-- <ng-template #template let-data>
+                                  <button type="button" class="btn btn-danger btn-sm">S</button>
+                                </ng-template> -->
+
+                                <e-chip [value]="item_prSize.id" [text]="item_prSize.size"></e-chip>
+                              </ng-container>
+
+                            </e-chips>
+                          </ejs-chiplist>
+                          <!-- <button type="button" class="btn btn-danger btn-sm">S</button>
+                          <button type="button" class="btn btn-light btn-sm">M</button>
+                          <button type="button" class="btn btn-light btn-sm">L</button> -->
+                        </h6>
+                        <!-- <select id="size" name="size" [(ngModel)]="cartModel.productSizeAdd" class="form-control">
                             <ng-container *ngFor="let item_prSize of cartModel?.productSize">
                                 <option [value]="item_prSize.id">{{item_prSize.size}}</option>
                             </ng-container>
-                            
-                          <!-- <option>M</option>
-                          <option>L</option>
-                          <option>XL</option> -->
-                        </select>
+
+                        </select> -->
                       </div>
-                      <div class="col-md-6">
-                        <label for="color" style="word-break: break-all;">{{'Product_Detail_Topping' | translate}}</label>
+                      <div class="col-md-12" *ngIf="cartModel?.productOption.length > 0">
+
+                        <h6 class="sizes">{{'Product_Detail_Topping' | translate}}:
+
+                          <ejs-chiplist id="chip2" (click)="chipOptionclick($event)"  cssClass="e-outline"  selection="Multiple">
+                            <e-chips>
+                              <ng-container *ngFor="let item_prOption of cartModel?.productOption; let i=index">
+
+                                <e-chip [value]="item_prOption.id" [text]="item_prOption.topping"></e-chip>
+                              </ng-container>
+
+                            </e-chips>
+                          </ejs-chiplist>
+                        </h6>
+                        <!-- <label for="color" style="word-break: break-all;">{{'Product_Detail_Topping' | translate}}</label>
                         <select id="color" [(ngModel)]="cartModel.productOptionAdd" name="color" class="form-control">
                             <ng-container *ngFor="let item_prOption of cartModel?.productOption">
                                 <option [value]="item_prOption.id">{{item_prOption.topping}}</option>
                             </ng-container>
-                        </select>
+                        </select> -->
                       </div>
                     </div>
                     <div class="product-count">
@@ -457,7 +485,7 @@
             </div>
           </div>
     </div>
-  
+
     <!-- <div class="modal-footer">
       <div class="mr-auto" *ngIf="model?.id > 0">
         <p>
@@ -500,7 +528,7 @@
       </button>
       <button
         type="submit"
-        [disabled]="!model.productName 
+        [disabled]="!model.productName
         || !model.categoryGuid
         || !model.productPrice
         "

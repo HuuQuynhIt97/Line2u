@@ -563,9 +563,9 @@ ISPService spService)
                     totalOrder = product.Quantity,
                     ProductSize = pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault() != null
                              ? pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
-
-                    ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
-                             ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
+                    ProductOption = calculator(product.ProductOption),
+                    //ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
+                    //         ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                     Price = product.Quantity * product.Price
                 };
 
@@ -623,9 +623,9 @@ ISPService spService)
                     productPrice = product.Price,
                     ProductSize = pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault() != null
                              ? pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
-
-                    ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
-                             ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
+                    ProductOption = calculator(product.ProductOption),
+                    //ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
+                    //         ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                     Guid = item.Guid,
                     Qty = product.Quantity,
                     totalOrder = product.Quantity,
@@ -642,7 +642,21 @@ ISPService spService)
 
             return list;
         }
-
+        private double calculator(string item)
+        {
+            double result = 0;
+            double result_tamp = 0;
+            var items = item.Split(',');
+            foreach (var item_plit in items)
+            {
+                var option = _repoProductOption.FindByID(item_plit.ToDecimal()).Price;
+                if (option != null)
+                {
+                    result_tamp = result_tamp + option.ToDouble();
+                }
+            }
+            return result_tamp;
+        }
         public async Task<object> GetDetailOrder(string id, string storeGuid)
         {
            

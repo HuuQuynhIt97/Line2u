@@ -34,7 +34,7 @@ export class RestaurantrightsidebarComponent implements OnInit {
     private serviceStore: StoreProfileService,
     private alertify: AlertifyService,
     private toastr: ToastrService,
-  ) { 
+  ) {
     this.dataService.currentMessage.subscribe((res: any) => {
       if(res === 'load cart') {
         this.cartCountTotal()
@@ -121,6 +121,8 @@ export class RestaurantrightsidebarComponent implements OnInit {
         replaceUrl: true,
       });
     }else {
+      console.log(item)
+      this.cartModel = {...item}
       this.cartModel.accountUid = this.user.uid
       this.cartModel.createBy = this.user.id
       this.cartModel.quantity = 1
@@ -128,6 +130,10 @@ export class RestaurantrightsidebarComponent implements OnInit {
       this.cartModel.storeGuid = item.storeGuid
       this.cartModel.productId = item.productId
       this.cartModel.productPrice = item.productPrice
+      if(item.cartId > 0) {
+        this.cartModel.productSizeAdd = item.productSizeAdd
+        this.cartModel.productOptionAdd = item.productOptionAdd
+      }
       this.serviceCart.add(this.cartModel).subscribe(res => {
         this.toast.success(this.translate.instant('Add_To_Cart_Success'))
         this.cartCountTotal()
@@ -146,7 +152,7 @@ export class RestaurantrightsidebarComponent implements OnInit {
       localStorage.setItem('isLogin_Cus',uri)
       this.router.navigate([`home/store/shop-cart/check-out/payment`])
     }
-   
+
   }
   safeHtml(html) {
     return this.sanitizer.bypassSecurityTrustHtml(html);

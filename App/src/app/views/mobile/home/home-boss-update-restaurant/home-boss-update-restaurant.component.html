@@ -56,11 +56,11 @@
                 </ul>
                 <div class="step-footer">
                   <button class="btn-first white-btn none" id="prev-1">Previous</button>
-                  <button class="btn-first white-btn none" id="prev-2">Previous</button>
-                  <button class="btn-first white-btn none" id="prev-3">Previous</button>
-                  <button class="btn-first white-btn" id="next-1">Next</button>
-                  <button class="btn-first white-btn none" id="next-2">Next</button>
-                  <button class="btn-first white-btn none" id="next-3">Next</button>
+                  <button class="btn-first white-btn none" (click)="loadCategoryProductComponent()" id="prev-2">Previous</button>
+                  <button class="btn-first white-btn none" (click)="loadBannerNewComponent()" id="prev-3">Previous</button>
+                  <button class="btn-first white-btn" (click)="loadCategoryProductComponent()" id="next-1">Next</button>
+                  <button class="btn-first white-btn none" (click)="loadBannerNewComponent()" id="next-2">Next</button>
+                  <button class="btn-first white-btn none" (click)="loadPreviewComponent()" id="next-3">Next</button>
                   <button class="btn-first white-btn none" id="finish-1">Finish</button>
                 </div>
               </div>
@@ -76,14 +76,14 @@
                           </div>
                         </div>
                         <app-store-profile></app-store-profile>
-                        
+
                         <div class="step-footer">
                           <button class="btn-first white-btn none" id="prev-1">Previous</button>
-                          <button class="btn-first white-btn none" id="prev-2">Previous</button>
-                          <button class="btn-first white-btn none" id="prev-3">Previous</button>
-                          <button class="btn-first white-btn" id="next-1">Next</button>
-                          <button class="btn-first white-btn none" id="next-2">Next</button>
-                          <button class="btn-first white-btn none" id="next-3">Next</button>
+                          <button class="btn-first white-btn none" (click)="loadCategoryProductComponent()" id="prev-2">Previous</button>
+                          <button class="btn-first white-btn none" (click)="loadBannerNewComponent()" id="prev-3">Previous</button>
+                          <button class="btn-first white-btn" (click)="loadCategoryProductComponent()" id="next-1">Next</button>
+                          <button class="btn-first white-btn none" (click)="loadBannerNewComponent()" id="next-2">Next</button>
+                          <button class="btn-first white-btn none" (click)="loadPreviewComponent()" id="next-3">Next</button>
                           <button class="btn-first white-btn none" id="finish-1">Finish</button>
                         </div>
                       </form>
@@ -124,7 +124,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="step-tab-panel" id="steppanel4">
                     <div class="thankmsg-sec">
                       <app-home-store-mobile-preview *ngIf="IsloadPreviewComponent"></app-home-store-mobile-preview>
@@ -136,7 +136,7 @@
           </div>
         </div>
       </div>
-  
+
     </div>
   </div>
 </section>

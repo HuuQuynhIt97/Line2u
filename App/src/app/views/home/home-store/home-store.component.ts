@@ -31,6 +31,7 @@ import { CartService } from 'src/app/_core/_service/evse/cart.service';
 import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { ClickEventArgs } from '@syncfusion/ej2-angular-buttons';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
@@ -62,8 +63,8 @@ export class HomeStoreComponent implements OnInit {
   logo: any;
   storeInfo: StoreProfile = {} as StoreProfile;
   cartModel: Cart = {} as Cart;
-  mainCategory: any 
-  products: any 
+  mainCategory: any
+  products: any
   count: any = 0;
   modalReference: NgbModalRef;
   cartDetail: Products[] = [];
@@ -98,6 +99,7 @@ export class HomeStoreComponent implements OnInit {
 	hovered = 0;
 	readonly = false;
   comment: string
+  choiceSelected = [];
   constructor(
     private spinner: NgxSpinnerService,
     private renderer: Renderer2,
@@ -120,7 +122,7 @@ export class HomeStoreComponent implements OnInit {
     private authService: AuthService,
     public modalService: NgbModal
 
-  ) { 
+  ) {
     this.responsiveOptions = [{
       breakpoint: '1024px',
       numVisible: 1,
@@ -138,7 +140,7 @@ export class HomeStoreComponent implements OnInit {
     this.subscription.unsubscribe();
     // this.removeLocalStore('isLogin_Cus')
   }
-  
+
   ngOnInit() {
     if (this.authService.loggedIn()) {
       this.isLogin = true
@@ -152,7 +154,7 @@ export class HomeStoreComponent implements OnInit {
       localStorage.setItem('table',tableId)
     }
     console.log(tableId)
-    this.getStoreInfor(storeId) 
+    this.getStoreInfor(storeId)
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
@@ -162,7 +164,45 @@ export class HomeStoreComponent implements OnInit {
     // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     this.cartAmountTotal()
     this.cartCountTotal();
-   
+
+  }
+
+  chipSizeclick(e) {
+    if(e.text){
+      if(e.selected) {
+        this.cartModel.productSizeAdd = e.data.value
+      }else {
+        this.cartModel.productSizeAdd = null
+      }
+    }
+  }
+
+  chipOptionclick(e) {
+    if(e.text){
+      console.log('chipOptionclick', e)
+      if(e.selected) {
+        console.log('select')
+        this.choiceSelected.push(e.data.value)
+      }else {
+        console.log('deselect')
+        for(let i = 0; i < this.choiceSelected.length; i++) {
+          if (this.choiceSelected[i] === e.data.value)
+          {
+            this.choiceSelected.splice(i, 1)
+          }
+        }
+        this.choiceSelected.slice(e.data.value)
+      }
+      console.log(this.choiceSelected)
+    }
+  }
+  chipOptionDelete(e) {
+    console.log('chipOptionDelete',e)
+    if(e.text){
+      console.log('chipOptionDelete', e.data)
+
+      console.log(this.choiceSelected)
+    }
   }
   cancelComment() {
     this.comment = ''
@@ -316,9 +356,15 @@ export class HomeStoreComponent implements OnInit {
     this.cartModel.quantity = this.cartModel.quantity + 1
   }
   addCartPrdetail() {
-    console.log(this.cartModel)
+    this.cartModel.productOptionAdd = this.choiceSelected.join()
+    console.log(this.cartModel.productOptionAdd)
+    if(this.cartModel.productSizeAdd === null && this.cartModel.productSize.length > 0) {
+      this.toast.warning(this.translate.instant('PLEASE_CHOOSE_SIZE'))
+      return;
+    }
     this.serviceCart.add(this.cartModel).subscribe(res => {
       this.toast.success(this.translate.instant('Add_To_Cart_Success'))
+      this.choiceSelected = []
       this.cartCountTotal()
       this.getProducts(this.storeInfo.accountGuid,this.user?.uid)
       this.dataService.changeMessage('load cart')
@@ -492,8 +538,8 @@ export class HomeStoreComponent implements OnInit {
   removeLocalStore(key: string) {
     localStorage.removeItem(key);
   }
-  
- 
+
+
   setLocalStore(key: string, value: any) {
     localStorage.removeItem(key);
     let details = value || [];
@@ -545,11 +591,11 @@ export class HomeStoreComponent implements OnInit {
       this.news = res
     })
   }
- 
+
   ngAfterViewInit(): void {
-    
+
     $(function () {
-     
+
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');

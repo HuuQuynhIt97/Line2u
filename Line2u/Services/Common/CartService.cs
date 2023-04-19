@@ -132,7 +132,6 @@ ISPService spService)
             && o.Status == 1
             && o.IsCheckout == 0
             && o.ProductSize == model.productSizeAdd
-            && o.ProductOption == model.productOptionAdd
             ).FirstOrDefault();
             if (check_item != null)
             {
@@ -542,9 +541,9 @@ ISPService spService)
                              ProductPrices = y.ProductPrice,
                              ProductSize = product_size.Where(o => o.Id == x.ProductSize).FirstOrDefault() != null 
                              ? product_size.Where(o => o.Id == x.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
-
-                             ProductOption = product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault() != null
-                             ? product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
+                             ProductOption = calculator(x.ProductOption),
+                             //ProductOption = product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault() != null
+                             //? product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                              y.ProductPriceDiscount,
                              ProductDescription = string.IsNullOrEmpty(y.ProductDescription) ? "" : y.ProductDescription,
                              ProductSizeAdd = x.ProductSize,
@@ -553,7 +552,21 @@ ISPService spService)
                          }).ToList();
             return result;
         }
-
+        private double calculator(string item)
+        {
+            double result = 0;
+            double result_tamp = 0;
+            var items = item.Split(',');
+            foreach (var item_plit in items)
+            {
+                var option = _repoProductOption.FindByID(item_plit.ToDecimal()).Price;
+                if (option != null)
+                {
+                    result_tamp = result_tamp + option.ToDouble();
+                }
+            }
+            return result_tamp;
+        }
         public async Task<double> CartAmountTotal(string accountGuid)
         {
             var pro_size = _repoProductSize.FindAll().ToList();
@@ -577,12 +590,13 @@ ISPService spService)
                 x.Quantity,
                 productSize = pro_size.Where(z => z.Id == x.ProductSize).FirstOrDefault() != null
                 ? pro_size.Where(z => z.Id == x.ProductSize).FirstOrDefault().Price : "0",
-
-                productOption = pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault() != null
-                ? pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault().Price : "0",
+                productOption = calculator(x.ProductOption)
+                //productOption = pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault() != null
+                //? pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault().Price : "0",
 
             }).ToList();
             var resutl = item.Sum(o => (Convert.ToDouble(o.ProductPrice) + Convert.ToDouble(o.productSize) + Convert.ToDouble(o.productOption)) * o.Quantity);
+            //var resutl = item.Sum(o => (Convert.ToDouble(o.ProductPrice) + Convert.ToDouble(o.productSize) ) * o.Quantity);
             return resutl ?? 0;
         }
        

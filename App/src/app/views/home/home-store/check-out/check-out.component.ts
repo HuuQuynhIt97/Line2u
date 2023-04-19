@@ -69,8 +69,8 @@ export class CheckOutComponent implements OnInit {
   news: any;
   logo: any;
   storeInfo: StoreProfile = {} as StoreProfile;
-  mainCategory: any 
-  products: any 
+  mainCategory: any
+  products: any
   count: any = 0;
   modalReference: NgbModalRef;
   cartDetail: Cart[] = [];
@@ -134,7 +134,7 @@ export class CheckOutComponent implements OnInit {
     private _location: Location,
     private serviceCart: CartService
 
-  ) { 
+  ) {
     this.responsiveOptions = [{
       breakpoint: '1024px',
       numVisible: 1,
@@ -159,7 +159,7 @@ export class CheckOutComponent implements OnInit {
     this.subscription.unsubscribe();
     // this.removeLocalStore('isLogin_Cus')
   }
-  
+
   ngOnInit() {
     this.spinner.show()
     if (this.authService.loggedIn()) {
@@ -169,7 +169,7 @@ export class CheckOutComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor() 
+    this.getStoreInfor()
     this.lang = this.capitalize(localStorage.getItem("lang"));
     // this.getMenu();
     this.loadLogoData();
@@ -182,7 +182,7 @@ export class CheckOutComponent implements OnInit {
     // this.count = cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     // this.cartDetail = this.getLocalStore("cart_detail");
-    
+
   }
   BackToShoppping() {
     this.router.navigate(['home'])
@@ -261,6 +261,7 @@ export class CheckOutComponent implements OnInit {
         replaceUrl: true,
       });
     }else {
+      this.cartModel = {...item}
       this.cartModel.accountUid = this.user.uid
       this.cartModel.createBy = this.user.id
       this.cartModel.quantity = 1
@@ -268,6 +269,10 @@ export class CheckOutComponent implements OnInit {
       this.cartModel.storeGuid = item.storeGuid
       this.cartModel.productId = item.productId
       this.cartModel.productPrice = item.productPrice
+      if(item.cartId > 0) {
+        this.cartModel.productSizeAdd = item.productSizeAdd
+        this.cartModel.productOptionAdd = item.productOptionAdd
+      }
       this.serviceCart.add(this.cartModel).subscribe(res => {
         this.toast.success(this.translate.instant('Add_To_Cart_Success'))
         this.cartCountTotal()
@@ -339,11 +344,11 @@ export class CheckOutComponent implements OnInit {
       //       imageUrl: this.imagePath(item.photoPath)
       //     }
       // })
-      // const payment = 
+      // const payment =
       // {
       //   amount: this.totalPrice,
       //   currency: "TWD",
-      //   orderId: Date.now().toString(), 
+      //   orderId: Date.now().toString(),
       //   packages: [
       //     {
       //       id: this.generateGuid(),
@@ -364,7 +369,7 @@ export class CheckOutComponent implements OnInit {
       //     return window.location.assign(res.info.paymentUrl.web)
       //   }
       // })
-      
+
     }
   }
   confrimLinePay(transactionId,orderId,data){
@@ -374,7 +379,7 @@ export class CheckOutComponent implements OnInit {
         this.dataService.changeMessage('load cart')
         this.router.navigate([`home/store/order-tracking`])
       }
-    }) 
+    })
   }
   cartCountTotal() {
     this.serviceCart.cartCountTotal(this.user?.uid).subscribe(res => {
@@ -572,7 +577,7 @@ export class CheckOutComponent implements OnInit {
     // this.cartDetail = this.getLocalStore("cart_detail");
     // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
-  
+
   confirmOrder() {
 
   }
@@ -604,15 +609,15 @@ export class CheckOutComponent implements OnInit {
       return false;
     }
 
-    
+
 
     return true;
   }
   removeLocalStore(key: string) {
     localStorage.removeItem(key);
   }
-  
- 
+
+
   setLocalStore(key: string, value: any) {
     localStorage.removeItem(key);
     let details = value || [];
@@ -661,11 +666,11 @@ export class CheckOutComponent implements OnInit {
       this.news = res
     })
   }
- 
+
   ngAfterViewInit(): void {
-    
+
     $(function () {
-     
+
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');

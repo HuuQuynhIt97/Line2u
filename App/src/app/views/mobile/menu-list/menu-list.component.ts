@@ -206,7 +206,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     this.fruitCtrl.setValue(null);
   }
 
-  
+
   loadAllData() {
     this.loadDataAdmin()
     this.loadDataCategoryAdmin()
@@ -227,18 +227,18 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     // }
   }
   dataBound() {
-    
+
 }
   loadDataCategory() {
     this.serviceMainCategory.getCategoryByUserID(this.storeInfo.accountGuid).subscribe(res => {
       this.categoryData = res
-    
+
     })
   }
   loadDataCategoryAdmin() {
     this.serviceMainCategory.getCategoryByUserIDAndStore(this.user.uid,this.store).subscribe(res => {
       this.categoryData = res
-    
+
     })
   }
   loadLang() {
@@ -327,7 +327,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });
-    
+
     this.spinner.hide()
   }
 
@@ -393,14 +393,21 @@ export class MenuListComponent extends BaseComponent implements OnInit {
               Price: item.price
             }
           })
-      
+          if(productSizeModel.filter(x => x.Price === null).length > 0) {
+            this.toast.warning(this.translate.instant('SIZE PRICE IS REQUIRE'))
+            return;
+          }
           const productOptionModel = this.model.productOption.map(item => {
             return {
               Topping: item.name,
               ProductId: res.data.id,
               Price: item.price
             }
-          }) 
+          })
+          if(productOptionModel.filter(x => x.Price === null).length > 0) {
+            this.toast.warning(this.translate.instant('OPTION PRICE IS REQUIRE'))
+            return;
+          }
           this.addProSize(productSizeModel)
           this.addProOption(productOptionModel)
           this.toast.success(this.alert.created_ok_msg);
@@ -423,7 +430,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
   //     this.alert.createTitle,
   //     this.alert.createMessage,
   //     () => {
-        
+
   //     }, () => {
   //       this.toast.error(this.alert.cancelMessage);
   //     }
@@ -452,8 +459,10 @@ export class MenuListComponent extends BaseComponent implements OnInit {
         Price: item.price
       }
     })
-    console.log(productSizeModel)
-
+    if(productSizeModel.filter(x => x.Price === null).length > 0) {
+      this.toast.warning(this.translate.instant('SIZE PRICE IS REQUIRE'))
+      return;
+    }
     const productOptionModel = this.model.productOption.map(item => {
       return {
         Topping: item.name,
@@ -461,6 +470,10 @@ export class MenuListComponent extends BaseComponent implements OnInit {
         Price: item.price
       }
     })
+    if(productOptionModel.filter(x => x.Price === null).length > 0) {
+      this.toast.warning(this.translate.instant('OPTION PRICE IS REQUIRE'))
+      return;
+    }
     this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
       (res) => {
         if (res.success === true) {
@@ -472,14 +485,14 @@ export class MenuListComponent extends BaseComponent implements OnInit {
           this.modalReference.dismiss();
           this.formArraySize = new FormArray([])
           this.formArrayOption = new FormArray([])
-          
+
         } else {
           this.toast.warning(this.alert.system_error_msg);
         }
       },
       (error) => {
         this.toast.warning(this.alert.system_error_msg);
-        
+
       }
     );
   //  this.alertify.confirm4(
@@ -488,7 +501,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
   //     this.alert.updateTitle,
   //     this.alert.updateMessage,
   //     () => {
-        
+
   //     }, () => {
   //       this.toast.error(this.alert.cancelMessage);
   //     }

@@ -58,7 +58,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { ChipListModule } from '@syncfusion/ej2-angular-buttons';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './views/layout/layout/layout.component';
@@ -201,6 +201,7 @@ if (!lang) {
   imports: [
     BrowserModule,
     // TagInputModule,
+    ChipListModule,
     Common2Module,
     BrowserAnimationsModule,
     AppRoutingModule,
