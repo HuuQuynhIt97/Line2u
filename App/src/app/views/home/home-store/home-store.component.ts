@@ -153,7 +153,6 @@ export class HomeStoreComponent implements OnInit {
     if(tableId !== null) {
       localStorage.setItem('table',tableId)
     }
-    console.log(tableId)
     this.getStoreInfor(storeId)
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
@@ -179,12 +178,9 @@ export class HomeStoreComponent implements OnInit {
 
   chipOptionclick(e) {
     if(e.text){
-      console.log('chipOptionclick', e)
       if(e.selected) {
-        console.log('select')
         this.choiceSelected.push(e.data.value)
       }else {
-        console.log('deselect')
         for(let i = 0; i < this.choiceSelected.length; i++) {
           if (this.choiceSelected[i] === e.data.value)
           {
@@ -193,15 +189,11 @@ export class HomeStoreComponent implements OnInit {
         }
         this.choiceSelected.slice(e.data.value)
       }
-      console.log(this.choiceSelected)
     }
   }
   chipOptionDelete(e) {
-    console.log('chipOptionDelete',e)
     if(e.text){
-      console.log('chipOptionDelete', e.data)
 
-      console.log(this.choiceSelected)
     }
   }
   cancelComment() {
@@ -343,7 +335,6 @@ export class HomeStoreComponent implements OnInit {
     }
   }
   minusPrdetail() {
-    console.log('minusPrdetail')
     if(this.cartModel.quantity  === 0)
     {
       return;
@@ -352,15 +343,16 @@ export class HomeStoreComponent implements OnInit {
     }
   }
   plusPrdetail() {
-    console.log('plusPrdetail')
     this.cartModel.quantity = this.cartModel.quantity + 1
   }
   addCartPrdetail() {
-    this.cartModel.productOptionAdd = this.choiceSelected.join()
-    console.log(this.cartModel.productOptionAdd)
+    this.cartModel.productOptionAdd = this.choiceSelected.sort((a,b) => a-b).join()
     if(this.cartModel.productSizeAdd === null && this.cartModel.productSize.length > 0) {
       this.toast.warning(this.translate.instant('PLEASE_CHOOSE_SIZE'))
       return;
+    }
+    if(this.cartModel.productOptionAdd === null || this.cartModel.productOptionAdd === '' || this.cartModel.productOptionAdd.length === 0) {
+      this.cartModel.productOptionAdd = null
     }
     this.serviceCart.add(this.cartModel).subscribe(res => {
       this.toast.success(this.translate.instant('Add_To_Cart_Success'))
@@ -401,8 +393,6 @@ export class HomeStoreComponent implements OnInit {
         this.cartModel.productSizeAdd = item.productSizeAdd
         this.cartModel.productOptionAdd = item.productOptionAdd
       }
-      console.log('Products',item)
-      console.log(this.cartModel)
       this.spinner.hide()
       // this.serviceCart.add(this.cartModel).subscribe(res => {
       //   this.toast.success(this.translate.instant('Add_To_Cart_Success'))
@@ -563,7 +553,6 @@ export class HomeStoreComponent implements OnInit {
   }
   getStoreInfor(storeId) {
     this.service.getById(storeId).subscribe(res => {
-      console.log(res)
       this.storeInfo = res;
       this.getCategoryOfStore(this.storeInfo.accountGuid)
       this.getProducts(this.storeInfo.accountGuid , this.user?.uid)

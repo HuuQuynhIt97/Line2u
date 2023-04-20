@@ -39,45 +39,47 @@
                         <p class="text-light-green fw-700">
                           <span class="text-dark-white">
                             {{item.quantity}}
-                              </span> 
+                              </span>
                               {{item.productName}}
                           </p>
-                        <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
+                        <span *ngIf="item.productSize > 0" class="text-light-white fw-700" >
+                          <p>{{'Size' | translate}}: {{item.productSizeTitle}}</p>
+                          <p>{{'Topping' | translate}}: {{item.productOptionTitle}}</p>
                         </span>
                         <div class="delete-btn" style="font-size: 20px;">
-                          <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                          <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white">
                             <i class="far fa-trash-alt" id="minus-circle"></i>
                           </a>
                         </div>
-            
+
                       </a>
                     </div>
                     <div class="delete-btn minus-circle" style="font-size: 20px;">
-                      <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                      <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white">
                         <i class="fa fa-minus-circle" id="minus-circle" aria-hidden="true"></i>
                       </a>
                     </div>
                     <span style="color: transparent;"> ||| </span>
                     <div class="delete-btn" style="font-size: 20px;">
-                      <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                      <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white">
                         <i class="fa fa-plus-circle" id="minus-circle" aria-hidden="true"></i>
                       </a>
                     </div>
                     <span style="color: transparent;"> ||| </span>
-                    
-                    <div class="price"> <a href="#" class="text-dark-white fw-500">
-                      {{(item.productPrice * item.quantity) + (item.quantity * item.productSize) + (item.quantity * item.productOption)}}
+
+                    <div class="price" style="font-size: 20px;"> <a href="#" class="text-dark-white fw-500">
+                      ${{item.productOfAllPrice}}
                       </a>
                     </div>
                   </div>
                 </div>
             </ng-container>
-            
+
             <div class="item-total">
                 <div class="total-price border-0"> <span class="text-dark-white fw-700">{{'Items subtotal' | translate}}:</span>
-                    <span class="text-dark-white fw-700">${{totalPrice}}</span>
+                    <span class="text-dark-white fw-700" style="font-size: 20px;">${{totalPrice}}</span>
                 </div>
-              
+
             </div>
            </ng-container>
            <ng-template #elseTemplate>
@@ -86,14 +88,14 @@
                 </div>
             </div>
            </ng-template>
-           
-            
-         
+
+
+
         </div>
-        <div class="card-footer padding-15"> 
-          <a (click)="openCart()" style="cursor: pointer;color: white;" class="btn-first green-btns  full-width fw-500">
+        <div class="card-footer padding-15">
+          <a (click)="openCart()" style="cursor: pointer;color: white;font-size: 15px;" class="btn-first green-btns  full-width fw-500">
           {{'rightSidebar.ProceedToCheckout.label' | translate}}
-          <a style="float: right;color: white;">Total: ${{totalPrice}}</a>
+          <a style="float: right;color: white;font-size: 15px;">Total: ${{totalPrice}}</a>
           </a>
         </div>
       </div>

@@ -22,6 +22,7 @@ using Org.BouncyCastle.Crypto;
 using static Line2u.Constants.SP;
 using Microsoft.AspNetCore.Mvc;
 using Syncfusion.JavaScript.Models;
+using Castle.Core.Internal;
 
 namespace Line2u.Services
 {
@@ -126,16 +127,19 @@ ISPService spService)
         }
         public override async Task<OperationResult> AddAsync(CartDto model)
         {
+
+            var option = model.productOptionAdd;
             var check_item = _repo.FindAll(o => o.ProductId == model.ProductId 
             && o.StoreGuid == model.StoreGuid 
             && o.AccountUid == model.AccountUid
             && o.Status == 1
             && o.IsCheckout == 0
             && o.ProductSize == model.productSizeAdd
+            && o.ProductOption.Equals(model.productOptionAdd)
             ).FirstOrDefault();
             if (check_item != null)
             {
-                check_item.Quantity = check_item.Quantity + 1;
+                check_item.Quantity = check_item.Quantity + model.Quantity;
                 //check_item.ProductSize = model.productSizeAdd;
                 //check_item.ProductOption = model.productOptionAdd;
                 _repo.Update(check_item);
@@ -518,7 +522,7 @@ ISPService spService)
             var temp_2 = await _repoProduct.FindAll().ToListAsync();
             var product_size = _repoProductSize.FindAll();
             var product_option = _repoProductOption.FindAll();
-            var result = (from x in temp_1
+            var result_tamp = (from x in temp_1
                          join y in temp_2 on x.ProductGuid equals y.Guid
                          select new
                          {
@@ -541,20 +545,56 @@ ISPService spService)
                              ProductPrices = y.ProductPrice,
                              ProductSize = product_size.Where(o => o.Id == x.ProductSize).FirstOrDefault() != null 
                              ? product_size.Where(o => o.Id == x.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
-                             ProductOption = calculator(x.ProductOption),
+                             ProductOption = string.IsNullOrEmpty(x.ProductOption) ? 0 : calculator(x.ProductOption),
                              //ProductOption = product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault() != null
                              //? product_option.Where(o => o.Id == x.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
                              y.ProductPriceDiscount,
                              ProductDescription = string.IsNullOrEmpty(y.ProductDescription) ? "" : y.ProductDescription,
                              ProductSizeAdd = x.ProductSize,
-                             ProductOptionAdd = x.ProductOption
+                             ProductOptionAdd = x.ProductOption,
+                             ProductSizeTitle = string.IsNullOrEmpty(x.ProductSize.ToString()) ? "" : SizeTitle(x.ProductSize),
+                             ProductOptionTitle = string.IsNullOrEmpty(x.ProductOption) ? "" : ToppingTitle(x.ProductOption),
+                             
 
                          }).ToList();
+
+            var result = result_tamp.Select(x => new
+            {
+                x.Id,
+                x.CreateDate,
+                x.CreateBy,
+                x.Quantity,
+                x.UpdateBy,
+                x.UpdateDate,
+                x.Status,
+                x.ProductId,
+                x.ProductGuid,
+                x.Guid,
+                x.AccountUid,
+                x.StoreGuid,
+                x.IsCheckout,
+                x.ProductPrice,
+                x.PhotoPath,
+                x.ProductName,
+                x.ProductPrices,
+                x.ProductSize,
+                x.ProductOption,
+                x.ProductPriceDiscount,
+                x.ProductDescription,
+                x.ProductSizeAdd,
+                x.ProductOptionAdd,
+                x.ProductSizeTitle,
+                x.ProductOptionTitle,
+                ProductOfAllPrice = Math.Round((
+                  (Convert.ToDouble(x.ProductPrice) * x.Quantity.ToDouble())
+                + (Convert.ToDouble(x.ProductSize) * x.Quantity.ToDouble())
+                + (Convert.ToDouble(x.ProductOption) * x.Quantity.ToDouble())
+                ),2)
+            }).ToList();
             return result;
         }
         private double calculator(string item)
         {
-            double result = 0;
             double result_tamp = 0;
             var items = item.Split(',');
             foreach (var item_plit in items)
@@ -566,6 +606,27 @@ ISPService spService)
                 }
             }
             return result_tamp;
+        }
+
+        private string ToppingTitle(string item)
+        {
+            var result_tamp = new List<string>();
+            var items = item.Split(',');
+            foreach (var item_plit in items)
+            {
+                var option = _repoProductOption.FindByID(item_plit.ToDecimal()).Topping;
+                if (option != null)
+                {
+                   result_tamp.Add(option);
+                }
+            }
+            return string.Join(',', result_tamp);
+        }
+
+        private string SizeTitle(decimal? item)
+        {
+            var size = _repoProductSize.FindByID(item.ToDecimal()).Size;
+            return size;
         }
         public async Task<double> CartAmountTotal(string accountGuid)
         {
@@ -590,21 +651,21 @@ ISPService spService)
                 x.Quantity,
                 productSize = pro_size.Where(z => z.Id == x.ProductSize).FirstOrDefault() != null
                 ? pro_size.Where(z => z.Id == x.ProductSize).FirstOrDefault().Price : "0",
-                productOption = calculator(x.ProductOption)
+                productOption = string.IsNullOrEmpty(x.ProductOption) ? 0 : calculator(x.ProductOption)
                 //productOption = pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault() != null
                 //? pro_option.Where(z => z.Id == x.ProductOption).FirstOrDefault().Price : "0",
 
             }).ToList();
             var resutl = item.Sum(o => (Convert.ToDouble(o.ProductPrice) + Convert.ToDouble(o.productSize) + Convert.ToDouble(o.productOption)) * o.Quantity);
             //var resutl = item.Sum(o => (Convert.ToDouble(o.ProductPrice) + Convert.ToDouble(o.productSize) ) * o.Quantity);
-            return resutl ?? 0;
+            return Math.Round(resutl.Value, 2);
         }
        
         public async Task<object> CartAmountTotal2(string accountGuid)
         {
             var item_tamp = _repo.FindAll(x => x.AccountUid == accountGuid && x.IsCheckout == 0).Select(o => new
             {
-                total = Convert.ToInt32(o.ProductPrice) * o.Quantity
+                total =  Convert.ToInt32(o.ProductPrice) * o.Quantity
             });
             //var item = item_tamp.Sum(x => x.total);
             return item_tamp;

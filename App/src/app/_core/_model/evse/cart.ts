@@ -24,4 +24,5 @@ export interface Cart {
     productSizeAdd: any;
     productOption: any;
     productOptionAdd: any;
+    productOfAllPrice: any;
 }

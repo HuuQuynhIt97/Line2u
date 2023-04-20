@@ -191,11 +191,48 @@
             <button class="btn btn-primary btn-sm" (click)="formArraySize.push(getFormGroup(null))">Add</button>
             <div [formGroup]="formArraySize">
               <div *ngFor="let group of formArraySize.controls; let i = index" [formGroup]="group">
+
+
+                <div class="form-row align-items-center">
+                  <div class="col-sm-6 md-6 my-1">
+                    <label class="sr-only" >Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div *ngIf="group.get('name').invalid" style="color: red" class="input-group-text">*</div>
+                      </div>
+                      <input type="text" class="form-control"  placeholder="S,M,L....." formControlName="name">
+                    </div>
+                  </div>
+                  <div class="col-sm-6 md-6 my-1">
+                    <label class="sr-only" >Price</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div *ngIf="group.get('price').invalid" style="color: red" class="input-group-text">*</div>
+                      </div>
+                      <input type="text" class="form-control"  placeholder="price....." formControlName="price">
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span *ngIf="group.get('name').invalid" class="input-group-text" style="color: red" >*</span>
+                  </div>
+                  <input class="form-control" placeholder="S,M,L....." formControlName="name" />
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span *ngIf="group.get('price').invalid" style="color: red" >*</span>
+                  </div>
+                  <input class="form-control" placeholder="price....." formControlName="price" />
+                </div> -->
+
+                <!-- <span *ngIf="group.get('name').invalid && group.get('name').touched" style="color: red" >*</span>
                 <input class="form-control" placeholder="S,M,L....." formControlName="name" />
-                  <span *ngIf="group.get('name').invalid && group.get('name').touched" style="color: red" >*</span
-                >
-                <input class="form-control" placeholder="price....." formControlName="price" />
-                <button class="btn btn-warning btn-sm" (click)="formArraySize.removeAt(i)">Remove</button>
+
+                <span *ngIf="group.get('price').invalid && group.get('price').touched" style="color: red" >*</span>
+                <input class="form-control" placeholder="price....." formControlName="price" /> -->
+                <button class="btn btn-warning btn-sm" (click)="formArraySize.removeAt(i)">{{'Remove' | translate}}</button>
               </div>
             </div>
             <!-- <mat-form-field class="example-chip-list">
@@ -256,11 +293,32 @@
             <button class="btn btn-primary btn-sm" (click)="formArrayOption.push(getFormGroupOption(null))">Add</button>
             <div [formGroup]="formArrayOption">
               <div *ngFor="let group of formArrayOption.controls; let i = index" [formGroup]="group">
+
+                <div class="form-row align-items-center">
+                  <div class="col-sm-6 md-6 my-1">
+                    <label class="sr-only" >Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div *ngIf="group.get('name').invalid" style="color: red" class="input-group-text">*</div>
+                      </div>
+                      <input  class="form-control"  type="text" placeholder="Topping....." formControlName="name">
+                    </div>
+                  </div>
+                  <div class="col-sm-6 md-6 my-1">
+                    <label class="sr-only" >Price</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div *ngIf="group.get('price').invalid" style="color: red" class="input-group-text">*</div>
+                      </div>
+                      <input type="text" class="form-control"  placeholder="price....." formControlName="price">
+                    </div>
+                  </div>
+                </div>
+                <!-- <span *ngIf="group.get('name').invalid && group.get('name').touched" style="color: red" >*</span>
                 <input class="form-control" placeholder="Topping....." formControlName="name" />
-                  <span *ngIf="group.get('name').invalid && group.get('name').touched" style="color: red" >*</span
-                >
                 <input class="form-control" placeholder="price....." formControlName="price" />
-                <button class="btn btn-warning btn-sm" (click)="formArrayOption.removeAt(i)">Remove</button>
+                <span *ngIf="group.get('price').invalid && group.get('price').touched" style="color: red" >*</span> -->
+                <button class="btn btn-warning btn-sm" (click)="formArrayOption.removeAt(i)">{{'Remove' | translate}}</button>
               </div>
             </div>
           </div>

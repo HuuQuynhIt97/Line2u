@@ -145,10 +145,10 @@
                                                                                 <p class="text-success fw-600 no-margin">${{item.productPrice}}</p>
                                                                             </div>
                                                                             <div class="restaurent-product-label">
-                                                                                <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
+                                                                                <!-- <span (click)="removeCart(item)" class="rectangle-tag bg-gradient-orange text-custom-white">
                                                                                     <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11 8H4V7H11V8Z" fill="#ffffff" id="mainIconPathAttribute"></path> </svg>
-                                                                                </span>
-                                                                                <span (click)="addToCart(item,productQuickModal)" class="rectangle-tag bg-dark text-custom-white">
+                                                                                </span> -->
+                                                                                <span (click)="addToCart(item,productQuickModal)" class="rectangle-tag bg-gradient-orange text-custom-white">
                                                                                     <svg
                                                                                         aria-hidden="true"
                                                                                         focusable="false" class="fl-white"
@@ -408,9 +408,9 @@
                         <span>3 Reviews</span>
                       </div> -->
                         <div class="product-price-discount">
-                            <span>${{cartModel?.productPriceDiscount}}</span>
+                            <span>${{cartModel?.productPrice}}</span>
                             <span class="line-through">
-                                ${{cartModel?.productPrice}}
+                                ${{cartModel?.productPriceDiscount}}
                             </span>
                         </div>
                     </div>

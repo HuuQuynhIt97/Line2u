@@ -21,6 +21,7 @@ using Syncfusion.JavaScript.DataSources;
 using Org.BouncyCastle.Crypto;
 using static Line2u.Constants.SP;
 using OpenAI_API.Embedding;
+using Castle.Core.Internal;
 
 namespace Line2u.Services
 {
@@ -551,7 +552,7 @@ ISPService spService)
                 var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
                 var pro_size = _repoProductSize.FindAll().ToList();
                 var pro_option = _repoProductOption.FindAll().ToList();
-                var item_add = new
+                var item_add_tamp = new
                 {
                     ProductName = item.ProductName,
                     PhotoPath = item.PhotoPath,
@@ -563,10 +564,32 @@ ISPService spService)
                     totalOrder = product.Quantity,
                     ProductSize = pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault() != null
                              ? pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
-                    ProductOption = calculator(product.ProductOption),
-                    //ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
-                    //         ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
+                    ProductOption = string.IsNullOrEmpty(product.ProductOption) ? 0 : calculator(product.ProductOption),
+                    ProductSizeTitle = string.IsNullOrEmpty(product.ProductSize.ToString()) ? "" : SizeTitle(product.ProductSize),
+                    ProductOptionTitle = string.IsNullOrEmpty(product.ProductOption) ? "" : ToppingTitle(product.ProductOption),
                     Price = product.Quantity * product.Price
+                };
+
+                var item_add = new
+                {
+                    item_add_tamp.ProductName,
+                    item_add_tamp.PhotoPath,
+                    item_add_tamp.ProductDescription,
+                    item_add_tamp.Id,
+                    item_add_tamp.productPrice,
+                    item_add_tamp.Guid,
+                    item_add_tamp.Qty,
+                    item_add_tamp.totalOrder,
+                    item_add_tamp.ProductSize,
+                    item_add_tamp.ProductOption,
+                    item_add_tamp.ProductSizeTitle,
+                    item_add_tamp.ProductOptionTitle,
+                    item_add_tamp.Price,
+                    ProductOfAllPrice = Math.Round((
+                      (Convert.ToDouble(item_add_tamp.Price))
+                    + (Convert.ToDouble(item_add_tamp.ProductSize) * item_add_tamp.Qty.ToDouble())
+                    + (Convert.ToDouble(item_add_tamp.ProductOption) * item_add_tamp.Qty.ToDouble())
+                    ), 2)
                 };
 
                 list.Add(item_add);
@@ -574,34 +597,26 @@ ISPService spService)
 
             return list;
         }
-        //public async Task<object> GetTrackingOrderUser(int accountId)
-        //{
-        //    var order = await _repo.FindAll(o => o.AccountId == accountId.ToString()).ToListAsync();
-        //    var order_detail = await _repoOrderDetail.FindAll().ToListAsync();
-        //    var products = await _repoProduct.FindAll().ToListAsync();
-        //    var store = await _repoStoreProfile.FindAll().ToListAsync();
-        //    var result = (from x in order
-        //                  join y in order_detail on x.Guid equals y.OrderGuid
-        //                  let z = products.Where(o => o.Guid == y.ProductGuid).ToList()
-        //                  let storeProfile = store.Where(o => o.Guid == y.StoreGuid).FirstOrDefault()
-        //                  select new
-        //                  {
-        //                      orderID = x.Guid,
-        //                      orderDate = x.CreateDate,
-        //                      storeName = storeProfile != null ? storeProfile.StoreName : "N/A",
-        //                      orderPayment = x.PaymentType,
-        //                      orderTotal = y.Quantity * y.Price,
-        //                      list_product = z.Select(o => new {
-        //                          o.ProductName,
-        //                          o.PhotoPath,
-        //                          price = y.Quantity * y.Price,
-        //                          qty = y.Quantity
-        //                      })
-        //                  }).OrderByDescending(x => x.orderDate).ToList();
+        private string ToppingTitle(string item)
+        {
+            var result_tamp = new List<string>();
+            var items = item.Split(',');
+            foreach (var item_plit in items)
+            {
+                var option = _repoProductOption.FindByID(item_plit.ToDecimal()).Topping;
+                if (option != null)
+                {
+                    result_tamp.Add(option);
+                }
+            }
+            return string.Join(',', result_tamp);
+        }
 
-
-        //    return result;
-        //}
+        private string SizeTitle(decimal? item)
+        {
+            var size = _repoProductSize.FindByID(item.ToDecimal()).Size;
+            return size;
+        }
         private async Task<object> getListProducts(List<OrderDetail> data)
         {
             var pro_size = _repoProductSize.FindAll().ToList();
@@ -613,7 +628,7 @@ ISPService spService)
             {
                 var item = products.Where(o => o.Guid == product.ProductGuid).FirstOrDefault();
                 var storeProfile = store.Where(o => o.Guid == product.StoreGuid).FirstOrDefault();
-                var item_add = new
+                var item_add_tamp = new
                 {
                     ProductName = item.ProductName,
                     PhotoPath = item.PhotoPath,
@@ -623,20 +638,36 @@ ISPService spService)
                     productPrice = product.Price,
                     ProductSize = pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault() != null
                              ? pro_size.Where(o => o.Id == product.ProductSize).FirstOrDefault().Price.ToDouble() : 0,
-                    ProductOption = calculator(product.ProductOption),
-                    //ProductOption = pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault() != null
-                    //         ? pro_option.Where(o => o.Id == product.ProductOption).FirstOrDefault().Price.ToDouble() : 0,
+                    ProductOption = string.IsNullOrEmpty(product.ProductOption) ? 0 : calculator(product.ProductOption),
+                    ProductSizeTitle = string.IsNullOrEmpty(product.ProductSize.ToString()) ? "" : SizeTitle(product.ProductSize),
+                    ProductOptionTitle = string.IsNullOrEmpty(product.ProductOption) ? "" : ToppingTitle(product.ProductOption),
                     Guid = item.Guid,
                     Qty = product.Quantity,
                     totalOrder = product.Quantity,
                     Price = product.Quantity * product.Price
                 };
-                    
-                //    .Select(x => new {
-                //    ProductName = x.ProductName,
-                //    PhotoPath = x.PhotoPath,
-                //    Price = product.Quantity * product.Price
-                //});
+                var item_add = new
+                {
+                    item_add_tamp.ProductName,
+                    item_add_tamp.PhotoPath,
+                    item_add_tamp.storeName,
+                    item_add_tamp.ProductDescription,
+                    item_add_tamp.Id,
+                    item_add_tamp.productPrice,
+                    item_add_tamp.Guid,
+                    item_add_tamp.Qty,
+                    item_add_tamp.totalOrder,
+                    item_add_tamp.ProductSize,
+                    item_add_tamp.ProductOption,
+                    item_add_tamp.ProductSizeTitle,
+                    item_add_tamp.ProductOptionTitle,
+                    item_add_tamp.Price,
+                    ProductOfAllPrice = Math.Round((
+                      (Convert.ToDouble(item_add_tamp.Price))
+                    + (Convert.ToDouble(item_add_tamp.ProductSize) * item_add_tamp.Qty.ToDouble())
+                    + (Convert.ToDouble(item_add_tamp.ProductOption) * item_add_tamp.Qty.ToDouble())
+                    ), 2)
+                };
                 list.Add(item_add);
             }
 
@@ -644,7 +675,6 @@ ISPService spService)
         }
         private double calculator(string item)
         {
-            double result = 0;
             double result_tamp = 0;
             var items = item.Split(',');
             foreach (var item_plit in items)

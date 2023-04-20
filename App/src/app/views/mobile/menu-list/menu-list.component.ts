@@ -144,7 +144,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     data = data || ({} as any);
     return new FormGroup({
       name: new FormControl(data.name,Validators.required),
-      price: new FormControl(data.price),
+      price: new FormControl(data.price,Validators.required),
     });
   }
 
@@ -152,7 +152,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     data = data || ({} as any);
     return new FormGroup({
       name: new FormControl(data.name,Validators.required),
-      price: new FormControl(data.price),
+      price: new FormControl(data.price,Validators.required),
     });
   }
   addSize(event: MatChipInputEvent): void {

@@ -14,10 +14,10 @@
         </button>
       </div>
       <div class="col-3">
-        
+
       </div>
       <div class="col-3">
-        
+
       </div>
       <div class="col-3">
         <button (click)="addMoreOrder()" class="btn btn-success full-width">
@@ -49,10 +49,17 @@
                       </div>
                       <div class="product-value"> <span class="text-light-white">{{item_product.qty}}</span>
                       </div>
-                      <div class="product-name"> <span><a href="javascript:void(0)" class="text-light-white">{{item_product.productName}}</a></span>
+                      <div class="product-name">
+                        <span>
+                          <a href="javascript:void(0)" class="text-light-white">{{item_product.productName}}</a>
+                        </span>
+                        <span *ngIf="item_product.productSize > 0" class="text-light-white" >
+                          <p>{{'Size' | translate}}: {{item_product.productSizeTitle}}</p>
+                          <p>{{'Topping' | translate}}: {{item_product.productOptionTitle}}</p>
+                        </span>
                       </div>
                     </div>
-                    <div class="price"> <span class="text-light-white">${{item_product.price + (item_product.productSize * item_product.qty) + (item_product.productOption * item_product.qty)}}</span>
+                    <div class="price"> <span class="text-light-white">${{item_product.productOfAllPrice}}</span>
                     </div>
                   </div>
                 </ng-container>
@@ -73,7 +80,7 @@
                 <div class="item"> <span class="text-light-white">{{'Item subtotal' | translate}}:</span>
                   <span class="text-light-white">${{trackingData?.product_total_price}}</span>
                 </div>
-               
+
               </div> -->
               <div class="total-price padding-tb-10">
                 <h5 class="title text-light-black fw-700">{{'Total' | translate}}: <span>${{trackingData?.product_total_price}}</span></h5>

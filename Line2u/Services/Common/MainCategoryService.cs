@@ -447,6 +447,7 @@ ISPService spService)
                                  o.Status,
                                  o.UpdateBy, 
                                  o.UpdateDate,
+
                                  totalOrder = _repoCart.FindAll(z => 
                                  z.ProductGuid == o.Guid 
                                  && z.AccountUid == cusGuid
@@ -455,7 +456,7 @@ ISPService spService)
                                  z.ProductGuid == o.Guid
                                  && z.Status == 1
                                  && z.AccountUid == cusGuid
-                                 && z.IsCheckout == 0).FirstOrDefault().Quantity : 0,
+                                 && z.IsCheckout == 0).Sum(o => o.Quantity) : 0,
 
                                  storeGuid = storeGuid,
 

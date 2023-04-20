@@ -9,7 +9,7 @@
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
           <div class="panel panel-info">
               <div class="panel-heading">
-                  Review Order 
+                  Review Order
                   <div class="pull-right">
                     <small>
                       <a class="afix-1" (click)="backEditCart()">
@@ -20,12 +20,12 @@
               </div>
               <div class="panel-body">
                 <ng-container *ngFor="let item of cartDetail; let i=index">
-  
+
                   <div class="form-group">
                       <div class="col-sm-3 col-xs-3">
-                          <img class="img-responsive" 
+                          <img class="img-responsive"
                           [src]="imagePath(item.photoPath) "
-                          
+
                           />
                       </div>
                       <div class="col-sm-6 col-xs-6">
@@ -38,7 +38,7 @@
                   </div>
                   <div class="form-group"><hr /></div>
                 </ng-container>
-                
+
                   <div class="form-group"><hr /></div>
                   <div class="form-group">
                       <div class="col-xs-12">
@@ -68,46 +68,46 @@
                   <div class="form-group">
                       <div class="col-md-12"><strong>Address:</strong></div>
                       <div class="col-md-12">
-                          <input type="text" 
-                          name="accountAddress" [(ngModel)]="modelAccount.accountAddress" class="form-control" 
+                          <input type="text"
+                          name="accountAddress" [(ngModel)]="modelAccount.accountAddress" class="form-control"
                           required />
                       </div>
                   </div>
-                 
+
                   <div class="form-group">
                       <div class="col-md-12"><strong>Phone Number:</strong></div>
                       <div class="col-md-12">
-                        <input type="text" [(ngModel)]="modelAccount.accountTel" name="accountTel" 
+                        <input type="text" [(ngModel)]="modelAccount.accountTel" name="accountTel"
                         class="form-control" required />
                       </div>
                   </div>
                   <div class="form-group">
                       <div class="col-md-12"><strong>Email Address:</strong></div>
                       <div class="col-md-12">
-                        <input type="text" 
+                        <input type="text"
                         [(ngModel)]="modelAccount.accountEmail" name="accountEmail"
                          class="form-control" required /></div>
                   </div>
               </div>
           </div>
-    
+
           <div class="panel panel-info">
               <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
               <div class="panel-body">
                   <div class="form-group">
                       <div class="col-md-12"><strong>{{'label.payment.method' | translate}}:</strong></div>
                       <div class="col-md-12">
-                        
+
                         <select id="CreditCardType" (change)="changeMethod($event)" name="CreditCardType" class="form-control">
                           <ng-container *ngFor="let item_payment_method of paymentData; let i=index">
                             <option [value]="item_payment_method.id">{{item_payment_method.name | translate}}</option>
                           </ng-container>
-                          
+
                           </select>
                       </div>
                   </div>
                   <ng-container *ngIf="!isDelevery">
-  
+
                     <div class="form-group">
                         <div class="col-md-12"><strong>Credit Card Number:</strong></div>
                         <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                   </ng-container>
-                  
+
                   <div class="form-group">
                       <div class="col-md-12">
                           <span>Pay secure using your credit card.</span>
@@ -176,11 +176,11 @@
               </div>
           </div>
         </div>
-      
+
       </form>
   </div>
   <div class="row cart-footer">
-  
+
   </div>
   </div> -->
 <section class="final-order section-padding bg-light-theme">
@@ -194,15 +194,15 @@
            <div class="content">
               <h1>{{'Checkout.PaymentSuccess.label' | translate}} !</h1>
               <p>{{'Your Order.PaymentSuccess' | translate}} {{orderID}} {{'Checkout.YourOrder.PaymentSuccess2' | translate}} </p>
-              <a href="/home">{{'Checkout.ContinueShopping.label' | translate}}</a> 
-              <span style="color: transparent;">|</span> 
+              <a href="/home">{{'Checkout.ContinueShopping.label' | translate}}</a>
+              <span style="color: transparent;">|</span>
               <a href="home/store/order-tracking">{{'Checkout.MyOrder.label' | translate}}</a>
            </div>
-           
+
         </div>
       </div>
       <ng-container *ngIf="!paymentSuccess">
-     
+
         <div class="col-lg-3">
           <div class="sidebar">
             <div class="cart-detail-box">
@@ -215,7 +215,7 @@
                       {{table}}
                     </span>
                   </p>
-                  
+
                 </div>
                 <div class="card-body no-padding" id="scrollstyle-4">
                   <ng-container *ngFor="let item of cartDetail; let i=index">
@@ -224,13 +224,15 @@
                         <div class="cat-name" style="width: 90%; white-space: break-spaces;">
                           <a href="javascript:void(0)">
                             <p class="text-light-green fw-700">
-                              <span class="text-dark-white">{{item.quantity}}</span> 
+                              <span class="text-dark-white">{{item.quantity}}</span>
                               {{item.productName}}
                             </p>
-                            <span class="text-light-white fw-700" [innerHTML]="safeHtml(item.productDescription)">
+                            <span *ngIf="item.productSize > 0" class="text-light-white fw-700" >
+                              <p>{{'Size' | translate}}: {{item.productSizeTitle}}</p>
+                              <p>{{'Topping' | translate}}: {{item.productOptionTitle}}</p>
                             </span>
                             <div class="delete-btn" style="font-size: 20px;">
-                              <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white"> 
+                              <a (click)="deleteCart(item)"  href="javascript:void(0)" class="text-dark-white">
                                 <i class="far fa-trash-alt" id="minus-circle"></i>
                               </a>
                             </div>
@@ -238,20 +240,20 @@
                         </div>
 
                         <div class="delete-btn" style="font-size: 20px;">
-                          <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                          <a (click)="removeCart(item)" href="javascript:void(0)" class="text-dark-white">
                             <i class="fa fa-minus-circle" aria-hidden="true"></i>
                           </a>
                         </div>
                         <span style="color: transparent;"> ||| </span>
                         <div class="delete-btn" style="font-size: 20px;">
-                          <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white"> 
+                          <a (click)="addToCart(item)" href="javascript:void(0)" class="text-dark-white">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                           </a>
                         </div>
                         <span style="color: transparent;"> | </span>
 
                         <div class="price" style="font-size: 20px;"> <a routerLink="/checkout" class="text-dark-white fw-500">
-                          ${{(item.productPrice * item.quantity) + (item.quantity * item.productSize) + (item.quantity * item.productOption)}}
+                          ${{item.productOfAllPrice}}
                           </a>
                         </div>
                       </div>
@@ -273,7 +275,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <p class="text-center text-light-black no-margin">
-                    {{'Empty bag' | translate}} 
+                    {{'Empty bag' | translate}}
                   </p>
                   <button type="submit" (click)="BackToShoppping()" class="btn-first primary-btn text-custom-white full-width fw-500">{{'Go to shopping' | translate}}</button>
                 </div>
@@ -294,28 +296,28 @@
                       <div id="accordion">
                         <div class="payment-option-tab">
                           <!-- <ul class="nav nav-tabs">
-                          
-                            <li class="nav-item"> 
+
+                            <li class="nav-item">
                               <a class="nav-link fw-600 active" data-toggle="tab" href="#cash">{{'Cash' | translate}}</a>
                             </li>
                             <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#newcreditcard">{{'Line Pay' | translate}}</a>
                             </li>
-                          
+
                           </ul> -->
                           <div class="tab-content">
                             <div class="tab-pane fade" id="newcreditcard">
                               <div class="row">
-                                
+
                                 <div class="col-md-12">
                                   <div class="form-group">
-                                    <label class="text-light-white fw-700">{{'Table.No' | translate}}</label> 
+                                    <label class="text-light-white fw-700">{{'Table.No' | translate}}</label>
                                     <span  style="color: red">(*)</span>
                                     <input type="text" [(ngModel)]="table" name="table" class="form-control form-control-submit" placeholder="123....">
                                   </div>
                                 </div>
-                              
+
                               </div>
-                              
+
                               <div class="form-group">
                                 <button type="submit" (click)="saveOrder(LINE_PAY)" class="btn-first green-btn text-custom-white full-width fw-500">{{'Place Your Order' | translate}}</button>
                               </div>
