@@ -27,6 +27,7 @@ namespace Line2u.Services
         Task<object> GetWebBanners();
         Task<object> GetByGuid(string guid);
         Task<object> GetByUserID(int userID);
+        Task<object> GetByStoreId(int storeId);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(WebBannerUserDto model);
@@ -78,7 +79,7 @@ ISPService spService)
         }
         public async Task<object> GetByUserID(int userID)
         {
-            return await _repoWebNewsUser.FindAll(x => x.CreateBy == userID)
+            return await _repoWebNewsUser.FindAll(x => x.StoreId == userID)
               .ToListAsync();
         }
         public async Task<object> LoadData(DataManager data, string lang, int userID)
@@ -393,6 +394,9 @@ ISPService spService)
            return await _spService.GetWebBanners();
         }
 
-        
+        public async Task<object> GetByStoreId(int storeId)
+        {
+            return await _repoWebNewsUser.FindAll(x => x.StoreId == storeId).ToListAsync();
+        }
     }
 }

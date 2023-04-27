@@ -1,3 +1,28 @@
+
+ i .bi-star {
+  font-size: 1.5rem;
+}
+.filled {
+  color: #ffb41e;
+}
+.low {
+  color: #00000059;
+}
+.filled.low {
+  color: #ffb41e;
+}
+p.text-light-black {
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 767px) {
+  .title-2 small {
+      display: flex;
+  }
+}
  /* end of icon styles */
   /* mobile width < 740px */
   @media only screen and (max-width: 46.1875rem) {
@@ -5,7 +30,7 @@
       width: calc(32.3% - 10px)!important;
       margin-right: 10 !important;
     }
-  
+
   }
   /* tablet width >= 740px and width < 1024px */
   @media only screen and (min-width: 46.1875rem) and (max-width: 63.9375rem) {
@@ -13,12 +38,12 @@
       width: 30% !important;
     }
   }
-  
+
   .flex-container {
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
-  
+
   }
   .flex-container > div {
       font-size: 9px;
@@ -35,7 +60,7 @@
       height: 40px;
       line-height: 40px;
   }
-  
+
   .flex-container-bio {
       display: flex;
       flex-wrap: wrap;

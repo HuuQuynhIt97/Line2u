@@ -28,9 +28,9 @@ export class MainCategoryService extends CURDService<MainCategory> {
         }
       }
     }
-  
+
     const params = this.utilitiesService.ToFormData(model);
-    
+
     return this.http.post<OperationResult>(`${this.base}MainCategory/AddForm`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: MainCategory): Observable<OperationResult> {
@@ -62,8 +62,8 @@ export class MainCategoryService extends CURDService<MainCategory> {
   getCategoryByUserIDAndStore(guid,storeId): Observable<any> {
     return this.http.get<any>(`${this.base}MainCategory/GetCategoryByUserIDAndStore?id=${guid}&storeId=${storeId}`, {});
   }
-  getProducts(store_guid,cus_guid): Observable<any> {
-    return this.http.get<any>(`${this.base}MainCategory/getProducts?id=${store_guid}&cusGuid=${cus_guid}`, {});
+  getProducts(store_guid,cus_guid,storeId): Observable<any> {
+    return this.http.get<any>(`${this.base}MainCategory/getProducts?id=${store_guid}&cusGuid=${cus_guid}&storeId=${storeId}`, {});
   }
 
   getProductsOrderEdit(store_guid,cus_guid,date,orderId): Observable<any> {

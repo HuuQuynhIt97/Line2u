@@ -64,8 +64,8 @@ export class OrderTrackingComponent implements OnInit {
   news: any;
   logo: any;
   storeInfo: StoreProfile = {} as StoreProfile;
-  mainCategory: any 
-  products: any 
+  mainCategory: any
+  products: any
   count: any = 0;
   modalReference: NgbModalRef;
   cartDetail: Products[] = [];
@@ -118,7 +118,7 @@ export class OrderTrackingComponent implements OnInit {
     private orderService: OrderService,
     public modalService: NgbModal
 
-  ) { 
+  ) {
     this.responsiveOptions = [{
       breakpoint: '1024px',
       numVisible: 1,
@@ -132,7 +132,7 @@ export class OrderTrackingComponent implements OnInit {
     this.subscription.unsubscribe();
     // this.removeLocalStore('isLogin_Cus')
   }
-  
+
   ngOnInit() {
     if (this.authService.loggedIn()) {
       this.isLogin = true
@@ -141,12 +141,12 @@ export class OrderTrackingComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor() 
+    this.getStoreInfor()
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.loadLogoData();
     this.getUserCheckoutInfo();
     this.getTrackingOrderUser()
-    
+
   }
   getTrackingOrderUser() {
     this.orderService.getTrackingOrderUser(this.user.id).subscribe((res: any) => {
@@ -351,7 +351,7 @@ export class OrderTrackingComponent implements OnInit {
         this.count = 0
         this.router.navigate([`home/store/${this.storeInfo.storeName}/${this.storeInfo.id}`])
       })
-      // 
+      //
       // this.modalReference.close();
     }
   }
@@ -376,15 +376,15 @@ export class OrderTrackingComponent implements OnInit {
       return false;
     }
 
-    
+
 
     return true;
   }
   removeLocalStore(key: string) {
     localStorage.removeItem(key);
   }
-  
- 
+
+
   setLocalStore(key: string, value: any) {
     localStorage.removeItem(key);
     let details = value || [];
@@ -401,7 +401,7 @@ export class OrderTrackingComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -421,7 +421,7 @@ export class OrderTrackingComponent implements OnInit {
     })
   }
   getProducts(guid){
-    this.serviceMainCategory.getProducts(guid,this.user?.uid).subscribe(res => {
+    this.serviceMainCategory.getProducts(guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
     })
   }
@@ -433,11 +433,11 @@ export class OrderTrackingComponent implements OnInit {
       this.news = res
     })
   }
- 
+
   ngAfterViewInit(): void {
-    
+
     $(function () {
-     
+
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');

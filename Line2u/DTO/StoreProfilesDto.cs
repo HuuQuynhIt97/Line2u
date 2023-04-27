@@ -32,6 +32,7 @@ namespace Line2u.DTO
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }
+        public decimal? Active { get; set; }
         public string Guid { get; set; }
         public string AccountGuid { get; set; }
         public string TownShipId { get; set; }

@@ -242,7 +242,7 @@ namespace Line2u.Services
                     StatusCode = HttpStatusCode.OK,
                     Message = MessageReponse.AddSuccess,
                     Success = true,
-                    Data = model
+                    Data = item
                 };
             }
             catch (Exception ex)
@@ -423,45 +423,53 @@ namespace Line2u.Services
 
         public override async Task<StoreProfilesDto> GetByIDAsync(object id)
         {
+            var results = new StoreProfilesDto();
             var item = await _repo.FindByIDAsync(id);
-            var result_tamp = new StoreProfilesDto()
+            if (item != null)
             {
-                RatingCount = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count(),
-                RatingAVG = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count() > 0 ?
+                var result_tamp = new StoreProfilesDto()
+                {
+                    RatingCount = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count(),
+                    RatingAVG = _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Count() > 0 ?
                 _repoRatingComment.FindAll(o => o.StoreGuid == item.Guid).ToList().Sum(y => int.Parse(y.Rating)) : 0
-            };
-            var result = new StoreProfilesDto()
-            {
-                Id = item.Id,
-                AccountGuid = item.AccountGuid,
-                Body = item.Body,
-                Comment = item.Comment,
-                CreateBy = item.CreateBy,
-                CreateDate = item.CreateDate,
-                Facebook = item.Facebook,
-                Instagram = item.Instagram,
-                Youtube = item.Youtube,
-                Twitter = item.Twitter,
-                Pinterest = item.Pinterest,
-                PhotoPath = item.PhotoPath,
-                StoreAddress = item.StoreAddress,
-                StoreCloseTime = item.StoreCloseTime,
-                StoreOpenTime = item.StoreOpenTime,
-                StoreEmail = item.StoreEmail,
-                StoreTel = item.StoreTel,
-                StoreHightPrice = item.StoreHightPrice,
-                StoreLowPrice = item.StoreLowPrice,
-                StoreName = item.StoreName,
-                Guid = item.Guid,
-                Status = item.Status,
-                UpdateBy = item.UpdateBy,
-                UpdateDate = item.UpdateDate,
-                CountyId = item.CountyId,
-                TownShipId = item.TownShipId,
-                RatingCount = result_tamp.RatingCount,
-                RatingAVG = result_tamp.RatingCount > 0 ?  result_tamp.RatingAVG / result_tamp.RatingCount : 0
-            };
-            return result;
+                };
+                var result = new StoreProfilesDto()
+                {
+                    Id = item.Id,
+                    AccountGuid = item.AccountGuid,
+                    Body = item.Body,
+                    Active = item.Active,
+                    Comment = item.Comment,
+                    CreateBy = item.CreateBy,
+                    CreateDate = item.CreateDate,
+                    Facebook = item.Facebook,
+                    Instagram = item.Instagram,
+                    Youtube = item.Youtube,
+                    Twitter = item.Twitter,
+                    Pinterest = item.Pinterest,
+                    PhotoPath = item.PhotoPath,
+                    StoreAddress = item.StoreAddress,
+                    StoreCloseTime = item.StoreCloseTime,
+                    StoreOpenTime = item.StoreOpenTime,
+                    StoreEmail = item.StoreEmail,
+                    StoreTel = item.StoreTel,
+                    StoreHightPrice = item.StoreHightPrice,
+                    StoreLowPrice = item.StoreLowPrice,
+                    StoreName = item.StoreName,
+                    Guid = item.Guid,
+                    Status = item.Status,
+                    UpdateBy = item.UpdateBy,
+                    UpdateDate = item.UpdateDate,
+                    CountyId = item.CountyId,
+                    TownShipId = item.TownShipId,
+                    RatingCount = result_tamp.RatingCount,
+                    RatingAVG = result_tamp.RatingCount > 0 ? result_tamp.RatingAVG / result_tamp.RatingCount : 0
+                };
+                return result;
+            }
+
+            return results;
+
         }
 
         public async Task<object> GetAll(int start)
@@ -551,13 +559,13 @@ namespace Line2u.Services
             }
 
             // xoa account site
-            var item_del = _repoStoreProfileUser.FindAll(o => o.StoreId == model.Id).ToList();
+            //var item_del = _repoStoreProfileUser.FindAll(o => o.StoreId == model.Id).ToList();
 
-            if (item_del.Count > 0)
-            {
-                _repoStoreProfileUser.RemoveMultiple(item_del);
-                await _unitOfWork.SaveChangeAsync();
-            }
+            //if (item_del.Count > 0)
+            //{
+            //    _repoStoreProfileUser.RemoveMultiple(item_del);
+            //    await _unitOfWork.SaveChangeAsync();
+            //}
 
             //// add account site
             //var account_store = new List<StoreProfileUser>();
@@ -878,7 +886,7 @@ namespace Line2u.Services
                     StatusCode = HttpStatusCode.OK,
                     Message = MessageReponse.AddSuccess,
                     Success = true,
-                    Data = model
+                    Data = item
                 };
             }
             catch (Exception ex)

@@ -149,10 +149,10 @@ export class RestaurantrightsidebarComponent implements OnInit {
       return this.toastr.warning(this.translate.instant('CART_EMPTY'))
     }else {
       const uri = this.router.url;
+      console.log(uri);
       localStorage.setItem('isLogin_Cus',uri)
       this.router.navigate([`home/store/shop-cart/check-out/payment`])
     }
-
   }
   safeHtml(html) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
@@ -169,7 +169,6 @@ export class RestaurantrightsidebarComponent implements OnInit {
   }
   getProductsInCart() {
     this.serviceCart.getProductsInCart(this.user?.uid).subscribe(res => {
-      console.log('getProductsInCart', res)
       this.cartDetail = res
     })
   }

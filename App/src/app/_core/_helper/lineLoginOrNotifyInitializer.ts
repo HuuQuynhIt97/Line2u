@@ -6,7 +6,7 @@ export function lineLoginOrNotifyInitializer(
   router: Router
   ) {
     // let token = window.location.pathname.split('/')[3]
-    
+
     return () =>
     new Promise((resolve, reject) => {
       if (window.location.href.indexOf('tokenLogin=') > 0) {
@@ -14,12 +14,12 @@ export function lineLoginOrNotifyInitializer(
         let userID = JSON.parse(localStorage.getItem('user'))?.uid || 0
         lineService.getProfile(token,userID).subscribe(data => {
           let isLineAccount = JSON.parse(localStorage.getItem('user'))?.isLineAccount
-          let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
           let isCustomer = JSON.parse(localStorage.getItem('user'))?.isCustomer
           let backUrl = '/home';
-          
+          let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+
           router.navigate([isLogin_Cus_url]);
-          
+
         }).add(resolve);
       }
       else {

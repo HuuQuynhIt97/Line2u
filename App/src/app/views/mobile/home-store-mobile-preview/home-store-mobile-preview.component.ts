@@ -68,8 +68,8 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
   public qrcode = '';
   storeInfo: StoreProfile = {} as StoreProfile;
   cartModel: Cart = {} as Cart;
-  mainCategory: any 
-  products: any 
+  mainCategory: any
+  products: any
   count: any = 0;
   modalReference: NgbModalRef;
   cartDetail: Products[] = [];
@@ -127,7 +127,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
     private authService: AuthService,
     public modalService: NgbModal
 
-  ) { 
+  ) {
     this.responsiveOptions = [{
       breakpoint: '1024px',
       numVisible: 1,
@@ -145,7 +145,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
     this.subscription.unsubscribe();
     // this.removeLocalStore('isLogin_Cus')
   }
-  
+
   ngOnInit() {
     if (this.authService.loggedIn()) {
       this.isLogin = true
@@ -154,7 +154,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.storeId
-    this.getStoreInfor(storeId) 
+    this.getStoreInfor(storeId)
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
@@ -164,7 +164,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
     // this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     this.cartAmountTotal()
     this.cartCountTotal();
-   
+
   }
   printData() {
     this.qrcode = this.apiHost + `/home/store/${this.storeInfo.storeName}/${this.storeId}`
@@ -191,7 +191,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
           padding: 0;
           margin-left: 0px;
         }
-        
+
         @page {
           size: 2.65 1.20 in;
           page-break-after: always;
@@ -259,7 +259,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
     this.isOpenDropdown = !this.isOpenDropdown
   }
   loadBannerData() {
-    let id = this.storeInfo.createBy !== null ? this.storeInfo.createBy : 0
+    let id = this.storeInfo.id !== null ? this.storeInfo.id : 0
     this.webBannerService.getByUserID(id).subscribe((x: any)=> {
       console.log('banner' , x)
       this.banners = x;
@@ -508,8 +508,8 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
   removeLocalStore(key: string) {
     localStorage.removeItem(key);
   }
-  
- 
+
+
   setLocalStore(key: string, value: any) {
     localStorage.removeItem(key);
     let details = value || [];
@@ -526,7 +526,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -549,7 +549,7 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
     })
   }
   getProducts(store_guid, cus_guid){
-    this.serviceMainCategory.getProducts(store_guid,cus_guid).subscribe(res => {
+    this.serviceMainCategory.getProducts(store_guid,cus_guid,this.storeInfo.id).subscribe(res => {
       this.products = res
     })
   }
@@ -561,11 +561,11 @@ export class HomeStoreMobilePreviewComponent implements OnInit {
       this.news = res
     })
   }
- 
+
   ngAfterViewInit(): void {
-    
+
     $(function () {
-     
+
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');

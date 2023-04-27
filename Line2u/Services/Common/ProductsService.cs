@@ -36,7 +36,7 @@ namespace Line2u.Services
         Task<OperationResult> AddOption(List<ProductOptionModel> model);
 
         Task<object> GetWebNews();
-        Task<object> GetProducts(string id, string cusGuid);
+        Task<object> GetProducts(string id, string cusGuid, int storeId);
         Task<object> GetWebPages();
         
     }
@@ -440,7 +440,7 @@ ISPService spService)
            return await _spService.GetWebPages();
         }
 
-        public async Task<object> GetProducts(string category_guid, string cusGuid)
+        public async Task<object> GetProducts(string category_guid, string cusGuid, int storeId)
         {
             var category = await _repoMainCategory.FindAll(o => o.Guid == category_guid).ToListAsync();
             var store_account_Guid = _repoMainCategory.FindAll(o => o.Guid == category_guid).FirstOrDefault() != null

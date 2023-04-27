@@ -50,8 +50,8 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'))
   storeInfo = JSON.parse(localStorage.getItem('store'))
   @ViewChild("parentTemplate", { static: true })
- 
-  public parentTemplate: any; 
+
+  public parentTemplate: any;
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,
@@ -84,7 +84,7 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.store = this.route.snapshot.paramMap.get('id')
+    // this.store = this.route.snapshot.paramMap.get('id')
     this.toolbarOptions = ['Add', 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
@@ -103,7 +103,7 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
     //   }else if ((this.user.uid === this.storeInfo.accountGuid && this.store === null)) {
     //   }
     //   else {
-  
+
     //     this.loadData();
     //   }
 
@@ -113,7 +113,7 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
     this.loadLang()
   }
   dataBound() {
-   
+
 }
   loadLang() {
     this.translate.get('WebNews').subscribe( functionName => {
@@ -123,7 +123,7 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
       this.printBy = printBy;
     });
   }
- 
+
   // life cycle ejs-grid
   toolbarClick(args) {
     const functionName = this.functionName;
@@ -193,6 +193,10 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
   }
 
   loadDataAdmin() {
+    this.store = this.route.snapshot.paramMap.get('id')
+    if(this.store === null) {
+      this.store = this.storeInfo.id
+    }
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
@@ -251,7 +255,7 @@ export class MenuCategoryComponent extends BaseComponent implements OnInit {
               this.toast.success(this.alert.created_ok_msg);
               // if(this.isAdmin) {
               // }else {
-                
+
               //   this.loadData();
               // }
               this.loadDataAdmin();

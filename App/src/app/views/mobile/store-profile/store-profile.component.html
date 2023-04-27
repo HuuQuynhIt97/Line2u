@@ -22,7 +22,7 @@
               [removable]="true" (removed)="onRemove(f)">
             </ngx-dropzone-image-preview>
           </div>
-        </div>  
+        </div>
         <!-- <div class="kv-avatar">
           <div class="file-loading">
             <input
@@ -38,12 +38,12 @@
           <small>{{ "Select file < 5000 KB" | translate }}</small>
         </div> -->
       </div>
-     
+
     </div>
-      
-    
+
+
     <div class="row p-2">
-  
+
       <div class="col-12">
         <div class="form-group">
           <label for="landLordNo">{{ "STORE_NAME" | translate }}</label>
@@ -84,13 +84,13 @@
         </div>
       </div>
 
-      
-  
+
+
       <div class="col-12">
         <div class="form-group">
           <label for="landLordName">{{ "STORE_ADDRESS" | translate }}</label>
           <span  style="color: red">(*)</span>
-  
+
           <input
             [(ngModel)]="model.storeAddress"
             maxlength="200"
@@ -104,7 +104,7 @@
         <div class="form-group">
           <label for="landLordName">{{ "STORE_ACCESS" | translate }}</label>
           <span  style="color: red">(*)</span>
-  
+
           <ejs-multiselect
               id="site"
               [showDropDownIcon]="true"
@@ -124,7 +124,7 @@
         <div class="form-group">
           <label for="landLordName">{{ "STORE_COUNTY" | translate }}</label>
           <span  style="color: red">(*)</span>
-  
+
           <ejs-dropdownlist
               [fields]="storeCountyFields"
               [allowFiltering]="true"
@@ -137,6 +137,7 @@
           </ejs-dropdownlist>
         </div>
       </div>
+
 
 
       <div class="col-6">
@@ -155,11 +156,39 @@
         </div>
       </div>
 
+      <div class="col-6">
+        <div class="form-check">
+          <input [disabled]="isAdmin ? false : true" class="form-check-input" type="checkbox" value=""  (change)="statusChange($event)" id="flexCheckChecked" [checked]="model.status">
+          <label class="form-check-label" for="flexCheckChecked">
+            {{"StoreProfile_Status" | translate}}
+          </label>
+        </div>
+      </div>
+
+      <!-- <div class="col-6" *ngIf="isAdmin">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" (change)="payfeeChange($event)" id="flexCheckChecked2" [checked]="model.active">
+          <label class="form-check-label" for="flexCheckChecked">
+            {{"StoreProfile_payFees" | translate}}
+          </label>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-6">
+        <div class="form-group">
+          <label for="allfarm">
+            {{"StoreProfile_payFees" | translate}}</label>
+          &nbsp;
+
+          <app-leo-checkbox [(checked)]="model.active"></app-leo-checkbox>
+        </div>
+      </div> -->
+
       <div class="col-12">
         <label for="body" style="font-weight: bold;">{{ "STORE_DESCRIPTION" | translate }}</label>
 
         <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
-        
+
           </ejs-richtexteditor>
       </div>
 
@@ -223,7 +252,7 @@
           />
         </div>
       </div>
-      
+
       <div class="col-12">
         <div class="form-group">
           <label for="landLordSex">{{ "SITE_OPEN_TIME" | translate }}</label>
@@ -237,7 +266,7 @@
               (change)="startTimesChange($event)"
               >
             </ejs-timepicker>
-          
+
         </div>
       </div>
       <div class="col-12">
@@ -252,10 +281,10 @@
             (change)="closeTimesChange($event)"
             >
           </ejs-timepicker>
-          
+
         </div>
       </div>
-  
+
       <div class="col-12">
         <div class="form-group">
           <label for="landLordSex">{{ "SITE_LOW_PRICE" | translate }}</label>
@@ -265,10 +294,10 @@
             type="text"
             class="form-control"
           />
-          
+
         </div>
       </div>
-  
+
       <div class="col-12">
         <div class="form-group">
           <label for="landLordSex">{{ "SITE_HIGHT_PRICE" | translate }}</label>
@@ -279,12 +308,12 @@
             type="text"
             class="form-control"
           />
-          
+
         </div>
       </div>
-      
+
     </div>
-    
+
     <div class="row p-2">
         <div class="col-12">
         <!-- <button

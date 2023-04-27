@@ -21,6 +21,7 @@
   },
   "private": true,
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.0.0",
     "@agm/core": "^1.1.0",
     "@angular/animations": "^11.2.14",
     "@angular/cdk": "11.2.13",
@@ -85,6 +86,7 @@
     "ngx-moment": "^3.5.0",
     "ngx-spinner": "^10.0.1",
     "ngx-toastr": "13.2.1",
+    "ngx-zalo": "^0.0.19",
     "rxjs": "~6.5.4",
     "safe-pipe": "^1.0.2",
     "scss-bundle": "^3.1.2",

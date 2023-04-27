@@ -55,8 +55,8 @@ export class StoreTableComponent extends BaseComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'))
   storeInfo = JSON.parse(localStorage.getItem('store'))
   @ViewChild("parentTemplate", { static: true })
- 
-  public parentTemplate: any; 
+
+  public parentTemplate: any;
   public tools: ToolbarModule = {
     type: ToolbarType.Expand,
     enableFloating :false,
@@ -96,7 +96,7 @@ export class StoreTableComponent extends BaseComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.store = this.route.snapshot.paramMap.get('id')
+    // this.store = this.route.snapshot.paramMap.get('id')
 
     this.toolbarOptions = ['Add', 'Search'];
     // this.Permission(this.route);
@@ -109,18 +109,18 @@ export class StoreTableComponent extends BaseComponent implements OnInit {
         pager: languages['pager']
       }
     };
-    
+
     L10n.load(load);
-    if(this.user.uid === 'admin') {
-      
-    }else {
-      this.store = this.storeInfo.id
-    }
+    // if(this.user.uid === 'admin') {
+
+    // }else {
+    //   this.store = this.storeInfo.id
+    // }
     this.loadData();
     this.loadLang()
   }
   dataBound() {
-   
+
 }
 private convertBase64ToBlob(Base64Image: any) {
   // SPLIT INTO TWO PARTS
@@ -146,7 +146,7 @@ printData(data,parent) {
   var hostname = window.location.host;
   var protocol = window.location.protocol;
   let host = protocol + hostname
-  let link = `/home/store/${this.storeInfo.storeName}/${this.storeId}/${data.tableNumber}/device`
+  let link = `/home/store/shop/${this.storeId}/${data.tableNumber}/device`
   let link1 = `${host}${link}`
   this.qrcode = link1
   console.log(this.qrcode)
@@ -154,7 +154,7 @@ printData(data,parent) {
  setTimeout(() => {
    const parentElement = parent.qrcElement.nativeElement.querySelector("img").src;
    let blobData = this.convertBase64ToBlob(parentElement);
-  
+
    if (window.navigator && window.navigator.msSaveOrOpenBlob) { //IE
      window.navigator.msSaveOrOpenBlob(blobData, 'Qrcode');
    } else { // chrome
@@ -163,11 +163,11 @@ printData(data,parent) {
      // window.open(url);
      const link = document.createElement('a');
      link.href = url;
-     link.download = 'Qrcode';
+     link.download = `${this.storeInfo.storeName} - ${data.tableNumber}`;
      link.click();
    }
  }, 300);
-  
+
 }
   loadLang() {
     this.translate.get('WebNews').subscribe( functionName => {
@@ -177,7 +177,7 @@ printData(data,parent) {
       this.printBy = printBy;
     });
   }
- 
+
   // life cycle ejs-grid
   toolbarClick(args) {
     const functionName = this.functionName;
@@ -237,6 +237,10 @@ printData(data,parent) {
 
   }
   loadData() {
+    this.store = this.route.snapshot.paramMap.get('id')
+    if(this.store === null) {
+      this.store = this.storeInfo.id
+    }
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.serviceStore.getAllStoreTable(this.store).subscribe(res => {
@@ -392,8 +396,8 @@ printData(data,parent) {
       initialPreviewConfig: [],
       deleteUrl: `${environment.apiUrl}MainCategory/DeleteUploadFile`
     };
-   
-    
+
+
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {

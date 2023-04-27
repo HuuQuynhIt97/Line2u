@@ -143,47 +143,61 @@ export class StoreProfileComponent  implements OnInit {
       //   }
       // })
     }
-    
+
+  }
+  statusChange(value) {
+    this.model.status = value.target.checked === true ? 1 : 0;
+    console.log('statusChange', this.model.status);
   }
 
+  payfeeChange(value) {
+    this.model.active = value.target.checked === true ? 1 : 0;
+    console.log('payfeeChange', this.model.active);
+  }
+  onCheckedChange(value) {
+    this.model.active = value === true ? 1 : 0;
+    console.log(this.model.active);
+  }
   loadDetailAdmin() {
-    this.spin.show()
-    return new Promise((result, rej) => {
-      this.service.getById(this.store).subscribe(
-        async (x: any) => {
-          if(x !== null) {
-            this.sites = [];
-            this.model.multiStores = {
-              sites: this.sites
-            }
-            this.model = x;
-            localStorage.setItem('store', JSON.stringify(x));
+    if(this.store !== null) {
+      this.spin.show()
+      return new Promise((result, rej) => {
+        this.service.getById(this.store).subscribe(
+          async (x: any) => {
+            if(x !== null) {
+              this.sites = [];
+              this.model.multiStores = {
+                sites: this.sites
+              }
+              this.model = x;
+              console.log(this.model);
+              this.model.status = 1
+              localStorage.setItem('store', JSON.stringify(x));
 
-            let listFileImage: string[] = [];
-            listFileImage.push(this.model.photoPath);
-            const sites = await this.service.getMultiUserAccessStore(this.model.createBy,this.model.id).toPromise();
-            this.sites = sites || [];
-            this.model.multiStores = {
-              stores: this.sites
+              let listFileImage: string[] = [];
+              listFileImage.push(this.model.photoPath);
+              const sites = await this.service.getMultiUserAccessStore(this.model.createBy,this.model.id).toPromise();
+              this.sites = sites || [];
+              this.model.multiStores = {
+                stores: this.sites
+              }
+              listFileImage = listFileImage.filter(item => item !== null);
+              if (listFileImage?.length > 0) {
+                this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
+              }
+              this.start_times = x.storeOpenTime
+              this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
+              this.spin.hide()
+            }else {
             }
-            listFileImage = listFileImage.filter(item => item !== null);
-            if (listFileImage?.length > 0) {
-              this.functionUtility.convertToFile(listFileImage, this.apiHost, this.listFile);
-            }
-            this.start_times = x.storeOpenTime
-            this.end_times = x.storeCloseTime != null ? x.storeCloseTime :  this.end_times
-            this.spin.hide()
-          }else {
+            result(result);
+          },
+          (error) => {
+            rej(error);
           }
-          result(result);
-        },
-        (error) => {
-          rej(error);
-        }
-      );
-    });
-    
-    
+        );
+      });
+    }
   }
 
   toDataURL(url, callback) {
@@ -200,7 +214,7 @@ export class StoreProfileComponent  implements OnInit {
     xhr.send();
 }
 
-  
+
   ngOnInit(): void {
     this.getAllAccount()
     this.store = this.route.snapshot.paramMap.get('id')
@@ -210,9 +224,10 @@ export class StoreProfileComponent  implements OnInit {
     this.service.getAllAccountAccess().subscribe(res => {
       this.siteData = res
     })
+
   }
 
-  
+
   onChangePermission() {
     this.model.multiStores = {
       stores: this.sites
@@ -268,7 +283,7 @@ export class StoreProfileComponent  implements OnInit {
         }
       );
     });
-   
+
   }
 
   getAllTownShipByCounty() {
@@ -355,7 +370,7 @@ export class StoreProfileComponent  implements OnInit {
     this.removeImage()
   }
   removeImage() {
-    this.service.deleteImage(this.model?.id || 0).subscribe(res => {}) 
+    this.service.deleteImage(this.model?.id || 0).subscribe(res => {})
   }
   onSelect(event) {
     let fileSize = 0;
@@ -419,6 +434,8 @@ export class StoreProfileComponent  implements OnInit {
   }
   create() {
     this.model.createBy = this.user.id;
+    this.model.status = 1;
+    this.model.active = 0;
     this.model.accountGuid = this.user.uid
     this.model.storeOpenTime = this.start_times
     this.model.storeCloseTime = this.end_times
@@ -430,6 +447,7 @@ export class StoreProfileComponent  implements OnInit {
         if (res.success === true) {
         this.listFile = []
           this.toast.success(this.alert.created_ok_msg);
+          this.store = res?.data.id
           this.loadDetailAdmin();
           this.dataService.changeMessage('nextStep2')
         } else {
@@ -443,11 +461,11 @@ export class StoreProfileComponent  implements OnInit {
         this.toast.warning(this.alert.system_error_msg);
       }
     );
- 
+
    }
   update() {
 
-     this.model.createBy = this.user.id;
+    //  this.model.createBy = this.user.id;
      this.model.updateBy = this.user.id;
      this.model.file = this.listFile || [];
      this.service.updateFormMobile(this.ToFormatModel(this.model)).subscribe(
@@ -465,11 +483,13 @@ export class StoreProfileComponent  implements OnInit {
          this.toast.warning(this.alert.system_error_msg);
        }
      );
- 
- 
+
+
   }
   createAdmin() {
     this.model.createBy = this.user.id;
+    this.model.status = 1;
+    this.model.active = 0;
     this.model.accountGuid = this.user.uid
     this.model.storeOpenTime = this.start_times
     this.model.storeCloseTime = this.end_times
@@ -479,8 +499,9 @@ export class StoreProfileComponent  implements OnInit {
     this.service.insertFormAdmin(this.ToFormatModel(this.model)).subscribe(
       (res) => {
         if (res.success === true) {
-        this.listFile = []
+          this.listFile = []
           this.toast.success(this.alert.created_ok_msg);
+          this.store = res?.data.id
           this.loadDetailAdmin();
           this.dataService.changeMessage('nextStep2')
         } else {
@@ -494,7 +515,7 @@ export class StoreProfileComponent  implements OnInit {
         this.toast.warning(this.alert.system_error_msg);
       }
     );
- 
+
    }
   updateAdmin() {
      this.model.updateBy = this.user.id;
@@ -514,8 +535,8 @@ export class StoreProfileComponent  implements OnInit {
          this.toast.warning(this.alert.system_error_msg);
        }
      );
- 
- 
+
+
   }
    ToFormatModel(model: any) {
      for (let key in model) {

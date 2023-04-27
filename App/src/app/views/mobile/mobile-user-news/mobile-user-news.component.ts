@@ -96,9 +96,9 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     //   if(this.user.uid === this.storeInfo.accountGuid && this.store !== null) {
     //   }else if (this.user.uid === this.storeInfo.accountGuid && this.store === null) {
     //   }
-      
+
     //   else {
-  
+
     //     this.loadData();
     //   }
     // }else {
@@ -114,7 +114,7 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
       this.printBy = printBy;
     });
   }
- 
+
   // life cycle ejs-grid
   toolbarClick(args) {
       switch (args.item.id) {
@@ -147,6 +147,10 @@ export class MobileUserNewsComponent extends BaseComponent implements OnInit{
     });
   }
   loadDataAdmin() {
+    this.store = this.route.snapshot.paramMap.get('id')
+    if(this.store === null) {
+      this.store = this.storeInfo.id
+    }
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({

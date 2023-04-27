@@ -28,7 +28,7 @@ namespace Line2u.Services
         Task<object> GetByGuid(string guid);
         Task<object> GetCategoryByUserID(string id);
         Task<object> GetCategoryByUserIDAndStore(string id, int storeId);
-        Task<object> GetProducts(string id,string cusGuid);
+        Task<object> GetProducts(string id,string cusGuid, int storeId);
         Task<object> GetProductsOrderEdit(int id,int cusId, DateTime date,string orderId);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
@@ -417,10 +417,10 @@ ISPService spService)
             return await _repo.FindAll(o => o.AccountUid == store_account_Guid).ToListAsync();
         }
 
-        public async Task<object> GetProducts(string store_account_Guid,string cusGuid)
+        public async Task<object> GetProducts(string store_account_Guid,string cusGuid, int storeId)
         {
-            var category = await _repo.FindAll(o => o.AccountUid == store_account_Guid).ToListAsync();
-            var storeGuid = _repoStoreProfile.FindAll(o => o.AccountGuid == store_account_Guid).FirstOrDefault().Guid;
+            var category = await _repo.FindAll(o => o.StoreId == storeId).ToListAsync();
+            var storeGuid = _repoStoreProfile.FindAll(o => o.Id == storeId).FirstOrDefault().Guid;
             var products = await _repoProduct.FindAll().ToListAsync();
             var product_size = _repoProductSize.FindAll();
             var product_option = _repoProductOption.FindAll();

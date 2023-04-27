@@ -47,7 +47,7 @@
                     <div class="d-flex justify-content-start mt-2">
                         <!-- <div style="width: 40%">
                           <div class="d-flex justify-content-start">
-                            
+
                             <img
                             width="100%"
                             [src]="imagePath(data.photoPath)"
@@ -77,7 +77,7 @@
       <!-- /.card-body -->
     </div>
   </div>
-  
+
   </div>
   <ng-template #optionModal let-modal>
     <div class="modal-header my-modal">
@@ -94,7 +94,7 @@
       </button>
     </div>
     <div class="modal-body" id="option">
-  
+
       <div class="row">
         <!-- <div class="col-6">
           <p style="color: red;" *ngIf="model.id > 0">{{ "/home/news-detail/" + model.id }}</p>
@@ -109,7 +109,7 @@
             </app-code-type-dropdownlist>
           </div>
         </div> -->
-  
+
         <div class="col-md-12">
           <!-- <label *ngIf="model.id > 0" style="color: transparent;" for="uid">{{ "WebNews_Subject" | translate }}</label> -->
           <div class="form-group">
@@ -135,7 +135,7 @@
             ></ejs-datepicker>
           </div>
         </div>
-  
+
         <!-- <div class="col-md-6">
           <div class="form-group">
             <label for="uid">{{ "WebNews_Link" | translate }}</label>
@@ -149,11 +149,11 @@
             />
           </div>
         </div>
-  
-        
-  
-  
-        
+
+
+
+
+
         <div class="col-6">
           <div class="form-group">
             <label for="Start_Date">{{
@@ -166,7 +166,7 @@
             ></ejs-datepicker>
           </div>
         </div>
-  
+
         <div class="col-6">
           <div class="form-group">
             <label for="End_Date">{{
@@ -179,7 +179,7 @@
             ></ejs-datepicker>
           </div>
         </div>
-  
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="sortId">{{ "WebNews_SortId" | translate }}</label>
@@ -191,7 +191,7 @@
             />
           </div>
         </div> -->
-        
+
         <!-- <div class="col-md-6">
           <div class="form-group">
             <label for="status">{{ "WebNews_Status" | translate }}</label>
@@ -207,7 +207,7 @@
             <label for="landLordSex">{{ "NEW_IMAGE" | translate }}</label>
           </div>
           <div class="col-12 text-center">
-            
+
             <div class="kv-avatar">
               <div class="file-loading">
                 <input
@@ -222,7 +222,7 @@
             <div class="kv-avatar-hint">
               <small>{{ "Select file < 50 KB" | translate }}</small>
             </div>
-    
+
           </div>
         </div>
 
@@ -231,7 +231,7 @@
             <label for="landLordSex">{{ "NEW_THUMBNAIL" | translate }}</label>
           </div>
           <div class="col-12 text-center">
-            
+
             <div class="kv-avatar2">
               <div class="file-loading">
                 <input
@@ -246,24 +246,24 @@
             <div class="kv-avatar2-hint">
               <small>{{ "Select file < 50 KB" | translate }}</small>
             </div>
-    
+
           </div>
         </div>
 
 
         <div class="col-12 mb-2">
           <label for="body">{{ "WebNews_Body" | translate }}</label>
-  
-          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
-          
+
+          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000'   [(value)]='model.body'>
+
             </ejs-richtexteditor>
         </div>
-  
-  
 
 
-        
-  
+
+
+
+
         <!-- <div class="col-12">
           <label>{{ "WebNews_COMMENT" | translate }}</label>
           <div class="form-group">
@@ -276,10 +276,10 @@
           </div>
         </div> -->
       </div>
-  
-     
+
+
   </div>
-  
+
     <div class="modal-footer">
       <div class="mr-auto" *ngIf="model?.id > 0">
         <p>
@@ -331,5 +331,5 @@
       </button>
     </div>
   </ng-template>
-  
+
 </div>

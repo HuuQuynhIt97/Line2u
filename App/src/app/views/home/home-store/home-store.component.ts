@@ -32,6 +32,7 @@ import { Cart } from 'src/app/_core/_model/evse/cart';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { ClickEventArgs } from '@syncfusion/ej2-angular-buttons';
+import { SelectionSettingsModel } from '@syncfusion/ej2-angular-dropdowns';
 @Component({
   selector: 'app-home-store',
   templateUrl: './home-store.component.html',
@@ -85,6 +86,12 @@ export class HomeStoreComponent implements OnInit {
   userImage = JSON.parse(localStorage.getItem('user'))?.image
   ratingCommentData: any;
   isRatingComment: boolean = false;
+  totalPriceModal: any;
+  totalMore: number;
+  totalPriceModal_tamp: any;
+  totalPriceModal_tam_tam: any;
+  totalMoreSize: number = 0;
+  totalMoreOption: number = 0;
   @HostListener("window:scroll", [])onWindowScroll() {
     //.scrollTop
     if(window.pageYOffset > 500) {
@@ -100,6 +107,20 @@ export class HomeStoreComponent implements OnInit {
 	readonly = false;
   comment: string
   choiceSelected = [];
+  choiceOptionPriceSelected = [];
+  public data: { [key: string]: Object }[] = [
+        { text: 'Hennessey Venom', id: 'list-01' },
+        { text: 'Bugatti Chiron', id: 'list-02' },
+        { text: 'Bugatti Veyron Super Sport', id: 'list-03' },
+        { text: 'SSC Ultimate Aero', id: 'list-04' },
+        { text: 'Koenigsegg CCR', id: 'list-05' },
+        { text: 'McLaren F1', id: 'list-06' },
+        { text: 'Aston Martin One- 77', id: 'list-07' },
+        { text: 'Jaguar XJ220', id: 'list-08' },
+        { text: 'McLaren P1', id: 'list-09' },
+        { text: 'Ferrari LaFerrari', id: 'list-10' }
+    ];
+  public selectionSettings: SelectionSettingsModel = { showCheckbox: true };
   constructor(
     private spinner: NgxSpinnerService,
     private renderer: Renderer2,
@@ -165,31 +186,80 @@ export class HomeStoreComponent implements OnInit {
     this.cartCountTotal();
 
   }
+  minusPrdetail() {
 
-  chipSizeclick(e) {
-    if(e.text){
-      if(e.selected) {
-        this.cartModel.productSizeAdd = e.data.value
-      }else {
-        this.cartModel.productSizeAdd = null
-      }
+    if(this.cartModel.quantity - 1  === 0)
+    {
+      // this.cartModel.quantity = 1
+      return;
+    }else {
+      var sum = this.choiceOptionPriceSelected.reduce((acc, cur) => acc + cur, 0);
+      this.cartModel.quantity = this.cartModel.quantity - 1
+      this.totalPriceModal = this.toFixedIfNecessary(this.totalPriceModal_tamp * this.cartModel.quantity, 2)
+      + this.toFixedIfNecessary(this.totalMoreSize * this.cartModel.quantity, 2) + this.toFixedIfNecessary(sum * this.cartModel .quantity, 2)
     }
   }
-
-  chipOptionclick(e) {
-    if(e.text){
-      if(e.selected) {
-        this.choiceSelected.push(e.data.value)
+  plusPrdetail() {
+    var sum = this.choiceOptionPriceSelected.reduce((acc, cur) => acc + cur, 0);
+    if(this.cartModel.productSizeAdd === null && this.cartModel.productSize.length > 0) {
+      this.toast.warning(this.translate.instant('PLEASE_CHOOSE_SIZE'))
+      return;
+    }
+    this.cartModel.quantity = this.cartModel.quantity + 1
+    this.totalPriceModal = this.toFixedIfNecessary(this.totalPriceModal_tamp * this.cartModel.quantity, 2)
+    + this.toFixedIfNecessary(this.totalMoreSize * this.cartModel.quantity, 2) + this.toFixedIfNecessary(sum * this.cartModel .quantity, 2)
+  }
+  chipSizeclick(e, item) {
+    this.cartModel.productSizeAdd = e.value
+    // if(e.checked) {
+    // }else {
+    //   this.cartModel.productSizeAdd = null
+    // }
+    let totalMore = parseFloat(item.price);
+    this.totalMoreSize = totalMore
+    this.totalPriceModal = this.toFixedIfNecessary(this.totalPriceModal_tamp * this.cartModel.quantity, 2)
+    + this.toFixedIfNecessary(this.totalMoreSize * this.cartModel.quantity, 2)
+    + this.toFixedIfNecessary(this.totalMoreOption, 2)
+    this.totalPriceModal_tam_tam = this.totalPriceModal
+  }
+  private toFixedIfNecessary(value, dp) {
+    return +parseFloat(value).toFixed(dp);
+  }
+  chipOptionclick(e, item) {
+      let totalMore = parseFloat(item.price);
+      if(e.checked) {
+        this.choiceSelected.push(item.id)
+        this.choiceOptionPriceSelected.push(parseFloat(item.price))
+        console.log(this.choiceOptionPriceSelected);
+        var sum = this.choiceOptionPriceSelected.reduce((acc, cur) => acc + cur, 0);
+        console.log(sum * this.cartModel.quantity)
+        this.totalMoreOption = this.toFixedIfNecessary(sum * this.cartModel.quantity, 2)
+        this.totalPriceModal_tam_tam = this.toFixedIfNecessary(this.totalPriceModal * this.cartModel.quantity, 2)
+        // this.totalMoreOption = this.toFixedIfNecessary((this.totalMoreOption + (totalMore  * this.cartModel.quantity)), 2)
+        this.totalPriceModal = this.toFixedIfNecessary(this.totalPriceModal_tamp * this.cartModel.quantity, 2)
+        + this.toFixedIfNecessary(this.totalMoreOption,2)
+        + this.toFixedIfNecessary(this.totalMoreSize * this.cartModel.quantity,2)
       }else {
         for(let i = 0; i < this.choiceSelected.length; i++) {
-          if (this.choiceSelected[i] === e.data.value)
+          if (this.choiceSelected[i] === item.id)
           {
             this.choiceSelected.splice(i, 1)
+            this.choiceOptionPriceSelected.splice(i, 1)
           }
         }
-        this.choiceSelected.slice(e.data.value)
+        this.choiceSelected.slice(item.id)
+        this.choiceOptionPriceSelected.slice(item.price)
+        console.log(this.choiceOptionPriceSelected);
+        var sum = this.choiceOptionPriceSelected.reduce((acc, cur) => acc + cur, 0);
+        console.log(sum * this.cartModel.quantity)
+        this.totalMoreOption = this.toFixedIfNecessary(sum * this.cartModel.quantity, 2)
+        // this.totalMoreOption = this.toFixedIfNecessary((this.totalMoreOption - (totalMore *  this.cartModel.quantity)), 2)
+        this.totalPriceModal_tam_tam = this.toFixedIfNecessary(this.totalPriceModal * this.cartModel.quantity, 2)
+        this.totalPriceModal = this.toFixedIfNecessary(this.totalPriceModal_tamp * this.cartModel.quantity, 2)
+        + this.toFixedIfNecessary(this.totalMoreOption,2)
+        + this.toFixedIfNecessary(this.totalMoreSize * this.cartModel.quantity,2)
       }
-    }
+
   }
   chipOptionDelete(e) {
     if(e.text){
@@ -238,8 +308,9 @@ export class HomeStoreComponent implements OnInit {
     this.isOpenDropdown = !this.isOpenDropdown
   }
   loadBannerData() {
-    let id = this.storeInfo.createBy !== null ? this.storeInfo.createBy : 0
+    let id = this.storeInfo.id !== null ? this.storeInfo.id : 0
     this.webBannerService.getByUserID(id).subscribe((x: any)=> {
+      console.log(x);
       this.banners = x;
     })
   }
@@ -334,17 +405,14 @@ export class HomeStoreComponent implements OnInit {
       }
     }
   }
-  minusPrdetail() {
-    if(this.cartModel.quantity  === 0)
-    {
+  ngModelChange(args) {
+    if(this.cartModel.productSizeAdd === null && this.cartModel.productSize.length > 0) {
+      this.toast.warning(this.translate.instant('PLEASE_CHOOSE_SIZE'))
       return;
-    }else {
-      this.cartModel.quantity = this.cartModel.quantity - 1
     }
+
   }
-  plusPrdetail() {
-    this.cartModel.quantity = this.cartModel.quantity + 1
-  }
+
   addCartPrdetail() {
     this.cartModel.productOptionAdd = this.choiceSelected.sort((a,b) => a-b).join()
     if(this.cartModel.productSizeAdd === null && this.cartModel.productSize.length > 0) {
@@ -389,10 +457,28 @@ export class HomeStoreComponent implements OnInit {
       this.cartModel.storeGuid = item.storeGuid
       this.cartModel.productId = item.id
       this.cartModel.productPrice = item.productPrice
+      this.totalPriceModal = item.productPrice
+      this.totalPriceModal_tamp = item.productPrice
+      this.totalPriceModal_tam_tam = item.productPrice
+      // this.cartModel.productOption = item.productOption.map(item => {
+      //   return {
+      //     text: item.topping,
+      //     id: item.id,
+      //     price: item.price
+      //   }
+      // })
       if(item.cartId > 0) {
-        this.cartModel.productSizeAdd = item.productSizeAdd
-        this.cartModel.productOptionAdd = item.productOptionAdd
+        this.cartModel.productSizeAdd = null
+        this.cartModel.productOptionAdd = null
       }
+      console.log(this.cartModel);
+      this.modalReference.result.then((result) => {
+        this.totalMoreSize = 0
+        this.totalMoreOption = 0
+        }, (reason) => {
+          this.totalMoreSize = 0
+        this.totalMoreOption = 0
+      });
       this.spinner.hide()
       // this.serviceCart.add(this.cartModel).subscribe(res => {
       //   this.toast.success(this.translate.instant('Add_To_Cart_Success'))
@@ -546,7 +632,7 @@ export class HomeStoreComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -568,7 +654,8 @@ export class HomeStoreComponent implements OnInit {
     })
   }
   getProducts(store_guid, cus_guid){
-    this.serviceMainCategory.getProducts(store_guid,cus_guid).subscribe(res => {
+    this.serviceMainCategory.getProducts(store_guid,cus_guid,this.storeInfo.id).subscribe(res => {
+      console.log(res)
       this.products = res
     })
   }

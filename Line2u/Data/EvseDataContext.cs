@@ -848,6 +848,10 @@ namespace Line2u.Data
                     .HasColumnName("STATUS")
                     .HasColumnType("numeric(18, 0)");
 
+                    entity.Property(e => e.Active)
+                    .HasColumnName("ACTIVE")
+                    .HasColumnType("numeric(18, 0)");
+
                 entity.Property(e => e.StoreAddress)
                     .HasColumnName("STORE_ADDRESS")
                     .HasMaxLength(200);

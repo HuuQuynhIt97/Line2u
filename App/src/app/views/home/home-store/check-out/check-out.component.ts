@@ -185,7 +185,10 @@ export class CheckOutComponent implements OnInit {
 
   }
   BackToShoppping() {
-    this.router.navigate(['home'])
+    this._location.back()
+    // let isLogin_Cus_url = localStorage.getItem('isLogin_Cus')
+    // this.router.navigate([isLogin_Cus_url]);
+    // this.router.navigate(['home'])
   }
   Back() {
     this._location.back()
@@ -634,7 +637,7 @@ export class CheckOutComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -654,7 +657,7 @@ export class CheckOutComponent implements OnInit {
     })
   }
   getProducts(guid){
-    this.serviceMainCategory.getProducts(guid,this.user?.uid).subscribe(res => {
+    this.serviceMainCategory.getProducts(guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
     })
   }

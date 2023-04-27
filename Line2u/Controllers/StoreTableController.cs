@@ -85,11 +85,11 @@ namespace Line2u.Controllers
             return Ok(await _service.GetCategoryByUserIDAndStore(id, storeId));
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetProducts(string id,string cusGuid)
-        {
-            return Ok(await _service.GetProducts(id, cusGuid));
-        }
+        //[HttpGet]
+        //public async Task<ActionResult> GetProducts(string id,string cusGuid)
+        //{
+        //    return Ok(await _service.GetProducts(id, cusGuid));
+        //}
 
         [HttpGet]
         public async Task<ActionResult> GetProductsOrderEdit(int id, int cusId, DateTime date,string orderId)

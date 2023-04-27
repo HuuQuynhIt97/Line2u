@@ -151,11 +151,14 @@ import { NavbarAdminComponent } from './views/layout/navbarAdmin/navbarAdmin.com
 import { DateAgoPipe } from './_core/pipes/date-ago.pipe';
 import { ListAllStoreComponent } from './views/home/list-all-store/list-all-store.component';
 import { AdminRestaurantComponent } from './views/mobile/admin-restaurant/admin-restaurant.component';
+import { ListBoxAllModule, DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
   lang = localStorage.getItem('lang');
 }
+import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 @NgModule({
   declarations: [
     DateAgoPipe,
@@ -200,7 +203,9 @@ if (!lang) {
   ],
   imports: [
     BrowserModule,
+    SocialLoginModule,
     // TagInputModule,
+    ListBoxAllModule,
     ChipListModule,
     Common2Module,
     BrowserAnimationsModule,
@@ -257,7 +262,24 @@ if (!lang) {
       useClass: PathLocationStrategy
     },
     DashboardService,
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '970175228566-32pmgls9ub4hncbhupm4fsbhr3f4s8gl.apps.googleusercontent.com'
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
   ],
   bootstrap: [AppComponent]
 })

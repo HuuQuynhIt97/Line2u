@@ -27,6 +27,7 @@ export class AdminAddRestaurantComponent implements OnInit {
   noImage = ImagePathConstants.NO_IMAGE_QR;
   apiHost = environment.apiUrl.replace('/api/', '');
   IsloadCategoryProductComponent: boolean = false
+  IsloadStoreTableComponent: boolean = false
   IsloadBannerNewComponent: boolean = false
   IsloadPreviewComponent: boolean = false
   @ViewChild('myButton1') myButton1 : ElementRef;
@@ -82,6 +83,7 @@ export class AdminAddRestaurantComponent implements OnInit {
   }
   loadCategoryProductComponent() {
     this.IsloadCategoryProductComponent = true;
+    this.IsloadStoreTableComponent = true;
   }
   loadBannerNewComponent() {
     this.IsloadBannerNewComponent = true
@@ -100,7 +102,7 @@ export class AdminAddRestaurantComponent implements OnInit {
         this.configImage();
       })
     }
-    
+
   }
   imagePath(path) {
     if (path !== null && this.utilityService.checkValidImage(path)) {
@@ -142,7 +144,7 @@ export class AdminAddRestaurantComponent implements OnInit {
   configImage() {
     var btnCust = '<button type="button" class="btn btn-secondary edit-profile" >' +
     '<i class="bi-tag"></i>' +
-    '</button>'; 
+    '</button>';
     const option = {
       overwriteInitial: true,
       maxFileSize: 1500,
@@ -162,7 +164,7 @@ export class AdminAddRestaurantComponent implements OnInit {
       initialPreviewConfig: [],
       deleteUrl: `${environment.apiUrl}xAccount/DeleteUploadFile`
     };
-  
+
     $("#avatar-1").fileinput(option);;
     let that = this;
     $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {

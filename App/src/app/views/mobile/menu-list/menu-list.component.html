@@ -79,8 +79,8 @@
                               <div style=" word-wrap: break-word;">{{data.productName}}</div>
                               <div class="container">
                                 <div class="row">
-                                  <p style="color: red; text-decoration: line-through;">{{data.productPriceDiscount}}$</p>
-                                  <p>  -  </p>
+                                  <p *ngIf="data.productPriceDiscount !== null" style="color: red; text-decoration: line-through;">{{data.productPriceDiscount}}$</p>
+                                  <p *ngIf="data.productPriceDiscount !== null">  -  </p>
                                   <p>{{data.productPrice}}$</p>
                                 </div>
                               </div>
@@ -350,7 +350,7 @@
         <div class="col-12 mb-2">
           <label for="body">{{ "PRODUCT_DESCRIPTION" | translate }}</label>
 
-          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.productDescription'>
+          <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000'   [(value)]='model.productDescription'>
 
             </ejs-richtexteditor>
         </div>

@@ -62,8 +62,8 @@ export class ShopCartComponent implements OnInit {
   logo: any;
   storeInfo: StoreProfile = {} as StoreProfile;
   cartUpdate: Cart = {} as Cart;
-  mainCategory: any 
-  products: any 
+  mainCategory: any
+  products: any
   count: any = 0;
   modalReference: NgbModalRef;
   cartDetail: Cart[] = [];
@@ -111,7 +111,7 @@ export class ShopCartComponent implements OnInit {
     private authService: AuthService,
     public modalService: NgbModal
 
-  ) { 
+  ) {
     this.responsiveOptions = [{
       breakpoint: '1024px',
       numVisible: 1,
@@ -125,7 +125,7 @@ export class ShopCartComponent implements OnInit {
     this.subscription.unsubscribe();
     // this.removeLocalStore('isLogin_Cus')
   }
-  
+
   ngOnInit() {
     if (this.authService.loggedIn()) {
       this.isLogin = true
@@ -134,7 +134,7 @@ export class ShopCartComponent implements OnInit {
       this.isLogin = false
     }
     var storeId = this.route.snapshot.paramMap.get('id')
-    this.getStoreInfor() 
+    this.getStoreInfor()
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadLogoData();
@@ -281,7 +281,7 @@ export class ShopCartComponent implements OnInit {
       this.totalPrice = cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
     }
   }
-  
+
   minusItem(item) {
     this.spinner.show()
     this.cartUpdate = {...item};
@@ -370,7 +370,7 @@ export class ShopCartComponent implements OnInit {
     // this.count = this.cartDetail.map((selection) => selection.quantity).reduce((sum, quantity) => sum += quantity, 0);
     // this.totalPrice = this.cartDetail.map((selection) => selection.price).reduce((sum, price) => sum += price, 0);
   }
-  
+
   openCart(template){
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
     this.cartDetail = this.getLocalStore("cart_detail");
@@ -391,8 +391,8 @@ export class ShopCartComponent implements OnInit {
   removeLocalStore(key: string) {
     localStorage.removeItem(key);
   }
-  
- 
+
+
   setLocalStore(key: string, value: any) {
     localStorage.removeItem(key);
     let details = value || [];
@@ -409,7 +409,7 @@ export class ShopCartComponent implements OnInit {
   }
   loadProduct(_category) {
     this.spinner.show()
-    this.serviceProducts.getProducts(_category.guid,this.user?.uid).subscribe(res => {
+    this.serviceProducts.getProducts(_category.guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
       this.spinner.hide()
     })
@@ -439,7 +439,7 @@ export class ShopCartComponent implements OnInit {
     })
   }
   getProducts(guid){
-    this.serviceMainCategory.getProducts(guid,this.user?.uid).subscribe(res => {
+    this.serviceMainCategory.getProducts(guid,this.user?.uid,this.storeInfo.id).subscribe(res => {
       this.products = res
     })
   }
@@ -451,11 +451,11 @@ export class ShopCartComponent implements OnInit {
       this.news = res
     })
   }
- 
+
   ngAfterViewInit(): void {
-    
+
     $(function () {
-     
+
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');

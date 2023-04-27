@@ -29,12 +29,12 @@ export class ProductsService extends CURDService<Products> {
         }
       }
     }
-  
+
     const file = model.file;
     delete model.file;
     const params = this.utilitiesService.ToFormData(model);
     params.append("file", file);
-    
+
     return this.http.post<OperationResult>(`${this.base}Products/AddForm`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: Products): Observable<OperationResult> {
@@ -86,8 +86,8 @@ export class ProductsService extends CURDService<Products> {
   getWebPages(): Observable<any> {
     return this.http.get<any>(`${this.base}Products/GetWebPages`, {});
   }
-  getProducts(_categoryGuid,cusGuid): Observable<any> {
-    return this.http.get<any>(`${this.base}Products/getProducts?id=${_categoryGuid}&cusGuid=${cusGuid}`, {});
+  getProducts(_categoryGuid,cusGuid,storeId): Observable<any> {
+    return this.http.get<any>(`${this.base}Products/getProducts?id=${_categoryGuid}&cusGuid=${cusGuid}&storeId=${storeId}`, {});
   }
 
 }

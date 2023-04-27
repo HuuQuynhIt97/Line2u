@@ -24,6 +24,8 @@ export class LeoCheckboxComponent implements OnInit ,OnChanges {
   }
 
   ngOnInit() {
+    console.log(this.checked);
+    console.log(this.label);
   }
   onCheckedChange(value) {
     this.checked = value === true ? 1 : 0;

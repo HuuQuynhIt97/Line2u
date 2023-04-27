@@ -56,6 +56,9 @@ export class WebBannerUserService extends CURDService<WebBannerUser> {
   getByUserID(userID): Observable<any> {
     return this.http.get<any>(`${this.base}WebBannerUser/GetByUserID?userID=${userID}`, {});
   }
+  getByStoreId(storeId): Observable<any> {
+    return this.http.get<any>(`${this.base}WebBannerUser/GetByStoreId?storeId=${storeId}`, {});
+  }
   getWebBanners(): Observable<any> {
     return this.http.get<any>(`${this.base}WebBannerUser/GetWebBanners`, {});
   }

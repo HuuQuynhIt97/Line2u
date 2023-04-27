@@ -123,7 +123,10 @@ export class MenuListComponent extends BaseComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.store = this.route.snapshot.paramMap.get('id')
+    // this.store = this.route.snapshot.paramMap.get('id')
+    // if(this.store === null) {
+    //   this.store = this.storeInfo.id
+    // }
     this.toolbarOptions = [ 'Add',{ template: this.parentTemplate }, 'Search'];
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
@@ -208,6 +211,10 @@ export class MenuListComponent extends BaseComponent implements OnInit {
 
 
   loadAllData() {
+    this.store = this.route.snapshot.paramMap.get('id')
+    if(this.store === null) {
+      this.store = this.storeInfo.id
+    }
     this.loadDataAdmin()
     this.loadDataCategoryAdmin()
     // if(this.user.uid === 'admin') {
@@ -332,6 +339,7 @@ export class MenuListComponent extends BaseComponent implements OnInit {
   }
 
   loadDataAdmin() {
+
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({

@@ -1,5 +1,16 @@
 
 
+.e-checkbox-wrapper .e-frame, .e-css.e-checkbox-wrapper .e-frame {
+  background-color: #fff;
+  border-color: #adb5bd;
+  height: 20px;
+  width: 25px;
+}
+
+.e-checkbox-wrapper .e-check, .e-css.e-checkbox-wrapper .e-check {
+  font-size: 12px !important;
+}
+
 .e-chip .e-chip-text {
   font-size: 20px;
   font-weight: normal;

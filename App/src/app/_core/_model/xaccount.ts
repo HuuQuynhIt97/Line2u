@@ -85,6 +85,8 @@ export interface StoreProfile {
   ratingCount: number;
   ratingAVG: number;
   updateBy: number;
+  status: number;
+  active: number;
   storeName: string | null;
   createName: string | null
   storeTel: string | null;
@@ -116,5 +118,5 @@ export interface StoreTable {
   storeId: number;
   tableNumber: string;
   guid: string;
-  
+
 }

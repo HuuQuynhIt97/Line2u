@@ -84,11 +84,20 @@ namespace Line2u.Controllers
         {
             return Ok(await _service.GetByGuid(guid));
         }
+
         [HttpGet]
         public async Task<ActionResult> GetByUserID(int userID)
         {
             return Ok(await _service.GetByUserID(userID));
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetByStoreId(int storeId)
+        {
+            return Ok(await _service.GetByStoreId(storeId));
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> LoadData([FromBody] DataManager request, string lang,int userID)
